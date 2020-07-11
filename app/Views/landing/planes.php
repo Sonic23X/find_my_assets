@@ -1,7 +1,7 @@
 
     <div class="container-fluid py-lg-5" id="planes">
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mt-5">
         <h2>¿CUANTO CUESTA?</h2>
       </div>
 

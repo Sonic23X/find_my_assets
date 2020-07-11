@@ -1,7 +1,7 @@
 
     <div class="container-fluid py-lg-5" id="pasos">
 
-      <div class="row justify-content-center">
+      <div class="row justify-content-center mt-5">
   			<h2>¿CÓMO FUNCIONA?</h2>
   		</div>
 
