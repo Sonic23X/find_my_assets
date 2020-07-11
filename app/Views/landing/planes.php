@@ -2,7 +2,7 @@
     <div class="container-fluid py-lg-5" id="planes">
 
       <div class="row justify-content-center">
-        <h2>¿CÓMO FUNCIONA?</h2>
+        <h2>¿CUANTO CUESTA?</h2>
       </div>
 
       <div class="container mt-5">

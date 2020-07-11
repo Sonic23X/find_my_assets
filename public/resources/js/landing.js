@@ -15,6 +15,11 @@ function imprimir ( titulo, mensaje, tipo )
 $(document).ready(() =>
 {
 
+  /* --- Loader --- */
+  $( '.loader' ).fadeOut( 'slow' );
+  $( 'body' ).removeClass( 'hidden' );
+
+
   /* --- Navbar background animate --- */
 
   $(window).scroll(() =>
@@ -37,6 +42,7 @@ $(document).ready(() =>
     margin: 30,
     nav: false,
     responsiveClass: true,
+    //elementos a mostrar por width
     responsive:
     {
       0:
@@ -68,6 +74,7 @@ $(document).ready(() =>
     margin: 30,
     nav: false,
     responsiveClass: true,
+    //elementos a mostrar por width
     responsive:
     {
       0:

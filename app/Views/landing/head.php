@@ -21,4 +21,4 @@
     <link rel="stylesheet" href="/resources/css/landing.css">
 
   </head>
-  <body>
+  <body class="hidden">

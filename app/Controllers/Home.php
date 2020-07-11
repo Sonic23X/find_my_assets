@@ -9,6 +9,9 @@ class Home extends BaseController
 		//CSS, METAS y titulo
 		echo view( 'landing/head' );
 
+		//loader
+		echo view( 'landing/loader' );
+
 		//Vistas que componen la landing page
 		echo view( 'landing/navbar' );
 
