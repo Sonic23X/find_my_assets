@@ -48,14 +48,20 @@ $(document).ready(() =>
       0:
       {
         items: 1,
+        mouseDrag: true,
+        touchDrag: true,
       },
       768:
       {
         items: 2,
+        mouseDrag: true,
+        touchDrag: true,
       },
       1024:
       {
         items: 3,
+        mouseDrag: true,
+        touchDrag: true,
       },
       1366:
       {
@@ -80,14 +86,20 @@ $(document).ready(() =>
       0:
       {
         items: 1,
+        mouseDrag: true,
+        touchDrag: true,
       },
       768:
       {
         items: 2,
+        mouseDrag: true,
+        touchDrag: true,
       },
       1024:
       {
         items: 2,
+        mouseDrag: true,
+        touchDrag: true,
       },
       1366:
       {

@@ -9,17 +9,17 @@
 
         <div class="owl-carousel plans-carousel owl-theme">
           <div>
-            <a href="#">
+            <a href="<?= base_url( 'registro' ) ?>">
               <img src="/images/landing/planes/plan1.png" alt="Paso 1" class="img-fluid plan-image">
             </a>
           </div>
           <div>
-            <a href="#">
+            <a href="<?= base_url( 'registro' ) ?>">
               <img src="/images/landing/planes/plan2.png" alt="Paso 2" class="img-fluid plan-image">
             </a>
           </div>
           <div>
-            <a href="#">
+            <a href="#contactenos">
               <img src="/images/landing/planes/plan3.png" alt="Paso 3" class="img-fluid plan-image">
             </a>
           </div>
