@@ -1,4 +1,13 @@
 
+    <!-- Footer -->
+    <footer class="page-footer font-small">
+
+      <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <span> Find my Assets </span>
+      </div>
+
+    </footer>
+
     <!-- jQuery library -->
     <script src="resources/plugins/jquery/jquery-3.5.1.min.js"></script>
 

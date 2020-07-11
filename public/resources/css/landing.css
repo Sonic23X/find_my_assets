@@ -309,6 +309,15 @@ input[ type=number ]
   height: 300px;
 }
 
+/* --- Footer settings --- */
+
+.page-footer
+{
+  background: rgb( 255, 222, 89 );
+  color: white;
+  box-shadow: 0 0 5px #737373;
+}
+
 /* --- Media Querys --- */
 
 /* Extra small devices (portrait phones, less than 576px) */
