@@ -12,19 +12,22 @@
 
         <ul class="navbar-nav ml-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="#">Inicio</a>
+            <a class="nav-link" href="#carousel">Inicio</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">¿Como funciona?</a>
+            <a class="nav-link" href="#pasos">¿Como funciona?</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">¿Cuanto cuesta?</a>
+            <a class="nav-link" href="#planes">¿Cuanto cuesta?</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Blog</a>
+            <a class="nav-link" href="#contactenos">Contáctanos</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">Ingresar</a>
+            <a class="nav-link" href="#blog">Blog</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="<?= base_url( 'ingreso' ) ?>">Ingresar</a>
           </li>
         </ul>
       </div>
