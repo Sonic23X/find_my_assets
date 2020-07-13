@@ -31,6 +31,13 @@ html, body
   border-color: rgb(230, 200, 79);
 }
 
+.form-control:focus
+{
+  border-color: rgba( 230, 200, 79, 0.8 );
+  box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.075 ) inset, 0 0 8px rgba( 230, 200, 79, 0.6);
+  outline: 0 none;
+}
+
 /* --- Loading settings ---*/
 
 @keyframes ldio-jsxn2qe688r

@@ -1,3 +1,4 @@
+'use strict'
 
 /* --- External functions ---*/
 
@@ -11,14 +12,13 @@ function imprimir ( titulo, mensaje, tipo )
   });
 }
 
-
 $(document).ready(() =>
 {
 
   /* --- Loader --- */
+
   $( '.loader' ).fadeOut( 'slow' );
   $( 'body' ).removeClass( 'hidden' );
-
 
   /* --- Navbar background animate --- */
 

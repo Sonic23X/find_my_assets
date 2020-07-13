@@ -10,4 +10,23 @@ class Auth extends BaseController
     return view( 'auth/login' );
   }
 
+  //método que funciona exclusivamente con AJAX - JQUERY
+  function UserExist( )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+        echo $this->request->getVar( 'email' ) ;
+      }
+      catch (\Exception $e)
+      {
+        print_r ( $e );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+
+  }
+
 }
