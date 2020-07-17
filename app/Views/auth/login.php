@@ -7,7 +7,7 @@
 
     <title>Find my assets</title>
 
-    <link rel="icon" href="favicon.png">
+    <link rel="icon" href="./favicon.png">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -15,7 +15,7 @@
 
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/resources/css/login.css">
+    <link rel="stylesheet" href="./resources/css/login.css">
 
   </head>
   <body class="hidden">
@@ -44,40 +44,49 @@
     <div class="container">
       <div class="login-box">
 
-        <form method="post" class="login" action="<?= base_url( '/user-email' ) ?>">
+        <form method="post" id="login1" action="<?= base_url( '/user-email' ) ?>">
   				<div class="part-1">
-  					<h3 class="text-center text-title-login">Hola, ingresa tu e-mail</h3>
+  					<h3 class="text-center">Hola, ingresa tu e-mail</h3>
 
             <div class="form-group mt-4">
   						<input type="email" id="email" class="form-control" placeholder="E-mail" name="ingresoEmail" required>
   					</div>
 
   					<div class="form-group mt-5">
-              <button type="button" class="btn btn-primary btn-block next">Continuar</button>
+              <button type="submit" class="btn btn-primary btn-block next">Continuar</button>
   		      </div>
 
   					<div class="row mt-4">
   						<div class="col-sm-1"></div>
-  						<div class="col-sm-5">
-  							<p class="text-center little-text mt-1">¿Sin cuenta?</p>
+  						<div class="col-sm-6">
+  							<p class="text-center little-text mt-1">No tienes cuenta</p>
   						</div>
-              <div class="col-sm-5">
-  							<p class="text-center little-text mt-1"><a class="ml-2 btn btn-outline-primary" href="<?php echo $ruta; ?>registro">Regístrate</a></p>
+              <div class="col-sm-4">
+  							<p class="text-center mt-1"><a class="ml-2 btn btn-outline-primary btn-sm" href="#">Regístrate</a></p>
   						</div>
   						<div class="col-sm-1"></div>
   					</div>
   				</div>
+        </form>
 
+        <form method="post" id="login2" action="<?= base_url( '/acceso' ) ?>">
   				<div class="part-2" style="display: none">
-  					<p class="text-center py-3 text-title-login">Ahora tu clave</p>
+  					<h3 class="text-center py-3 text-title-login">Hola <span id="name"></span>, ahora tu contraseña. </h3>
   					<div class="form-group">
-  		        <input type="password" class="form-control" placeholder="Password" name="ingresoPassword" required>
+              <div class="input-group mb-2">
+                <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
+                <div class="input-group-prepend">
+                  <div class="input-group-text" id="icon">
+                    <i class="fas fa-eye"></i>
+                  </div>
+                </div>
+              </div>
   		      </div>
 
   					<div class="row">
   		        <div class="col-sm-3"></div>
   		        <div class="col-sm-6">
-  		          <button type="submit" class="btn btn-warning text-white btn-block">Acceder</button>
+  		          <button type="submit" class="btn btn-outline-primary btn-block">Acceder</button>
   		        </div>
   						<div class="col-sm-3"></div>
   		      </div>
@@ -85,12 +94,15 @@
   					<div class="row mt-4">
   						<div class="col-sm-1"></div>
   						<div class="col-sm-10">
-  							<p class="text-center pt-1"><a class="btn btn-outline-warning" href="#modalRecuperarPassword" data-toggle="modal" data-dismiss="modal">¿Olvidó su contraseña?</a></p>
+  							<p class="text-center pt-1">
+                  <a class="btn btn-outline-primary btn-block" href="#modalRecuperarPassword" data-toggle="modal" data-dismiss="modal">
+                    ¿Olvidó su contraseña?
+                  </a>
+                </p>
   						</div>
   						<div class="col-sm-1"></div>
   					</div>
   				</div>
-  	    </form>
 
       </div>
     </div>
@@ -105,7 +117,7 @@
     </footer>
 
     <!-- jQuery library -->
-    <script src="resources/plugins/jquery/jquery-3.5.1.min.js"></script>
+    <script src="./resources/plugins/jquery/jquery-3.5.1.min.js"></script>
 
     <!-- PopperJS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -119,10 +131,10 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
     <!-- Font Awesome 5.13.1 -->
-    <script src="resources/plugins/fontawesome/js/all.min.js"></script>
+    <script src="./resources/plugins/fontawesome/js/all.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="/resources/js/login.js"></script>
+    <script src="./resources/js/login.js"></script>
 
   </body>
 </html>

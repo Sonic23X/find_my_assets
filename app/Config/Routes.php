@@ -17,7 +17,7 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
  */
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
-$routes->setDefaultMethod('index');
+$routes->setDefaultMethod('Index');
 $routes->setTranslateURIDashes(false);
 $routes->set404Override();
 $routes->setAutoRoute(true);
@@ -37,8 +37,13 @@ $routes->get('/', 'Home::index');
 /** Auth **/
 $routes->get('/ingreso', 'Auth::Login');
 $routes->post('/user-email', 'Auth::UserExist');
+$routes->post('/acceso', 'Auth::Access');
 
 /** Register **/
+$routes->get('/ingreso', 'Auth::Login');
+
+/** Backoffice - Inicio **/
+$routes->get('/dashboard', 'Home::Start');
 
 /**
  * --------------------------------------------------------------------

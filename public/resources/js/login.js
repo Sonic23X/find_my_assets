@@ -26,8 +26,11 @@ $( document ).ready( () =>
 
   /* -- Formulario de Login Part 1 -- */
 
-  $( '.next' ).click((event) =>
+  $( '#login1' ).submit( (event) =>
 	{
+
+    event.preventDefault( );
+
 		if ( $( '#email' ).val( ) == '' )
 		{
       imprimir( '¡Error!', '¡El email es obligatorio!', 'error' );
@@ -41,34 +44,105 @@ $( document ).ready( () =>
       }
 
       $.ajax({
-        url: $( '.login' ).attr( 'action' ),
+        url: $( '#login1' ).attr( 'action' ),
         type: 'POST',
         dataType: 'json',
         data: data
       })
       .done( response =>
       {
-        console.log( reponse );
-        
-  			$( '.part-1' ).hide( );
-  			$( '.part-2' ).show( );
+        if ( response.status == 200 )
+        {
+          //cargamos el nombre
+          $( '#name' ).html( response.nombre );
+
+          //mostramos la segunda parte
+          $( '.part-1' ).hide( );
+          $( '.part-2' ).show( );
+        }
+        else
+        {
+          imprimir( '¡Error!', response.msg, 'error' );
+        }
+
       })
       .fail( ( ) =>
       {
-        console.log("error");
+
       });
 
 		}
 
 	});
 
+  /* -- Mostrar contraseña -- */
+
+  let visible = false;
+
+  $( '#icon' ).click(function(event)
+  {
+
+    if (visible)
+    {
+      $( this ).html( '<i class="fas fa-eye"></i>' );
+      $( '#password' ).attr( 'type', 'password' );
+      visible = false;
+    }
+    else
+    {
+      $( this ).html( '<i class="fas fa-eye-slash"></i>' );
+      $( '#password' ).attr( 'type', 'text' );
+      visible = true;
+    }
+
+  });
+
   /* -- Formulario de Login Part 2 -- */
 
-  $( '.login' ).submit( (event) =>
+  $( '#login2' ).submit( (event) =>
   {
+
     event.preventDefault( );
 
-    imprimir( '¡Error!', 'No pos si', 'error' )
+    if ( $( '#password' ).val( ) == '' )
+		{
+      imprimir( '¡Error!', '¡La contraseña no es válida!', 'error' );
+		}
+		else
+		{
+
+      let data =
+      {
+        password: $( '#password' ).val( ),
+      }
+
+      $.ajax({
+        url: $( '#login2' ).attr( 'action' ),
+        type: 'POST',
+        dataType: 'json',
+        data: data
+      })
+      .done( response =>
+      {
+        console.log( response );
+
+        if ( response.status != 200 )
+        {
+          imprimir( '¡Error!', response.msg, 'error' );
+        }
+        else
+        {
+          window.location.href = response.url;
+        }
+
+      })
+      .fail( ( ) =>
+      {
+
+      });
+
+		}
+
   });
 
 });

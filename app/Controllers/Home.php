@@ -4,7 +4,9 @@ namespace App\Controllers;
 
 class Home extends BaseController
 {
-	public function index()
+
+	//función que regresa la landing page
+	public function Index()
 	{
 		//CSS, METAS y titulo
 		echo view( 'landing/head' );
@@ -35,6 +37,12 @@ class Home extends BaseController
 
 		//Scripts y librerias
 		echo view( 'landing/footer' );
+	}
+
+	//función que regresa la primera pagina del backoffice
+	public function Start()
+	{
+		echo "dentro";
 	}
 
 }
