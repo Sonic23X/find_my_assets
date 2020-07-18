@@ -95,7 +95,7 @@
   						<div class="col-sm-1"></div>
   						<div class="col-sm-10">
   							<p class="text-center pt-1">
-                  <a class="btn btn-outline-primary btn-block" href="#modalRecuperarPassword" data-toggle="modal" data-dismiss="modal">
+                  <a class="btn btn-outline-primary btn-block" href="#modalPassword" data-toggle="modal" data-dismiss="modal">
                     ¿Olvidó su contraseña?
                   </a>
                 </p>
@@ -104,6 +104,32 @@
   					</div>
   				</div>
 
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalPassword">
+    	<div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title text-center">Recuperar contraseña</h4>
+    		    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    		  </div>
+    		  <div class="modal-body">
+        		<form id="recover" action="<?= base_url( '/recovery-password' ) ?>">
+              <p class="text-muted">Escriba su correo electrónico:</p>
+              <div class="input-group mb-3">
+        				<div class="input-group-prepend">
+        					<span class="input-group-text">
+                    <i class="far fa-envelope"></i>
+        					</span>
+        				</div>
+        			  <input type="email" class="form-control" placeholder="Email" id="recoverEmail" required>
+        		  </div>
+        			<input type="submit" class="btn btn-primary btn-block" value="Enviar">
+            </form>
+      	  </div>
+    	  </div>
       </div>
     </div>
 

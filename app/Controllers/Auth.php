@@ -100,6 +100,59 @@ class Auth extends BaseController
 
   }
 
+  //método que funciona exclusivamente con AJAX - JQUERY
+  function RecoveryPassword( )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+
+        $user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )
+                                ->first( );
+
+        //ingreso un correo no registrado
+        if ( !$user )
+        {
+          echo json_encode( array( 'status' => 401, 'msg' => 'El correo es incorrecto' ) );
+          return;
+        }
+
+        //guardamos en la base de datos y procedemos a enviar el email
+        if ( true )  //$this->userModel->insert( $insert ) )
+        {
+
+          $email = \Config\Services::email( );
+
+          //$email->initialize( );
+
+          $email->setFrom( 'omar.alfredo49@gmail.com', 'Your Name');
+          $email->setTo( 'omar.alfredo49@gmail.com' );
+          $email->setCC('omar.alfredo49@gmail.com');
+          $email->setBCC('omar.alfredo49@gmail.com');
+
+          $email->setSubject('Email Test');
+          $email->setMessage('Testing the email class.');
+
+          $email->send( false );
+          $email->printDebugger( );
+
+          echo "envie";
+        }
+        else
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al guardar, intente más tarde' ) );
+
+      }
+      catch (\Exception $e)
+      {
+        //echo json_encode( array( 'status' => 400, 'msg' => 'Error critico, intente más tarde' ) );
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
   function Register( )
   {
     if ( $this->session->has( 'isLoggin' ) )

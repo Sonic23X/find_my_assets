@@ -227,6 +227,10 @@ html, body
   border: none;
   border-radius: 0px;
   border-bottom: 2px solid #3d3b3b;
+}
+
+#icon
+{
   cursor: pointer;
 }
 

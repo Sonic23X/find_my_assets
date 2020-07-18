@@ -145,4 +145,44 @@ $( document ).ready( () =>
 
   });
 
+  /* -- Formulario de Recover passoword-- */
+
+  $( '#recover' ).submit( (event) =>
+  {
+
+    event.preventDefault( );
+
+    let data =
+    {
+      email: $( '#recoverEmail' ).val( ),
+    }
+
+    $.ajax({
+      url: $( '#recover' ).attr( 'action' ),
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      console.log( response );
+
+      if ( response.status != 200 )
+      {
+        imprimir( '¡Error!', response.msg, 'error' );
+      }
+      else
+      {
+        imprimir( '¡Hecho!', response.msg, 'success' );
+      }
+
+    })
+    .fail( ( ) =>
+    {
+
+    });
+
+
+  });
+
 });

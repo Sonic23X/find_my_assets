@@ -38,6 +38,7 @@ $routes->get('/', 'Home::index');
 $routes->get('/ingreso', 'Auth::Login');
 $routes->post('/user-email', 'Auth::UserExist');
 $routes->post('/acceso', 'Auth::Access');
+$routes->post('/recovery-password', 'Auth::RecoveryPassword');
 
 /** Register **/
 $routes->get('/registro', 'Auth::Register');

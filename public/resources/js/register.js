@@ -72,6 +72,8 @@ $( document ).ready( () =>
 
       if ( response.status != 200 )
         imprimir( 'Error', response.msg, 'error' );
+      else if ( response.status == 200 )
+        window.location.hred = response.url;
 
     })
     .fail( ( ) =>
