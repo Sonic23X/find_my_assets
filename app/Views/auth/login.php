@@ -69,8 +69,8 @@
   				</div>
         </form>
 
-        <form method="post" id="login2" action="<?= base_url( '/acceso' ) ?>">
-  				<div class="part-2" style="display: none">
+        <div class="part-2" style="display: none">
+          <form method="post" id="login2" action="<?= base_url( '/acceso' ) ?>">
   					<h3 class="text-center py-3 text-title-login">Hola <span id="name"></span>, ahora tu contraseña. </h3>
   					<div class="form-group">
               <div class="input-group mb-2">
@@ -102,7 +102,8 @@
   						</div>
   						<div class="col-sm-1"></div>
   					</div>
-  				</div>
+          </form>
+        </div>
 
       </div>
     </div>
