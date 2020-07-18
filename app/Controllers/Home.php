@@ -51,7 +51,17 @@ class Home extends BaseController
 	{
 		if ( $this->session->has( 'isLoggin' ) )
 		{
-			echo "asd";
+			$assets = array( 'page' => 'dashboard' );
+
+			//CSS, METAS y titulo
+			echo view( 'backoffice/common/head', $assets );
+
+			//loader
+			echo view( 'backoffice/common/loader' );
+
+
+			//Scripts y librerias
+			echo view( 'backoffice/common/footer', $assets );
 		}
 		else
 		{
