@@ -22,8 +22,7 @@
     <!-- Sweet Alert 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
-    <!-- Owl carousel -->
-    <script src="resources/plugins/owl-carousel/owl.carousel.min.js"></script>
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <!-- Custom JS -->
     <script src="/resources/js/landing.js"></script>

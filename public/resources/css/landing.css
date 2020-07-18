@@ -264,16 +264,28 @@ html, body
   background: #f7f8f8;
 }
 
-.step-image
+.swiper-container
 {
-  height: 480px;
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.pasos-slide
+{
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 405px;
 }
 
 /* --- Planes settings ---*/
 
-.plan-image
+.planes-slide
 {
-  height: 600px;
+  background-position: center;
+  background-size: cover;
+  width: 400px;
 }
 
 

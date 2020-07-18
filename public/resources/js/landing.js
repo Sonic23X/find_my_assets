@@ -36,78 +36,58 @@ $(document).ready(() =>
 
   /* --- Pasos contact  --- */
 
-  $( '.steps-carousel' ).owlCarousel(
+  let pasos = new Swiper( '.pasos-container',
   {
-    loop: false,
-    margin: 30,
-    nav: false,
-    responsiveClass: true,
-    //elementos a mostrar por width
-    responsive:
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    loop: true,
+    autoplay:
     {
-      0:
-      {
-        items: 1,
-        mouseDrag: true,
-        touchDrag: true,
-      },
-      768:
-      {
-        items: 2,
-        mouseDrag: true,
-        touchDrag: true,
-      },
-      1024:
-      {
-        items: 3,
-        mouseDrag: true,
-        touchDrag: true,
-      },
-      1366:
-      {
-        items: 4,
-        mouseDrag: false,
-        touchDrag: false,
-      }
-    }
+      delay: 1000,
+    },
+    coverflowEffect:
+    {
+      rotate: 10,
+      stretch: 0,
+      depth: 200,
+      modifier: 1,
+      slideShadows: false,
+    },
+    navigation:
+    {
+      nextEl: '.next-pasos',
+      prevEl: '.prev-pasos',
+    },
   });
 
   /* --- Planes contact  --- */
 
-  $( '.plans-carousel' ).owlCarousel(
+  let planes = new Swiper( '.planes-container',
   {
-    loop: false,
-    margin: 30,
-    nav: false,
-    responsiveClass: true,
-    //elementos a mostrar por width
-    responsive:
+    effect: 'coverflow',
+    grabCursor: true,
+    centeredSlides: true,
+    slidesPerView: 'auto',
+    loop: true,
+    autoplay:
     {
-      0:
-      {
-        items: 1,
-        mouseDrag: true,
-        touchDrag: true,
-      },
-      768:
-      {
-        items: 2,
-        mouseDrag: true,
-        touchDrag: true,
-      },
-      1024:
-      {
-        items: 2,
-        mouseDrag: true,
-        touchDrag: true,
-      },
-      1366:
-      {
-        items: 3,
-        mouseDrag: false,
-        touchDrag: false,
-      }
-    }
+      delay: 1000,
+    },
+    coverflowEffect:
+    {
+      rotate: 10,
+      stretch: 0,
+      depth: 200,
+      modifier: 1,
+      slideShadows: false,
+    },
+    navigation:
+    {
+      nextEl: '.next-planes',
+      prevEl: '.prev-planes',
+    },
   });
 
   /* --- Email contact  --- */

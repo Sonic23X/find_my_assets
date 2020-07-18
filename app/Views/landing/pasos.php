@@ -7,19 +7,28 @@
 
       <div class="container mt-5">
 
-        <div class="owl-carousel steps-carousel owl-theme">
-          <div>
-            <img src="/images/landing/pasos/tarjeta1.png" alt="Paso 1" class="img-fluid step-image">
+        <div class="swiper-container pasos-container">
+
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide pasos-slide">
+              <img src="/images/landing/pasos/tarjeta1.png" alt="Paso 1" class="img-fluid step-image">
+            </div>
+            <div class="swiper-slide pasos-slide">
+              <img src="/images/landing/pasos/tarjeta2.png" alt="Paso 2" class="img-fluid step-image">
+            </div>
+            <div class="swiper-slide pasos-slide">
+              <img src="/images/landing/pasos/tarjeta3.png" alt="Paso 3" class="img-fluid step-image">
+            </div>
+            <div class="swiper-slide pasos-slide">
+              <img src="/images/landing/pasos/tarjeta4.png" alt="Paso 4" class="img-fluid step-image">
+            </div>
+
           </div>
-          <div>
-            <img src="/images/landing/pasos/tarjeta2.png" alt="Paso 2" class="img-fluid step-image">
-          </div>
-          <div>
-            <img src="/images/landing/pasos/tarjeta3.png" alt="Paso 3" class="img-fluid step-image">
-          </div>
-          <div>
-            <img src="/images/landing/pasos/tarjeta4.png" alt="Paso 4" class="img-fluid step-image">
-          </div>
+
+          <div class="swiper-button-prev prev-pasos"></div>
+          <div class="swiper-button-next next-pasos"></div>
+
         </div>
 
       </div>
