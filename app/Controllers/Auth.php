@@ -147,9 +147,25 @@ class Auth extends BaseController
         ];
 
         //guardamos en la base de datos y procedemos a enviar el email
-        if ( $this->userModel->insert( $insert ) )
+        if ( true )  //$this->userModel->insert( $insert ) )
         {
-          
+
+          $email = \Config\Services::email( );
+
+          //$email->initialize( );
+
+          $email->setFrom( 'omar.alfredo49@gmail.com', 'Your Name');
+          $email->setTo( 'omar.alfredo49@gmail.com' );
+          $email->setCC('omar.alfredo49@gmail.com');
+          $email->setBCC('omar.alfredo49@gmail.com');
+
+          $email->setSubject('Email Test');
+          $email->setMessage('Testing the email class.');
+
+          $email->send( false );
+          $email->printDebugger( );
+
+          echo "envie";
         }
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al guardar, intente más tarde' ) );
@@ -157,7 +173,8 @@ class Auth extends BaseController
       }
       catch (\Exception $e)
       {
-        echo json_encode( array( 'status' => 400, 'msg' => 'Error critico, intente más tarde' ) );
+        //echo json_encode( array( 'status' => 400, 'msg' => 'Error critico, intente más tarde' ) );
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
       }
     }
     else
