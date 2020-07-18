@@ -391,6 +391,15 @@ input[ type=number ]
     font-size: 90%;
   }
 
+  /* --- Planes settings ---*/
+
+  .planes-slide
+  {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+  }
+
 }
 
 /* Small devices (landscape phones, 576px and up) */
