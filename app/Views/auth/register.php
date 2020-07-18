@@ -44,21 +44,21 @@
     <div class="container">
       <div class="register-box">
 
-        <form method="post">
+        <form id="registro" action="<?= base_url( '/nuevo' ) ?>">
   				<p class="text-center py-3"><b>Completa tus datos</b></p>
 
           <div class="row">
             <div class="col-sm">
-              <input type="text" class="form-control" placeholder="Nombre" name="nombre" required>
+              <input type="text" class="form-control" placeholder="Nombre" id="nombre" required>
             </div>
             <div class="col-sm">
-              <input type="text" class="form-control" placeholder="Apellidos" name="registroNombre" required>
+              <input type="text" class="form-control" placeholder="Apellidos" id="apellidos" required>
             </div>
           </div>
 
   				<div class="row mt-3">
   					<div class="col-sm">
-  						<input type="email" class="form-control" placeholder="Correo Electrónico" name="registroEmail" required>
+  						<input type="email" class="form-control" placeholder="Correo Electrónico" id="email" required>
   					</div>
   					<div class="col-sm">
               <div class="form-group">
@@ -81,8 +81,8 @@
   					<div class="col-sm-8">
   						<div class="form-check-inline text-right">
   							<input type="checkbox" id="politicas" class="form-check-input" checked style="display: none;" >
-  							<label class="form-check-label terminos-link" for="politicas">
-  								Al registrarme, declaro qué acepto <a href="<?php echo $ruta ?>politicas-de-privacidad.pdf" target="_blank"> los términos, condiones y políticas de provacidad </a> de Find my assets.
+    							<label class="form-check-label terminos-link" for="politicas">
+  								Al registrarme, declaro qué acepto <a href="#" class="text-decoration-none"> los términos, condiones y políticas de provacidad </a> de Find my assets.
   							</label>
   						</div>
   					</div>

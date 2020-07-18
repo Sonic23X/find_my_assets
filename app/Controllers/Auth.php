@@ -6,10 +6,12 @@ class Auth extends BaseController
 {
 
   protected $session;
+  protected $userModel;
 
   function __construct()
   {
     $this->session = \Config\Services::session( );
+    $this->userModel = model('App\Models\UserModel');
   }
 
   function Login( )
@@ -31,10 +33,8 @@ class Auth extends BaseController
     {
       try
       {
-        $userModel = model('App\Models\UserModel');
-
-        $user = $userModel->where( 'email', $this->request->getVar( 'email' ) )
-                          ->first( );
+        $user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )
+                                ->first( );
         if ( $user )
         {
 
@@ -49,7 +49,7 @@ class Auth extends BaseController
       }
       catch (\Exception $e)
       {
-        echo json_encode( array( 'status' => 402, 'msg' => 'Error, intente más tarde' ) );
+        echo json_encode( array( 'status' => 400, 'msg' => 'Error, intente más tarde' ) );
       }
     }
     else
@@ -64,10 +64,9 @@ class Auth extends BaseController
     {
       try
       {
-        $userModel = model('App\Models\UserModel');
 
-        $user = $userModel->where( 'email', $this->session->email )
-                          ->first( );
+        $user = $this->userModel->where( 'email', $this->session->email )
+                                ->first( );
 
         $postPassword = crypt( $this->request->getVar( 'password' ), '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
 
@@ -93,7 +92,7 @@ class Auth extends BaseController
       }
       catch (\Exception $e)
       {
-        echo json_encode( array( 'status' => 402, 'msg' => 'Error, intente más tarde' ) );
+        echo json_encode( array( 'status' => 400, 'msg' => 'Error, intente más tarde' ) );
       }
     }
     else
@@ -112,9 +111,57 @@ class Auth extends BaseController
       return view( 'auth/register' );
   }
 
+  //método que funciona exclusivamente con AJAX - JQUERY
   function New( )
   {
 
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+
+        $user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )
+                                ->first( );
+
+        //el usuario ya está registado
+        if ( $user )
+        {
+          echo json_encode( array( 'status' => 401, 'msg' => 'El correo ya está registrado' ) );
+          return;
+        }
+
+        $password = crypt( $this->request->getVar( 'password' ), '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
+        $email = md5( $this->request->getVar( 'email' ) );
+
+        $insert =
+        [
+          'perfil' => 'admin',
+          'nombre' => $this->request->getVar( 'nombre' ),
+          'apellidos' => $this->request->getVar( 'apellidos' ),
+          'email' => $this->request->getVar( 'email' ),
+          'password' => $password,
+          'suscripcion' => 0,
+          'verificacion' => 0,
+          'email_encriptado' => $email,
+          'patrocinador' => 'N/A',
+        ];
+
+        //guardamos en la base de datos y procedemos a enviar el email
+        if ( $this->userModel->insert( $insert ) )
+        {
+          
+        }
+        else
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al guardar, intente más tarde' ) );
+
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => 'Error critico, intente más tarde' ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
   }
 
 }

@@ -10,9 +10,11 @@ class UserModel extends Model
   protected $table      = 'usuarios';
   protected $primaryKey = 'id_usuario';
 
-  function FunctionName($value='')
-  {
-    // code...
-  }
+  protected $allowedFields =
+  [
+    'perfil', 'nombre', 'apellidos', 'email', 'password',
+    'suscripcion', 'verificacion', 'email_encriptado',
+    'patrocinador',
+  ];
 
 }

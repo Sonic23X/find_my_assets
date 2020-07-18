@@ -24,11 +24,11 @@ $( document ).ready( () =>
     $( '.page-footer' ).css( 'bottom', '0' );
   });
 
-  /* -- Mostrar contraseña -- */
+  /* --- Mostrar contraseña --- */
 
   let visible = false;
 
-  $( '#icon' ).click(function(event)
+  $( '#icon' ).click( (event) =>
   {
 
     if (visible)
@@ -43,6 +43,41 @@ $( document ).ready( () =>
       $( '#password' ).attr( 'type', 'text' );
       visible = true;
     }
+
+  });
+
+  /* --- Registrar usuario --- */
+
+  $( '#registro' ).submit( (event) =>
+  {
+
+    event.preventDefault( );
+
+    let data =
+    {
+      nombre: $( '#nombre' ).val( ),
+      apellidos: $( '#apellidos' ).val( ),
+      email: $( '#email' ).val( ),
+      password: $( '#password' ).val( ),
+    }
+
+    $.ajax({
+      url: $( '#registro' ).attr( 'action' ),
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+
+      if ( response.status != 200 )
+        imprimir( 'Error', response.msg, 'error' );
+
+    })
+    .fail( ( ) =>
+    {
+
+    });
 
   });
 
