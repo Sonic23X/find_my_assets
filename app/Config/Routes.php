@@ -40,7 +40,8 @@ $routes->post('/user-email', 'Auth::UserExist');
 $routes->post('/acceso', 'Auth::Access');
 
 /** Register **/
-$routes->get('/ingreso', 'Auth::Login');
+$routes->get('/registro', 'Auth::Register');
+$routes->post('/nuevo', 'Auth::New');
 
 /** Backoffice - Inicio **/
 $routes->get('/dashboard', 'Home::Start');

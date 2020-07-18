@@ -62,7 +62,7 @@
   							<p class="text-center little-text mt-1">No tienes cuenta</p>
   						</div>
               <div class="col-sm-4">
-  							<p class="text-center mt-1"><a class="ml-2 btn btn-outline-primary btn-sm" href="#">Regístrate</a></p>
+  							<p class="text-center mt-1"><a class="ml-2 btn btn-outline-primary btn-sm" href="<?= base_url( '/registro' ) ?>">Regístrate</a></p>
   						</div>
   						<div class="col-sm-1"></div>
   					</div>

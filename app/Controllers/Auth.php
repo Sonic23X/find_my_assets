@@ -14,7 +14,14 @@ class Auth extends BaseController
 
   function Login( )
   {
-    return view( 'auth/login' );
+
+    if ( $this->session->has( 'isLoggin' ) )
+    {
+      $data = array( 'url' => base_url( '/dashboard' ) );
+      return view( 'functions/redirect', $data );
+    }
+    else
+      return view( 'auth/login' );
   }
 
   //método que funciona exclusivamente con AJAX - JQUERY
@@ -69,6 +76,7 @@ class Auth extends BaseController
           //validamos si el usuario ya validó su correo
           if ( $user[ 'verificacion' ] == 1 )
           {
+            $this->session->set( 'isLoggin', true );
             $json = array( 'status' => 200, 'url' => base_url( '/dashboard' ) );
           }
           else
@@ -95,7 +103,18 @@ class Auth extends BaseController
 
   function Register( )
   {
-    
+    if ( $this->session->has( 'isLoggin' ) )
+    {
+      $data = array( 'url' => base_url( '/dashboard' ) );
+      return view( 'functions/redirect', $data );
+    }
+    else
+      return view( 'auth/register' );
+  }
+
+  function New( )
+  {
+
   }
 
 }

@@ -20,6 +20,44 @@ html, body
   border-color: rgb(230, 200, 79);
 }
 
+.btn-primary:focus
+{
+  background: rgb(230, 200, 79);
+  border-color: rgb(230, 200, 79);
+  border-color: rgb(230, 200, 79);
+  box-shadow:0 0 0 .2rem rgba(230, 200, 79,.5);
+}
+
+.btn-outline-primary
+{
+  background: transparent;
+  color: rgb( 255, 222, 89 );
+  border-color: rgb( 255, 222, 89 );
+}
+
+.btn-outline-primary:hover
+{
+  background: rgb( 255, 222, 89 );
+  border-color: rgb( 255, 222, 89 );
+}
+
+.form-control
+{
+  background: transparent;
+  border: none;
+  border-radius: 0px;
+  border-bottom: 2px solid #3d3b3b;
+}
+
+.form-control:focus
+{
+  background: transparent;
+  border-color: rgba( 230, 200, 79, 0.8 );
+  box-shadow: 0 4px 2px -2px rgba( 0, 0, 0, 0.075 ) inset, 0 4px 2px -2px rgba( 230, 200, 79, 0.6);
+  outline: 0 none;
+}
+
+
 /* --- Loading settings ---*/
 
 @keyframes ldio-jsxn2qe688r
@@ -161,9 +199,32 @@ html, body
   overflow: hidden;
 }
 
-/* --- Inicio Secciones --- */
+/* --- Register settings --- */
 
-/* --- Fin Secciones --- */
+.container
+{
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-box
+{
+  border-radius: 20px;
+  background: white;
+  padding: 5% 5% 5% 5%;
+  width: 80%;
+}
+
+.input-group-text
+{
+  background: white;
+  border: none;
+  border-radius: 0px;
+  border-bottom: 2px solid #3d3b3b;
+  cursor: pointer;
+}
 
 /* --- Footer settings --- */
 

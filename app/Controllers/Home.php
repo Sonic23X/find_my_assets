@@ -5,6 +5,13 @@ namespace App\Controllers;
 class Home extends BaseController
 {
 
+	protected $session;
+
+  function __construct()
+  {
+    $this->session = \Config\Services::session( );
+  }
+
 	//función que regresa la landing page
 	public function Index()
 	{
@@ -42,7 +49,15 @@ class Home extends BaseController
 	//función que regresa la primera pagina del backoffice
 	public function Start()
 	{
-		echo "dentro";
+		if ( $this->session->has( 'isLoggin' ) )
+		{
+			echo "asd";
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+      return view( 'functions/redirect', $data );
+		}
 	}
 
 }
