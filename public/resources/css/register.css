@@ -240,7 +240,7 @@ html, body
 
 .page-footer
 {
-  position: absolute;
+  position: fixed;
   width: 100%;
   background: rgb( 255, 222, 89 );
   box-shadow: 0 0 5px #737373;
