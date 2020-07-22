@@ -279,6 +279,11 @@ html, body
   height: 405px;
 }
 
+.swiper-button-next, .swiper-button-prev
+{
+  color: #ffde59 !important;
+}
+
 /* --- Planes settings ---*/
 
 .planes-slide

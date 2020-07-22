@@ -250,29 +250,46 @@ html, body
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px)
 {
-
+  .login-box
+  {
+    width: 100%;
+  }
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px)
 {
-
+  .login-box
+  {
+    margin-top: 7%;
+    width: 80%;
+    height: 35vh;
+  }
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px)
 {
-
+  .login-box
+  {
+    width: 70%;
+  }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199.98px)
 {
-
+  .login-box
+  {
+    width: 50%;
+  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px)
 {
-
+  .login-box
+  {
+    width: 40%;
+  }
 }

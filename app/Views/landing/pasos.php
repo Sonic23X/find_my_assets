@@ -1,11 +1,11 @@
 
     <div class="container-fluid py-lg-5" id="pasos">
 
-      <div class="row justify-content-center mt-5">
+      <div class="row justify-content-center mt-3">
   			<h2>¿CÓMO FUNCIONA?</h2>
   		</div>
 
-      <div class="container mt-5">
+      <div class="container mt-1">
 
         <div class="swiper-container pasos-container">
 

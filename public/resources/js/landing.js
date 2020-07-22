@@ -45,7 +45,7 @@ $(document).ready(() =>
     loop: true,
     autoplay:
     {
-      delay: 1000,
+      delay: 2000,
     },
     coverflowEffect:
     {
@@ -66,15 +66,12 @@ $(document).ready(() =>
 
   let planes = new Swiper( '.planes-container',
   {
+    initialSlide: 1,
     effect: 'coverflow',
     grabCursor: true,
     centeredSlides: true,
     slidesPerView: 'auto',
     loop: true,
-    autoplay:
-    {
-      delay: 1000,
-    },
     coverflowEffect:
     {
       rotate: 10,
