@@ -192,6 +192,7 @@ html, body
 .navbar
 {
   padding: .8rem;
+  background: transparent !important;
 }
 
 .nav-link
@@ -367,14 +368,19 @@ input[ type=number ]
 
   #navbarSupportedContent
   {
-    background: white;
+    background: #343a40;
+    padding-left: 10% !important;
+  }
+
+  #contentLinks
+  {
+    align-items: center;
   }
 
   .nav-link
   {
     font-size: 1.1em;
     padding-left: 10%;
-    color: black !important;
   }
 
   /* --- Carousel settings ---*/
@@ -424,14 +430,19 @@ input[ type=number ]
 
   #navbarSupportedContent
   {
-    background: white;
+    background: #343a40;
+    padding-left: 10% !important;
+  }
+
+  #contentLinks
+  {
+    align-items: center;
   }
 
   .nav-link
   {
     font-size: 1.1em;
     padding-left: 10%;
-    color: black !important;
   }
 
   /* --- Carousel settings ---*/
@@ -471,14 +482,19 @@ input[ type=number ]
 
   #navbarSupportedContent
   {
-    background: white;
+    background: #343a40;
+  }
+
+  #contentLinks
+  {
+    align-items: center;
+    padding-left: 10% !important;
   }
 
   .nav-link
   {
     font-size: 1.1em;
     padding-left: 10%;
-    color: black !important;
   }
 
   .navbar-nav li
