@@ -43,7 +43,7 @@ class Auth extends BaseController
           $json = array( 'status' => 200, 'nombre' => $user[ 'nombre' ] );
         }
         else
-          $json = array( 'status' => 401, 'msg' => 'El correo no está registrado' );
+          $json = array( 'status' => 401, 'msg' => 'Al parecer todavía no estás registrado' );
 
         echo json_encode( $json );
       }

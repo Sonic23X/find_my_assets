@@ -2,15 +2,36 @@
 
 /* --- External functions ---*/
 
-function imprimir ( titulo, mensaje, tipo )
+function imprimir ( titulo, mensaje, tipo, isLogin = false )
 {
-  Swal.fire(
+  if ( !isLogin )
   {
-    icon: tipo,
-    title: titulo,
-    text: mensaje,
-    allowOutsideClick: false,
-  });
+    Swal.fire(
+    {
+      icon: tipo,
+      title: titulo,
+      text: mensaje,
+      allowOutsideClick: false,
+    });
+  }
+  else
+  {
+    Swal.fire(
+    {
+      icon: tipo,
+      title: titulo,
+      text: mensaje,
+      showCancelButton: true,
+      confirmButtonColor: '#ffde59',
+      cancelButtonColor: '#343a40',
+      confirmButtonText: 'Registrarme',
+      cancelButtonText: 'Reintentar',
+      allowOutsideClick: false,
+    }).then( ( ) =>
+    {
+      window.location.href = $( '#btn-ingreso' ).attr( 'href' );
+    });
+  }
 }
 
 $( document ).ready( () =>
@@ -33,7 +54,7 @@ $( document ).ready( () =>
 
 		if ( $( '#email' ).val( ) == '' )
 		{
-      imprimir( '¡Error!', '¡El email es obligatorio!', 'error' );
+      imprimir( '¡Ups!', '¡El email es obligatorio!', 'error' );
 		}
 		else
 		{
@@ -60,9 +81,9 @@ $( document ).ready( () =>
           $( '.part-1' ).hide( );
           $( '.part-2' ).show( );
         }
-        else
+        else if ( response.status == 401 )
         {
-          imprimir( '¡Error!', response.msg, 'error' );
+          imprimir( '¡Ups!', response.msg, 'error', true );
         }
 
       })
@@ -106,7 +127,7 @@ $( document ).ready( () =>
 
     if ( $( '#password' ).val( ) == '' )
 		{
-      imprimir( '¡Error!', '¡La contraseña no es válida!', 'error' );
+      imprimir( '¡Ups!', '¡La contraseña no es válida!', 'error' );
 		}
 		else
 		{
@@ -128,7 +149,7 @@ $( document ).ready( () =>
 
         if ( response.status != 200 )
         {
-          imprimir( '¡Error!', response.msg, 'error' );
+          imprimir( '¡Ups!', response.msg, 'error' );
         }
         else
         {
@@ -169,7 +190,7 @@ $( document ).ready( () =>
 
       if ( response.status != 200 )
       {
-        imprimir( '¡Error!', response.msg, 'error' );
+        imprimir( '¡Ups!', response.msg, 'error' );
       }
       else
       {
