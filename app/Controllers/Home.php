@@ -2,19 +2,24 @@
 
 namespace App\Controllers;
 
+use App\Libraries\PHPMailerLib;
+
 class Home extends BaseController
 {
 
 	protected $session;
+	protected $email;
 
   function __construct()
   {
     $this->session = \Config\Services::session( );
+		$this->$email = new PHPMailerLib();
   }
 
 	//función que regresa la landing page
 	public function Index()
 	{
+
 		//CSS, METAS y titulo
 		echo view( 'landing/head' );
 
@@ -44,6 +49,28 @@ class Home extends BaseController
 
 		//Scripts y librerias
 		echo view( 'landing/footer' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	public function Contact( )
+	{
+		if ( $this->request->isAJAX( ) )
+    {
+
+			//cargamos la configuración del email
+			$correo = $this->$email->load( $this->request->getVar( 'email' ) );
+
+			if ( !$correo->send( ) )
+			{
+        echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
+      }
+			else
+        echo json_encode( array( 'status' => 200, 'msg' => 'Correo enviado' ) );
+
+
+		}
+		else
+			return view( 'errors/cli/error_404' );
 	}
 
 	//función que regresa la primera pagina del backoffice

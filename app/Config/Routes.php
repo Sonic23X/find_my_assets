@@ -32,7 +32,8 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 
 /** Landing **/
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Home::Index');
+$routes->post('/contacto', 'Home::Contact');
 
 /** Auth **/
 $routes->get('/ingreso', 'Auth::Login');
