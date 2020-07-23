@@ -62,10 +62,18 @@ class Home extends BaseController
 			$requestPhone = $this->request->getVar( 'phone' );
 			$requestMessage = $this->request->getVar( 'comentario' );
 
-			$emailContent = "<h1>Send HTML Email using SMTP</h1>";
+			$data =
+			[
+				'nombre' => $requestName,
+				'correo' => $requestEmail,
+				'telefono' => $requestPhone,
+				'mensaje' => $requestMessage
+			];
+
+			$content = View( 'emails/formulario', $data );
 
 			//cargamos la configuración del email
-			$correo = $this->$email->preparEmail( $requestEmail, 'Nuevo contacto desde el formulario', $emailContent );
+			$correo = $this->$email->preparEmail( $requestEmail, 'Nuevo contacto desde el formulario', $content );
 
 			if ( !$correo->send( ) )
         echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
@@ -99,6 +107,12 @@ class Home extends BaseController
 			$data = array( 'url' => base_url( '/ingreso' ) );
       return view( 'functions/redirect', $data );
 		}
+	}
+
+	public function Email( )
+	{
+
+		return View( 'emails/formulario', $data );
 	}
 
 }
