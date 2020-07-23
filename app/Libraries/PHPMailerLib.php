@@ -27,6 +27,7 @@ class PHPMailerLib
     $this->email->Password   = '12Febrero70';
     $this->email->SMTPSecure = 'tls';
     $this->email->Port       = 587;
+    $this->email->CharSet    = 'UTF-8';
 
     $this->email->setFrom( 'contacto@findmy-assets.com', 'Find my assets' );
     $this->email->addReplyTo( 'contacto@findmy-assets.com', 'Find my assets' );

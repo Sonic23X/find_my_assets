@@ -13,7 +13,7 @@ class Home extends BaseController
   function __construct()
   {
     $this->session = \Config\Services::session( );
-		$this->$email = new PHPMailerLib();
+		$this->$email = new PHPMailerLib( );
   }
 
 	//función que regresa la landing page
@@ -111,7 +111,7 @@ class Home extends BaseController
 	public function Email( )
 	{
 
-		return View( 'emails/formulario' );
+		return View( 'emails/recuperarContraseña' );
 	}
 
 }
