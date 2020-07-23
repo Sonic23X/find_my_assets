@@ -57,16 +57,20 @@ class Home extends BaseController
 		if ( $this->request->isAJAX( ) )
     {
 
+			$requestEmail = $this->request->getVar( 'email' );
+			$requestName = $this->request->getVar( 'nombre' );
+			$requestPhone = $this->request->getVar( 'phone' );
+			$requestMessage = $this->request->getVar( 'comentario' );
+
+			$emailContent = "<h1>Send HTML Email using SMTP</h1>";
+
 			//cargamos la configuración del email
-			$correo = $this->$email->load( $this->request->getVar( 'email' ) );
+			$correo = $this->$email->preparEmail( $requestEmail, 'Nuevo contacto desde el formulario', $emailContent );
 
 			if ( !$correo->send( ) )
-			{
         echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
-      }
 			else
         echo json_encode( array( 'status' => 200, 'msg' => 'Correo enviado' ) );
-
 
 		}
 		else
@@ -74,7 +78,7 @@ class Home extends BaseController
 	}
 
 	//función que regresa la primera pagina del backoffice
-	public function Start()
+	public function Start( )
 	{
 		if ( $this->session->has( 'isLoggin' ) )
 		{

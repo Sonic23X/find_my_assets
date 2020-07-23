@@ -114,7 +114,7 @@ $(document).ready(() =>
     {
       if ( response.status == 200 )
       {
-        imprimir( '¡Error!', response.msg , 'error' );
+        imprimir( '¡Hecho!', response.msg , 'success' );
       }
       else
       {
