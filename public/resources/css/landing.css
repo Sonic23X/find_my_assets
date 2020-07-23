@@ -31,6 +31,14 @@ html, body
   border-color: rgb(230, 200, 79);
 }
 
+.btn-primary:focus
+{
+  background: rgb(230, 200, 79);
+  border-color: rgb(230, 200, 79);
+  border-color: rgb(230, 200, 79);
+  box-shadow:0 0 0 .2rem rgba(230, 200, 79,.5);
+}
+
 .form-control:focus
 {
   border-color: rgba( 230, 200, 79, 0.8 );
@@ -281,7 +289,7 @@ html, body
 
 .swiper-button-next, .swiper-button-prev
 {
-  color: #ffde59 !important;
+  color: #343a40 !important;
 }
 
 /* --- Planes settings ---*/
