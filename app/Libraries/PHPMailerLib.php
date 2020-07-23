@@ -38,7 +38,6 @@ class PHPMailerLib
   {
     try
     {
-
       $this->email->addAddress( $correo );
 
       $this->email->Subject = $subject;
@@ -47,6 +46,26 @@ class PHPMailerLib
 
       return $this->email;
 
+    }
+    catch (\Exception $e)
+    {
+      echo $e->getMessage();
+    }
+  }
+
+  public function contact( $subject, $content )
+  {
+    try
+    {
+      $this->email->addAddress( 'pedro@findmy-assets.com' );
+      $this->email->addAddress( 'cristian@findmy-assets.com' );
+      $this->email->addAddress( 'hector@findmy-assets.com' );
+
+      $this->email->Subject = $subject;
+
+      $this->email->Body = $content;
+
+      return $this->email;
     }
     catch (\Exception $e)
     {

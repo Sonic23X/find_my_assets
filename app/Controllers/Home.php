@@ -73,7 +73,7 @@ class Home extends BaseController
 			$content = View( 'emails/formulario', $data );
 
 			//cargamos la configuración del email
-			$correo = $this->$email->preparEmail( $requestEmail, 'Nuevo contacto desde el formulario', $content );
+			$correo = $this->$email->contact( 'Nuevo contacto desde el formulario', $content );
 
 			if ( !$correo->send( ) )
         echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
@@ -98,7 +98,6 @@ class Home extends BaseController
 			//loader
 			echo view( 'backoffice/common/loader' );
 
-
 			//Scripts y librerias
 			echo view( 'backoffice/common/footer', $assets );
 		}
@@ -112,7 +111,7 @@ class Home extends BaseController
 	public function Email( )
 	{
 
-		return View( 'emails/formulario', $data );
+		return View( 'emails/formulario' );
 	}
 
 }
