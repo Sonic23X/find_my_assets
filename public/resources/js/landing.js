@@ -95,10 +95,40 @@ $(document).ready(() =>
     event.preventDefault();
 
     //enviamos datos a PHP
-    imprimir( 'Error', 'Error al enviar el correo', 'error' );
+    let data =
+    {
+      nombre: $( '#nombre' ).val( ),
+      email: $( '#email' ).val( ),
+      phone: $( '#phone' ).val( ),
+      comentario: $( '#comentario' ).val( )
+    };
+
+    //enviamos datos a PHP
+    $.ajax({
+      url: $( '#send-contact-email' ).attr( 'action' ),
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if ( response.status == 200 )
+      {
+        imprimir( '¡Error!', response.msg , 'error' );
+      }
+      else
+      {
+        imprimir( '¡Error!', response.msg, 'error' );
+      }
+
+    })
+    .fail( ( ) =>
+    {
+
+    });
+
 
   });
-
 
 
 });
