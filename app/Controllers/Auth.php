@@ -2,16 +2,20 @@
 
 namespace App\Controllers;
 
+use App\Libraries\PHPMailerLib;
+
 class Auth extends BaseController
 {
 
   protected $session;
   protected $userModel;
+  protected $email;
 
   function __construct()
   {
     $this->session = \Config\Services::session( );
-    $this->userModel = model('App\Models\UserModel');
+    $this->userModel = model( 'App\Models\UserModel' );
+    $this->$email = new PHPMailerLib( );
   }
 
   function Login( )
@@ -118,29 +122,37 @@ class Auth extends BaseController
           return;
         }
 
-        //guardamos en la base de datos y procedemos a enviar el email
-        if ( true )  //$this->userModel->insert( $insert ) )
+        //generaremos la nueva contraseña
+        $chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $newPassword = substr( str_shuffle( $chars ), 0, 10 );
+        $encryptNewPassword = crypt( $newPassword, '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
+
+        //actualizamos al usuario con la nueva contraseña
+        $data =
+        [
+            'password' => $encryptNewPassword,
+        ];
+
+        //si se actualiza la contraseña
+        if ( $this->userModel->where( 'email', $this->request->getVar( 'email' ) )->set( $data )->update( ) )
         {
+          $viewData =
+    			[
+    				'password' => $newPassword,
+    			];
 
-          $email = \Config\Services::email( );
+    			$content = View( 'emails/recuperarContraseña', $viewData );
 
-          //$email->initialize( );
+          //cargamos la configuración del email
+    			$correo = $this->$email->preparEmail( $this->request->getVar( 'email' ), 'Recuperar contraseña', $content );
 
-          $email->setFrom( 'omar.alfredo49@gmail.com', 'Your Name');
-          $email->setTo( 'omar.alfredo49@gmail.com' );
-          $email->setCC('omar.alfredo49@gmail.com');
-          $email->setBCC('omar.alfredo49@gmail.com');
-
-          $email->setSubject('Email Test');
-          $email->setMessage('Testing the email class.');
-
-          $email->send( false );
-          $email->printDebugger( );
-
-          echo "envie";
+          if ( !$correo->send( ) )
+            echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
+    			else
+            echo json_encode( array( 'status' => 200, 'msg' => 'Verifique su bandeja de entrada' ) );
         }
         else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al guardar, intente más tarde' ) );
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al generar un correo de recuperación, Intente más tarde' ) );
 
       }
       catch (\Exception $e)
@@ -200,7 +212,7 @@ class Auth extends BaseController
         ];
 
         //guardamos en la base de datos y procedemos a enviar el email
-        if ( true )  //$this->userModel->insert( $insert ) )
+        if ( $this->userModel->insert( $insert ) )
         {
 
           $email = \Config\Services::email( );
