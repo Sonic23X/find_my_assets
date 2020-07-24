@@ -2,15 +2,34 @@
 
 /* --- External functions ---*/
 
-function imprimir ( titulo, mensaje, tipo )
+function imprimir ( titulo, mensaje, tipo, isRegister = false )
 {
-  Swal.fire(
+  if ( !isRegister )
   {
-    icon: tipo,
-    title: titulo,
-    text: mensaje,
-    allowOutsideClick: false,
-  });
+    Swal.fire(
+    {
+      icon: tipo,
+      title: titulo,
+      text: mensaje,
+      allowOutsideClick: false,
+    });
+  }
+  else
+  {
+    Swal.fire(
+    {
+      icon: tipo,
+      title: titulo,
+      text: mensaje,
+      showCancelButton: false,
+      confirmButtonColor: '#ffde59',
+      confirmButtonText: 'Ok',
+      allowOutsideClick: false,
+    }).then( ( ) =>
+    {
+      window.location.href = $( '#home' ).val( );
+    });
+  }
 }
 
 $( document ).ready( () =>
@@ -73,7 +92,7 @@ $( document ).ready( () =>
       if ( response.status != 200 )
         imprimir( 'Error', response.msg, 'error' );
       else if ( response.status == 200 )
-        window.location.hred = response.url;
+        imprimir( '¡Hecho!', response.msg, 'success', true );
 
     })
     .fail( ( ) =>

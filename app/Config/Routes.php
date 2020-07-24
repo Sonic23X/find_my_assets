@@ -44,6 +44,7 @@ $routes->post('/recovery-password', 'Auth::RecoveryPassword');
 /** Register **/
 $routes->get('/registro', 'Auth::Register');
 $routes->post('/nuevo', 'Auth::New');
+$routes->get('/confirmacion/(:any)', 'Auth::ValidateEmail/$1');
 
 /** Backoffice - Inicio **/
 $routes->get('/dashboard', 'Home::Start');
