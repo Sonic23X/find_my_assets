@@ -18,61 +18,63 @@
 			.button
 			{
 				display: inline-block;
-		    font-weight: 400;
-		    color: #fff;
-		    text-align: center;
-		    vertical-align: middle;
-		    -webkit-user-select: none;
-		    -moz-user-select: none;
-		    -ms-user-select: none;
-		    user-select: none;
-		    background: rgb( 255, 222, 89 );
-		    border-color: rgb( 255, 222, 89 );
-		    padding: .375rem .75rem;
-		    font-size: 1rem;
-		    line-height: 1.5;
-		    border-radius: .25rem;
-		    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+				font-weight: 400;
+				color: #fff;
+				text-align: center;
+				vertical-align: middle;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				background: rgb( 255, 222, 89 );
+				border-color: rgb( 255, 222, 89 );
+				padding: .375rem .75rem;
+				font-size: 1rem;
+				line-height: 1.5;
+				border-radius: .25rem;
+				transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 				width: 50%;
 			}
 
 			.button:hover
 			{
 				background: rgb(230, 200, 79);
-			  border-color: rgb(230, 200, 79);
+				border-color: rgb(230, 200, 79);
 				color: #fff;
 				text-decoration: none;
 			}
 
 			.button:focus
 			{
-			  background: rgb(230, 200, 79);
-			  border-color: rgb(230, 200, 79);
-			  border-color: rgb(230, 200, 79);
-			  box-shadow:0 0 0 .2rem rgba(230, 200, 79,.5);
+				background: rgb(230, 200, 79);
+				border-color: rgb(230, 200, 79);
+				border-color: rgb(230, 200, 79);
+				box-shadow:0 0 0 .2rem rgba(230, 200, 79,.5);
 			}
 
 		</style>
 	</head>
 	<body>
+
 		<div style="width:100%; background:#eee; position:relative; font-family:sans-serif; padding-bottom:40px">
 			<center>
 				<img style="padding:20px; width:30%" src="<?= base_url( ) ?>/images/landing/logos/without/big-fma.png">
 			</center>
 
 			<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
-				<center>
-					<h3 style="font-weight:100; color:#999">SOLICITUD DE NUEVA CONTRASEÑA</h3>
-					<hr style="border:1px solid #ccc; width:80%">
-					<h4><span style="font-weight:100; color:#999; padding:0 20px"> Su nueva contraseña: </span><b> <?= $password ?> </b></h4>
 
-					<a href="<?= base_url( '/ingreso' ) ?>" target="_blank" class="button mt-3 mb-3 w-50">
-						Haz click aquí
+				<center>
+					<h3 style="font-weight:100; color:#999">VERIFIQUE SU DIRECCION DE EMAIL</h3>
+
+					<hr style="border:1px solid #ccc; width:80%">
+
+					<h4 style="font-weight:100; color:#999; padding:0 20px">Para comenzar a usar su cuenta, debe confirmar su email</h4>
+
+					<a href="<?= base_url( '/confirmacion' ) ?>/<?= $llave ?>" target="_blank" class="button mt-3 mb-3 w-50">
+						Verifique su mail
 					</a>
 
-					<h5 style="font-weight:100; color:#999; padding:0 20px">Ingrese nuevamente al sitio con esta contraseña y recuerde cambiarla en el panel de perfil de usuario</h5>
-					<hr style="border:1px solid #ccc; width:80%">
-					<h6 style="font-weight:100; color:#999">Si no se inscribió en esta cuenta, puede ignorar este correo electrónico y la cuenta se eliminará.</h6>
+					<h6 style="font-weight:100; color:#999">Si no reconoce este email, puede ignorar este email y eliminarlo.</h6>
 				</center>
 			</div>
 		</div>

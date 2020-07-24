@@ -196,7 +196,7 @@ class Auth extends BaseController
         }
 
         $password = crypt( $this->request->getVar( 'password' ), '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
-        $email = md5( $this->request->getVar( 'email' ) );
+        $emailEncrypt = md5( $this->request->getVar( 'email' ) );
 
         $insert =
         [
@@ -207,7 +207,7 @@ class Auth extends BaseController
           'password' => $password,
           'suscripcion' => 0,
           'verificacion' => 0,
-          'email_encriptado' => $email,
+          'email_encriptado' => $emailEncrypt,
           'patrocinador' => 'N/A',
         ];
 
@@ -215,25 +215,23 @@ class Auth extends BaseController
         if ( $this->userModel->insert( $insert ) )
         {
 
-          $email = \Config\Services::email( );
+          $viewData =
+    			[
+    				'llave' => $emailEncrypt,
+    			];
 
-          //$email->initialize( );
+          $content = View( 'emails/verificarCorreo', $viewData );
 
-          $email->setFrom( 'omar.alfredo49@gmail.com', 'Your Name');
-          $email->setTo( 'omar.alfredo49@gmail.com' );
-          $email->setCC('omar.alfredo49@gmail.com');
-          $email->setBCC('omar.alfredo49@gmail.com');
+          //cargamos la configuración del email
+    			$correo = $this->$email->preparEmail( $this->request->getVar( 'email' ), 'Activar cuenta en Find my assets', $content );
 
-          $email->setSubject('Email Test');
-          $email->setMessage('Testing the email class.');
-
-          $email->send( false );
-          $email->printDebugger( );
-
-          echo "envie";
+          if ( !$correo->send( ) )
+            echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
+    			else
+            echo json_encode( array( 'status' => 200, 'msg' => 'Verifique su bandeja de entrada en busqueda de un correo de confirmación' ) );
         }
         else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al guardar, intente más tarde' ) );
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrarse, intente más tarde' ) );
 
       }
       catch (\Exception $e)
@@ -245,5 +243,53 @@ class Auth extends BaseController
     else
       return view( 'errors/cli/error_404' );
   }
+
+  function ValidateEmail( $emailEncrypt = null )
+  {
+    if ( $emailEncrypt != null )
+    {
+
+      $user = $this->userModel->where( 'email_encriptado', $emailEncrypt )
+                              ->first( );
+
+      if ( $user )
+      {
+        $userData =
+        [
+          'verificacion' => 1
+        ];
+
+        if ( $this->userModel->where( 'email_encriptado', $emailEncrypt )->set( $userData )->update( ) )
+        {
+
+          $data =
+          [
+            'icon'  => 'success',
+            'title' => 'Felicidades',
+            'text'  => 'Cuenta validada, Ahora puedes iniciar sesión',
+            'url'   => base_url( '/ingreso' )
+          ];
+
+          return view( 'functions/validation', $data );
+        }
+        else
+        {
+
+          $data =
+          [
+            'icon'  => 'error',
+            'title' => '¡Ups!',
+            'text'  => 'No se pudo validar tu cuenta, intenta más tarde',
+            'url'   => base_url( )
+          ];
+
+          return view( 'functions/validation', $data );
+        }
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
 
 }

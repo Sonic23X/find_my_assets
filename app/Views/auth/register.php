@@ -97,7 +97,7 @@
             </div>
             <div class="col-sm-4"></div>
           </div>
-
+          <input type="hidden" id="home" value="<?= base_url( ) ?>">
   	    </form>
 
       </div>

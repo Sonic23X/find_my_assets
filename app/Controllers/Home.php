@@ -110,8 +110,8 @@ class Home extends BaseController
 
 	public function Email( )
 	{
-
-		return View( 'emails/recuperarContraseña' );
+		$data = array('llave' => 'asda' );
+		return View( 'emails/verificarCorreo', $data );
 	}
 
 }
