@@ -27,9 +27,10 @@ function imprimir ( titulo, mensaje, tipo, isLogin = false )
       confirmButtonText: 'Registrarme',
       cancelButtonText: 'Reintentar',
       allowOutsideClick: false,
-    }).then( ( ) =>
+    }).then( ( result ) =>
     {
-      window.location.href = $( '#btn-ingreso' ).attr( 'href' );
+      if ( result.value )
+        window.location.href = $( '#btn-ingreso' ).attr( 'href' );
     });
   }
 }
