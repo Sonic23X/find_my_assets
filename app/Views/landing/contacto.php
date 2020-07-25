@@ -11,16 +11,16 @@
           </p>
           <form id="send-contact-email" action="<?= base_url( '/contacto' ) ?>">
             <div class="form-group">
-              <input type="text" id="nombre" class="form-control form-control-lg" placeholder="Nombre" required>
+              <input type="text" id="nombre" class="form-control form-control-lg" placeholder="Nombre">
             </div>
             <div class="form-group">
-              <input type="email" id="email" class="form-control form-control-lg" placeholder="Correo electrónico" required>
+              <input type="email" id="email" class="form-control form-control-lg" placeholder="Correo electrónico">
             </div>
             <div class="form-group">
-              <input type="number" id="phone" class="form-control form-control-lg" placeholder="Teléfono" required>
+              <input type="number" id="phone" class="form-control form-control-lg" placeholder="Teléfono">
             </div>
             <div class="form-group">
-              <textarea id="comentario" class="form-control form-control-lg" rows="3" placeholder="Escribe aquí tu mensaje" required></textarea>
+              <textarea id="comentario" class="form-control form-control-lg" rows="3" placeholder="Escribe aquí tu mensaje"></textarea>
             </div>
             <button type="submit" class="btn btn-primary btn-block btn-lg">Enviar</button>
           </form>

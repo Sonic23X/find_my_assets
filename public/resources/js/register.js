@@ -32,6 +32,12 @@ function imprimir ( titulo, mensaje, tipo, isRegister = false )
   }
 }
 
+function validarEmail(valor)
+{
+  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  return re.test( valor );
+}
+
 $( document ).ready( () =>
 {
 
@@ -71,6 +77,23 @@ $( document ).ready( () =>
   {
 
     event.preventDefault( );
+
+    //validamos los datos
+    if ( $( '#nombre' ).val( ).length == 0 ||
+         $( '#apellidos' ).val( ).length == 0 ||
+         $( '#email' ).val( ).length == 0 ||
+         $( '#password' ).val( ).length == 0 )
+    {
+      imprimir( '¡Ups!', 'Todos los campos son obligatorios' , 'error' );
+      return;
+    }
+
+    //validamos que el email sea valido
+    if ( !validarEmail( $( '#email' ).val( ) ) )
+    {
+      imprimir( '¡Ups!', 'El email no es valido' , 'error' );
+      return;
+    }
 
     let data =
     {

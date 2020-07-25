@@ -12,6 +12,12 @@ function imprimir ( titulo, mensaje, tipo )
   });
 }
 
+function validarEmail(valor)
+{
+  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  return re.test( valor );
+}
+
 $(document).ready(() =>
 {
 
@@ -93,6 +99,24 @@ $(document).ready(() =>
   {
     //caneclamos cualquier acto de envio
     event.preventDefault();
+
+    //validamos cada input
+    if ( $( '#nombre' ).val( ).length == 0 ||
+         $( '#email' ).val( ).length == 0 ||
+         $( '#phone' ).val( ).length == 0 ||
+         $( '#comentario' ).val( ).length == 0
+    )
+    {
+      imprimir( '¡Ups!', 'Todos los campos son obligatorios' , 'error' );
+      return;
+    }
+
+    //validamos que el email sea valido
+    if ( !validarEmail( $( '#email' ).val( ) ) )
+    {
+      imprimir( '¡Ups!', 'El email no es valido' , 'error' );
+      return;
+    }
 
     //enviamos datos a PHP
     let data =

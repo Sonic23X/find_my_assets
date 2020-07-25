@@ -49,21 +49,21 @@
 
           <div class="row">
             <div class="col-sm">
-              <input type="text" class="form-control" placeholder="Nombre" id="nombre" required>
+              <input type="text" class="form-control" placeholder="Nombre" id="nombre">
             </div>
             <div class="col-sm">
-              <input type="text" class="form-control" placeholder="Apellidos" id="apellidos" required>
+              <input type="text" class="form-control" placeholder="Apellidos" id="apellidos">
             </div>
           </div>
 
   				<div class="row mt-3">
   					<div class="col-sm">
-  						<input type="email" class="form-control" placeholder="Correo Electrónico" id="email" required>
+  						<input type="email" class="form-control" placeholder="Correo Electrónico" id="email">
   					</div>
   					<div class="col-sm">
               <div class="form-group">
                 <div class="input-group">
-                  <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
+                  <input type="password" class="form-control" id="password" placeholder="Contraseña">
                   <div class="input-group-prepend">
                     <div class="input-group-text" id="icon">
                       <i class="fas fa-eye"></i>

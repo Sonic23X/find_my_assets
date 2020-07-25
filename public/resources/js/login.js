@@ -34,6 +34,12 @@ function imprimir ( titulo, mensaje, tipo, isLogin = false )
   }
 }
 
+function validarEmail(valor)
+{
+  const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  return re.test( valor );
+}
+
 $( document ).ready( () =>
 {
 
@@ -58,6 +64,13 @@ $( document ).ready( () =>
 		}
 		else
 		{
+
+      //validamos el email
+      if ( !validarEmail( $( '#email' ).val( ) ) )
+      {
+        imprimir( '¡Ups!', 'El email introducido no es valido' , 'error' );
+        return;
+      }
 
       let data =
       {
