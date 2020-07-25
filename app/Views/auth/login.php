@@ -40,6 +40,12 @@
       </div>
     </div>
 
+    <nav class="navbar fixed-top navbar-light bg-light">
+      <a class="navbar-brand" href="<?= base_url( ) ?>">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+    </nav>
+
     <!-- Login Form -->
     <div class="container">
       <div class="login-box">
@@ -49,7 +55,7 @@
   					<h3 class="text-center">Hola, ingresa tu e-mail</h3>
 
             <div class="form-group mt-4">
-  						<input type="email" id="email" class="form-control" placeholder="E-mail" name="ingresoEmail">
+  						<input type="text" id="email" class="form-control" placeholder="E-mail" name="ingresoEmail">
   					</div>
 
   					<div class="form-group mt-5">

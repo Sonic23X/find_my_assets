@@ -40,7 +40,13 @@
       </div>
     </div>
 
-    <!-- Login Form -->
+    <nav class="navbar fixed-top navbar-light bg-light">
+      <a class="navbar-brand" href="<?= base_url( ) ?>">
+        <i class="fas fa-arrow-left"></i>
+      </a>
+    </nav>
+
+    <!-- Register Form -->
     <div class="container">
       <div class="register-box">
 

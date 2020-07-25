@@ -57,6 +57,11 @@ html, body
   outline: 0 none;
 }
 
+.navbar-light .navbar-brand
+{
+  color: rgba( 230, 200, 79 );
+}
+
 /* --- Loading settings ---*/
 
 @keyframes ldio-jsxn2qe688r
