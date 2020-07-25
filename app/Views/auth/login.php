@@ -49,7 +49,7 @@
   					<h3 class="text-center">Hola, ingresa tu e-mail</h3>
 
             <div class="form-group mt-4">
-  						<input type="email" id="email" class="form-control" placeholder="E-mail" name="ingresoEmail" required>
+  						<input type="email" id="email" class="form-control" placeholder="E-mail" name="ingresoEmail">
   					</div>
 
   					<div class="form-group mt-5">
@@ -125,7 +125,7 @@
                     <i class="far fa-envelope"></i>
         					</span>
         				</div>
-        			  <input type="email" class="form-control" placeholder="Email" id="recoverEmail" required>
+        			  <input type="email" class="form-control" placeholder="Email" id="recoverEmail">
         		  </div>
         			<input type="submit" class="btn btn-primary btn-block" value="Enviar">
             </form>
