@@ -231,7 +231,7 @@ class Auth extends BaseController
             echo json_encode( array( 'status' => 200, 'msg' => 'Verifique su bandeja de entrada en busqueda de un correo de confirmación' ) );
         }
         else
-          echo json_encode( array( 'status' => 400, 'msg' => $this->userModel->error(); ) );
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrarse, intente más tarde' ) );
 
       }
       catch (\Exception $e)
