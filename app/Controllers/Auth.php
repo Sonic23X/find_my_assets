@@ -215,23 +215,9 @@ class Auth extends BaseController
         if ( $this->userModel->insert( $insert ) )
         {
 
-          $viewData =
-    			[
-    				'llave' => $emailEncrypt,
-    			];
-
-          $content = View( 'emails/verificarCorreo', $viewData );
-
-          //cargamos la configuración del email
-    			$correo = $this->$email->preparEmail( $this->request->getVar( 'email' ), 'Activar cuenta en Find my assets', $content );
-
-          if ( !$correo->send( ) )
-            echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
-    			else
-            echo json_encode( array( 'status' => 200, 'msg' => 'Verifique su bandeja de entrada en busqueda de un correo de confirmación' ) );
         }
         else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrarse, intente más tarde' ) );
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrarse' ) );
 
       }
       catch (\Exception $e)
