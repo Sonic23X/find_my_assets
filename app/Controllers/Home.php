@@ -98,6 +98,16 @@ class Home extends BaseController
 			//loader
 			echo view( 'backoffice/common/loader' );
 
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
+
+			//navbar
+			echo view( 'backoffice/common/navbar' );
+
+			//content
+			echo view( 'backoffice/sections/start' );
+
 			//Scripts y librerias
 			echo view( 'backoffice/common/footer', $assets );
 		}

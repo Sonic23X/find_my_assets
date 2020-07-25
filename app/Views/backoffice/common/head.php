@@ -5,7 +5,7 @@
 
   	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Backoffice | Find my assets</title>
+    <title><?= $title ?></title>
 
     <link rel="icon" href="./favicon.png">
 
@@ -17,7 +17,8 @@
     <link rel="stylesheet" href="./resources/plugins/admin-lte/css/adminlte.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="./resources/css/backoffice/<?= $page ?>.css">
+    <link rel="stylesheet" href="./resources/css/backoffice/<?= $assets ?>.css">
 
   </head>
   <body class="hidden">
+    <div class="wrapper">

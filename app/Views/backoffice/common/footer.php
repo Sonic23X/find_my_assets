@@ -1,7 +1,8 @@
 
     <!-- Footer -->
+      
 
-
+    </div>
     <!-- jQuery library -->
     <script src="./resources/plugins/jquery/jquery-3.5.1.min.js"></script>
 
@@ -16,11 +17,14 @@
     <!-- Sweet Alert 2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
+    <!-- Font Awesome 5.13.1 -->
+    <script src="./resources/plugins/fontawesome/js/all.min.js"></script>
+
     <!-- AdminLTE script -->
     <script src="./resources/plugins/admin-lte/js/adminlte.min.js"></script>
 
     <!-- Custom JS -->
-    <script src="./resources/js/backoffice/<?= $page ?>.js"></script>
+    <script src="./resources/js/backoffice/<?= $assets ?>.js"></script>
 
   </body>
 </html>
