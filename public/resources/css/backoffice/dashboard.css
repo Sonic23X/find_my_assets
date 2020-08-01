@@ -95,6 +95,15 @@ html, body
 
 /* --- Scanner --- */
 
+.item-nav
+{
+  padding: 10px 15px 10px 15px;
+  border-radius: 50px;
+  border: 2px solid;
+  margin-bottom: 10px;
+
+}
+
 .title-scanner
 {
   text-align: center;
@@ -106,7 +115,8 @@ html, body
 {
   background-color: #e6c84f;
   color: #FFFFFF;
-  text-align: center;
+  text-align: center !important;
+  align-items: center;
 }
 
 .code-container
@@ -123,6 +133,22 @@ html, body
   width: 1px;
   height: 1px;
   opacity: 0;
+}
+
+.linea
+{
+  margin: 0px 20px;
+  width: 90px;
+  border-top: 1px solid #999;
+  position: relative;
+  top: 10px;
+  float: left;
+}
+
+.leyenda
+{
+  font-weight: bold;
+  float: left;
 }
 
 
