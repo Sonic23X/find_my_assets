@@ -1,5 +1,5 @@
 
-            <div class="home d-none">
+            <div class="home">
 
               <!-- Box info -->
               <div class="row">
