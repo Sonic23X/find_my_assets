@@ -80,6 +80,7 @@ class Auth extends BaseController
           if ( $user[ 'verificacion' ] == 1 )
           {
             $this->session->set( 'isLoggin', true );
+            $this->session->set( 'name', $user[ 'nombre' ] );
             $json = array( 'status' => 200, 'url' => base_url( '/dashboard' ) );
           }
           else
@@ -291,5 +292,14 @@ class Auth extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+  function Logout( )
+  {
+    //borramos todo
+    $this->session->destroy();
+
+    //redireccionamos al login
+    $data = array( 'url' => base_url( '/ingreso' ) );
+    return view( 'functions/redirect', $data );
+  }
 
 }

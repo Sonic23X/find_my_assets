@@ -85,33 +85,4 @@ class Home extends BaseController
 			return view( 'errors/cli/error_404' );
 	}
 
-	//función que regresa la primera pagina del backoffice
-	public function Start( )
-	{
-		if ( $this->session->has( 'isLoggin' ) )
-		{
-			$assets = array( 'page' => 'dashboard' );
-
-			//CSS, METAS y titulo
-			echo view( 'backoffice/common/head', $assets );
-
-			//loader
-			echo view( 'backoffice/common/loader' );
-
-			//Scripts y librerias
-			echo view( 'backoffice/common/footer', $assets );
-		}
-		else
-		{
-			$data = array( 'url' => base_url( '/ingreso' ) );
-      return view( 'functions/redirect', $data );
-		}
-	}
-
-	public function Email( )
-	{
-		$data = array('llave' => 'asda' );
-		return View( 'emails/verificarCorreo', $data );
-	}
-
 }
