@@ -47,7 +47,7 @@ $routes->post('/nuevo', 'Auth::New');
 $routes->get('/confirmacion/(:any)', 'Auth::ValidateEmail/$1');
 
 /** Backoffice - Inicio **/
-$routes->get('/dashboard', 'Home::Start');
+$routes->get('/dashboard', 'Dashboard::Index');
 
 /**
  * --------------------------------------------------------------------

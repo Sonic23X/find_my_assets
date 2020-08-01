@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="./resources/plugins/admin-lte/css/adminlte.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="./resources/css/backoffice/<?= $assets ?>.css">
+    <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
 
   </head>
-  <body class="hidden">
+  <body class="hold-transition sidebar-collapse">
     <div class="wrapper">
