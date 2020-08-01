@@ -31,6 +31,13 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
+    <!-- QR scanner -->
+    <script type="text/javascript" src="./resources/plugins/qr/qr_packed.js"></script>
+
+    <!-- BarCode scanner -->
+    <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
+    <script type="text/javascript" src="./resources/plugins/barcode/quagga.min.js"></script>
+
     <!-- Custom JS -->
     <script src="./resources/js/backoffice/<?= $js ?>.js"></script>
 

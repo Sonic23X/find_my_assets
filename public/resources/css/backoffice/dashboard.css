@@ -93,6 +93,37 @@ html, body
   font-size: 18px;
 }
 
+/* --- Scanner --- */
+
+.title-scanner
+{
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.scanner-instructions
+{
+  background-color: #e6c84f;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.code-container
+{
+  cursor: pointer;
+  align-items: center;
+  text-align: center;
+}
+
+.code-container > label > input[type=file]
+{
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
 
 
 

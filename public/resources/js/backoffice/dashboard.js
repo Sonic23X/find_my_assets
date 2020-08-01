@@ -1,5 +1,33 @@
 'use strict'
 
+let isMobile =
+{
+  Android: () =>
+  {
+    return navigator.userAgent.match(/Android/i);
+  },
+  BlackBerry: () =>
+  {
+    return navigator.userAgent.match(/BlackBerry/i);
+  },
+  iOS: () =>
+  {
+      return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+  },
+  Opera: () =>
+  {
+      return navigator.userAgent.match(/Opera Mini/i);
+  },
+  Windows: () =>
+  {
+      return navigator.userAgent.match(/IEMobile/i);
+  },
+  any: () =>
+  {
+      return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+  }
+};
+
 function activeItem( activar )
 {
   //removemos la clase de todos los elementos
@@ -12,6 +40,101 @@ function activeItem( activar )
   $( activar ).addClass( 'active' );
 }
 
+function imprimir ( titulo, mensaje, tipo )
+{
+  Swal.fire({
+    icon: tipo,
+    title: titulo,
+    text: mensaje,
+    allowOutsideClick: false,
+  });
+}
+
+function scanQR( node )
+{
+  let reader = new FileReader();
+
+  reader.onload = function()
+  {
+    node.value = "";
+    qrcode.callback = function(res)
+    {
+      if ( !( res instanceof Error ) )
+      {
+        //pasamos a la siguiente vista
+        console.log( res );
+      }
+      else
+      {
+        imprimir( '¡Ups!', 'No se detectó el código QR. Intente de nuevo', 'error' );
+      }
+    };
+    qrcode.decode(reader.result);
+  };
+  reader.readAsDataURL(node.files[0]);
+}
+
+function updateFile()
+{
+  let img = URL.createObjectURL( $( '#fileBar' )[0].files[0] );
+
+  if ( isMobile.any() )
+  {
+    scanBarCodeQuagga( img );
+  }
+  else
+  {
+    $( '#barcode-img' ).attr( 'src', img );
+    scanBarCodeZebra();
+  }
+
+}
+
+function scanBarCodeZebra()
+{
+  const codeReader = new ZXing.BrowserBarcodeReader();
+  const img = $( '#barcode-img' )[0].cloneNode(true);
+
+  codeReader.decodeFromImage(img)
+            .then(result =>
+            {
+              //siguiente paso
+            })
+            .catch(err =>
+            {
+              imprimir( 'Error', 'No se detectó el código de barras. Intente de nuevo', 'error' );
+            });
+}
+
+function scanBarCodeQuagga( image )
+{
+  Quagga.decodeSingle(
+  {
+    decoder:
+    {
+      readers: ['code_128_reader', 'code_39_reader']
+    },
+    locate: true,
+    numOfWorkers: 0,
+    inputStream:
+    {
+      size: 800
+    },
+    src: image
+  },
+  function(result)
+  {
+    if(result.codeResult)
+    {
+      //siguiente paso
+    } else
+    {
+      imprimir( 'Error', 'No se detectó el código de barras. Intente de nuevo', 'error' );
+    }
+  });
+}
+
+
 $(document).ready(function( )
 {
   //URL del servidor
@@ -23,6 +146,9 @@ $(document).ready(function( )
   //funciones para la navegación de la barra
   $( '#home' ).click( event =>
   {
+
+    event.preventDefault( );
+
     //activamos el color
     activeItem( '#home' );
 
@@ -43,6 +169,9 @@ $(document).ready(function( )
 
   $( '#scanner' ).click( event =>
   {
+
+    event.preventDefault( );
+
     //activamos el color
     activeItem( '#scanner' );
 
@@ -63,6 +192,9 @@ $(document).ready(function( )
 
   $( '#historico' ).click( event =>
   {
+
+    event.preventDefault( );
+
     //activamos el color
     activeItem( '#historico' );
 
@@ -72,6 +204,9 @@ $(document).ready(function( )
 
   $( '#notify' ).click( event =>
   {
+
+    event.preventDefault( );
+
     //activamos el color
     activeItem( '#notify' );
 
@@ -119,6 +254,8 @@ $(document).ready(function( )
     data: donutData,
     options: donutOptions
   });
+
+  /* --- wizzard --- */
 
 
 });
