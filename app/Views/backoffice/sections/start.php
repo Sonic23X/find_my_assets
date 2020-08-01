@@ -2,8 +2,8 @@
             <div class="home">
 
               <!-- Box info -->
-              <div class="row mt-2">
-                <div class="col-12 col-sm-6 col-md-3">
+              <div class="row">
+                <div class="col-12 col-sm-6 col-md-3 mt-2">
                   <div class="card card-info">
                     <div class="card-header">
                       <h3 class="card-title text-white">Valor total de activos</h3>

@@ -46,6 +46,9 @@ $routes->get('/registro', 'Auth::Register');
 $routes->post('/nuevo', 'Auth::New');
 $routes->get('/confirmacion/(:any)', 'Auth::ValidateEmail/$1');
 
+/** Logout **/
+$routes->get('/salir', 'Auth::Logout');
+
 /** Backoffice - Inicio **/
 $routes->get('/dashboard', 'Dashboard::Index');
 

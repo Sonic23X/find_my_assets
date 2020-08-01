@@ -18,25 +18,25 @@
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-th"></i>
-                  Enlace
+                  Opción 1
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-th"></i>
-                  Enlace
+                  Opción 2
                 </a>
               </li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-th"></i>
-                  Enlace
+                  Opción 3
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-th"></i>
-                  Enlace
+                <a href="<?= base_url( '/salir' ) ?>" class="nav-link">
+                  <i class="nav-icon fas fa-sign-out-alt"></i>
+                  Salir
                 </a>
               </li>
             </ul>

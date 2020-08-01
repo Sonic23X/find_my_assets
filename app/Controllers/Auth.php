@@ -292,5 +292,14 @@ class Auth extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+  function Logout( )
+  {
+    //borramos todo
+    $this->session->destroy();
+
+    //redireccionamos al login
+    $data = array( 'url' => base_url( '/ingreso' ) );
+    return view( 'functions/redirect', $data );
+  }
 
 }
