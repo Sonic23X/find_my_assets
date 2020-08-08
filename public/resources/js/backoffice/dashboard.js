@@ -60,9 +60,9 @@ function setCoordenadas( position )
   lon = position.coords.longitude;
   lat = position.coords.latitude;
 
-  var globalMap = L.map('globalMap').setView( [ lat, lon ], 16 );
+  var globalMap = L.map( 'globalMap' ).setView( [ lat, lon ], 16 );
 
-  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+  L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
   {
       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
       maxZoom: 18,
@@ -70,11 +70,11 @@ function setCoordenadas( position )
       tileSize: 512,
       zoomOffset: -1,
       accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
-  }).addTo(globalMap);
+  }).addTo( globalMap );
 
   L.marker( [ lat, lon ] ).addTo( globalMap )
-  .bindPopup( 'A pretty CSS3 popup.<br> Easily customizable.' )
-      .openPopup( );
+   .bindPopup( 'Esto es un marcador en el mapa' )
+   .openPopup( );
 }
 
 function scanQR( node )
