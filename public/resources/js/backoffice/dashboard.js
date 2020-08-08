@@ -55,7 +55,7 @@ function imprimir ( titulo, mensaje, tipo )
   });
 }
 
-function setCoordenadas( position )
+function setCoordenadasMapG( position )
 {
   lon = position.coords.longitude;
   lat = position.coords.latitude;
@@ -74,6 +74,28 @@ function setCoordenadas( position )
 
   L.marker( [ lat, lon ] ).addTo( globalMap )
    .bindPopup( 'Esto es un marcador en el mapa' )
+   .openPopup( );
+}
+
+function setCoordenadasActiveMap( position )
+{
+  lon = position.coords.longitude;
+  lat = position.coords.latitude;
+
+  var activeMap = L.map( 'activeMap' ).setView( [ lat, lon ], 16 );
+
+  L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+  {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
+  }).addTo( activeMap );
+
+  L.marker( [ lat, lon ] ).addTo( activeMap )
+   .bindPopup( 'Ubicación del activo actualmente' )
    .openPopup( );
 }
 
@@ -161,10 +183,50 @@ function scanBarCodeQuagga( image )
   });
 }
 
-function confirm( )
+function setInsMessage( view, update = false )
 {
-  console.log( 'asd' );
-  imprimir( '¡Hecho!', 'Activo cargado exitosamente', 'success' );
+  let message = '';
+  switch ( view )
+  {
+    case '.scanner-start':
+      message = 'Selecciona el tipo de etiqueta que tiene el activo';
+      break;
+    case '.scanner-status':
+      message = '';
+      break;
+    case '.scanner-form':
+      if ( update )
+        message = 'Edita los datos del activo';
+      else
+        message = 'Ingresa los datos del activo';
+      break;
+    case '.scanner-geolocation':
+      if ( update )
+      {
+        message = 'Nueva ubicación geográfica del activo';
+        $( '#instructions2' ).html( 'Indica el área donde se encuentra el activo' );
+      }
+      else
+      {
+        message = 'Ubicación geográfica del activo';
+        $( '#instructions2' ).html( 'Indica el área donde se encontrará el activo' );
+      }
+      break;
+    case '.scanner-photos':
+      message = 'Ingresa las imagenes del activo';
+      break;
+    case '.scanner-without-scan':
+      message = 'Inventario sin escanear';
+      break;
+    case '.scanner-new':
+      message = 'Selecciona y escanea la nueva etiqueta del activo';
+      break;
+    default:
+      message = '-';
+      break;
+  }
+
+  $( '#instructions' ).html( message );
 }
 
 $(document).ready(function( )
@@ -173,7 +235,7 @@ $(document).ready(function( )
   let url = $('#url').val( );
 
   //localización
-  navigator.geolocation.getCurrentPosition( setCoordenadas );
+  navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
 
   //Vista actual
   let actualView = '.home';
@@ -315,6 +377,139 @@ $(document).ready(function( )
 
   /* --- wizzard --- */
   let wizzardActualView = '.scanner-start';
+  let wizzardPreviewView = '.scanner-start';
 
+  $( '#without-scan' ).click( event =>
+  {
+
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-without-scan';
+
+    setInsMessage( wizzardActualView );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+
+  });
+
+  $( '#searchCode' ).click( event =>
+  {
+
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-status';
+
+    setInsMessage( wizzardActualView, true );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+
+  });
+
+  $( '#continueScan' ).click( event =>
+  {
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-geolocation';
+
+    setInsMessage( wizzardActualView );
+
+    navigator.geolocation.getCurrentPosition( setCoordenadasActiveMap );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+  });
+
+  $( '#new-scan' ).click( event =>
+  {
+
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-new';
+
+    setInsMessage( wizzardActualView );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+
+  });
+
+  $( '#update1' ).click( event =>
+  {
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-form';
+
+    setInsMessage( wizzardActualView, true );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+  });
+
+  $( '#update2' ).click( event =>
+  {
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-form';
+
+    setInsMessage( wizzardActualView );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+  });
+
+  $( '.active-form' ).submit( event =>
+  {
+    event.preventDefault( );
+
+    //validamos los campos
+    if ( $( '#name' ).val( ) == '' ||
+         $( '#serie' ).val( ) == '' ||
+         $( '#asignacion' ).val( ) == '' ||
+         $( '#desc' ).val( ) == ''
+       )
+    {
+      imprimir( '¡Ups!', 'Todos los campos son obligatorios', 'error' );
+      return;
+    }
+
+    //ajax here
+
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-geolocation';
+
+    setInsMessage( wizzardActualView );
+
+    navigator.geolocation.getCurrentPosition( setCoordenadasActiveMap );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+
+  });
+
+  $( '#nextGeo' ).click( event =>
+  {
+    event.preventDefault( );
+
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-photos';
+
+    setInsMessage( wizzardActualView );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+  });
+
+  $( '#scanFinish' ).click( event =>
+  {
+
+    imprimir( '¡Hecho!', 'Activo cargado exitosamente', 'success' );
+
+    event.preventDefault( );
+
+    wizzardPreviewView = wizzardActualView;
+    wizzardActualView = '.scanner-start';
+
+    setInsMessage( wizzardActualView );
+
+    $( wizzardPreviewView ).addClass( 'd-none' );
+    $( wizzardActualView ).removeClass( 'd-none' );
+
+  });
 
 });

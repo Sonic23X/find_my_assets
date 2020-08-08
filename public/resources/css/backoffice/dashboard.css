@@ -149,7 +149,7 @@ html, body
 .linea
 {
   margin: 0px 20px;
-  width: 90px;
+  width: 47%;
   border-top: 1px solid #999;
   position: relative;
   top: 10px;
@@ -196,6 +196,11 @@ html, body
   {
     font-size: 13px;
   }
+
+  .linea
+  {
+    width: 34%;
+  }
 }
 
 /* Small devices (landscape phones, 576px and up) */
@@ -209,6 +214,11 @@ html, body
   .code-container
   {
     padding: 3% 4% 3% 4%;
+  }
+
+  .linea
+  {
+    width: 34%;
   }
 }
 
@@ -224,6 +234,11 @@ html, body
   {
     padding: 2% 2% 2% 2%;
   }
+
+  .linea
+  {
+    width: 42%;
+  }
 }
 
 /* Large devices (desktops, 992px and up) */
@@ -238,6 +253,11 @@ html, body
   {
     padding: 2% 2% 2% 2%;
   }
+
+  .linea
+  {
+    width: 44%;
+  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
@@ -251,5 +271,10 @@ html, body
   .code-container
   {
     padding: 2% 2% 2% 2%;
+  }
+
+  .linea
+  {
+    width: 46%;
   }
 }
