@@ -134,6 +134,11 @@ function scanBarCodeQuagga( image )
   });
 }
 
+function confirm( )
+{
+  console.log( 'asd' );
+  imprimir( '¡Hecho!', 'Activo cargado exitosamente', 'success' );
+}
 
 $(document).ready(function( )
 {

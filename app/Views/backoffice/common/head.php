@@ -16,6 +16,8 @@
     <!-- AdminLTE style -->
     <link rel="stylesheet" href="./resources/plugins/admin-lte/css/adminlte.min.css">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
 

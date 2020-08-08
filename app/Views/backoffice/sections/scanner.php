@@ -1,12 +1,18 @@
 
             <div class="scanner d-none">
 
-              <!-- Form Wizzard -->
               <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 mt-2 title-scanner">
+                  <img src="./favicon.png" alt="Logo" class="img-fluid w-5">
+                </div>
+
                 <div class="col-12 col-sm-12 col-md-12 mt-2 title-scanner">
                   <span>Carga tu inventario en 3 simples pasos</span>
                 </div>
+              </div>
 
+              <!-- Form Wizzard -->
+              <div class="row">
                 <!-- Iconos del wizzard -->
                 <div class="wizzard mt-4 mb-4 w-100">
                   <div class="row text-center">
@@ -36,7 +42,7 @@
                 <!--<span id="instructions">Nueva ubicación del activo</span>-->
               </div>
 
-              <div class="scanner-start mt-3">
+              <div class="scanner-start mt-3 d-none">
                 <div class="row">
                   <div class="col-6 col-sm-6 col-md-6 code-container">
                     <label>
@@ -207,6 +213,73 @@
               </div>
 
               <div class="scanner-photos mt-3 d-none">
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-camera"></i>
+                    <br>
+                    <span>Imagen frontal</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-image"></i>
+                    <br>
+                    <span>Vista previa</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <div class="photo-button-delete">
+                      <button type="button" class="btn btn-danger btn-radius">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-camera"></i>
+                    <br>
+                    <span>Imagen lateral derecha</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-image"></i>
+                    <br>
+                    <span>Vista previa</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <div class="photo-button-delete">
+                      <button type="button" class="btn btn-danger btn-radius">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-camera"></i>
+                    <br>
+                    <span>Imagen lateral izquierda</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-image"></i>
+                    <br>
+                    <span>Vista previa</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <div class="photo-button-delete">
+                      <button type="button" class="btn btn-danger btn-radius">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4"></div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <button type="button" class="btn btn-success btn-block" onclick="confirm()">Continuar</button>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4"></div>
+                </div>
 
               </div>
 
@@ -229,7 +302,7 @@
                 </div>
               </div>
 
-              <div class="scanner-new mt-3 d-none">
+              <div class="scanner-new mt-3">
                 <div class="row">
                   <div class="col-6 col-sm-6 col-md-6 code-container">
                     <label>
