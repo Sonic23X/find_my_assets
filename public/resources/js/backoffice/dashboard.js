@@ -1,5 +1,9 @@
 'use strict'
 
+//variables globales
+var lon;
+var lat;
+
 let isMobile =
 {
   Android: () =>
@@ -49,6 +53,28 @@ function imprimir ( titulo, mensaje, tipo )
     text: mensaje,
     allowOutsideClick: false,
   });
+}
+
+function setCoordenadas( position )
+{
+  lon = position.coords.longitude;
+  lat = position.coords.latitude;
+
+  var globalMap = L.map('globalMap').setView( [ lat, lon ], 16 );
+
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+  {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
+  }).addTo(globalMap);
+
+  L.marker( [ lat, lon ] ).addTo( globalMap )
+  .bindPopup( 'A pretty CSS3 popup.<br> Easily customizable.' )
+      .openPopup( );
 }
 
 function scanQR( node )
@@ -145,6 +171,9 @@ $(document).ready(function( )
 {
   //URL del servidor
   let url = $('#url').val( );
+
+  //localización
+  navigator.geolocation.getCurrentPosition( setCoordenadas );
 
   //Vista actual
   let actualView = '.home';
@@ -285,6 +314,7 @@ $(document).ready(function( )
   });
 
   /* --- wizzard --- */
+  let wizzardActualView = '.scanner-instructions'
 
 
 });

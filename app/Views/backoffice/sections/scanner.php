@@ -3,10 +3,6 @@
 
               <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 mt-2 title-scanner">
-                  <img src="./favicon.png" alt="Logo" class="img-fluid w-5">
-                </div>
-
-                <div class="col-12 col-sm-12 col-md-12 mt-2 title-scanner">
                   <span>Carga tu inventario en 3 simples pasos</span>
                 </div>
               </div>

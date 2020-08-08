@@ -164,8 +164,7 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                      src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=es&amp;q=Les%20Rambles,%201%20Barcelona,%20Spain+(de2.mx)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                      <div id="globalMap" style="height: 335px;"></div>
                     </div>
                   </div>
                 </div>
