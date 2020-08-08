@@ -50,7 +50,7 @@ html, body
   width: 100vw;
   height: 55px;
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
-  background: #fff;
+  background-color: #aaaaaa;
   display: flex;
   overflow-x: auto;
 }
@@ -67,7 +67,7 @@ html, body
   white-space: nowrap;
   font-family: sans-serif;
   font-size: 13px;
-  color: #444444;
+  color: #ffffff;
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
   transition: background-color 0.1s ease-in-out;
@@ -75,7 +75,7 @@ html, body
 
 .nav-item-botom:hover
 {
-  background-color: #eeeeee;
+  background-color: #aaaaaa;
 }
 
 .active
@@ -118,20 +118,26 @@ html, body
 
 .scanner-instructions
 {
-  background-color: #e6c84f;
+  background-color: #aaaaaa;
   color: #FFFFFF;
   text-align: center !important;
   align-items: center;
 }
 
-.code-container
+.options-container
 {
-  cursor: pointer;
   align-items: center;
   text-align: center;
 }
 
-.code-container > label > input[type=file]
+.code-container
+{
+  padding: 1% 1% 1% 1%;
+  cursor: pointer;
+  border: 1px solid;
+}
+
+.code-container > input[type=file]
 {
   position: absolute;
   overflow: hidden;
@@ -180,6 +186,16 @@ html, body
   {
     left: 43%;
   }
+
+  .code-container
+  {
+    padding: 3% 4% 3% 4%;
+  }
+
+  .scanner-instructions
+  {
+    font-size: 13px;
+  }
 }
 
 /* Small devices (landscape phones, 576px and up) */
@@ -188,6 +204,11 @@ html, body
   .navbar-brand
   {
     left: 45%;
+  }
+
+  .code-container
+  {
+    padding: 3% 4% 3% 4%;
   }
 }
 
@@ -198,6 +219,11 @@ html, body
   {
     left: 47%;
   }
+
+  .code-container
+  {
+    padding: 2% 2% 2% 2%;
+  }
 }
 
 /* Large devices (desktops, 992px and up) */
@@ -207,6 +233,11 @@ html, body
   {
     left: 47%;
   }
+
+  .code-container
+  {
+    padding: 2% 2% 2% 2%;
+  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
@@ -215,5 +246,10 @@ html, body
   .navbar-brand
   {
     left: 47%;
+  }
+
+  .code-container
+  {
+    padding: 2% 2% 2% 2%;
   }
 }

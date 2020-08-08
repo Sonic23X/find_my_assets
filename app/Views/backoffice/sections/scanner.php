@@ -32,32 +32,32 @@
               </div>
 
               <div class="row mt-3 p-2 scanner-instructions text-center">
-                <span id="instructions">Selecciona el tipo de etiqueta que tiene el activo</span>
+                <div class="col-12 col-sm-12 text-center">
+                  <span id="instructions">Selecciona el tipo de etiqueta que tiene el activo</span>
+                </div>
                 <!--<span id="instructions">Estás inventariando</span>-->
                 <!--<span id="instructions">Edita los datos del activo</span>-->
                 <!--<span id="instructions">Nueva ubicación del activo</span>-->
               </div>
 
-              <div class="scanner-start mt-3 d-none">
+              <div class="scanner-start mt-3">
                 <div class="row">
-                  <div class="col-6 col-sm-6 col-md-6 code-container">
-                    <label>
+                  <div class="col-6 col-sm-6 col-md-6 options-container">
+                    <label class="code-container">
                       <i class="fas fa-5x fa-qrcode"></i>
-                      <br>
-                      Código QR
                       <input type=file
                             accept="image/*"
                             capture=environment
                             onChange="scanQR(this)"
                             tabindex=-1/>
                     </label>
+                    <br>
+                    Código QR
                   </div>
 
-                  <div class="col-6 col-sm-6 col-md-6 code-container">
-                    <label>
+                  <div class="col-6 col-sm-6 col-md-6 options-container">
+                    <label class="code-container">
                       <i class="fas fa-5x fa-barcode"></i>
-                      <br>
-                      Código de barras
                       <input type=file
                             accept="image/*"
                             capture=environment
@@ -66,6 +66,8 @@
                             tabindex=-1/>
                     </label>
                     <img id="barcode-img" class="d-none" src="">
+                    <br>
+                    Código de barras
                   </div>
                 </div>
 
@@ -298,7 +300,7 @@
                 </div>
               </div>
 
-              <div class="scanner-new mt-3">
+              <div class="scanner-new mt-3 d-none">
                 <div class="row">
                   <div class="col-6 col-sm-6 col-md-6 code-container">
                     <label>

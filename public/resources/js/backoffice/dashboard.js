@@ -314,7 +314,7 @@ $(document).ready(function( )
   });
 
   /* --- wizzard --- */
-  let wizzardActualView = '.scanner-instructions'
+  let wizzardActualView = '.scanner-start';
 
 
 });

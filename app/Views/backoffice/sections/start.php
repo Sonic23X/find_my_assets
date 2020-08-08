@@ -4,7 +4,7 @@
               <!-- Box info -->
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
-                  <div class="card card-info">
+                  <div class="card card-warning">
                     <div class="card-header">
                       <h3 class="card-title text-white">Valor total de activos</h3>
                       <div class="card-tools">
@@ -72,7 +72,7 @@
                 <div class="clearfix hidden-md-up"></div>
 
                 <div class="col-12 col-sm-6 col-md-3">
-                  <div class="card card-info">
+                  <div class="card card-warning">
                     <div class="card-header">
                       <h3 class="card-title text-white">Ultimas altas</h3>
                       <div class="card-tools">
@@ -154,7 +154,7 @@
               <!-- Map -->
               <div class="row">
                 <div class="col">
-                  <div class="card card-info">
+                  <div class="card card-warning">
                     <div class="card-header">
                       <h3 class="card-title text-white">Ubicación de activos</h3>
                       <div class="card-tools">
