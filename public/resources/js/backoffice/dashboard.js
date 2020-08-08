@@ -35,6 +35,7 @@ function activeItem( activar )
   $( '#scanner' ).removeClass( 'active' );
   $( '#historico' ).removeClass( 'active' );
   $( '#notify' ).removeClass( 'active' );
+  $( '#inventario' ).removeClass( 'active' );
 
   //la agregamos al elemento
   $( activar ).addClass( 'active' );
@@ -149,6 +150,29 @@ $(document).ready(function( )
   let actualView = '.home';
 
   //funciones para la navegación de la barra
+  $( '#inventario' ).click( event =>
+  {
+
+    event.preventDefault( );
+
+    //activamos el color
+    activeItem( '#inventario' );
+
+    if ( actualView != '.home' )
+    {
+      switch ( actualView )
+      {
+        case '.scanner':
+          $( actualView ).addClass( 'd-none' );
+          break;
+      }
+
+      actualView = '.home';
+      $( actualView ).removeClass( 'd-none' );
+    }
+
+  });
+
   $( '#home' ).click( event =>
   {
 

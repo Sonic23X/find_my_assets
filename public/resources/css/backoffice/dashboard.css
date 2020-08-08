@@ -6,7 +6,6 @@ html, body
   height: 100%;
   width: 100%;
   background: #f7f8f8;
-  margin-bottom: 28px;
   font-family: 'Montserrat', arial;
 }
 
@@ -26,11 +25,6 @@ html, body
 {
     background-color: rgb(230, 200, 79);
     border-bottom: 0;
-}
-
-.w-5
-{
-  width: 5%;
 }
 
 /* --- Inicio Secciones --- */
@@ -97,6 +91,11 @@ html, body
 .nav__icon
 {
   font-size: 18px;
+}
+
+.navbar-brand
+{
+  position: relative;
 }
 
 /* --- Scanner --- */
@@ -177,32 +176,44 @@ html, body
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px)
 {
-  .w-5
+  .navbar-brand
   {
-    width: 10%;
+    left: 43%;
   }
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) and (max-width: 767.98px)
 {
-
+  .navbar-brand
+  {
+    left: 45%;
+  }
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) and (max-width: 991.98px)
 {
-
+  .navbar-brand
+  {
+    left: 47%;
+  }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) and (max-width: 1199.98px)
 {
-
+  .navbar-brand
+  {
+    left: 47%;
+  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px)
 {
-
+  .navbar-brand
+  {
+    left: 47%;
+  }
 }
