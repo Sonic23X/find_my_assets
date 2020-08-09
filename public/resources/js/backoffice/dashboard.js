@@ -375,9 +375,12 @@ $(document).ready(function( )
     options: donutOptions
   });
 
-  /* --- wizzard --- */
+  /* --- scanner --- */
   let wizzardActualView = '.scanner-start';
   let wizzardPreviewView = '.scanner-start';
+
+  /* --- scanner - wizzard --- */
+  
 
   $( '#without-scan' ).click( event =>
   {

@@ -10,22 +10,29 @@
               <!-- Form Wizzard -->
               <div class="row">
                 <!-- Iconos del wizzard -->
-                <div class="wizzard mt-4 mb-4 w-100">
-                  <div class="row text-center">
-                    <div class="col-4 col-sm-4 col-md-4">
-                      <span class="item-nav active">1</span>
-                      <br>
-                      <span style="margin-top: 10px;">Escanear</span>
-                    </div>
-                    <div class="col-4 col-sm-4 col-md-4">
-                      <span class="item-nav">2</span>
-                      <br>
-                      <span>Actualizar</span>
-                    </div>
-                    <div class="col-4 col-sm-4 col-md-4">
-                      <span class="item-nav">3</span>
-                      <br>
-                      <span>Fotografiar</span>
+                <div class="col-12 col-md-12 col-sm-12">
+                  <div class="bs-stepper">
+                    <div class="bs-stepper-header" role="tablist">
+                      <div class="step" data-target="#scan-part">
+                        <div class="step-trigger">
+                          <span class="bs-stepper-circle">1</span>
+                          <span class="bs-stepper-label">Escanear</span>
+                        </div>
+                      </div>
+                      <div class="line"></div>
+                      <div class="step" data-target="#update-part-part">
+                        <div class="step-trigger">
+                          <span class="bs-stepper-circle">2</span>
+                          <span class="bs-stepper-label">Actualizar</span>
+                        </div>
+                      </div>
+                      <div class="line"></div>
+                      <div class="step" data-target="#photo-part">
+                        <div class="step-trigger">
+                          <span class="bs-stepper-circle">3</span>
+                          <span class="bs-stepper-label">Fotografiar</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
