@@ -192,7 +192,7 @@ function setInsMessage( view, update = false )
       message = 'Selecciona el tipo de etiqueta que tiene el activo';
       break;
     case '.scanner-status':
-      message = '';
+      message = 'Estás inventariando';
       break;
     case '.scanner-form':
       if ( update )
@@ -380,7 +380,20 @@ $(document).ready(function( )
   let wizzardPreviewView = '.scanner-start';
 
   /* --- scanner - wizzard --- */
-  
+
+  $( '.scan-back' ).click( event =>
+  {
+    event.preventDefault( );
+
+    setInsMessage( wizzardPreviewView );
+
+    $( wizzardActualView ).addClass( 'd-none' );
+    $( wizzardPreviewView ).removeClass( 'd-none' );
+
+    wizzardActualView = wizzardPreviewView;
+    wizzardPreviewView = '.menu-start';
+
+  });
 
   $( '#without-scan' ).click( event =>
   {
