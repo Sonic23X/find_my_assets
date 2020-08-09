@@ -16,6 +16,12 @@
     <!-- AdminLTE style -->
     <link rel="stylesheet" href="./resources/plugins/admin-lte/css/adminlte.min.css">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="./resources/plugins/leaflet/leaflet.css">
+    <script type="text/javascript" src="./resources/plugins/leaflet/leaflet.js"></script>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
 

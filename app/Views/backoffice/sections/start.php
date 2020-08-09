@@ -3,8 +3,8 @@
 
               <!-- Box info -->
               <div class="row">
-                <div class="col-12 col-sm-6 col-md-3 mt-2">
-                  <div class="card card-info">
+                <div class="col-12 col-sm-6 col-md-3">
+                  <div class="card card-warning">
                     <div class="card-header">
                       <h3 class="card-title text-white">Valor total de activos</h3>
                       <div class="card-tools">
@@ -72,7 +72,7 @@
                 <div class="clearfix hidden-md-up"></div>
 
                 <div class="col-12 col-sm-6 col-md-3">
-                  <div class="card card-info">
+                  <div class="card card-warning">
                     <div class="card-header">
                       <h3 class="card-title text-white">Ultimas altas</h3>
                       <div class="card-tools">
@@ -154,7 +154,7 @@
               <!-- Map -->
               <div class="row">
                 <div class="col">
-                  <div class="card card-info">
+                  <div class="card card-warning">
                     <div class="card-header">
                       <h3 class="card-title text-white">Ubicación de activos</h3>
                       <div class="card-tools">
@@ -164,8 +164,7 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                      src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=es&amp;q=Les%20Rambles,%201%20Barcelona,%20Spain+(de2.mx)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                      <div id="globalMap" style="height: 335px;"></div>
                     </div>
                   </div>
                 </div>

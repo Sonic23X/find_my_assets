@@ -15,6 +15,8 @@
 
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/resources/css/landing.css">
 

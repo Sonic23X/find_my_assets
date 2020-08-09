@@ -1,12 +1,14 @@
 
             <div class="scanner d-none">
 
-              <!-- Form Wizzard -->
               <div class="row">
                 <div class="col-12 col-sm-12 col-md-12 mt-2 title-scanner">
                   <span>Carga tu inventario en 3 simples pasos</span>
                 </div>
+              </div>
 
+              <!-- Form Wizzard -->
+              <div class="row">
                 <!-- Iconos del wizzard -->
                 <div class="wizzard mt-4 mb-4 w-100">
                   <div class="row text-center">
@@ -30,32 +32,29 @@
               </div>
 
               <div class="row mt-3 p-2 scanner-instructions text-center">
-                <span id="instructions">Selecciona el tipo de etiqueta que tiene el activo</span>
-                <!--<span id="instructions">Estás inventariando</span>-->
-                <!--<span id="instructions">Edita los datos del activo</span>-->
-                <!--<span id="instructions">Nueva ubicación del activo</span>-->
+                <div class="col-12 col-sm-12 text-center">
+                  <span id="instructions">Selecciona el tipo de etiqueta que tiene el activo</span>
+                </div>
               </div>
 
               <div class="scanner-start mt-3">
                 <div class="row">
-                  <div class="col-6 col-sm-6 col-md-6 code-container">
-                    <label>
+                  <div class="col-6 col-sm-6 col-md-6 options-container">
+                    <label class="code-container">
                       <i class="fas fa-5x fa-qrcode"></i>
-                      <br>
-                      Código QR
                       <input type=file
                             accept="image/*"
                             capture=environment
                             onChange="scanQR(this)"
                             tabindex=-1/>
                     </label>
+                    <br>
+                    Código QR
                   </div>
 
-                  <div class="col-6 col-sm-6 col-md-6 code-container">
-                    <label>
+                  <div class="col-6 col-sm-6 col-md-6 options-container">
+                    <label class="code-container">
                       <i class="fas fa-5x fa-barcode"></i>
-                      <br>
-                      Código de barras
                       <input type=file
                             accept="image/*"
                             capture=environment
@@ -64,6 +63,8 @@
                             tabindex=-1/>
                     </label>
                     <img id="barcode-img" class="d-none" src="">
+                    <br>
+                    Código de barras
                   </div>
                 </div>
 
@@ -71,7 +72,7 @@
                   <div class="col-12 col-sm-12 col-md-12 mt-3 title-scanner">
                     <span>¿Problemas con la etiqueta?</span>
                     <br>
-                    <button type="button" class="btn btn-danger mt-1">Continuar sin escanear</button>
+                    <button type="button" class="btn btn-danger mt-1" id="without-scan">Continuar sin escanear</button>
                   </div>
                 </div>
 
@@ -79,9 +80,11 @@
                   <div class="col-12 col-sm-12 col-md-12 mt-3 title-scanner">
                     <span>¿El activo es nuevo?</span>
                     <br>
-                    <button type="button" class="btn btn-success mt-1">Continuar sin escanear</button>
+                    <button type="button" class="btn btn-success mt-1" id="new-scan">Continuar sin escanear</button>
                   </div>
                 </div>
+
+                <div class="container-fluid mt-4"> <br> </div>
               </div>
 
               <div class="scanner-status mt-3 d-none">
@@ -102,18 +105,18 @@
 
                 <div class="row mt-5 text-center">
                   <div class="col-6 col-sm-6 col-md-6">
-                    <button type="button" class="btn btn-block btn-danger">Hay algo mal</button>
+                    <button type="button" class="btn btn-block btn-danger" id="update1">Hay algo mal</button>
                   </div>
 
                   <div class="col-6 col-sm-6 col-md-6">
-                    <button type="button" class="btn btn-block btn-primary">Continuar</button>
+                    <button type="button" class="btn btn-block btn-primary" id="continueScan">Continuar</button>
                   </div>
                 </div>
 
               </div>
 
               <div class="scanner-form mt-3 d-none">
-                <form class="" method="post">
+                <form class="active-form">
 
                   <div class="form-group row">
                     <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
@@ -169,7 +172,7 @@
                   <div class="form-group row mb-5">
                     <div class="col-3 col-sm-3"></div>
                     <div class="col-6 col-sm-6">
-                      <button type="button" class="btn btn-success btn-block">Continuar</button>
+                      <button type="submit" class="btn btn-success btn-block">Continuar</button>
                     </div>
                     <div class="col-3 col-sm-3"></div>
                   </div>
@@ -182,48 +185,134 @@
 
                 <div class="row">
                   <div class="col-12 col-sm-12 col-md-12">
-                    <iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                    src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=es&amp;q=Les%20Rambles,%201%20Barcelona,%20Spain+(de2.mx)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
+                    <div id="activeMap" style="height: 300px;"></div>
                   </div>
                 </div>
 
                 <div class="row mt-3 p-2 scanner-instructions text-center">
-                  <span>Indicael área donde se encuentra el activo</span>
-                </div>
-
-                <div class="row mt-3">
-                  <div class="form-group row">
-                    <label for="alternativa" class="col-sm-2 col-form-label">Selecicona una opción</label>
-                    <div class="col-sm-10">
-                      <select class="custom-select" name="alternativa" id="alternativa">
-                        <option value="1">Sector tecnólogico</option>
-                        <option value="2">Sala de gerencia</option>
-                        <option value="3">Galpón</option>
-                      </select>
-                    </div>
+                  <div class="col-12 col-sm-12 text-center">
+                    <span id="instructions2">Selecciona el tipo de etiqueta que tiene el activo</span>
                   </div>
                 </div>
 
-              </div>
-
-              <div class="scanner-photos mt-3 d-none">
-
-              </div>
-
-              <div class="scanner-without-scan mt-3 d-none">
                 <div class="row mt-3 text-center">
-                  <div class="form-group row">
-                    <label for="numActivoS1" class="col-sm-6 col-form-label">Numero de activo</label>
-                    <div class="col-sm-6">
-                      <input class="form-control" type="text" name="numActivoS1" id="numActivoS1" placeholder="Ej. 123456">
+                  <div class="col-1 col-sm-1"></div>
+                  <div class="col-10 col-sm-10">
+                    <div class="form-group row">
+                      <label for="alternativa" class="col-sm-2 col-form-label">Selecicona una opción</label>
+                      <div class="col-sm-6">
+                        <select class="custom-select" name="alternativa" id="alternativa">
+                          <option value="1">Sector tecnólogico</option>
+                          <option value="2">Sala de gerencia</option>
+                          <option value="3">Galpón</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                  <div class="col-1 col-sm-1"></div>
                 </div>
 
                 <div class="form-group row mb-5">
                   <div class="col-3 col-sm-3"></div>
                   <div class="col-6 col-sm-6">
-                    <button type="button" class="btn btn-primary btn-block">Buscar</button>
+                    <button type="button" class="btn btn-primary btn-block" id="nextGeo">Buscar</button>
+                  </div>
+                  <div class="col-3 col-sm-3"></div>
+                </div>
+
+              </div>
+
+              <div class="scanner-photos mt-3 d-none">
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-camera"></i>
+                    <br>
+                    <span>Imagen frontal</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-image"></i>
+                    <br>
+                    <span>Vista previa</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <div class="photo-button-delete">
+                      <button type="button" class="btn btn-danger btn-radius">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-camera"></i>
+                    <br>
+                    <span>Imagen lateral derecha</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-image"></i>
+                    <br>
+                    <span>Vista previa</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <div class="photo-button-delete">
+                      <button type="button" class="btn btn-danger btn-radius">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-camera"></i>
+                    <br>
+                    <span>Imagen lateral izquierda</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <i class="fas fa-5x fa-image"></i>
+                    <br>
+                    <span>Vista previa</span>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <div class="photo-button-delete">
+                      <button type="button" class="btn btn-danger btn-radius">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mt-5 text-center">
+                  <div class="col-4 col-sm-4 col-md-4"></div>
+                  <div class="col-4 col-sm-4 col-md-4">
+                    <button type="button" class="btn btn-success btn-block" id="scanFinish">Continuar</button>
+                  </div>
+                  <div class="col-4 col-sm-4 col-md-4"></div>
+                </div>
+
+                <div class="container-fluid mt-4"> <br> </div>
+
+              </div>
+
+              <div class="scanner-without-scan mt-3 d-none">
+                <div class="row mt-3 text-center">
+                  <div class="col-1 col-sm-1"></div>
+                  <div class="col-10 col-sm-10">
+                    <div class="form-group row">
+                      <label for="numActivoS1" class="col-sm-6 col-form-label">Numero de activo</label>
+                      <div class="col-sm-6">
+                        <input class="form-control" type="text" name="numActivoS1" id="numActivoS1" placeholder="Ej. 123456">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1 col-sm-1"></div>
+                </div>
+
+                <div class="form-group row mb-5">
+                  <div class="col-3 col-sm-3"></div>
+                  <div class="col-6 col-sm-6">
+                    <button type="button" class="btn btn-primary btn-block" id="searchCode">Buscar</button>
                   </div>
                   <div class="col-3 col-sm-3"></div>
                 </div>
@@ -231,24 +320,22 @@
 
               <div class="scanner-new mt-3 d-none">
                 <div class="row">
-                  <div class="col-6 col-sm-6 col-md-6 code-container">
-                    <label>
+                  <div class="col-6 col-sm-6 col-md-6 options-container">
+                    <label class="code-container">
                       <i class="fas fa-5x fa-qrcode"></i>
-                      <br>
-                      Código QR
                       <input type=file
                             accept="image/*"
                             capture=environment
                             onChange="scanQR(this)"
                             tabindex=-1/>
                     </label>
+                    <br>
+                    Código QR
                   </div>
 
-                  <div class="col-6 col-sm-6 col-md-6 code-container">
-                    <label>
+                  <div class="col-6 col-sm-6 col-md-6 options-container">
+                    <label class="code-container">
                       <i class="fas fa-5x fa-barcode"></i>
-                      <br>
-                      Código de barras
                       <input type=file
                             accept="image/*"
                             capture=environment
@@ -257,28 +344,38 @@
                             tabindex=-1/>
                     </label>
                     <img id="barcode-img" class="d-none" src="">
+                    <br>
+                    Código de barras
                   </div>
                 </div>
 
-                <div class="row mt-5 text-center ml-5">
-                  <div class="linea">&nbsp;</div>
-                  <div class="leyenda">ó</div>
-                  <div class="linea">&nbsp;</div>
+                <div class="row mt-5 text-center">
+                  <div class="col-1 col-sm-1"></div>
+                  <div class="col-10 col-sm-10">
+                    <div class="linea">&nbsp;</div>
+                    <div class="leyenda">ó</div>
+                    <div class="linea">&nbsp;</div>
+                  </div>
+                  <div class="col-1 col-sm-1"></div>
                 </div>
 
                 <div class="row mt-3 text-center">
-                  <div class="form-group row">
-                    <label for="numActivoS2" class="col-sm-6 col-form-label">Numero de activo</label>
-                    <div class="col-sm-6">
-                      <input class="form-control" type="text" name="numActivoS2" id="numActivoS2" placeholder="Ej. 123456">
+                  <div class="col-1 col-sm-1"></div>
+                  <div class="col-10 col-sm-10">
+                    <div class="form-group row">
+                      <label for="numActivoS1" class="col-sm-6 col-form-label">Numero de activo</label>
+                      <div class="col-sm-6">
+                        <input class="form-control" type="text" name="numActivoS1" id="numActivoS2" placeholder="Ej. 123456">
+                      </div>
                     </div>
                   </div>
+                  <div class="col-1 col-sm-1"></div>
                 </div>
 
                 <div class="form-group row mb-5">
                   <div class="col-3 col-sm-3"></div>
                   <div class="col-6 col-sm-6">
-                    <button type="button" class="btn btn-primary btn-block">Buscar</button>
+                    <button type="button" class="btn btn-primary btn-block" id="update2">Buscar</button>
                   </div>
                   <div class="col-3 col-sm-3"></div>
                 </div>
