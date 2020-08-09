@@ -22,6 +22,9 @@
     <link rel="stylesheet" href="./resources/plugins/leaflet/leaflet.css">
     <script type="text/javascript" src="./resources/plugins/leaflet/leaflet.js"></script>
 
+    <!-- stepper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
 

@@ -61,6 +61,9 @@
     <script type="text/javascript" src="https://unpkg.com/@zxing/library@latest"></script>
     <script type="text/javascript" src="./resources/plugins/barcode/quagga.min.js"></script>
 
+    <!-- stepper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js">
+
     <!-- Custom JS -->
     <script src="./resources/js/backoffice/<?= $js ?>.js"></script>
 
