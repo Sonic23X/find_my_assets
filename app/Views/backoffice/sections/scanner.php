@@ -39,7 +39,12 @@
               </div>
 
               <div class="row mt-3 p-2 scanner-instructions text-center">
-                <div class="col-12 col-sm-12 text-center">
+                <div class="col-1 col-sm-1">
+                  <a href="#" class="scan-back">
+                    <i class="fas fa-arrow-left"></i>
+                  </a>
+                </div>
+                <div class="col-11 col-sm-11 text-center">
                   <span id="instructions">Selecciona el tipo de etiqueta que tiene el activo</span>
                 </div>
               </div>
