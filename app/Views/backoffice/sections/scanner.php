@@ -9,26 +9,7 @@
 
               <!-- Form Wizzard -->
               <div class="row">
-                <!-- Iconos del wizzard
-                <div class="wizzard mt-4 mb-4 w-100">
-                  <div class="row text-center">
-                    <div class="col-4 col-sm-4 col-md-4">
-                      <span class="item-nav active">1</span>
-                      <br>
-                      <span style="margin-top: 10px;">Escanear</span>
-                    </div>
-                    <div class="col-4 col-sm-4 col-md-4">
-                      <span class="item-nav">2</span>
-                      <br>
-                      <span>Actualizar</span>
-                    </div>
-                    <div class="col-4 col-sm-4 col-md-4">
-                      <span class="item-nav">3</span>
-                      <br>
-                      <span>Fotografiar</span>
-                    </div>
-                  </div>
-                </div> -->
+                <!-- Iconos del wizzard -->
                 <div class="col-12 col-md-12 col-sm-12">
                   <div class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
@@ -55,7 +36,7 @@
                     </div>
                   </div>
                 </div>
-                </div>
+              </div>
 
               <div class="row mt-3 p-2 scanner-instructions text-center">
                 <div class="col-12 col-sm-12 text-center">
