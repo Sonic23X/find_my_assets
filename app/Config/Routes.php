@@ -56,6 +56,10 @@ $routes->get('/dashboard', 'Dashboard::Index');
 $routes->post('/activos/search', 'Activo::SearchActivo');
 $routes->post('/activos/new', 'Activo::NewActivo');
 $routes->post('/activos/updateInfo', 'Activo::UpdateInfoActivo');
+$routes->post('/activos/setGeo', 'Activo::SetCoordenadas');
+$routes->post('/activos/getImages', 'Activo::SetImage');
+$routes->post('/activos/setImage', 'Activo::GetImages');
+$routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 
 /**
  * --------------------------------------------------------------------

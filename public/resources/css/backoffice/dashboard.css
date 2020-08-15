@@ -146,6 +146,21 @@ html, body
   opacity: 0;
 }
 
+.image-container
+{
+  padding: 1% 1% 1% 1%;
+  cursor: pointer;
+}
+
+.image-container > input[type=file]
+{
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
 .linea
 {
   margin: 0px 20px;

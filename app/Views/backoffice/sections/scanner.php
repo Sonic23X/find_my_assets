@@ -237,17 +237,25 @@
               <div class="scanner-photos mt-3 d-none">
                 <div class="row mt-5 text-center">
                   <div class="col-4 col-sm-4 col-md-4">
-                    <i class="fas fa-5x fa-camera"></i>
-                    <br>
+                    <label class="image-container">
+                      <i class="fas fa-5x fa-camera"></i>
+                      <input type=file
+                            accept="image/*"
+                            capture=environment
+                            onChange="putImage(this, 'front')"
+                            tabindex=-1/>
+                    </label>
                     <span>Imagen frontal</span>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
-                    <i class="fas fa-5x fa-image"></i>
+                    <div id="scanner-image-front">
+                      <i class="fas fa-5x fa-image"></i>
+                    </div>
                     <br>
                     <span>Vista previa</span>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
-                    <div class="photo-button-delete">
+                    <div class="photo-button-delete mt-2">
                       <button type="button" class="btn btn-danger btn-radius">
                         <i class="fas fa-minus"></i>
                       </button>
@@ -257,17 +265,25 @@
 
                 <div class="row mt-5 text-center">
                   <div class="col-4 col-sm-4 col-md-4">
-                    <i class="fas fa-5x fa-camera"></i>
-                    <br>
+                    <label class="image-container">
+                      <i class="fas fa-5x fa-camera"></i>
+                      <input type=file
+                            accept="image/*"
+                            capture=environment
+                            onChange="putImage(this, 'right')"
+                            tabindex=-1/>
+                    </label>
                     <span>Imagen lateral derecha</span>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
-                    <i class="fas fa-5x fa-image"></i>
+                    <div id="scanner-image-right">
+                      <i class="fas fa-5x fa-image"></i>
+                    </div>
                     <br>
                     <span>Vista previa</span>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
-                    <div class="photo-button-delete">
+                    <div class="photo-button-delete mt-2">
                       <button type="button" class="btn btn-danger btn-radius">
                         <i class="fas fa-minus"></i>
                       </button>
@@ -277,17 +293,25 @@
 
                 <div class="row mt-5 text-center">
                   <div class="col-4 col-sm-4 col-md-4">
-                    <i class="fas fa-5x fa-camera"></i>
-                    <br>
+                    <label class="image-container">
+                      <i class="fas fa-5x fa-camera"></i>
+                      <input type=file
+                            accept="image/*"
+                            capture=environment
+                            onChange="putImage(this, 'left')"
+                            tabindex=-1/>
+                    </label>
                     <span>Imagen lateral izquierda</span>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
-                    <i class="fas fa-5x fa-image"></i>
+                    <div id="scanner-image-left">
+                      <i class="fas fa-5x fa-image"></i>
+                    </div>
                     <br>
                     <span>Vista previa</span>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
-                    <div class="photo-button-delete">
+                    <div class="photo-button-delete mt-2">
                       <button type="button" class="btn btn-danger btn-radius">
                         <i class="fas fa-minus"></i>
                       </button>
