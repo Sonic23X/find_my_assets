@@ -139,4 +139,65 @@ class Activo extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function GetImages( )
+	{
+		if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+				$activo = $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																		->select( 'Ima_ActivoLeft', 'Ima_ActivoRight', 'Ima_ActivoFront' )
+                                    ->first( );
+
+        if ( $activo )
+					echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
+        else
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al buscar las imagenes del activo. Intente más tarde' ) );
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function SetImage( )
+	{
+		if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function DeleteImage( )
+	{
+		if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+	}
+
 }
