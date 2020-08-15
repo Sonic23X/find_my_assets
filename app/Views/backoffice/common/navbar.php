@@ -21,5 +21,6 @@
       <div class="content-wrapper">
         <div class="content">
           <div class="container-fluid">
+            <input type="hidden" id="url" value="<?= base_url( ) ?>">
 
             <div class="container-fluid mb-5"> <br> </div>
