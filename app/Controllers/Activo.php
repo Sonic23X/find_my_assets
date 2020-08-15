@@ -33,7 +33,7 @@ class Activo extends BaseController
       }
       catch (\Exception $e)
       {
-        echo json_encode( array( 'status' => 400, 'msg' => 'Error, intente más tarde' ) );
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
       }
     }
     else
@@ -99,6 +99,35 @@ class Activo extends BaseController
         }
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
+
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+  function SetCoordenadas( )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+
+				$update =
+        [
+          'GPS' => $this->request->getVar( 'gps' ),
+          'ID_Area' => $this->request->getVar( 'area' ),
+        ];
+
+				if ( $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+					echo json_encode( array( 'status' => 200 ) );
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
 
       }
       catch (\Exception $e)

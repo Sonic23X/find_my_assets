@@ -481,7 +481,7 @@ $(document).ready(function( )
 
   });
 
-
+  //ready
   $( '#update1' ).click( event =>
   {
     isNew = false;
@@ -552,6 +552,7 @@ $(document).ready(function( )
     $( wizzardActualView ).removeClass( 'd-none' );
   });
 
+  //ready
   $( '.active-form' ).submit( event =>
   {
     event.preventDefault( );
@@ -614,25 +615,61 @@ $(document).ready(function( )
 
   });
 
+
   $( '#nextGeo' ).click( event =>
   {
     event.preventDefault( );
 
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-photos';
+    let gps = `${ lat },${ lon }`;
 
-    setInsMessage( wizzardActualView );
+    //reunimos la informacion en un JSON
+    let data =
+    {
+      codigo: localStorage.getItem( 'codigo' ),
+      area: $( '#alternativa' ).val( ),
+      gps: gps
+    };
 
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
+    //actualizamos el equipo
+    $.ajax({
+      url: url + '/activos/setGeo',
+      type: 'POST',
+      dataType: 'json',
+      data: data,
+    })
+    .done( response =>
+    {
+
+      if ( response.status == 200 )
+      {
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-photos';
+
+        setInsMessage( wizzardActualView );
+
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+
+    });
+
   });
 
   $( '#scanFinish' ).click( event =>
   {
-
-    imprimir( '¡Hecho!', 'Activo cargado exitosamente', 'success' );
-
     event.preventDefault( );
+
+    if (isNew)
+      imprimir( '¡Hecho!', 'Activo cargado exitosamente', 'success' );
+    else
+      imprimir( '¡Hecho!', 'Activo actualizado exitosamente', 'success' );
+
+    //borramos todo el caché
+
 
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-start';
