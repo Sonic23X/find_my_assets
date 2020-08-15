@@ -103,15 +103,15 @@
 
                 <div class="row mt-5 text-center">
                   <div class="col-12 col-sm-12 col-md-12">
-                    <span>[ Subtipo de activo ] </span> / <span>[ Nombre de activo ]</span>
+                      <span id="scanner-subtipo"></span> / <span id="scanner-nombre"></span>
                     <br>
-                    <span>Serie: [ Numero de serie ] </span>
+                    <span>Serie: <b id="scanner-serie"></b></span>
                   </div>
                 </div>
 
                 <div class="row mt-3 text-center">
                   <div class="col-12 col-sm-12 col-md-12">
-                    <span>Asignado a [ Asignacion ] </span>
+                    <span>Asignado a <b id="scanner-asignacion"></b></span>
                   </div>
                 </div>
 

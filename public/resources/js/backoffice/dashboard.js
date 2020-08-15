@@ -1,8 +1,9 @@
-'use strict'
 
 //variables globales
+var url = $('#url').val( );
 var lon;
 var lat;
+var isNew = false;
 
 let isMobile =
 {
@@ -395,6 +396,7 @@ $(document).ready(function( )
 
   });
 
+  //ready
   $( '#without-scan' ).click( event =>
   {
 
@@ -408,19 +410,50 @@ $(document).ready(function( )
 
   });
 
+  //ready
   $( '#searchCode' ).click( event =>
   {
 
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-status';
+    let data =
+    {
+      codigo: $( '#numActivoS1' ).val( )
+    };
 
-    setInsMessage( wizzardActualView, true );
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/activos/search',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
 
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
+        $( '#scanner-subtipo' ).html( response.activo.ID_Tipo );
+        $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
+        $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
+        $( '#scanner-asignacion' ).html( 'N/A' );
+        localStorage.setItem( 'codigo', response.activo.ID_Activo );
+        isNew = false;
 
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-status';
+
+        setInsMessage( wizzardActualView, true );
+
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
   });
 
+  //ready
   $( '#continueScan' ).click( event =>
   {
     wizzardPreviewView = wizzardActualView;
@@ -434,6 +467,7 @@ $(document).ready(function( )
     $( wizzardActualView ).removeClass( 'd-none' );
   });
 
+  //ready
   $( '#new-scan' ).click( event =>
   {
 
@@ -447,19 +481,68 @@ $(document).ready(function( )
 
   });
 
+
   $( '#update1' ).click( event =>
   {
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-form';
+    isNew = false;
 
-    setInsMessage( wizzardActualView, true );
+    //buscamos el activo en la bdd
+    let data =
+    {
+      codigo: localStorage.getItem( 'codigo' ),
+    };
 
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/activos/search',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+
+        //colocamos la información en el formulario
+        $( '#tipoActivo' ).val( response.activo.ID_Tipo );
+        $( '#name' ).val( response.activo.Nom_Activo );
+        $( '#cCosto' ).val( response.activo.ID_CC );
+        $( '#serie' ).val( response.activo.NSerie_Activo );
+        $( '#asignacion' ).val( response.activo.User_Inventario );
+        $( '#desc' ).val( response.activo.Des_Activo );
+
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-form';
+
+        setInsMessage( wizzardActualView, true );
+
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
+
+
   });
 
+  //ready
   $( '#update2' ).click( event =>
   {
+    let codigo = $( '#numActivoS2' ).val( );
+
+    if ( codigo.length == 0 )
+    {
+      imprimir( 'Ups..', 'EL campo del código es obligatorio', 'error' );
+      return;
+    }
+
+    localStorage.setItem( 'codigo', codigo );
+    isNew = true;
+
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-form';
 
@@ -484,17 +567,50 @@ $(document).ready(function( )
       return;
     }
 
+    let data =
+    {
+      codigo: localStorage.getItem( 'codigo' ),
+      tipo: $( '#tipoActivo' ).val( ),
+      nombre: $( '#name' ).val( ),
+      centro_costo: $( '#cCosto' ).val( ),
+      no_serie: $( '#serie' ).val( ),
+      asignacion: $( '#asignacion' ).val( ),
+      descripcion: $( '#desc' ).val( )
+    };
+
     //ajax here
+    let baseurl;
 
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-geolocation';
+    if ( isNew )
+      baseurl = url + '/activos/new';
+    else
+      baseurl = url + '/activos/updateInfo';
 
-    setInsMessage( wizzardActualView );
+    $.ajax({
+      url: baseurl,
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-geolocation';
 
-    navigator.geolocation.getCurrentPosition( setCoordenadasActiveMap );
+        setInsMessage( wizzardActualView );
 
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
+        navigator.geolocation.getCurrentPosition( setCoordenadasActiveMap );
+
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
 
   });
 
