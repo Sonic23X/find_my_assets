@@ -4,6 +4,7 @@ var url = $('#url').val( );
 var lon;
 var lat;
 var isNew = false;
+var activeMap;
 
 let isMobile =
 {
@@ -83,7 +84,7 @@ function setCoordenadasActiveMap( position )
   lon = position.coords.longitude;
   lat = position.coords.latitude;
 
-  var activeMap = L.map( 'activeMap' ).setView( [ lat, lon ], 16 );
+  activeMap = L.map( 'activeMap' ).setView( [ lat, lon ], 16 );
 
   L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
   {
@@ -278,7 +279,6 @@ function putImage( node, type )
   let img = URL.createObjectURL( node.files[0] );
 
   //subir a servidor
-
   let plantilla =
   `
     <img class="img-fluid" src="${ img }" >
@@ -287,6 +287,17 @@ function putImage( node, type )
   $( `#scanner-image-${ type }` ).html( plantilla );
 }
 
+function removeImage( type )
+{
+  //ajax para remover
+
+  let plantilla =
+  `
+    <i class="fas fa-5x fa-image"></i>
+  `;
+
+  $( `#scanner-image-${ type }` ).html( plantilla );
+}
 
 $(document).ready(function( )
 {
@@ -733,6 +744,8 @@ $(document).ready(function( )
     //borramos todo el caché
     isNew = false;
     localStorage.removeItem( 'codigo' );
+    activeMap.off( );
+    activeMap.remove( );
     $( '#tipoActivo' ).val( '' );
     $( '#name' ).val( '' );
     $( '#cCosto' ).val( '' );

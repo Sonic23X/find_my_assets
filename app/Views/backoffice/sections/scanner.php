@@ -256,7 +256,7 @@
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
                     <div class="photo-button-delete mt-2">
-                      <button type="button" class="btn btn-danger btn-radius">
+                      <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'front' )">
                         <i class="fas fa-minus"></i>
                       </button>
                     </div>
@@ -284,7 +284,7 @@
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
                     <div class="photo-button-delete mt-2">
-                      <button type="button" class="btn btn-danger btn-radius">
+                      <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'right' )">
                         <i class="fas fa-minus"></i>
                       </button>
                     </div>
@@ -312,7 +312,7 @@
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
                     <div class="photo-button-delete mt-2">
-                      <button type="button" class="btn btn-danger btn-radius">
+                      <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'left' )">
                         <i class="fas fa-minus"></i>
                       </button>
                     </div>
