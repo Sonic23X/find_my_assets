@@ -12,8 +12,7 @@ class TipoModel extends Model
 
   protected $allowedFields =
   [
-    '	Desc', 'ID_Pais', 
-
+    '	Desc', 'ID_Pais'
   ];
 
 }

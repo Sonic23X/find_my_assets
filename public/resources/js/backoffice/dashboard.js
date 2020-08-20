@@ -57,6 +57,64 @@ function imprimir ( titulo, mensaje, tipo )
   });
 }
 
+function getScannerFormData( )
+{
+  $( '#tipoActivo' ).html( );
+  $( '#asignacion' ).html( );
+
+  $.ajax({
+    url: url + '/activos/getFormData',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let tipos = response.types;
+
+      tipos.forEach( ( tipo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ tipo.id }">${ tipo.Desc }</option>
+        `;
+
+        $( '#tipoActivo' ).append( typePlantilla );
+
+      });
+
+      let usuarios = response.users;
+
+      usuarios.forEach( ( usuario , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ usuario.id_usuario }">${ usuario.nombre + ' ' + usuario.apellidos }</option>
+        `;
+
+        $( '#asignacion' ).append( typePlantilla );
+
+      });
+
+
+    }
+    else
+    {
+      if ( !isNew )
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+
+        $( '#scanner-image-front' ).html( plantilla );
+        $( '#scanner-image-right' ).html( plantilla );
+        $( '#scanner-image-left' ).html( plantilla );
+      }
+    }
+  });
+}
+
 function setCoordenadasMapG( position )
 {
   lon = position.coords.longitude;
@@ -301,11 +359,12 @@ function removeImage( type )
 
 $(document).ready(function( )
 {
-  //URL del servidor
-  let url = $('#url').val( );
 
   //localización
   navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
+
+  //formularios
+  getScannerFormData( );
 
   //Vista actual
   let actualView = '.home';
@@ -373,6 +432,9 @@ $(document).ready(function( )
           $( actualView ).addClass( 'd-none' );
           break;
       }
+
+      //llamamos las funciones paara obtener la información en los inputs
+
 
       actualView = '.scanner';
       $( actualView ).removeClass( 'd-none' );
@@ -752,6 +814,8 @@ $(document).ready(function( )
     $( '#serie' ).val( '' );
     $( '#asignacion' ).val( '' );
     $( '#desc' ).val( '' );
+    $( '#numActivoS1' ).val( '' );
+    $( '#numActivoS2' ).val( '' );
 
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-start';
