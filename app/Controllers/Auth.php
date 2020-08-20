@@ -15,7 +15,7 @@ class Auth extends BaseController
   {
     $this->session = \Config\Services::session( );
     $this->userModel = model( 'App\Models\UserModel' );
-    $this->$email = new PHPMailerLib( );
+    $this->email = new PHPMailerLib( );
   }
 
   function Login( )
@@ -145,7 +145,7 @@ class Auth extends BaseController
     			$content = View( 'emails/recuperarContraseña', $viewData );
 
           //cargamos la configuración del email
-    			$correo = $this->$email->preparEmail( $this->request->getVar( 'email' ), 'Recuperar contraseña', $content );
+    			$correo = $this->email->preparEmail( $this->request->getVar( 'email' ), 'Recuperar contraseña', $content );
 
           if ( !$correo->send( ) )
             echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
@@ -224,7 +224,7 @@ class Auth extends BaseController
           $content = View( 'emails/verificarCorreo', $viewData );
 
           //cargamos la configuración del email
-    			$correo = $this->$email->preparEmail( $this->request->getVar( 'email' ), 'Activar cuenta en Find my assets', $content );
+    			$correo = $this->email->preparEmail( $this->request->getVar( 'email' ), 'Activar cuenta en Find my assets', $content );
 
           if ( !$correo->send( ) )
             echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
