@@ -54,8 +54,12 @@ class Activo extends BaseController
         $activo = $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
                                     ->first( );
 
+				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
+
+				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
+
         if ( $activo )
-          $json = array( 'status' => 200, 'activo' => $activo );
+          $json = array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo );
         else
           $json = array( 'status' => 401, 'msg' => 'El activo no se ha encontrado en el sistema' );
 

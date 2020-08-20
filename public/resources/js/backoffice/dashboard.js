@@ -562,10 +562,10 @@ $(document).ready(function( )
       if (response.status == 200)
       {
 
-        $( '#scanner-subtipo' ).html( response.activo.ID_Tipo );
+        $( '#scanner-subtipo' ).html( response.tipo.Desc );
         $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
         $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
-        $( '#scanner-asignacion' ).html( 'N/A' );
+        $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos );
         localStorage.setItem( 'codigo', response.activo.ID_Activo );
         isNew = false;
 
