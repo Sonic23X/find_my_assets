@@ -134,9 +134,6 @@
                     <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
                     <div class="col-sm-10">
                       <select class="custom-select" name="tipoActivo" id="tipoActivo">
-                        <option value="1">Muebles y útiles</option>
-                        <option value="2">Herramientas</option>
-                        <option value="3">Equipos de computación</option>
                       </select>
                     </div>
                   </div>
@@ -170,7 +167,9 @@
                   <div class="form-group row">
                     <label for="asignacion" class="col-sm-2 col-form-label">Asignado a</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="asignacion" placeholder="Ej. Nombre">
+                      <select class="custom-select" name="asignacion" id="asignacion">
+
+                      </select>
                     </div>
                   </div>
 

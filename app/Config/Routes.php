@@ -53,6 +53,7 @@ $routes->get('/salir', 'Auth::Logout');
 $routes->get('/dashboard', 'Dashboard::Index');
 
 /** AJax - scanner **/
+$routes->get('/activos/getFormData', 'Activo::GetDataForm');
 $routes->post('/activos/search', 'Activo::SearchActivo');
 $routes->post('/activos/new', 'Activo::NewActivo');
 $routes->post('/activos/updateInfo', 'Activo::UpdateInfoActivo');

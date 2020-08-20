@@ -7,11 +7,41 @@ class Activo extends BaseController
 
 	protected $session;
   protected $activoModel;
+	protected $userModel;
+	protected $tipoModel;
 
   function __construct()
   {
     $this->session = \Config\Services::session( );
     $this->activoModel = model( 'App\Models\ActivoModel' );
+		$this->tipoModel = model( 'App\Models\TipoModel' );
+		$this->userModel = model( 'App\Models\UserModel' );
+  }
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+  function GetDataForm( )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+				$tipos = $this->tipoModel->findAll( );
+				$usuarios = $this->userModel->findAll( );
+
+        if ( $tipos )
+          $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios );
+        else
+          $json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
+
+        echo json_encode( $json );
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
   }
 
   //método que funciona exclusivamente con AJAX - JQUERY
