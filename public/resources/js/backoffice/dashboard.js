@@ -314,7 +314,7 @@ function setImages( )
   {
     if ( response.status == 200 )
     {
-
+      console.log( response );
     }
     else
     {
@@ -336,25 +336,79 @@ function putImage( node, type )
 {
   let img = URL.createObjectURL( node.files[0] );
 
+  let formData = new FormData( );
+
+  formData.set( 'type', type );
+  formData.set( 'activo', localStorage.getItem( 'codigo' ) );
+  formData.append( 'file', node.files[ 0 ] );
+
   //subir a servidor
-  let plantilla =
+  $.ajax({
+    url: url + '/activos/setImage',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let plantilla =
+      `
+        <img class="img-fluid" src="${ img }" style="width: 250px;" >
+      `;
+
+      $( `#scanner-image-${ type }` ).html( plantilla );
+    }
+    else
+    {
+      imprimir( 'Ups...', response.msg, 'error' );
+    }
+  });
+
+
+  /*let plantilla =
   `
-    <img class="img-fluid" src="${ img }" >
+    <img class="img-fluid" src="${ img }" style="width: 250px;" >
   `;
 
-  $( `#scanner-image-${ type }` ).html( plantilla );
+  $( `#scanner-image-${ type }` ).html( plantilla );*/
 }
 
 function removeImage( type )
 {
-  //ajax para remover
+  let formData = new FormData( );
 
-  let plantilla =
-  `
-    <i class="fas fa-5x fa-image"></i>
-  `;
+  formData.set( 'type', type );
+  formData.set( 'activo', localStorage.getItem( 'codigo' ) );
 
-  $( `#scanner-image-${ type }` ).html( plantilla );
+  $.ajax({
+    url: url + '/activos/deleteImage',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( 'Ups...', response.msg, 'error' );
+
+      let plantilla =
+      `
+        <i class="fas fa-5x fa-image"></i>
+      `;
+
+      $( `#scanner-image-${ type }` ).html( plantilla );
+    }
+    else
+    {
+      imprimir( 'Ups...', response.msg, 'error' );
+    }
+  });
+
 }
 
 $(document).ready(function( )
@@ -432,9 +486,6 @@ $(document).ready(function( )
           $( actualView ).addClass( 'd-none' );
           break;
       }
-
-      //llamamos las funciones paara obtener la información en los inputs
-
 
       actualView = '.scanner';
       $( actualView ).removeClass( 'd-none' );
