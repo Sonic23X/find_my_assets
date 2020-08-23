@@ -189,7 +189,6 @@ function scanQR( node )
     {
       if ( !( res instanceof Error ) )
       {
-        //pasamos a la siguiente vista
         let data =
         {
           codigo: res
@@ -295,17 +294,17 @@ function NewUpdateFile()
 
   if ( isMobile.any() )
   {
-    scanBarCodeQuagga( img );
+    scanBarCodeQuagga( img, false );
   }
   else
   {
     $( '#new-barcode-img' ).attr( 'src', img );
-    scanBarCodeZebra( '#new-barcode-img' );
+    scanBarCodeZebra( '#new-barcode-img', false );
   }
 
 }
 
-function scanBarCodeZebra( nodo )
+function scanBarCodeZebra( nodo, search = true )
 {
   const codeReader = new ZXing.BrowserBarcodeReader();
   const img = $( nodo )[0].cloneNode(true);
@@ -313,7 +312,62 @@ function scanBarCodeZebra( nodo )
   codeReader.decodeFromImage(img)
             .then(result =>
             {
-              //siguiente paso
+              if ( search )
+              {
+                let data =
+                {
+                  codigo: result.text,
+                };
+
+                //buscamos el codigo en la BDD
+                $.ajax({
+                  url: url + '/activos/search',
+                  type: 'POST',
+                  dataType: 'json',
+                  data: data
+                })
+                .done( response =>
+                {
+                  if (response.status == 200)
+                  {
+                    $( '#scanner-subtipo' ).html( response.tipo.Desc );
+                    $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
+                    $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
+                    $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos );
+                    $( '#vidaUtil' ).val( response.activo.Vida_Activo );
+                    $( '#empresas' ).val( response.activo.ID_Company );
+                    $( '#sucursal' ).val( response.activo.ID_Sucursal );
+                    $( '#area' ).val( response.activo.ID_Area );
+                    localStorage.setItem( 'codigo', response.activo.ID_Activo );
+                    isNew = false;
+
+                    wizzardPreviewView = wizzardActualView;
+                    wizzardActualView = '.scanner-status';
+
+                    setInsMessage( wizzardActualView, true );
+
+                    $( wizzardPreviewView ).addClass( 'd-none' );
+                    $( wizzardActualView ).removeClass( 'd-none' );
+                  }
+                  else
+                  {
+                    imprimir( 'Ups..', response.msg, 'error' );
+                  }
+                });
+              }
+              else
+              {
+                localStorage.setItem( 'codigo', result.text );
+                isNew = true;
+
+                wizzardPreviewView = wizzardActualView;
+                wizzardActualView = '.scanner-form';
+
+                setInsMessage( wizzardActualView );
+
+                $( wizzardPreviewView ).addClass( 'd-none' );
+                $( wizzardActualView ).removeClass( 'd-none' );
+              }
             })
             .catch(err =>
             {
@@ -321,7 +375,7 @@ function scanBarCodeZebra( nodo )
             });
 }
 
-function scanBarCodeQuagga( image )
+function scanBarCodeQuagga( image, search = true )
 {
   Quagga.decodeSingle(
   {
@@ -341,7 +395,63 @@ function scanBarCodeQuagga( image )
   {
     if(result.codeResult)
     {
-      //siguiente paso
+
+      if ( search )
+      {
+        let data =
+        {
+          codigo: result.codeResult.code,
+        };
+
+        //buscamos el codigo en la BDD
+        $.ajax({
+          url: url + '/activos/search',
+          type: 'POST',
+          dataType: 'json',
+          data: data
+        })
+        .done( response =>
+        {
+          if (response.status == 200)
+          {
+            $( '#scanner-subtipo' ).html( response.tipo.Desc );
+            $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
+            $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
+            $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos );
+            $( '#vidaUtil' ).val( response.activo.Vida_Activo );
+            $( '#empresas' ).val( response.activo.ID_Company );
+            $( '#sucursal' ).val( response.activo.ID_Sucursal );
+            $( '#area' ).val( response.activo.ID_Area );
+            localStorage.setItem( 'codigo', response.activo.ID_Activo );
+            isNew = false;
+
+            wizzardPreviewView = wizzardActualView;
+            wizzardActualView = '.scanner-status';
+
+            setInsMessage( wizzardActualView, true );
+
+            $( wizzardPreviewView ).addClass( 'd-none' );
+            $( wizzardActualView ).removeClass( 'd-none' );
+          }
+          else
+          {
+            imprimir( 'Ups..', response.msg, 'error' );
+          }
+        });
+      }
+      else
+      {
+        localStorage.setItem( 'codigo', result.codeResult.code );
+        isNew = true;
+
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-form';
+
+        setInsMessage( wizzardActualView );
+
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
     } else
     {
       imprimir( 'Error', 'No se detectó el código de barras. Intente de nuevo', 'error' );
