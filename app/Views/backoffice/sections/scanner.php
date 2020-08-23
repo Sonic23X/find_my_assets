@@ -71,7 +71,7 @@
                             accept="image/*"
                             capture=environment
                             id="fileBar"
-                            onChange="updateFile()"
+                            onChange="updateFile(this)"
                             tabindex=-1/>
                     </label>
                     <img id="barcode-img" class="d-none" src="">
