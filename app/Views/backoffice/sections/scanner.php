@@ -194,7 +194,33 @@
 
               <div class="scanner-geolocation mt-3 d-none">
 
-                <div class="row">
+                <div class="row mt-2">
+                  <div class="col-1 col-sm-1"></div>
+                  <div class="col-10 col-sm-10">
+                    <div class="form-group row">
+                      <label for="alternativa" class="col-sm-4 col-form-label">
+                        Vida útil actual (hr / km / un):
+                        <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
+                                style="border-radius: 25px; font-size: 9px !important;"
+                                title="Para los activos con vida útil en meses se considera la fecha cuando se ingresa en su inventario">
+                          <i class="fas fa-info"></i>
+                        </button>
+                      </label>
+                      <div class="col-sm-6">
+                        <input type="number" id="vidaUtil" class="form-control">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1 col-sm-1"></div>
+                </div>
+
+                <div class="row mt-2 p-2 scanner-instructions text-center">
+                  <div class="col-12 col-sm-12 text-center">
+                    <span id="instructions2">Ubicación geográfica del activo</span>
+                  </div>
+                </div>
+
+                <div class="row mt-3">
                   <div class="col-12 col-sm-12 col-md-12">
                     <div id="activeMap" style="height: 300px;"></div>
                   </div>
@@ -202,7 +228,7 @@
 
                 <div class="row mt-3 p-2 scanner-instructions text-center">
                   <div class="col-12 col-sm-12 text-center">
-                    <span id="instructions2">Selecciona el tipo de etiqueta que tiene el activo</span>
+                    <span id="instructions3">Selecciona el tipo de etiqueta que tiene el activo</span>
                   </div>
                 </div>
 
@@ -210,9 +236,40 @@
                   <div class="col-1 col-sm-1"></div>
                   <div class="col-10 col-sm-10">
                     <div class="form-group row">
-                      <label for="alternativa" class="col-sm-2 col-form-label">Selecicona una opción</label>
+                      <label class="col-sm-2 col-form-label">Empresa</label>
                       <div class="col-sm-6">
-                        <select class="custom-select" name="alternativa" id="alternativa">
+                        <select class="custom-select" name="alternativa" id="empresas">
+
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1 col-sm-1"></div>
+                </div>
+
+                <div class="row mt-3 text-center">
+                  <div class="col-1 col-sm-1"></div>
+                  <div class="col-10 col-sm-10">
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">Sucursal</label>
+                      <div class="col-sm-6">
+                        <select class="custom-select" name="sucursal" id="sucursal">
+                          <option value="1">Sucursal 1</option>
+                          <option value="2">Sucursal 2</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-1 col-sm-1"></div>
+                </div>
+
+                <div class="row mt-3 text-center">
+                  <div class="col-1 col-sm-1"></div>
+                  <div class="col-10 col-sm-10">
+                    <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">Área</label>
+                      <div class="col-sm-6">
+                        <select class="custom-select" name="area" id="area">
                           <option value="1">Sector tecnólogico</option>
                           <option value="2">Sala de gerencia</option>
                           <option value="3">Galpón</option>
@@ -235,6 +292,7 @@
 
               <div class="scanner-photos mt-3 d-none">
                 <div class="row mt-5 text-center">
+
                   <div class="col-4 col-sm-4 col-md-4">
                     <label class="image-container">
                       <i class="fas fa-5x fa-camera"></i>

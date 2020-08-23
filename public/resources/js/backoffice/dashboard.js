@@ -61,6 +61,7 @@ function getScannerFormData( )
 {
   $( '#tipoActivo' ).html( );
   $( '#asignacion' ).html( );
+  $( '#empresas' ).html( );
 
   $.ajax({
     url: url + '/activos/getFormData',
@@ -96,6 +97,20 @@ function getScannerFormData( )
         `;
 
         $( '#asignacion' ).append( typePlantilla );
+
+      });
+
+      let empresas = response.empresas;
+
+      empresas.forEach( ( empresa , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ empresa.id_empresa }">${ empresa.nombre }</option>
+        `;
+
+        $( '#empresas' ).append( typePlantilla );
 
       });
 
@@ -263,13 +278,15 @@ function setInsMessage( view, update = false )
     case '.scanner-geolocation':
       if ( update )
       {
-        message = 'Nueva ubicación geográfica del activo';
-        $( '#instructions2' ).html( 'Indica el área donde se encuentra el activo' );
+        message = 'Indica el avance en la vida útil del activo';
+        $( '#instructions2' ).html( 'Nueva ubicación geográfica del activo' );
+        $( '#instructions3' ).html( 'Indica el área donde se encuentra el activo' );
       }
       else
       {
-        message = 'Ubicación geográfica del activo';
-        $( '#instructions2' ).html( 'Indica el área donde se encontrará el activo' );
+        message = 'Indica el avance en la vida útil del activo';
+        $( '#instructions2' ).html( 'Ubicación geográfica del activo' );
+        $( '#instructions3' ).html( 'Indica el área donde se encontrará el activo' );
       }
       break;
     case '.scanner-photos':
@@ -314,7 +331,7 @@ function setImages( )
   {
     if ( response.status == 200 )
     {
-      console.log( response );
+
     }
     else
     {
@@ -413,6 +430,9 @@ function removeImage( type )
 
 $(document).ready(function( )
 {
+
+  //tooltips
+  $( '[data-toggle="tooltip"]' ).tooltip( );
 
   //localización
   navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
@@ -612,11 +632,14 @@ $(document).ready(function( )
     {
       if (response.status == 200)
       {
-
         $( '#scanner-subtipo' ).html( response.tipo.Desc );
         $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
         $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
         $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos );
+        $( '#vidaUtil' ).val( response.activo.Vida_Activo );
+        $( '#empresas' ).val( response.activo.ID_Company );
+        $( '#sucursal' ).val( response.activo.ID_Sucursal );
+        $( '#area' ).val( response.activo.ID_Area );
         localStorage.setItem( 'codigo', response.activo.ID_Activo );
         isNew = false;
 
@@ -808,8 +831,10 @@ $(document).ready(function( )
     let data =
     {
       codigo: localStorage.getItem( 'codigo' ),
-      area: $( '#alternativa' ).val( ),
-      gps: gps
+      empresa: $( '#empresas' ).val( ),
+      sucursal: $( '#sucursal' ).val( ),
+      area: $( '#area' ).val( ),
+      gps: gps,
     };
 
     //actualizamos el equipo

@@ -12,7 +12,7 @@ class DraftoModel extends Model
 
   protected $allowedFields =
   [
-    'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', '	ID_Sucursal',
+    'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
     'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
     'Img_FacCompra', 'Pre_Compra', 'Fec_Expira', 'Img_Garantia',
     'NSerie_Activo', 'ID_Tipo', 'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',

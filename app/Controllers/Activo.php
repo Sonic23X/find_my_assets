@@ -9,6 +9,7 @@ class Activo extends BaseController
   protected $activoModel;
 	protected $userModel;
 	protected $tipoModel;
+	protected $empresaModel;
 
   function __construct()
   {
@@ -16,6 +17,7 @@ class Activo extends BaseController
     $this->activoModel = model( 'App\Models\ActivoModel' );
 		$this->tipoModel = model( 'App\Models\TipoModel' );
 		$this->userModel = model( 'App\Models\UserModel' );
+		$this->empresaModel = model( 'App\Models\EmpresaModel' );
   }
 
 	//método que funciona exclusivamente con AJAX - JQUERY
@@ -27,9 +29,10 @@ class Activo extends BaseController
       {
 				$tipos = $this->tipoModel->findAll( );
 				$usuarios = $this->userModel->findAll( );
+				$empresas = $this->empresaModel->findAll( );
 
         if ( $tipos )
-          $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios );
+          $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios, 'empresas' => $empresas );
         else
           $json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 
@@ -116,7 +119,6 @@ class Activo extends BaseController
     {
       try
       {
-
 				$update =
         [
           'Nom_Activo' => $this->request->getVar( 'nombre' ),
@@ -155,6 +157,8 @@ class Activo extends BaseController
 				$update =
         [
           'GPS' => $this->request->getVar( 'gps' ),
+					'ID_Company' => $this->request->getVar( 'empresa' ),
+					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
           'ID_Area' => $this->request->getVar( 'area' ),
         ];
 
@@ -205,7 +209,53 @@ class Activo extends BaseController
     {
       try
       {
+				// TODO: Conseguir imagen anterior, y si existe, borrarla
+				// TODO: Conseguir el id de la empresa
+				$name_photo = '';
+				$update = [ ];
 
+				$activo = $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
+													->first( );
+
+				switch ( $this->request->getVar( 'type' ) )
+				{
+					case 'front':
+						$name_photo = 'Ima_ActivoFront.jpg';
+						$update =
+						[
+							'id' => $activo[ 'Id' ],
+							'Ima_ActivoFront' => '1/' . $name_photo,
+						];
+						break;
+					case 'right':
+						$name_photo = 'Ima_ActivoRight.jpg';
+						$update =
+						[
+							'id' => $activo[ 'Id' ],
+							'Ima_ActivoFront' => '1/' . $name_photo,
+						];
+						break;
+					case 'left':
+						$name_photo = 'Ima_ActivoLeft.jpg';
+						$update =
+						[
+							'id' => $activo[ 'Id' ],
+							'Ima_ActivoFront' => '1/' . $name_photo,
+						];
+						break;
+				}
+
+				$image =  $this->request->getFile( 'file' )->store( '1/', $name_photo );
+
+				$this->activoModel->save( $update );
+
+				/*if (  )
+        {
+          echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
+        }
+        else
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );
+					*/
       }
       catch (\Exception $e)
       {
@@ -223,6 +273,33 @@ class Activo extends BaseController
     {
       try
       {
+				$activo = $this->request->getVar( 'activo' );
+				$tipo;
+
+				switch ( $this->request->getVar( 'type' ) )
+				{
+					case 'front':
+						$tipo = 'Ima_ActivoFront';
+						break;
+					case 'right':
+						$tipo = 'Ima_ActivoRight';
+						break;
+					case 'left':
+						$tipo = 'Ima_ActivoLeft';
+						break;
+				}
+
+				$update =
+				[
+					$tipo => null
+				];
+
+				if ( $this->activoModel->where( 'ID_Activo', $activo )->set( $update )->update( ) )
+        {
+          echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen eliminada!' ) );
+        }
+        else
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al eliminar la imagen del activo. Intente más tarde' ) );
 
       }
       catch (\Exception $e)
