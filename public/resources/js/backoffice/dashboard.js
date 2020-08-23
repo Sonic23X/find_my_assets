@@ -186,7 +186,46 @@ function scanQR( node )
       if ( !( res instanceof Error ) )
       {
         //pasamos a la siguiente vista
-        console.log( res );
+        let data =
+        {
+          codigo: res
+        };
+
+        //buscamos el codigo en la BDD
+        $.ajax({
+          url: url + '/activos/search',
+          type: 'POST',
+          dataType: 'json',
+          data: data
+        })
+        .done( response =>
+        {
+          if (response.status == 200)
+          {
+            $( '#scanner-subtipo' ).html( response.tipo.Desc );
+            $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
+            $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
+            $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos );
+            $( '#vidaUtil' ).val( response.activo.Vida_Activo );
+            $( '#empresas' ).val( response.activo.ID_Company );
+            $( '#sucursal' ).val( response.activo.ID_Sucursal );
+            $( '#area' ).val( response.activo.ID_Area );
+            localStorage.setItem( 'codigo', response.activo.ID_Activo );
+            isNew = false;
+
+            wizzardPreviewView = wizzardActualView;
+            wizzardActualView = '.scanner-status';
+
+            setInsMessage( wizzardActualView, true );
+
+            $( wizzardPreviewView ).addClass( 'd-none' );
+            $( wizzardActualView ).removeClass( 'd-none' );
+          }
+          else
+          {
+            imprimir( 'Ups..', response.msg, 'error' );
+          }
+        });
       }
       else
       {
@@ -820,7 +859,7 @@ $(document).ready(function( )
 
   });
 
-
+  //ready
   $( '#nextGeo' ).click( event =>
   {
     event.preventDefault( );
