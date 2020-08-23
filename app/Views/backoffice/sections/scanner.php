@@ -419,7 +419,7 @@
                       <input type=file
                             accept="image/*"
                             capture=environment
-                            onChange="scanQR(this)"
+                            onChange="newScanQR(this)"
                             tabindex=-1/>
                     </label>
                     <br>
@@ -432,11 +432,11 @@
                       <input type=file
                             accept="image/*"
                             capture=environment
-                            id="fileBar"
-                            onChange="updateFile(this)"
+                            id="newFileBar"
+                            onChange="NewUpdateFile(this)"
                             tabindex=-1/>
                     </label>
-                    <img id="barcode-img" class="d-none" src="">
+                    <img id="new-barcode-img" class="barcode-img d-none" src="">
                     <br>
                     Código de barras
                   </div>

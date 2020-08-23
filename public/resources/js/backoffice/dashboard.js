@@ -6,6 +6,10 @@ var lat;
 var isNew = false;
 var activeMap;
 
+/* --- scanner --- */
+var wizzardActualView = '.scanner-start';
+var wizzardPreviewView = '.scanner-start';
+
 let isMobile =
 {
   Android: () =>
@@ -237,6 +241,38 @@ function scanQR( node )
   reader.readAsDataURL(node.files[0]);
 }
 
+function newScanQR( node )
+{
+  let reader = new FileReader();
+
+  reader.onload = function()
+  {
+    node.value = "";
+    qrcode.callback = function(res)
+    {
+      if ( !( res instanceof Error ) )
+      {
+        localStorage.setItem( 'codigo', res );
+        isNew = true;
+
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-form';
+
+        setInsMessage( wizzardActualView );
+
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
+      else
+      {
+        imprimir( '¡Ups!', 'No se detectó el código QR. Intente de nuevo', 'error' );
+      }
+    };
+    qrcode.decode(reader.result);
+  };
+  reader.readAsDataURL(node.files[0]);
+}
+
 function updateFile()
 {
   let img = URL.createObjectURL( $( '#fileBar' )[0].files[0] );
@@ -248,15 +284,31 @@ function updateFile()
   else
   {
     $( '#barcode-img' ).attr( 'src', img );
-    scanBarCodeZebra();
+    scanBarCodeZebra( '#barcode-img' );
   }
 
 }
 
-function scanBarCodeZebra()
+function NewUpdateFile()
+{
+  let img = URL.createObjectURL( $( '#newFileBar' )[0].files[0] );
+
+  if ( isMobile.any() )
+  {
+    scanBarCodeQuagga( img );
+  }
+  else
+  {
+    $( '#new-barcode-img' ).attr( 'src', img );
+    scanBarCodeZebra( '#new-barcode-img' );
+  }
+
+}
+
+function scanBarCodeZebra( nodo )
 {
   const codeReader = new ZXing.BrowserBarcodeReader();
-  const img = $( '#barcode-img' )[0].cloneNode(true);
+  const img = $( nodo )[0].cloneNode(true);
 
   codeReader.decodeFromImage(img)
             .then(result =>
@@ -616,10 +668,6 @@ $(document).ready(function( )
     data: donutData,
     options: donutOptions
   });
-
-  /* --- scanner --- */
-  let wizzardActualView = '.scanner-start';
-  let wizzardPreviewView = '.scanner-start';
 
   /* --- scanner - wizzard --- */
 
