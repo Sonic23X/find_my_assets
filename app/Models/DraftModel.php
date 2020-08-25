@@ -7,7 +7,7 @@ use CodeIgniter\Model;
 class DraftoModel extends Model
 {
 
-  protected $table      = 'activos';
+  protected $table      = 'draft';
   protected $primaryKey = 'id';
 
   protected $allowedFields =
