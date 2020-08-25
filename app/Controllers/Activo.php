@@ -10,6 +10,7 @@ class Activo extends BaseController
 	protected $userModel;
 	protected $tipoModel;
 	protected $empresaModel;
+	protected $draftModel;
 
   function __construct()
   {
@@ -18,6 +19,7 @@ class Activo extends BaseController
 		$this->tipoModel = model( 'App\Models\TipoModel' );
 		$this->userModel = model( 'App\Models\UserModel' );
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
+		$this->draftModel = model( 'App\Models\DraftModel' );
   }
 
 	//método que funciona exclusivamente con AJAX - JQUERY
@@ -96,7 +98,7 @@ class Activo extends BaseController
           'User_Inventario' => $this->request->getVar( 'asignacion' ),
         ];
 
-        if ( $this->activoModel->insert( $insert ) )
+        if ( $this->draftModel->insert( $insert ) )
         {
           echo json_encode( array( 'status' => 200, 'msg' => '¡Activo registrado!' ) );
         }
@@ -129,7 +131,7 @@ class Activo extends BaseController
           'User_Inventario' => $this->request->getVar( 'asignacion' ),
         ];
 
-				if ( $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
         {
           echo json_encode( array( 'status' => 200, 'msg' => '¡Activo registrado!' ) );
         }
@@ -162,7 +164,7 @@ class Activo extends BaseController
           'ID_Area' => $this->request->getVar( 'area' ),
         ];
 
-				if ( $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
 					echo json_encode( array( 'status' => 200 ) );
 				else
 					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
@@ -184,7 +186,7 @@ class Activo extends BaseController
     {
       try
       {
-				$activo = $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
 																		->select( 'Ima_ActivoLeft', 'Ima_ActivoRight', 'Ima_ActivoFront' )
                                     ->first( );
 
@@ -214,7 +216,7 @@ class Activo extends BaseController
 				$name_photo = '';
 				$update = [ ];
 
-				$activo = $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
+				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
 													->first( );
 
 				switch ( $this->request->getVar( 'type' ) )
@@ -294,7 +296,7 @@ class Activo extends BaseController
 					$tipo => null
 				];
 
-				if ( $this->activoModel->where( 'ID_Activo', $activo )->set( $update )->update( ) )
+				if ( $this->draftModel->where( 'ID_Activo', $activo )->set( $update )->update( ) )
         {
           echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen eliminada!' ) );
         }

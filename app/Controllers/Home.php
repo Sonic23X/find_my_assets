@@ -13,7 +13,7 @@ class Home extends BaseController
   function __construct()
   {
     $this->session = \Config\Services::session( );
-		$this->$email = new PHPMailerLib( );
+		$this->email = new PHPMailerLib( );
   }
 
 	//función que regresa la landing page
@@ -73,7 +73,7 @@ class Home extends BaseController
 			$content = View( 'emails/formulario', $data );
 
 			//cargamos la configuración del email
-			$correo = $this->$email->contact( 'Nuevo contacto desde el formulario', $content );
+			$correo = $this->email->contact( 'Nuevo contacto desde el formulario', $content );
 
 			if ( !$correo->send( ) )
         echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
