@@ -213,13 +213,12 @@ class Activo extends BaseController
       try
       {
 				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																		->select( 'Ima_ActivoLeft', 'Ima_ActivoRight', 'Ima_ActivoFront' )
-                                    ->first( );
+																	 ->select( [ 'Ima_ActivoFront', 'Ima_ActivoRight', 'Ima_ActivoLeft' ] )
+                                   ->first( );
 
-        if ( $activo )
-					echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
-        else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al buscar las imagenes del activo. Intente más tarde' ) );
+				$frontFile = new \CodeIgniter\Files\File( $activo[ 'Ima_ActivoFront' ], true );
+
+				print_r( $frontFile );
       }
       catch (\Exception $e)
       {
@@ -248,21 +247,21 @@ class Activo extends BaseController
 						$name_photo = 'Ima_ActivoFront.jpg';
 						$update =
 						[
-							'Ima_ActivoFront' => '1/' . $name_photo,
+							'Ima_ActivoFront' => '/1/' . $name_photo,
 						];
 						break;
 					case 'right':
 						$name_photo = 'Ima_ActivoRight.jpg';
 						$update =
 						[
-							'Ima_ActivoRight' => '1/' . $name_photo,
+							'Ima_ActivoRight' => '/1/' . $name_photo,
 						];
 						break;
 					case 'left':
 						$name_photo = 'Ima_ActivoLeft.jpg';
 						$update =
 						[
-							'Ima_ActivoLeft' => '1/' . $name_photo,
+							'Ima_ActivoLeft' => '/1/' . $name_photo,
 						];
 						break;
 				}
