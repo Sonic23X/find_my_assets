@@ -216,9 +216,7 @@ class Activo extends BaseController
 																	 ->select( [ 'Ima_ActivoFront', 'Ima_ActivoRight', 'Ima_ActivoLeft' ] )
                                    ->first( );
 
-				$frontFile = new \CodeIgniter\Files\File( $activo[ 'Ima_ActivoFront' ], true );
-
-				print_r( $frontFile );
+				echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
       }
       catch (\Exception $e)
       {
@@ -238,35 +236,31 @@ class Activo extends BaseController
       {
 				// TODO: Conseguir imagen anterior, y si existe, borrarla
 				// TODO: Conseguir el id de la empresa
-				$name_photo = '';
 				$update = [ ];
+
+				$image = file_get_contents( $this->request->getFile( 'file' ) );
 
 				switch ( $this->request->getVar( 'type' ) )
 				{
 					case 'front':
-						$name_photo = 'Ima_ActivoFront.jpg';
 						$update =
 						[
-							'Ima_ActivoFront' => '/1/' . $name_photo,
+							'Ima_ActivoFront' => $image,
 						];
 						break;
 					case 'right':
-						$name_photo = 'Ima_ActivoRight.jpg';
 						$update =
 						[
-							'Ima_ActivoRight' => '/1/' . $name_photo,
+							'Ima_ActivoRight' => $image,
 						];
 						break;
 					case 'left':
-						$name_photo = 'Ima_ActivoLeft.jpg';
 						$update =
 						[
-							'Ima_ActivoLeft' => '/1/' . $name_photo,
+							'Ima_ActivoLeft' => $image,
 						];
 						break;
 				}
-
-				$image =  $this->request->getFile( 'file' )->store( '1/', $name_photo );
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
         {
