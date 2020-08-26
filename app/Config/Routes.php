@@ -55,6 +55,7 @@ $routes->get('/dashboard', 'Dashboard::Index');
 /** AJax - scanner **/
 $routes->get('/activos/getFormData', 'Activo::GetDataForm');
 $routes->post('/activos/search', 'Activo::SearchActivo');
+$routes->post('/activos/validateNew', 'Activo::ValidateActivo');
 $routes->post('/activos/new', 'Activo::NewActivo');
 $routes->post('/activos/updateInfo', 'Activo::UpdateInfoActivo');
 $routes->post('/activos/setGeo', 'Activo::SetCoordenadas');

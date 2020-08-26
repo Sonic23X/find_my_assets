@@ -6,7 +6,6 @@ class Activo extends BaseController
 {
 
 	protected $session;
-  protected $activoModel;
 	protected $userModel;
 	protected $tipoModel;
 	protected $empresaModel;
@@ -15,7 +14,6 @@ class Activo extends BaseController
   function __construct()
   {
     $this->session = \Config\Services::session( );
-    $this->activoModel = model( 'App\Models\ActivoModel' );
 		$this->tipoModel = model( 'App\Models\TipoModel' );
 		$this->userModel = model( 'App\Models\UserModel' );
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
@@ -56,7 +54,7 @@ class Activo extends BaseController
     {
       try
       {
-        $activo = $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+        $activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
                                     ->first( );
 
 				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
@@ -79,6 +77,17 @@ class Activo extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+	function ValidateActivo( )
+	{
+		$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																->first( );
+
+		if ( $already )
+			echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+		else
+			echo json_encode( array( 'status' => 200 ) );
+	}
+
   //método que funciona exclusivamente con AJAX - JQUERY
   function NewActivo( )
   {
@@ -86,6 +95,16 @@ class Activo extends BaseController
     {
       try
       {
+				//validar que no exista un activo con ese id
+				// TODO: anexar ID empresa
+				$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																		->first( );
+
+				if ( $already )
+				{
+					echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+					return;
+				}
 
         $insert =
         [
@@ -159,6 +178,7 @@ class Activo extends BaseController
 				$update =
         [
           'GPS' => $this->request->getVar( 'gps' ),
+					'Vida_Activo' => $this->request->getVar( 'vida' ),
 					'ID_Company' => $this->request->getVar( 'empresa' ),
 					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
           'ID_Area' => $this->request->getVar( 'area' ),
@@ -249,7 +269,7 @@ class Activo extends BaseController
 
 				$image =  $this->request->getFile( 'file' )->store( '1/', $name_photo );
 
-				$this->activoModel->save( $update );
+				$this->draftModel->save( $update );
 
 				/*if (  )
         {

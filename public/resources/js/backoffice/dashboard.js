@@ -942,16 +942,34 @@ $(document).ready(function( )
       return;
     }
 
-    localStorage.setItem( 'codigo', codigo );
-    isNew = true;
+    //validamos que el activo no exista con ese ID
+    $.ajax({
+      url: url + '/activos/validateNew',
+      type: 'POST',
+      dataType: 'json',
+      data: { codigo: codigo }
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        localStorage.setItem( 'codigo', codigo );
+        isNew = true;
 
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-form';
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-form';
 
-    setInsMessage( wizzardActualView );
+        setInsMessage( wizzardActualView );
 
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
+
   });
 
   //ready
@@ -1028,6 +1046,7 @@ $(document).ready(function( )
     let data =
     {
       codigo: localStorage.getItem( 'codigo' ),
+      vida: $( '#vidaUtil' ).val( ),
       empresa: $( '#empresas' ).val( ),
       sucursal: $( '#sucursal' ).val( ),
       area: $( '#area' ).val( ),
