@@ -530,6 +530,7 @@ function setImages( )
   })
   .done( response =>
   {
+
     if ( response.status == 200 )
     {
 
@@ -564,6 +565,7 @@ function putImage( node, type )
   $.ajax({
     url: url + '/activos/setImage',
     type: 'POST',
+    dataType: 'json',
     data: formData,
     processData: false,
     contentType: false,
@@ -572,6 +574,8 @@ function putImage( node, type )
   {
     if ( response.status == 200 )
     {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+
       let plantilla =
       `
         <img class="img-fluid" src="${ img }" style="width: 250px;" >
@@ -584,14 +588,6 @@ function putImage( node, type )
       imprimir( 'Ups...', response.msg, 'error' );
     }
   });
-
-
-  /*let plantilla =
-  `
-    <img class="img-fluid" src="${ img }" style="width: 250px;" >
-  `;
-
-  $( `#scanner-image-${ type }` ).html( plantilla );*/
 }
 
 function removeImage( type )
@@ -604,9 +600,8 @@ function removeImage( type )
   $.ajax({
     url: url + '/activos/deleteImage',
     type: 'POST',
+    dataType: 'json',
     data: formData,
-    processData: false,
-    contentType: false,
   })
   .done( response =>
   {

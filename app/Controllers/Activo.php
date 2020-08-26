@@ -77,15 +77,21 @@ class Activo extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+	//método que funciona exclusivamente con AJAX - JQUERY
 	function ValidateActivo( )
 	{
-		$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																->first( );
+		if ( $this->request->isAJAX( ) )
+		{
+			$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																	->first( );
 
-		if ( $already )
-			echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+			if ( $already )
+				echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+			else
+				echo json_encode( array( 'status' => 200 ) );
+		}
 		else
-			echo json_encode( array( 'status' => 200 ) );
+      return view( 'errors/cli/error_404' );
 	}
 
   //método que funciona exclusivamente con AJAX - JQUERY
@@ -236,16 +242,12 @@ class Activo extends BaseController
 				$name_photo = '';
 				$update = [ ];
 
-				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
-													->first( );
-
 				switch ( $this->request->getVar( 'type' ) )
 				{
 					case 'front':
 						$name_photo = 'Ima_ActivoFront.jpg';
 						$update =
 						[
-							'id' => $activo[ 'Id' ],
 							'Ima_ActivoFront' => '1/' . $name_photo,
 						];
 						break;
@@ -253,31 +255,27 @@ class Activo extends BaseController
 						$name_photo = 'Ima_ActivoRight.jpg';
 						$update =
 						[
-							'id' => $activo[ 'Id' ],
-							'Ima_ActivoFront' => '1/' . $name_photo,
+							'Ima_ActivoRight' => '1/' . $name_photo,
 						];
 						break;
 					case 'left':
 						$name_photo = 'Ima_ActivoLeft.jpg';
 						$update =
 						[
-							'id' => $activo[ 'Id' ],
-							'Ima_ActivoFront' => '1/' . $name_photo,
+							'Ima_ActivoLeft' => '1/' . $name_photo,
 						];
 						break;
 				}
 
 				$image =  $this->request->getFile( 'file' )->store( '1/', $name_photo );
 
-				$this->draftModel->save( $update );
-
-				/*if (  )
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
         {
           echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
         }
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );
-					*/
+
       }
       catch (\Exception $e)
       {
