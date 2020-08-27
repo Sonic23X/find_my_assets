@@ -368,7 +368,7 @@ class Activo extends BaseController
     {
       try
       {
-				$activo = $this->request->getVar( 'activo' );
+				$activo = $this->request->getVar( 'codigo' );
 				$tipo;
 
 				switch ( $this->request->getVar( 'type' ) )

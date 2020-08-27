@@ -604,22 +604,23 @@ function putImage( node, type )
 
 function removeImage( type )
 {
-  let formData = new FormData( );
-
-  formData.set( 'type', type );
-  formData.set( 'activo', localStorage.getItem( 'codigo' ) );
+  let data =
+  {
+    type: type,
+    codigo: localStorage.getItem( 'codigo' ),
+  };
 
   $.ajax({
     url: url + '/activos/deleteImage',
     type: 'POST',
     dataType: 'json',
-    data: formData,
+    data: data,
   })
   .done( response =>
   {
     if ( response.status == 200 )
     {
-      imprimir( 'Ups...', response.msg, 'error' );
+      imprimir( '¡Hecho!', response.msg, 'success' );
 
       let plantilla =
       `
