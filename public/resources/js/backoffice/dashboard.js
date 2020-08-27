@@ -507,44 +507,56 @@ function setInsMessage( view, update = false )
   $( '#instructions' ).html( message );
 }
 
-function setImages( )
+function setImageFront( )
 {
-  //reunimos la informacion en un JSON
-  let data =
-  {
-    codigo: localStorage.getItem( 'codigo' )
-  };
 
   let plantilla =
   `
-    <i class="fas fa-5x fa-image"></i>
-    <br>
-    <span>Vista previa</span>
+    <span>Sin imagen</span>
   `;
 
   $.ajax({
-    url: url + '/activos/getImages',
-    type: 'POST',
-    dataType: 'json',
-    data: data
+    url: url + `/activos/getImageFront/${ localStorage.getItem( 'codigo' ) }`,
+    type: 'GET',
+    responseType: 'blob',
+    contentType: false,
+    processData: false,
   })
   .done( response =>
   {
-
-    if ( response.status == 200 )
+    if ( response != '' )
     {
-
+      $( '#scanner-image-front' ).html( response );
     }
-    else
-    {
-      if ( !isNew )
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
+  });
 
-        $( '#scanner-image-front' ).html( plantilla );
-        $( '#scanner-image-right' ).html( plantilla );
-        $( '#scanner-image-left' ).html( plantilla );
-      }
+  $.ajax({
+    url: url + `/activos/getImageLeft/${ localStorage.getItem( 'codigo' ) }`,
+    type: 'GET',
+    responseType: 'blob',
+    contentType: false,
+    processData: false,
+  })
+  .done( response =>
+  {
+    if ( response != '' )
+    {
+      $( '#scanner-image-left' ).html( response );
+    }
+  });
+
+  $.ajax({
+    url: url + `/activos/getImageRight/${ localStorage.getItem( 'codigo' ) }`,
+    type: 'GET',
+    responseType: 'blob',
+    contentType: false,
+    processData: false,
+  })
+  .done( response =>
+  {
+    if ( response != '' )
+    {
+      $( '#scanner-image-right' ).html( response );
     }
   });
 
@@ -611,7 +623,7 @@ function removeImage( type )
 
       let plantilla =
       `
-        <i class="fas fa-5x fa-image"></i>
+        <span>Sin imagen</span>
       `;
 
       $( `#scanner-image-${ type }` ).html( plantilla );
@@ -822,6 +834,7 @@ $(document).ready(function( )
     })
     .done( response =>
     {
+
       if (response.status == 200)
       {
         $( '#scanner-subtipo' ).html( response.tipo.Desc );
@@ -1059,7 +1072,7 @@ $(document).ready(function( )
     {
       if ( response.status == 200 )
       {
-        let bool = setImages( );
+        let bool = setImageFront( );
 
         if ( bool )
         {

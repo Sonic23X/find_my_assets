@@ -306,9 +306,7 @@
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
                     <div id="scanner-image-front">
-                      <i class="fas fa-5x fa-image"></i>
-                      <br>
-                      <span>Vista previa</span>
+                      <span>Sin imagen</span>
                     </div>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
@@ -334,9 +332,7 @@
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
                     <div id="scanner-image-right">
-                      <i class="fas fa-5x fa-image"></i>
-                      <br>
-                      <span>Vista previa</span>
+                      <span>Sin imagen</span>
                     </div>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
@@ -362,9 +358,7 @@
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">
                     <div id="scanner-image-left">
-                      <i class="fas fa-5x fa-image"></i>
-                      <br>
-                      <p>Vista previa</p>
+                      <span>Sin imagen</span>
                     </div>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4">

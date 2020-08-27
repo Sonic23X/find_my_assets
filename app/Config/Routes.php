@@ -59,7 +59,9 @@ $routes->post('/activos/validateNew', 'Activo::ValidateActivo');
 $routes->post('/activos/new', 'Activo::NewActivo');
 $routes->post('/activos/updateInfo', 'Activo::UpdateInfoActivo');
 $routes->post('/activos/setGeo', 'Activo::SetCoordenadas');
-$routes->post('/activos/getImages', 'Activo::GetImages');
+$routes->get('/activos/getImageFront/(:num)', 'Activo::GetImageFront/$1');
+$routes->get('/activos/getImageLeft/(:num)', 'Activo::GetImageLeft/$1');
+$routes->get('/activos/getImageRight/(:num)', 'Activo::GetImageRight/$1');
 $routes->post('/activos/setImage', 'Activo::SetImage');
 $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 

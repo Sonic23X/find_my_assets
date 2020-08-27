@@ -54,19 +54,34 @@ class Activo extends BaseController
     {
       try
       {
+				$campos =
+				[
+					'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
+			    'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
+			    'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
+					'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
+			    'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
+					'User_Create', 'User_Update', '	User_Delete',
+			    'TS_Create', 'TS_Update', 'TS_Delete'
+				];
+
         $activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-                                    ->first( );
+																	 ->select( $campos )
+                                   ->first( );
+
+				if ( $activo == null )
+				{
+					echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
+					return;
+				}
 
 				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
 
+
 				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
 
-        if ( $activo )
-          $json = array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo );
-        else
-          $json = array( 'status' => 401, 'msg' => 'El activo no se ha encontrado en el sistema' );
+        echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
 
-        echo json_encode( $json );
       }
       catch (\Exception $e)
       {
@@ -206,17 +221,26 @@ class Activo extends BaseController
   }
 
 	//método que funciona exclusivamente con AJAX - JQUERY
-	function GetImages( )
+	function GetImageFront( $codigo )
 	{
 		if ( $this->request->isAJAX( ) )
     {
       try
       {
-				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																	 ->select( [ 'Ima_ActivoFront', 'Ima_ActivoRight', 'Ima_ActivoLeft' ] )
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
+																	 ->select( [ 'Ima_ActivoFront' ] )
                                    ->first( );
 
-				echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
+				$imgFront = null;
+				$imgLeft = null;
+				$imgRight = null;
+
+				if ( $activo[ 'Ima_ActivoFront' ] != null )
+				{
+					$imgFront = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoFront' ] ).'">';
+				}
+
+				echo $imgFront;
       }
       catch (\Exception $e)
       {
@@ -225,6 +249,64 @@ class Activo extends BaseController
     }
     else
       return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function GetImageRight( $codigo )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
+																	 ->select( [ 'Ima_ActivoRight' ] )
+																	 ->first( );
+
+				$imgRight = null;
+
+				if ( $activo[ 'Ima_ActivoRight' ] != null )
+				{
+					$imgRight = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoRight' ] ).'">';
+				}
+
+				echo $imgRight;
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function GetImageLeft( $codigo )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
+																	 ->select( [ 'Ima_ActivoLeft' ] )
+																	 ->first( );
+
+				$imgLeft = null;
+
+				if ( $activo[ 'Ima_ActivoLeft' ] != null )
+				{
+					$imgLeft = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoLeft' ] ).'">';
+				}
+
+				echo $imgLeft;
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
 	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
