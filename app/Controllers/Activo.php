@@ -6,7 +6,6 @@ class Activo extends BaseController
 {
 
 	protected $session;
-  protected $activoModel;
 	protected $userModel;
 	protected $tipoModel;
 	protected $empresaModel;
@@ -15,7 +14,6 @@ class Activo extends BaseController
   function __construct()
   {
     $this->session = \Config\Services::session( );
-    $this->activoModel = model( 'App\Models\ActivoModel' );
 		$this->tipoModel = model( 'App\Models\TipoModel' );
 		$this->userModel = model( 'App\Models\UserModel' );
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
@@ -56,19 +54,34 @@ class Activo extends BaseController
     {
       try
       {
-        $activo = $this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-                                    ->first( );
+				$campos =
+				[
+					'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
+			    'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
+			    'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
+					'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
+			    'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
+					'User_Create', 'User_Update', '	User_Delete',
+			    'TS_Create', 'TS_Update', 'TS_Delete'
+				];
+
+        $activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																	 ->select( $campos )
+                                   ->first( );
+
+				if ( $activo == null )
+				{
+					echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
+					return;
+				}
 
 				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
 
+
 				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
 
-        if ( $activo )
-          $json = array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo );
-        else
-          $json = array( 'status' => 401, 'msg' => 'El activo no se ha encontrado en el sistema' );
+        echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
 
-        echo json_encode( $json );
       }
       catch (\Exception $e)
       {
@@ -79,6 +92,23 @@ class Activo extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function ValidateActivo( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																	->first( );
+
+			if ( $already )
+				echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+			else
+				echo json_encode( array( 'status' => 200 ) );
+		}
+		else
+      return view( 'errors/cli/error_404' );
+	}
+
   //método que funciona exclusivamente con AJAX - JQUERY
   function NewActivo( )
   {
@@ -86,6 +116,16 @@ class Activo extends BaseController
     {
       try
       {
+				//validar que no exista un activo con ese id
+				// TODO: anexar ID empresa
+				$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																		->first( );
+
+				if ( $already )
+				{
+					echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+					return;
+				}
 
         $insert =
         [
@@ -159,6 +199,7 @@ class Activo extends BaseController
 				$update =
         [
           'GPS' => $this->request->getVar( 'gps' ),
+					'Vida_Activo' => $this->request->getVar( 'vida' ),
 					'ID_Company' => $this->request->getVar( 'empresa' ),
 					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
           'ID_Area' => $this->request->getVar( 'area' ),
@@ -180,20 +221,26 @@ class Activo extends BaseController
   }
 
 	//método que funciona exclusivamente con AJAX - JQUERY
-	function GetImages( )
+	function GetImageFront( $codigo )
 	{
 		if ( $this->request->isAJAX( ) )
     {
       try
       {
-				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																		->select( 'Ima_ActivoLeft', 'Ima_ActivoRight', 'Ima_ActivoFront' )
-                                    ->first( );
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
+																	 ->select( [ 'Ima_ActivoFront' ] )
+                                   ->first( );
 
-        if ( $activo )
-					echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
-        else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al buscar las imagenes del activo. Intente más tarde' ) );
+				$imgFront = null;
+				$imgLeft = null;
+				$imgRight = null;
+
+				if ( $activo[ 'Ima_ActivoFront' ] != null )
+				{
+					$imgFront = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoFront' ] ).'">';
+				}
+
+				echo $imgFront;
       }
       catch (\Exception $e)
       {
@@ -205,6 +252,64 @@ class Activo extends BaseController
 	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
+	function GetImageRight( $codigo )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
+																	 ->select( [ 'Ima_ActivoRight' ] )
+																	 ->first( );
+
+				$imgRight = null;
+
+				if ( $activo[ 'Ima_ActivoRight' ] != null )
+				{
+					$imgRight = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoRight' ] ).'">';
+				}
+
+				echo $imgRight;
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function GetImageLeft( $codigo )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
+																	 ->select( [ 'Ima_ActivoLeft' ] )
+																	 ->first( );
+
+				$imgLeft = null;
+
+				if ( $activo[ 'Ima_ActivoLeft' ] != null )
+				{
+					$imgLeft = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoLeft' ] ).'">';
+				}
+
+				echo $imgLeft;
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
 	function SetImage( )
 	{
 		if ( $this->request->isAJAX( ) )
@@ -213,51 +318,39 @@ class Activo extends BaseController
       {
 				// TODO: Conseguir imagen anterior, y si existe, borrarla
 				// TODO: Conseguir el id de la empresa
-				$name_photo = '';
 				$update = [ ];
 
-				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
-													->first( );
+				$image = file_get_contents( $this->request->getFile( 'file' ) );
 
 				switch ( $this->request->getVar( 'type' ) )
 				{
 					case 'front':
-						$name_photo = 'Ima_ActivoFront.jpg';
 						$update =
 						[
-							'id' => $activo[ 'Id' ],
-							'Ima_ActivoFront' => '1/' . $name_photo,
+							'Ima_ActivoFront' => $image,
 						];
 						break;
 					case 'right':
-						$name_photo = 'Ima_ActivoRight.jpg';
 						$update =
 						[
-							'id' => $activo[ 'Id' ],
-							'Ima_ActivoFront' => '1/' . $name_photo,
+							'Ima_ActivoRight' => $image,
 						];
 						break;
 					case 'left':
-						$name_photo = 'Ima_ActivoLeft.jpg';
 						$update =
 						[
-							'id' => $activo[ 'Id' ],
-							'Ima_ActivoFront' => '1/' . $name_photo,
+							'Ima_ActivoLeft' => $image,
 						];
 						break;
 				}
 
-				$image =  $this->request->getFile( 'file' )->store( '1/', $name_photo );
-
-				$this->activoModel->save( $update );
-
-				/*if (  )
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
         {
           echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
         }
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );
-					*/
+
       }
       catch (\Exception $e)
       {
@@ -275,7 +368,7 @@ class Activo extends BaseController
     {
       try
       {
-				$activo = $this->request->getVar( 'activo' );
+				$activo = $this->request->getVar( 'codigo' );
 				$tipo;
 
 				switch ( $this->request->getVar( 'type' ) )

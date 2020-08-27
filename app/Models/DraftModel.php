@@ -17,7 +17,7 @@ class DraftoModel extends Model
     'Img_FacCompra', 'Pre_Compra', 'Fec_Expira', 'Img_Garantia',
     'NSerie_Activo', 'ID_Tipo', 'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
     'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
-    'Ima_Activo0', 'Ima_ActivoLeft', 'Ima_ActivoRight', '	Ima_ActivoFront',
+    'Ima_Activo0', 'Ima_ActivoLeft', 'Ima_ActivoRight', 'Ima_ActivoFront',
     'Ima_ActivoBack', 'User_Create', 'User_Update', '	User_Delete',
     'TS_Create', 'TS_Update', 'TS_Delete'
   ];

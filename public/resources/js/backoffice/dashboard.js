@@ -507,43 +507,56 @@ function setInsMessage( view, update = false )
   $( '#instructions' ).html( message );
 }
 
-function setImages( )
+function setImageFront( )
 {
-  //reunimos la informacion en un JSON
-  let data =
-  {
-    codigo: localStorage.getItem( 'codigo' )
-  };
 
   let plantilla =
   `
-    <i class="fas fa-5x fa-image"></i>
-    <br>
-    <span>Vista previa</span>
+    <span>Sin imagen</span>
   `;
 
   $.ajax({
-    url: url + '/activos/getImages',
-    type: 'POST',
-    dataType: 'json',
-    data: data
+    url: url + `/activos/getImageFront/${ localStorage.getItem( 'codigo' ) }`,
+    type: 'GET',
+    responseType: 'blob',
+    contentType: false,
+    processData: false,
   })
   .done( response =>
   {
-    if ( response.status == 200 )
+    if ( response != '' )
     {
-
+      $( '#scanner-image-front' ).html( response );
     }
-    else
-    {
-      if ( !isNew )
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
+  });
 
-        $( '#scanner-image-front' ).html( plantilla );
-        $( '#scanner-image-right' ).html( plantilla );
-        $( '#scanner-image-left' ).html( plantilla );
-      }
+  $.ajax({
+    url: url + `/activos/getImageLeft/${ localStorage.getItem( 'codigo' ) }`,
+    type: 'GET',
+    responseType: 'blob',
+    contentType: false,
+    processData: false,
+  })
+  .done( response =>
+  {
+    if ( response != '' )
+    {
+      $( '#scanner-image-left' ).html( response );
+    }
+  });
+
+  $.ajax({
+    url: url + `/activos/getImageRight/${ localStorage.getItem( 'codigo' ) }`,
+    type: 'GET',
+    responseType: 'blob',
+    contentType: false,
+    processData: false,
+  })
+  .done( response =>
+  {
+    if ( response != '' )
+    {
+      $( '#scanner-image-right' ).html( response );
     }
   });
 
@@ -564,6 +577,7 @@ function putImage( node, type )
   $.ajax({
     url: url + '/activos/setImage',
     type: 'POST',
+    dataType: 'json',
     data: formData,
     processData: false,
     contentType: false,
@@ -572,6 +586,8 @@ function putImage( node, type )
   {
     if ( response.status == 200 )
     {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+
       let plantilla =
       `
         <img class="img-fluid" src="${ img }" style="width: 250px;" >
@@ -584,39 +600,31 @@ function putImage( node, type )
       imprimir( 'Ups...', response.msg, 'error' );
     }
   });
-
-
-  /*let plantilla =
-  `
-    <img class="img-fluid" src="${ img }" style="width: 250px;" >
-  `;
-
-  $( `#scanner-image-${ type }` ).html( plantilla );*/
 }
 
 function removeImage( type )
 {
-  let formData = new FormData( );
-
-  formData.set( 'type', type );
-  formData.set( 'activo', localStorage.getItem( 'codigo' ) );
+  let data =
+  {
+    type: type,
+    codigo: localStorage.getItem( 'codigo' ),
+  };
 
   $.ajax({
     url: url + '/activos/deleteImage',
     type: 'POST',
-    data: formData,
-    processData: false,
-    contentType: false,
+    dataType: 'json',
+    data: data,
   })
   .done( response =>
   {
     if ( response.status == 200 )
     {
-      imprimir( 'Ups...', response.msg, 'error' );
+      imprimir( '¡Hecho!', response.msg, 'success' );
 
       let plantilla =
       `
-        <i class="fas fa-5x fa-image"></i>
+        <span>Sin imagen</span>
       `;
 
       $( `#scanner-image-${ type }` ).html( plantilla );
@@ -827,6 +835,7 @@ $(document).ready(function( )
     })
     .done( response =>
     {
+
       if (response.status == 200)
       {
         $( '#scanner-subtipo' ).html( response.tipo.Desc );
@@ -942,16 +951,34 @@ $(document).ready(function( )
       return;
     }
 
-    localStorage.setItem( 'codigo', codigo );
-    isNew = true;
+    //validamos que el activo no exista con ese ID
+    $.ajax({
+      url: url + '/activos/validateNew',
+      type: 'POST',
+      dataType: 'json',
+      data: { codigo: codigo }
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        localStorage.setItem( 'codigo', codigo );
+        isNew = true;
 
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-form';
+        wizzardPreviewView = wizzardActualView;
+        wizzardActualView = '.scanner-form';
 
-    setInsMessage( wizzardActualView );
+        setInsMessage( wizzardActualView );
 
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
+        $( wizzardPreviewView ).addClass( 'd-none' );
+        $( wizzardActualView ).removeClass( 'd-none' );
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
+
   });
 
   //ready
@@ -1028,6 +1055,7 @@ $(document).ready(function( )
     let data =
     {
       codigo: localStorage.getItem( 'codigo' ),
+      vida: $( '#vidaUtil' ).val( ),
       empresa: $( '#empresas' ).val( ),
       sucursal: $( '#sucursal' ).val( ),
       area: $( '#area' ).val( ),
@@ -1045,7 +1073,7 @@ $(document).ready(function( )
     {
       if ( response.status == 200 )
       {
-        let bool = setImages( );
+        let bool = setImageFront( );
 
         if ( bool )
         {
