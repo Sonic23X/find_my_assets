@@ -232,12 +232,12 @@ class Activo extends BaseController
                                    ->first( );
 
 				$imgFront = null;
-				$imgLeft = null;
-				$imgRight = null;
 
 				if ( $activo[ 'Ima_ActivoFront' ] != null )
 				{
-					$imgFront = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoFront' ] ).'">';
+					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoFront' ] );
+
+					$imgFront = '<img id="front-image" class="img-fluid" style="height: 250px" src="'. $dataImage .'" onclick="viewImageFront( )">';
 				}
 
 				echo $imgFront;
@@ -266,7 +266,9 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoRight' ] != null )
 				{
-					$imgRight = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoRight' ] ).'">';
+					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoRight' ] );
+
+					$imgRight = '<img id="right-image" class="img-fluid" style="height: 250px" src="'. $dataImage .'" onclick="viewImageRight( )">';
 				}
 
 				echo $imgRight;
@@ -295,7 +297,9 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoLeft' ] != null )
 				{
-					$imgLeft = '<img class="img-fluid" style="height: 250px" src="data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoLeft' ] ).'">';
+					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoLeft' ] );
+
+					$imgLeft = '<img id="left-image" class="img-fluid" style="height: 250px" src="'. $dataImage .'" onclick="viewImageLeft( )">';
 				}
 
 				echo $imgLeft;

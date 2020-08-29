@@ -533,7 +533,6 @@ function setImageFront( )
   $.ajax({
     url: url + `/activos/getImageLeft/${ localStorage.getItem( 'codigo' ) }`,
     type: 'GET',
-    responseType: 'blob',
     contentType: false,
     processData: false,
   })
@@ -590,7 +589,9 @@ function putImage( node, type )
 
       let plantilla =
       `
-        <img class="img-fluid" src="${ img }" style="width: 250px;" >
+        <a href="${ img }" target="_blank">
+          <img class="img-fluid" src="${ img }" style="width: 250px;" >
+        </a>
       `;
 
       $( `#scanner-image-${ type }` ).html( plantilla );
@@ -635,6 +636,49 @@ function removeImage( type )
     }
   });
 
+}
+
+function dataURLtoFile( dataurl, filename )
+{
+
+   var arr = dataurl.split(','),
+       mime = arr[0].match(/:(.*?);/)[1],
+       bstr = atob(arr[1]),
+       n = bstr.length,
+       u8arr = new Uint8Array(n);
+
+   while(n--){
+       u8arr[n] = bstr.charCodeAt(n);
+   }
+
+   return new File([u8arr], filename, {type:mime});
+}
+
+function viewImageFront( )
+{
+  let dataImage = $( '#front-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
+}
+
+function viewImageLeft( )
+{
+  let dataImage = $( '#left-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
+}
+
+function viewImageRight( )
+{
+  let dataImage = $( '#right-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
 }
 
 $(document).ready(function( )
