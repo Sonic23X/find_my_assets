@@ -98,6 +98,14 @@ html, body
   position: relative;
 }
 
+.instructions
+{
+  background-color: #aaaaaa;
+  color: #FFFFFF;
+  text-align: center !important;
+  align-items: center;
+}
+
 /* --- Scanner --- */
 
 .item-nav
@@ -114,14 +122,6 @@ html, body
   text-align: center;
   font-weight: bold;
   font-size: 20px;
-}
-
-.scanner-instructions
-{
-  background-color: #aaaaaa;
-  color: #FFFFFF;
-  text-align: center !important;
-  align-items: center;
 }
 
 .options-container
