@@ -80,7 +80,7 @@
                   </div>
                 </div>
 
-                <div class="row mt-1">
+                <div class="row">
                   <div class="col-12 col-sm-12 col-md-12 mt-3 title-scanner">
                     <span>¿Problemas con la etiqueta?</span>
                     <br>
@@ -88,7 +88,7 @@
                   </div>
                 </div>
 
-                <div class="row mt-1">
+                <div class="row">
                   <div class="col-12 col-sm-12 col-md-12 mt-3 title-scanner">
                     <span>¿El activo es nuevo?</span>
                     <br>
