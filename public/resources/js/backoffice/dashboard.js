@@ -581,12 +581,15 @@ function setImageFront( )
 function putImage( node, type )
 {
   let img = URL.createObjectURL( node.files[0] );
+  let imagen = new File( [ node.files[ 0 ] ], 'photo.jpg', { type: 'mime' } );
 
   let formData = new FormData( );
 
   formData.set( 'type', type );
   formData.set( 'activo', localStorage.getItem( 'codigo' ) );
-  formData.append( 'file', node.files[ 0 ] );
+  formData.append( 'file', imagen );
+
+  console.log( imagen );
 
   //subir a servidor
   $.ajax({
