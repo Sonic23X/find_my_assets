@@ -38,7 +38,7 @@
                 </div>
               </div>
 
-              <div class="row mt-3 p-2 scanner-instructions text-center">
+              <div class="row mt-3 p-2 instructions text-center">
                 <div class="col-1 col-sm-1">
                   <a href="#" class="scan-back">
                     <i class="fas fa-arrow-left"></i>
@@ -214,7 +214,7 @@
                   <div class="col-1 col-sm-1"></div>
                 </div>
 
-                <div class="row mt-2 p-2 scanner-instructions text-center">
+                <div class="row mt-2 p-2 instructions text-center">
                   <div class="col-12 col-sm-12 text-center">
                     <span id="instructions2">Ubicación geográfica del activo</span>
                   </div>
@@ -226,7 +226,7 @@
                   </div>
                 </div>
 
-                <div class="row mt-3 p-2 scanner-instructions text-center">
+                <div class="row mt-3 p-2 instructions text-center">
                   <div class="col-12 col-sm-12 text-center">
                     <span id="instructions3">Selecciona el tipo de etiqueta que tiene el activo</span>
                   </div>

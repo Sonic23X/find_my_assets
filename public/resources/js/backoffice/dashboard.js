@@ -6,6 +6,22 @@ var lat;
 var isNew = false;
 var activeMap;
 
+function dataURLtoFile( dataurl, filename )
+{
+
+   var arr = dataurl.split(','),
+       mime = arr[0].match(/:(.*?);/)[1],
+       bstr = atob(arr[1]),
+       n = bstr.length,
+       u8arr = new Uint8Array(n);
+
+   while(n--){
+       u8arr[n] = bstr.charCodeAt(n);
+   }
+
+   return new File([u8arr], filename, {type:mime});
+}
+
 /* --- scanner --- */
 var wizzardActualView = '.scanner-start';
 var wizzardPreviewView = '.scanner-start';
@@ -638,22 +654,6 @@ function removeImage( type )
 
 }
 
-function dataURLtoFile( dataurl, filename )
-{
-
-   var arr = dataurl.split(','),
-       mime = arr[0].match(/:(.*?);/)[1],
-       bstr = atob(arr[1]),
-       n = bstr.length,
-       u8arr = new Uint8Array(n);
-
-   while(n--){
-       u8arr[n] = bstr.charCodeAt(n);
-   }
-
-   return new File([u8arr], filename, {type:mime});
-}
-
 function viewImageFront( )
 {
   let dataImage = $( '#front-image' ).attr( 'src' );
@@ -681,6 +681,46 @@ function viewImageRight( )
   window.open( img , '_blank' );
 }
 
+/* --- inventario --- */
+
+function setBackgroundButtons( button )
+{
+  switch ( button )
+  {
+    case 'new':
+      $( '#inv-new' ).removeClass( 'btn-outline-secondary' );
+      $( '#inv-new' ).addClass( 'btn-primary' );
+
+      $( '#inv-update' ).removeClass( 'btn-primary' );
+      $( '#inv-update' ).addClass( 'btn-outline-secondary' );
+
+      $( '#inv-inv' ).removeClass( 'btn-primary' );
+      $( '#inv-inv' ).addClass( 'btn-outline-secondary' );
+
+      break;
+    case 'update':
+      $( '#inv-update' ).removeClass( 'btn-outline-secondary' );
+      $( '#inv-update' ).addClass( 'btn-primary' );
+
+      $( '#inv-new' ).removeClass( 'btn-primary' );
+      $( '#inv-new' ).addClass( 'btn-outline-secondary' );
+
+      $( '#inv-inv' ).removeClass( 'btn-primary' );
+      $( '#inv-inv' ).addClass( 'btn-outline-secondary' );
+      break;
+    case 'inv':
+      $( '#inv-inv' ).removeClass( 'btn-outline-secondary' );
+      $( '#inv-inv' ).addClass( 'btn-primary' );
+
+      $( '#inv-update' ).removeClass( 'btn-primary' );
+      $( '#inv-update' ).addClass( 'btn-outline-secondary' );
+
+      $( '#inv-new' ).removeClass( 'btn-primary' );
+      $( '#inv-new' ).addClass( 'btn-outline-secondary' );
+      break;
+  }
+}
+
 $(document).ready(function( )
 {
 
@@ -705,16 +745,19 @@ $(document).ready(function( )
     //activamos el color
     activeItem( '#inventario' );
 
-    if ( actualView != '.home' )
+    if ( actualView != '.inventary' )
     {
       switch ( actualView )
       {
         case '.scanner':
           $( actualView ).addClass( 'd-none' );
           break;
+        case '.home':
+          $( actualView ).addClass( 'd-none' );
+          break;
       }
 
-      actualView = '.home';
+      actualView = '.inventary';
       $( actualView ).removeClass( 'd-none' );
     }
 
@@ -733,6 +776,9 @@ $(document).ready(function( )
       switch ( actualView )
       {
         case '.scanner':
+          $( actualView ).addClass( 'd-none' );
+          break;
+        case '.inventary':
           $( actualView ).addClass( 'd-none' );
           break;
       }
@@ -756,6 +802,9 @@ $(document).ready(function( )
       switch ( actualView )
       {
         case '.home':
+          $( actualView ).addClass( 'd-none' );
+          break;
+        case '.inventary':
           $( actualView ).addClass( 'd-none' );
           break;
       }
@@ -1170,6 +1219,48 @@ $(document).ready(function( )
     $( wizzardPreviewView ).addClass( 'd-none' );
     $( wizzardActualView ).removeClass( 'd-none' );
 
+  });
+
+  /* --- inventario --- */
+
+  $( '#inv-new' ).click( event =>
+  {
+    event.preventDefault( );
+
+    //colocamos
+    setBackgroundButtons( 'new' );
+
+    //mostramos
+    $( '.inv-inv-table' ).addClass( 'd-none' );
+    $( '.inv-update-table' ).addClass( 'd-none' );
+
+    $( '.inv-news-table' ).removeClass( 'd-none' );
+  });
+
+  $( '#inv-update' ).click( event =>
+  {
+    event.preventDefault( );
+
+    setBackgroundButtons( 'update' );
+
+    //mostramos
+    $( '.inv-news-table' ).addClass( 'd-none' );
+    $( '.inv-inv-table' ).addClass( 'd-none' );
+
+    $( '.inv-update-table' ).removeClass( 'd-none' );
+  });
+
+  $( '#inv-inv' ).click( event =>
+  {
+    event.preventDefault( );
+
+    setBackgroundButtons( 'inv' );
+
+    //mostramos
+    $( '.inv-news-table' ).addClass( 'd-none' );
+    $( '.inv-update-table' ).addClass( 'd-none' );
+
+    $( '.inv-inv-table' ).removeClass( 'd-none' );
   });
 
 });

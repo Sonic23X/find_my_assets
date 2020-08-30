@@ -41,6 +41,9 @@ class Dashboard extends BaseController
       //content - mantener
 			echo view( 'backoffice/sections/keep' );
 
+      //content - Inventario
+			echo view( 'backoffice/sections/inventary' );
+
 			//Scripts y librerias
       $footer = array( 'js' => 'dashboard' );
 			echo view( 'backoffice/common/footer', $footer );
