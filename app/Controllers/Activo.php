@@ -237,7 +237,7 @@ class Activo extends BaseController
 				{
 					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoFront' ] );
 
-					$imgFront = '<img id="front-image" class="img-fluid" style="height: 250px; width: 100px;" src="'. $dataImage .'" onclick="viewImageFront( )">';
+					$imgFront = '<img id="front-image" class="img-fluid" style="height: 100px; width: 100px;" src="'. $dataImage .'" onclick="viewImageFront( )">';
 				}
 
 				echo $imgFront;
@@ -268,7 +268,7 @@ class Activo extends BaseController
 				{
 					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoRight' ] );
 
-					$imgRight = '<img id="right-image" class="img-fluid" style="height: 250px; width: 100px;" src="'. $dataImage .'" onclick="viewImageRight( )">';
+					$imgRight = '<img id="right-image" class="img-fluid" style="height: 100px; width: 100px;" src="'. $dataImage .'" onclick="viewImageRight( )">';
 				}
 
 				echo $imgRight;
@@ -324,7 +324,9 @@ class Activo extends BaseController
 				// TODO: Conseguir el id de la empresa
 				$update = [ ];
 
-				$image = file_get_contents( $this->request->getFile( 'file' ) );
+				$photo = $this->request->getFile( 'file' );
+
+				$image = file_get_contents( $photo->getTempName( )  );
 
 				switch ( $this->request->getVar( 'type' ) )
 				{
