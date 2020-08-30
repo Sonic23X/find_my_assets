@@ -583,13 +583,21 @@ function putImage( node, type )
   let img = URL.createObjectURL( node.files[0] );
   let imagen = new File( [ node.files[ 0 ] ], 'photo.jpg', { type: 'mime' } );
 
+  let plantillaLoad =
+  `
+    <span>
+      <i class="fas fa-cog fa-spin"></i>
+      Cargando
+    </span>
+  `;
+
+  $( `#scanner-image-${ type }` ).html( plantillaLoad );
+
   let formData = new FormData( );
 
   formData.set( 'type', type );
   formData.set( 'activo', localStorage.getItem( 'codigo' ) );
   formData.append( 'file', imagen );
-
-  console.log( imagen );
 
   //subir a servidor
   $.ajax({
@@ -609,7 +617,7 @@ function putImage( node, type )
       let plantilla =
       `
         <a href="${ img }" target="_blank">
-          <img class="img-fluid" src="${ img }" style="width: 250px;" >
+          <img class="img-fluid" src="${ img }" style="width: 100px; height: 100px;" >
         </a>
       `;
 
@@ -617,9 +625,26 @@ function putImage( node, type )
     }
     else
     {
+      let plantilla =
+      `
+        <span>Sin imagen</span>
+      `;
+
+      $( `#scanner-image-${ type }` ).html( plantilla );
+
       imprimir( 'Ups...', response.msg, 'error' );
     }
+  })
+  .fail( ( ) =>
+  {
+    let plantilla =
+    `
+      <span>Sin imagen</span>
+    `;
+
+    $( `#scanner-image-${ type }` ).html( plantilla );
   });
+
 }
 
 function removeImage( type )
