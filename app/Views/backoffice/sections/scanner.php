@@ -88,7 +88,7 @@
                   </div>
                 </div>
 
-                <div class="row mt-5">
+                <div class="row mt-2">
                   <div class="col-12 col-sm-12 col-md-12 mt-3 title-scanner">
                     <span>¿El activo es nuevo?</span>
                     <br>
@@ -283,7 +283,7 @@
                 <div class="form-group row mb-5">
                   <div class="col-3 col-sm-3"></div>
                   <div class="col-6 col-sm-6">
-                    <button type="button" class="btn btn-primary btn-block" id="nextGeo">Buscar</button>
+                    <button type="button" class="btn btn-primary btn-block" id="nextGeo">Siguiente</button>
                   </div>
                   <div class="col-3 col-sm-3"></div>
                 </div>
