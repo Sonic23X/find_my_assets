@@ -15,22 +15,22 @@
                     <div class="bs-stepper-header" role="tablist">
                       <div class="step" data-target="#scan-part">
                         <div class="step-trigger">
-                          <span class="bs-stepper-circle">1</span>
-                          <span class="bs-stepper-label">Escanear</span>
+                          <span class="bs-stepper-circle scan-circle" style="background: yellow">1</span>
+                          <span class="bs-stepper-label scan-label" style="color: yellow">Escanear</span>
                         </div>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#update-part-part">
                         <div class="step-trigger">
-                          <span class="bs-stepper-circle">2</span>
-                          <span class="bs-stepper-label">Actualizar</span>
+                          <span class="bs-stepper-circle update-circle">2</span>
+                          <span class="bs-stepper-label update-label">Actualizar</span>
                         </div>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#photo-part">
                         <div class="step-trigger">
-                          <span class="bs-stepper-circle">3</span>
-                          <span class="bs-stepper-label">Fotografiar</span>
+                          <span class="bs-stepper-circle photo-circle">3</span>
+                          <span class="bs-stepper-label photo-label">Fotografiar</span>
                         </div>
                       </div>
                     </div>

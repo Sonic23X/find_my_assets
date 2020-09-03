@@ -494,18 +494,42 @@ function setInsMessage( view, update = false )
   switch ( view )
   {
     case '.scanner-start':
+      $( '.scan-circle' ).css('background', 'yellow');
+      $( '.scan-label' ).css('color', 'yellow');
+      $( '.update-circle' ).css('background', '#6c757d');
+      $( '.update-label' ).css('color', '#6c757d');
+      $( '.photo-circle' ).css('background', '#6c757d');
+      $( '.photo-label' ).css('color', '#6c757d');
       message = 'Selecciona el tipo de etiqueta que tiene el activo';
       break;
     case '.scanner-status':
+      $( '.scan-circle' ).css('background', '#6c757d');
+      $( '.scan-label' ).css('color', '#6c757d');
+      $( '.update-circle' ).css('background', 'yellow');
+      $( '.update-label' ).css('color', 'yellow');
+      $( '.photo-circle' ).css('background', '#6c757d');
+      $( '.photo-label' ).css('color', '#6c757d');
       message = 'Estás inventariando';
       break;
     case '.scanner-form':
+      $( '.scan-circle' ).css('background', '#6c757d');
+      $( '.scan-label' ).css('color', '#6c757d');
+      $( '.update-circle' ).css('background', 'yellow');
+      $( '.update-label' ).css('color', 'yellow');
+      $( '.photo-circle' ).css('background', '#6c757d');
+      $( '.photo-label' ).css('color', '#6c757d');
       if ( update )
         message = 'Edita los datos del activo';
       else
         message = 'Ingresa los datos del activo';
       break;
     case '.scanner-geolocation':
+      $( '.scan-circle' ).css('background', '#6c757d');
+      $( '.scan-label' ).css('color', '#6c757d');
+      $( '.update-circle' ).css('background', 'yellow');
+      $( '.update-label' ).css('color', 'yellow');
+      $( '.photo-circle' ).css('background', '#6c757d');
+      $( '.photo-label' ).css('color', '#6c757d');
       if ( update )
       {
         message = 'Indica el avance en la vida útil del activo';
@@ -520,6 +544,12 @@ function setInsMessage( view, update = false )
       }
       break;
     case '.scanner-photos':
+      $( '.scan-circle' ).css('background', '#6c757d');
+      $( '.scan-label' ).css('color', '#6c757d');
+      $( '.update-circle' ).css('background', '#6c757d');
+      $( '.update-label' ).css('color', '#6c757d');
+      $( '.photo-circle' ).css('background', 'yellow');
+      $( '.photo-label' ).css('color', 'yellow');
       message = 'Ingresa las imagenes del activo';
       break;
     case '.scanner-without-scan':
