@@ -254,8 +254,7 @@
                       <label class="col-sm-2 col-form-label">Sucursal</label>
                       <div class="col-sm-6">
                         <select class="custom-select" name="sucursal" id="sucursal">
-                          <option value="1">Sucursal 1</option>
-                          <option value="2">Sucursal 2</option>
+
                         </select>
                       </div>
                     </div>

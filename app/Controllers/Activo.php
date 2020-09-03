@@ -10,6 +10,8 @@ class Activo extends BaseController
 	protected $tipoModel;
 	protected $empresaModel;
 	protected $draftModel;
+	protected $sucursalModel;
+	//protected $draftModel;
 
   function __construct()
   {
@@ -18,6 +20,7 @@ class Activo extends BaseController
 		$this->userModel = model( 'App\Models\UserModel' );
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
 		$this->draftModel = model( 'App\Models\DraftModel' );
+		$this->sucursalModel = model( 'App\Models\SucursalModel' );
   }
 
 	//método que funciona exclusivamente con AJAX - JQUERY
@@ -30,9 +33,11 @@ class Activo extends BaseController
 				$tipos = $this->tipoModel->findAll( );
 				$usuarios = $this->userModel->findAll( );
 				$empresas = $this->empresaModel->findAll( );
+				$sucursales = $this->sucursalModel->findAll( );
 
         if ( $tipos )
-          $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios, 'empresas' => $empresas );
+          $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
+												 'empresas' => $empresas, 'sucursales' => $sucursales );
         else
           $json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 

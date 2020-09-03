@@ -134,6 +134,19 @@ function getScannerFormData( )
 
       });
 
+      let sucursales = response.sucursales;
+
+      sucursales.forEach( ( sucursal , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+        `;
+
+        $( '#sucursal' ).append( typePlantilla );
+
+      });
 
     }
     else
