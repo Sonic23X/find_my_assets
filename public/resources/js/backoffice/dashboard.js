@@ -134,6 +134,19 @@ function getScannerFormData( )
 
       });
 
+      let sucursales = response.sucursales;
+
+      sucursales.forEach( ( sucursal , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+        `;
+
+        $( '#sucursal' ).append( typePlantilla );
+
+      });
 
     }
     else
@@ -747,6 +760,11 @@ function setBackgroundButtons( button )
       $( '#inv-new' ).addClass( 'btn-outline-secondary' );
       break;
   }
+}
+
+function viewActivosWajustes( )
+{
+  $( '#inv-update-table-aca' ).removeClass('d-none');
 }
 
 $(document).ready(function( )

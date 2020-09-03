@@ -254,8 +254,7 @@
                       <label class="col-sm-2 col-form-label">Sucursal</label>
                       <div class="col-sm-6">
                         <select class="custom-select" name="sucursal" id="sucursal">
-                          <option value="1">Sucursal 1</option>
-                          <option value="2">Sucursal 2</option>
+
                         </select>
                       </div>
                     </div>
@@ -304,12 +303,12 @@
                     </label>
                     <p>Imagen frontal</p>
                   </div>
-                  <div class="col-4 col-sm-4 col-md-4">
+                  <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-front">
                       <span>Sin imagen</span>
                     </div>
                   </div>
-                  <div class="col-4 col-sm-4 col-md-4">
+                  <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div class="photo-button-delete mt-2">
                       <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'front' )">
                         <i class="fas fa-minus"></i>
@@ -330,12 +329,12 @@
                     </label>
                     <p>Imagen lateral derecha</p>
                   </div>
-                  <div class="col-4 col-sm-4 col-md-4">
+                  <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-right">
                       <span>Sin imagen</span>
                     </div>
                   </div>
-                  <div class="col-4 col-sm-4 col-md-4">
+                  <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div class="photo-button-delete mt-2">
                       <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'right' )">
                         <i class="fas fa-minus"></i>
@@ -356,12 +355,12 @@
                     </label>
                     <p>Imagen lateral izquierda</p>
                   </div>
-                  <div class="col-4 col-sm-4 col-md-4">
+                  <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-left">
                       <span>Sin imagen</span>
                     </div>
                   </div>
-                  <div class="col-4 col-sm-4 col-md-4">
+                  <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div class="photo-button-delete mt-2">
                       <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'left' )">
                         <i class="fas fa-minus"></i>
