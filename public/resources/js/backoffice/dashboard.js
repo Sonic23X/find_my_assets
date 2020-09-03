@@ -749,6 +749,11 @@ function setBackgroundButtons( button )
   }
 }
 
+function viewActivosWajustes( )
+{
+  $( '#inv-update-table-aca' ).removeClass('d-none');
+}
+
 $(document).ready(function( )
 {
 

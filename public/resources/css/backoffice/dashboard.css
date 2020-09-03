@@ -27,6 +27,13 @@ html, body
     border-bottom: 0;
 }
 
+.vertial-content-align
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* --- Inicio Secciones --- */
 
 /* --- Sidebar --- */
