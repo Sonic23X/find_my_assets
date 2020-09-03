@@ -1127,7 +1127,6 @@ $(document).ready(function( )
 
     //validamos los campos
     if ( $( '#name' ).val( ) == '' ||
-         $( '#serie' ).val( ) == '' ||
          $( '#asignacion' ).val( ) == '' ||
          $( '#desc' ).val( ) == ''
        )
@@ -1181,6 +1180,11 @@ $(document).ready(function( )
       }
     });
 
+  });
+
+  $( '#sucursal' ).change(function(event)
+  {
+    //obtenemos las areas conforme el valor de la sucursal
   });
 
   //ready
