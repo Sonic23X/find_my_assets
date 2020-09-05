@@ -309,7 +309,7 @@
                     </div>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
-                    <div class="photo-button-delete mt-2">
+                    <div class="mt-2">
                       <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'front' )">
                         <i class="fas fa-minus"></i>
                       </button>
@@ -327,7 +327,7 @@
                             onChange="putImage(this, 'right')"
                             tabindex=-1/>
                     </label>
-                    <p>Imagen lateral derecha</p>
+                    <p>lateral derecha</p>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-right">
@@ -335,7 +335,7 @@
                     </div>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
-                    <div class="photo-button-delete mt-2">
+                    <div class="mt-2">
                       <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'right' )">
                         <i class="fas fa-minus"></i>
                       </button>
@@ -353,7 +353,7 @@
                             onChange="putImage(this, 'left')"
                             tabindex=-1/>
                     </label>
-                    <p>Imagen lateral izquierda</p>
+                    <p>lateral izquierda</p>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-left">
@@ -361,7 +361,7 @@
                     </div>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
-                    <div class="photo-button-delete mt-2">
+                    <div class="mt-2">
                       <button type="button" class="btn btn-danger btn-radius" onclick="removeImage( 'left' )">
                         <i class="fas fa-minus"></i>
                       </button>
