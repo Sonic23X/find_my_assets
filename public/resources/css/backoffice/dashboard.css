@@ -33,6 +33,12 @@ html, body
   color: #FFFFFF;
 }
 
+.filtros-card-background
+{
+  background-color: #ffde59;
+  color: #FFFFFF;
+}
+
 .vertial-content-align
 {
   display: flex;
