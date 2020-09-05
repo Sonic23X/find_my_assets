@@ -792,6 +792,11 @@ function setBackgroundButtons( button )
   }
 }
 
+function confirmNew( )
+{
+
+}
+
 function ConfirmUpdate( )
 {
   Swal.fire(
@@ -815,6 +820,43 @@ function ConfirmUpdate( )
       {
         $( '#updateModal' ).modal( 'hide' );
       });
+    }
+  });
+}
+
+function ConfirmNew( )
+{
+  Swal.fire(
+  {
+    title: '¡Atención!',
+    text: 'Estas a un click de confirmar el alta de tu activo, esta acción no se podrá deshacer',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ffde59',
+    cancelButtonColor: '#d9534f',
+    cancelButtonText: 'Guardar y seguir luego',
+    confirmButtonText: 'Continuar',
+  }).then( result =>
+  {
+    if ( result.value )
+    {
+      Swal.fire(
+      {
+        title: '¡Excelente!',
+        text: 'El activo ha sido dado de alta exitosamente',
+        icon: 'success',
+        confirmButtonColor: '#5cb85c',
+      })
+      .then( result =>
+      {
+        $( '.inv-news-active-new' ).addClass( 'd-none' );
+        $( '.inv-news-start' ).removeClass( 'd-none' );
+      });
+    }
+    else if ( result.dismiss === Swal.DismissReason.cancel )
+    {
+      $( '.inv-news-active-new' ).addClass( 'd-none' );
+      $( '.inv-news-start' ).removeClass( 'd-none' );
     }
   });
 }
@@ -1325,6 +1367,8 @@ $(document).ready(function( )
 
   /* --- inventario --- */
 
+  //$( '#fechagarantia' ).datepicker( );
+
   $( '#inv-new' ).click( event =>
   {
     event.preventDefault( );
@@ -1363,6 +1407,22 @@ $(document).ready(function( )
     $( '.inv-update-table' ).addClass( 'd-none' );
 
     $( '.inv-inv-table' ).removeClass( 'd-none' );
+  });
+
+  $( '#deleteNewActivo' ).click( event =>
+  {
+    Swal.fire(
+    {
+      title: '¡Listo',
+      text: 'El activo ha sido eliminado exitosamente',
+      icon: 'success',
+      confirmButtonColor: '#5cb85c',
+    })
+    .then( result =>
+    {
+      $( '.inv-news-confirm' ).addClass( 'd-none' );
+      $( '.inv-news-start' ).removeClass( 'd-none' );
+    });
   });
 
 });

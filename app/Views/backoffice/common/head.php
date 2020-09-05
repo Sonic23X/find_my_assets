@@ -25,6 +25,8 @@
     <!-- stepper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
 
+    <link rel="stylesheet" href="./resources/plugins/datepicker/css/bootstrap-datepicker.min.css">
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
 
