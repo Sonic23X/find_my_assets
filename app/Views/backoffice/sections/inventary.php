@@ -35,7 +35,7 @@
                       <div class="card">
                         <div class="card-body">
 
-                          <div class="row mb-3">
+                          <div class="row">
                             <div class="col-6 float-left align-middle">
                               <span>Total de activos: <b>XX</b> </span>
                             </div>
@@ -197,7 +197,7 @@
 
                       <div class="row mt-2 text-center">
                         <div class="col-6 col-sm-6 col-md-6">
-                          <button type="button" class="btn btn-block btn-success btn-sm" id="conciliar1">Sí</button>
+                          <button type="button" class="btn btn-block btn-success btn-sm" id="conciliar1" onclick="IsConcilar( )">Sí</button>
                         </div>
 
                         <div class="col-6 col-sm-6 col-md-6">
@@ -318,6 +318,180 @@
                         </div>
 
                       </form>
+                    </div>
+
+                    <div class="inv-news-conciliar d-none">
+                      <div class="card">
+                        <div class="card-body">
+
+                          <div class="row">
+                            <div class="col-6 float-left align-middle">
+
+                            </div>
+                            <div class="col-6 float-right">
+                              <label class="sr-only" for="searchActiveInv">Buscar</label>
+                              <div class="input-group mb-2">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text">
+                                    <i class="fas fa-search"></i>
+                                  </div>
+                                </div>
+                                <input type="text" class="form-control" id="searchActiveNew" placeholder="Buscar">
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mt-3 table-responsive text-center">
+                            <table class="table table-sm table-hover">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Activo</th>
+                                  <th scope="col">Asignación</th>
+                                  <th scope="col">%</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
+                                      [subtipo de activo]
+                                      <br>
+                                      [tipo de activo]
+                                    </a>
+                                  </td>
+                                  <td class="align-middle">
+                                    [asignado]
+                                  </td>
+                                  <td class="align-middle">
+                                    <button type="button" class="btn btn-success btn-sm" name="button" data-toggle="modal" data-target="#conciliarModal">
+                                      90%
+                                    </button>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
+                                      [subtipo de activo]
+                                      <br>
+                                      [tipo de activo]
+                                    </a>
+                                  </td>
+                                  <td class="align-middle">
+                                    [asignado]
+                                  </td>
+                                  <td class="align-middle">
+                                    <button type="button" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#conciliarModal">
+                                      80%
+                                    </button>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td>
+                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
+                                      [subtipo de activo]
+                                      <br>
+                                      [tipo de activo]
+                                    </a>
+                                  </td>
+                                  <td class="align-middle">
+                                    [asignado]
+                                  </td>
+                                  <td class="align-middle">
+                                    <button type="button" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#conciliarModal">
+                                      70%
+                                    </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="inv-news-conciliar-confirm d-none">
+                      <div class="card">
+                        <div class="card-body">
+
+                          <div class="row">
+                            <div class="col-12 text-center">
+                              <span><b>El activo nuevo</b></span>
+                            </div>
+                          </div>
+
+                          <div class="row text-center">
+                            <div class="table-responsive">
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Activo</th>
+                                    <th scope="col">Asignación</th>
+                                    <th scope="col">Cargado</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      [subtipo de activo]
+                                      <br>
+                                      [tipo de activo]
+                                    </td>
+                                    <td class="align-middle">
+                                      [asignado]
+                                    </td>
+                                    <td class="align-middle">
+                                      dd/mm/aa
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          <div class="separator">conciliar con</div>
+
+                          <div class="row mt-3">
+                            <div class="col-12 text-center">
+                              <span><b>El activo existente</b></span>
+                            </div>
+                          </div>
+
+                          <div class="row text-center">
+                            <div class="table-responsive">
+                              <table class="table table-hover">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Activo</th>
+                                    <th scope="col">Asignación</th>
+                                    <th scope="col">Cargado</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>
+                                      [subtipo de activo]
+                                      <br>
+                                      [tipo de activo]
+                                    </td>
+                                    <td class="align-middle">
+                                      [asignado]
+                                    </td>
+                                    <td class="align-middle">
+                                      dd/mm/aa
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+
+                          <div class="row mt-5">
+                            <div class="col-12">
+                              <button type="button" class="btn btn-success btn-block btn-sm" onclick="ConfirmConciliarMsg( )">Conciliar y actualizar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <!-- Modal -->
@@ -459,6 +633,75 @@
                               </div>
 
                             </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="modal fade" id="conciliarModal" tabindex="-1" role="dialog" aria-labelledby="conciliarModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="conciliarModalLabel">Pareo de activos</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+
+                            <div class="row">
+                              <div class="col-12 text-center">
+                                <span class="badge badge-success">--%</span>
+                              </div>
+                            </div>
+
+                            <div class="row mt-1">
+                              <div class="table-responsive">
+                                <table class="table table-borderless text-center">
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">Nuevo</th>
+                                      <th scope="col">|</th>
+                                      <th scope="col">Existente</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td>NN</td>
+                                      <td><b>Tipo</b></td>
+                                      <td>NN</td>
+                                    </tr>
+                                    <tr>
+                                      <td>NN</td>
+                                      <td><b>No. Serie</b></td>
+                                      <td>NN</td>
+                                    </tr>
+                                    <tr>
+                                      <td>NN</td>
+                                      <td><b>Ubicación</b></td>
+                                      <td>NN</td>
+                                    </tr>
+                                    <tr>
+                                      <td>NN</td>
+                                      <td><b>Centro de costo</b></td>
+                                      <td>NN</td>
+                                    </tr>
+                                    <tr>
+                                      <td>NN</td>
+                                      <td><b>Asignación</b></td>
+                                      <td>NN</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+
+                            <div class="row mt-2">
+                              <div class="col-12">
+                                <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" onclick="ConfirmConciliar( )">Continuar</button>
+                              </div>
+                            </div>
+
                           </div>
                         </div>
                       </div>
