@@ -34,6 +34,8 @@
     <!-- jQuery library -->
     <script src="./resources/plugins/jquery/jquery-3.5.1.min.js"></script>
 
+    <script rel="stylesheet" href="./resources/plugins/datepicker/js/bootstrap-datepicker.min.js"></script>
+
     <!-- PopperJS -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -62,7 +64,7 @@
     <script type="text/javascript" src="./resources/plugins/barcode/quagga.min.js"></script>
 
     <!-- stepper -->
-    <link rel="stylesheet" href="./resources/plugins/stepper/stepper.min.js">
+    <script rel="stylesheet" href="./resources/plugins/stepper/stepper.min.js"></script>
 
     <!-- Custom JS -->
     <script src="./resources/js/backoffice/<?= $js ?>.js"></script>
