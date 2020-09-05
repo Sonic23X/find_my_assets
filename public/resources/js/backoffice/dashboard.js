@@ -868,6 +868,36 @@ function ConfirmNew( )
   });
 }
 
+function IsConcilar( )
+{
+  $( '.inv-news-confirm' ).addClass( 'd-none' );
+  $( '.inv-news-conciliar' ).removeClass( 'd-none' );
+}
+
+function ConfirmConciliar( )
+{
+  $( '.inv-news-conciliar' ).addClass( 'd-none' );
+  $( '.inv-news-conciliar-confirm' ).removeClass( 'd-none' );
+}
+
+function ConfirmConciliarMsg( )
+{
+  Swal.fire(
+  {
+    title: '¡Excelente!',
+    text: 'El activo en tu inventario ha sido actualizado exitosamente',
+    icon: 'success',
+    confirmButtonColor: '#5cb85c',
+  }).then( result =>
+  {
+    if ( result.value )
+    {
+      $( '.inv-news-conciliar-confirm' ).addClass( 'd-none' );
+      $( '.inv-news-home' ).removeClass( 'd-none' );
+    }
+  });
+}
+
 $(document).ready(function( )
 {
 
