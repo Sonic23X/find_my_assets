@@ -27,6 +27,12 @@ html, body
     border-bottom: 0;
 }
 
+.card-background-color
+{
+  background-color: #aaaaaa;
+  color: #FFFFFF;
+}
+
 .vertial-content-align
 {
   display: flex;
