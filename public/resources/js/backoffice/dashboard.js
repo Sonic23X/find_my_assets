@@ -792,9 +792,31 @@ function setBackgroundButtons( button )
   }
 }
 
-function viewActivosWajustes( )
+function ConfirmUpdate( )
 {
-  $( '#inv-update-table-aca' ).removeClass('d-none');
+  Swal.fire(
+  {
+    title: '¡Atención!',
+    text: 'Estas a un click de confirmar la actualización de tu activo, esta acción no se podrá deshacer',
+    icon: 'warning',
+    confirmButtonColor: '#ffde59',
+  }).then( result =>
+  {
+    if ( result.value )
+    {
+      Swal.fire(
+      {
+        title: '¡Excelente!',
+        text: 'El activo ha sido actualizado exitosamente',
+        icon: 'success',
+        confirmButtonColor: '#5cb85c',
+      })
+      .then( result =>
+      {
+        $( '#updateModal' ).modal( 'hide' );
+      });
+    }
+  });
 }
 
 $(document).ready(function( )

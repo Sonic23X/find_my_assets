@@ -27,6 +27,18 @@ html, body
     border-bottom: 0;
 }
 
+.card-background-color
+{
+  background-color: #aaaaaa;
+  color: #FFFFFF;
+}
+
+.filtros-card-background
+{
+  background-color: #ffde59;
+  color: #FFFFFF;
+}
+
 .vertial-content-align
 {
   display: flex;
