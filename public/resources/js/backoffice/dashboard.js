@@ -494,8 +494,8 @@ function setInsMessage( view, update = false )
   switch ( view )
   {
     case '.scanner-start':
-      $( '.scan-circle' ).css('background', 'yellow');
-      $( '.scan-label' ).css('color', 'yellow');
+      $( '.scan-circle' ).css('background', '#ffde59');
+      $( '.scan-label' ).css('color', '#ffde59');
       $( '.update-circle' ).css('background', '#6c757d');
       $( '.update-label' ).css('color', '#6c757d');
       $( '.photo-circle' ).css('background', '#6c757d');
@@ -505,8 +505,8 @@ function setInsMessage( view, update = false )
     case '.scanner-status':
       $( '.scan-circle' ).css('background', '#6c757d');
       $( '.scan-label' ).css('color', '#6c757d');
-      $( '.update-circle' ).css('background', 'yellow');
-      $( '.update-label' ).css('color', 'yellow');
+      $( '.update-circle' ).css('background', '#ffde59');
+      $( '.update-label' ).css('color', '#ffde59');
       $( '.photo-circle' ).css('background', '#6c757d');
       $( '.photo-label' ).css('color', '#6c757d');
       message = 'Estás inventariando';
@@ -514,8 +514,8 @@ function setInsMessage( view, update = false )
     case '.scanner-form':
       $( '.scan-circle' ).css('background', '#6c757d');
       $( '.scan-label' ).css('color', '#6c757d');
-      $( '.update-circle' ).css('background', 'yellow');
-      $( '.update-label' ).css('color', 'yellow');
+      $( '.update-circle' ).css('background', '#ffde59');
+      $( '.update-label' ).css('color', '#ffde59');
       $( '.photo-circle' ).css('background', '#6c757d');
       $( '.photo-label' ).css('color', '#6c757d');
       if ( update )
@@ -526,8 +526,8 @@ function setInsMessage( view, update = false )
     case '.scanner-geolocation':
       $( '.scan-circle' ).css('background', '#6c757d');
       $( '.scan-label' ).css('color', '#6c757d');
-      $( '.update-circle' ).css('background', 'yellow');
-      $( '.update-label' ).css('color', 'yellow');
+      $( '.update-circle' ).css('background', '#ffde59');
+      $( '.update-label' ).css('color', '#ffde59');
       $( '.photo-circle' ).css('background', '#6c757d');
       $( '.photo-label' ).css('color', '#6c757d');
       if ( update )
@@ -548,8 +548,8 @@ function setInsMessage( view, update = false )
       $( '.scan-label' ).css('color', '#6c757d');
       $( '.update-circle' ).css('background', '#6c757d');
       $( '.update-label' ).css('color', '#6c757d');
-      $( '.photo-circle' ).css('background', 'yellow');
-      $( '.photo-label' ).css('color', 'yellow');
+      $( '.photo-circle' ).css('background', '#ffde59');
+      $( '.photo-label' ).css('color', '#ffde59');
       message = 'Ingresa las imagenes del activo';
       break;
     case '.scanner-without-scan':
@@ -885,8 +885,8 @@ function IsConcilar( )
   $( '.inv-news-conciliar' ).removeClass( 'd-none' );
   $( '.inv-step' ).removeClass( 'd-none' );
 
-  $( '.select-circle' ).css('background', 'yellow');
-  $( '.select-label' ).css('color', 'yellow');
+  $( '.select-circle' ).css('background', '#ffde59');
+  $( '.select-label' ).css('color', '#ffde59');
   $( '.confirm-circle' ).css('background', '#6c757d');
   $( '.confirm-label' ).css('color', '#6c757d');
 
@@ -900,8 +900,8 @@ function ConfirmConciliar( )
 
   $( '.select-circle' ).css('background', '#6c757d');
   $( '.select-label' ).css('color', '#6c757d');
-  $( '.confirm-circle' ).css('background', 'yellow');
-  $( '.confirm-label' ).css('color', 'yellow');
+  $( '.confirm-circle' ).css('background', '#ffde59');
+  $( '.confirm-label' ).css('color', '#ffde59');
 
   $( '#inv-instructions' ).html( 'Confirma la conciliación' );
 }
@@ -1497,6 +1497,7 @@ $(document).ready(function( )
     {
       $( '.inv-news-confirm' ).addClass( 'd-none' );
       $( '.inv-news-home' ).removeClass( 'd-none' );
+      $( '.inv-buttons' ).removeClass( 'd-none' );
     });
   });
 
