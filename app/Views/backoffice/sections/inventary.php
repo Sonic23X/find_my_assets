@@ -31,7 +31,7 @@
 
                   <div class="inv-news-table w-100 d-none">
 
-                    <div class="inv-news-start d-none">
+                    <div class="inv-news-home">
                       <div class="card">
                         <div class="card-body">
 
@@ -78,7 +78,7 @@
                                     dd/mm/aa
                                   </td>
                                   <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
+                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
                                       <i class="fas fa-angle-right"></i>
                                     </button>
                                   </td>
@@ -98,7 +98,7 @@
                                     dd/mm/aa
                                   </td>
                                   <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
+                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
                                       <i class="fas fa-angle-right"></i>
                                     </button>
                                   </td>
@@ -118,7 +118,7 @@
                                     dd/mm/aa
                                   </td>
                                   <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
+                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
                                       <i class="fas fa-angle-right"></i>
                                     </button>
                                   </td>
@@ -138,7 +138,7 @@
                                     dd/mm/aa
                                   </td>
                                   <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
+                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
                                       <i class="fas fa-angle-right"></i>
                                     </button>
                                   </td>
@@ -158,7 +158,7 @@
                                     dd/mm/aa
                                   </td>
                                   <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
+                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
                                       <i class="fas fa-angle-right"></i>
                                     </button>
                                   </td>
@@ -201,7 +201,7 @@
                         </div>
 
                         <div class="col-6 col-sm-6 col-md-6">
-                          <button type="button" class="btn btn-block btn-primary btn-sm" id="continueNew">
+                          <button type="button" class="btn btn-block btn-primary btn-sm" id="continueNew" onclick="NewActiveForm( )">
                             Es activo nuevo
                           </button>
                         </div>
@@ -217,7 +217,7 @@
 
                     </div>
 
-                    <div class="inv-news-active-new">
+                    <div class="inv-news-active-new d-none">
                       <form class="active-inventary-new-active-form">
 
                         <div class="row">
@@ -451,7 +451,7 @@
                               <div class="form-group row mb-5">
                                 <div class="col-3 col-sm-3"></div>
                                 <div class="col-6 col-sm-6">
-                                  <button type="button" class="btn btn-primary btn-block" onclick="ConfirmUpdate( )">
+                                  <button type="button" class="btn btn-primary btn-block" onclick="InfoNew( )">
                                     Continuar
                                   </button>
                                 </div>

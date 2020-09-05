@@ -792,11 +792,6 @@ function setBackgroundButtons( button )
   }
 }
 
-function confirmNew( )
-{
-
-}
-
 function ConfirmUpdate( )
 {
   Swal.fire(
@@ -822,6 +817,18 @@ function ConfirmUpdate( )
       });
     }
   });
+}
+
+function InfoNew( )
+{
+  $( '.inv-news-home' ).addClass( 'd-none' );
+  $( '.inv-news-confirm' ).removeClass( 'd-none' );
+}
+
+function NewActiveForm( )
+{
+  $( '.inv-news-confirm' ).addClass( 'd-none' );
+  $( '.inv-news-active-new' ).removeClass( 'd-none' );
 }
 
 function ConfirmNew( )
@@ -850,13 +857,13 @@ function ConfirmNew( )
       .then( result =>
       {
         $( '.inv-news-active-new' ).addClass( 'd-none' );
-        $( '.inv-news-start' ).removeClass( 'd-none' );
+        $( '.inv-news-home' ).removeClass( 'd-none' );
       });
     }
     else if ( result.dismiss === Swal.DismissReason.cancel )
     {
       $( '.inv-news-active-new' ).addClass( 'd-none' );
-      $( '.inv-news-start' ).removeClass( 'd-none' );
+      $( '.inv-news-home' ).removeClass( 'd-none' );
     }
   });
 }
@@ -1421,7 +1428,7 @@ $(document).ready(function( )
     .then( result =>
     {
       $( '.inv-news-confirm' ).addClass( 'd-none' );
-      $( '.inv-news-start' ).removeClass( 'd-none' );
+      $( '.inv-news-home' ).removeClass( 'd-none' );
     });
   });
 
