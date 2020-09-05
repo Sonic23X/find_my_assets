@@ -7,19 +7,41 @@
                 </div>
               </div>
 
+              <div class="row inv-step d-none">
+                <div class="col-12 col-md-12 col-sm-12">
+                  <div class="bs-stepper">
+                    <div class="bs-stepper-header" role="tablist">
+                      <div class="step" data-target="#scan-part">
+                        <div class="step-trigger">
+                          <span class="bs-stepper-circle select-circle" style="background: yellow">1</span>
+                          <span class="bs-stepper-label select-label" style="color: yellow">Seleccionar</span>
+                        </div>
+                      </div>
+                      <div class="line"></div>
+                      <div class="step" data-target="#update-part-part">
+                        <div class="step-trigger">
+                          <span class="bs-stepper-circle confirm-circle">2</span>
+                          <span class="bs-stepper-label confirm-label">Confirmar</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="row mt-3 p-2 instructions text-center">
                 <div class="col-12 col-sm-12 text-center">
-                  <span id="inv-iinstructions">Selecciona uno de los estados de carga</span>
+                  <span id="inv-instructions">Selecciona uno de los estados de carga</span>
                 </div>
               </div>
 
               <div class="row mt-3 p-2 inv-buttons">
                 <div class="col-12">
                   <div class="d-flex justify-content-center">
-                    <div class="btn-group" role="group" aria-label="Navegacion">
-                      <input type="button" class="btn btn-outline-secondary" value="Nuevos" id="inv-new">
-                      <input type="button" class="btn btn-outline-secondary" value="Actualizados" id="inv-update">
-                      <input type="button" class="btn btn-outline-secondary" value="Inventario" id="inv-inv">
+                    <div class="btn-group w-100" role="group" aria-label="Navegacion">
+                      <input type="button" class="btn btn-outline-secondary w-25" value="Nuevos" id="inv-new">
+                      <input type="button" class="btn btn-outline-secondary w-25" value="En proceso" id="inv-update">
+                      <input type="button" class="btn btn-outline-secondary w-25" value="Inventario" id="inv-inv">
                     </div>
                   </div>
                 </div>
@@ -717,7 +739,8 @@
                         <span>Activos con ajustes</span>
                         <span class="badge badge-warning text-white">XX</span>
                         <div class="card-tools">
-                          <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white">
+                          <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white"
+                            onclick="setInvInstruccions( 'Selecciona uno de tus activos' )">
                             <i class="fas fa-plus"></i>
                           </button>
                         </div>
@@ -862,7 +885,8 @@
                         <span>Activos sin ajustes</span>
                         <span class="badge badge-warning text-white">XX</span>
                         <div class="card-tools">
-                          <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white">
+                          <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white"
+                                  onclick="setInvInstruccions( 'Consulta los datos de tus activos act.' )">
                             <i class="fas fa-plus"></i>
                           </button>
                         </div>
@@ -873,7 +897,7 @@
                           <div class="col-6 float-left align-middle">
                             <span>Total de activos: <b>XX</b> </span>
                           </div>
-                          <div class="col-5 float-right">
+                          <div class="col-6 float-right">
                             <label class="sr-only" for="searchActiveInv">Buscar</label>
                             <div class="input-group mb-2">
                               <div class="input-group-prepend">
@@ -1122,7 +1146,7 @@
                           <div class="col-6 float-left align-middle">
                             <span>Total de activos: <b>XX</b> </span>
                           </div>
-                          <div class="col-5 float-right">
+                          <div class="col-6 float-right">
                             <label class="sr-only" for="searchActiveInv">Buscar</label>
                             <div class="input-group mb-2">
                               <div class="input-group-prepend">

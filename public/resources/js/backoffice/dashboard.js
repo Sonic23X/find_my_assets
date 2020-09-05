@@ -822,13 +822,18 @@ function ConfirmUpdate( )
 function InfoNew( )
 {
   $( '.inv-news-home' ).addClass( 'd-none' );
+  $( '.inv-buttons' ).addClass( 'd-none' );
   $( '.inv-news-confirm' ).removeClass( 'd-none' );
+
+  $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
 }
 
 function NewActiveForm( )
 {
   $( '.inv-news-confirm' ).addClass( 'd-none' );
   $( '.inv-news-active-new' ).removeClass( 'd-none' );
+
+  $( '#inv-instructions' ).html( 'Ingresa los últimos datos del alta' );
 }
 
 function ConfirmNew( )
@@ -858,12 +863,18 @@ function ConfirmNew( )
       {
         $( '.inv-news-active-new' ).addClass( 'd-none' );
         $( '.inv-news-home' ).removeClass( 'd-none' );
+        $( '.inv-buttons' ).removeClass( 'd-none' );
+
+        $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
       });
     }
     else if ( result.dismiss === Swal.DismissReason.cancel )
     {
       $( '.inv-news-active-new' ).addClass( 'd-none' );
       $( '.inv-news-home' ).removeClass( 'd-none' );
+      $( '.inv-buttons' ).removeClass( 'd-none' );
+
+      $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
     }
   });
 }
@@ -872,12 +883,27 @@ function IsConcilar( )
 {
   $( '.inv-news-confirm' ).addClass( 'd-none' );
   $( '.inv-news-conciliar' ).removeClass( 'd-none' );
+  $( '.inv-step' ).removeClass( 'd-none' );
+
+  $( '.select-circle' ).css('background', 'yellow');
+  $( '.select-label' ).css('color', 'yellow');
+  $( '.confirm-circle' ).css('background', '#6c757d');
+  $( '.confirm-label' ).css('color', '#6c757d');
+
+  $( '#inv-instructions' ).html( 'Selecciona el activo a conciliar' );
 }
 
 function ConfirmConciliar( )
 {
   $( '.inv-news-conciliar' ).addClass( 'd-none' );
   $( '.inv-news-conciliar-confirm' ).removeClass( 'd-none' );
+
+  $( '.select-circle' ).css('background', '#6c757d');
+  $( '.select-label' ).css('color', '#6c757d');
+  $( '.confirm-circle' ).css('background', 'yellow');
+  $( '.confirm-label' ).css('color', 'yellow');
+
+  $( '#inv-instructions' ).html( 'Confirma la conciliación' );
 }
 
 function ConfirmConciliarMsg( )
@@ -893,9 +919,18 @@ function ConfirmConciliarMsg( )
     if ( result.value )
     {
       $( '.inv-news-conciliar-confirm' ).addClass( 'd-none' );
+      $( '.inv-step' ).addClass( 'd-none' );
       $( '.inv-news-home' ).removeClass( 'd-none' );
+      $( '.inv-buttons' ).removeClass( 'd-none' );
+
+      $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
     }
   });
+}
+
+function setInvInstruccions( text )
+{
+  $( '#inv-instructions' ).html( text );
 }
 
 $(document).ready(function( )
@@ -1418,6 +1453,7 @@ $(document).ready(function( )
     $( '.inv-update-table' ).addClass( 'd-none' );
 
     $( '.inv-news-table' ).removeClass( 'd-none' );
+    $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
   });
 
   $( '#inv-update' ).click( event =>
@@ -1431,6 +1467,7 @@ $(document).ready(function( )
     $( '.inv-inv-table' ).addClass( 'd-none' );
 
     $( '.inv-update-table' ).removeClass( 'd-none' );
+    $( '#inv-instructions' ).html( 'Selecciona uno de los grupos de activos actualizados' );
   });
 
   $( '#inv-inv' ).click( event =>
@@ -1444,6 +1481,7 @@ $(document).ready(function( )
     $( '.inv-update-table' ).addClass( 'd-none' );
 
     $( '.inv-inv-table' ).removeClass( 'd-none' );
+    $( '#inv-instructions' ).html( 'Consulta la información online de tus activos' );
   });
 
   $( '#deleteNewActivo' ).click( event =>
