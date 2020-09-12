@@ -933,6 +933,86 @@ function setInvInstruccions( text )
   $( '#inv-instructions' ).html( text );
 }
 
+function getInvFormData( )
+{
+  $( '.iAsignacion' ).html( );
+  $( '.iSucursal' ).html( );
+  $( '.iEmpresa' ).html( );
+  $( '.iTipoActivo' ).html( );
+
+  $.ajax({
+    url: url + '/inventario/getFormData',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let tipos = response.types;
+
+      tipos.forEach( ( tipo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ tipo.id }">${ tipo.Desc }</option>
+        `;
+
+        $( '.iTipoActivo' ).append( typePlantilla );
+
+      });
+
+      let usuarios = response.users;
+
+      usuarios.forEach( ( usuario , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ usuario.id_usuario }">${ usuario.nombre + ' ' + usuario.apellidos }</option>
+        `;
+
+        $( '.iAsignacion' ).append( typePlantilla );
+
+      });
+
+      let empresas = response.empresas;
+
+      empresas.forEach( ( empresa , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ empresa.id_empresa }">${ empresa.nombre }</option>
+        `;
+
+        $( '.iEmpresa' ).append( typePlantilla );
+
+      });
+
+      let sucursales = response.sucursales;
+
+      sucursales.forEach( ( sucursal , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+        `;
+
+        $( '.iSucursal' ).append( typePlantilla );
+
+      });
+
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
 $(document).ready(function( )
 {
 
@@ -1439,7 +1519,7 @@ $(document).ready(function( )
 
   /* --- inventario --- */
 
-  //$( '#fechagarantia' ).datepicker( );
+  getInvFormData( );
 
   $( '#inv-new' ).click( event =>
   {

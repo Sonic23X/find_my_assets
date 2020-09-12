@@ -11,7 +11,6 @@ class Activo extends BaseController
 	protected $empresaModel;
 	protected $draftModel;
 	protected $sucursalModel;
-	//protected $draftModel;
 
   function __construct()
   {
