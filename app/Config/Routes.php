@@ -52,7 +52,7 @@ $routes->get('/salir', 'Auth::Logout');
 /** Backoffice - Inicio **/
 $routes->get('/dashboard', 'Dashboard::Index');
 
-/** AJax - scanner **/
+/** AJAX - scanner **/
 $routes->get('/activos/getFormData', 'Activo::GetDataForm');
 $routes->post('/activos/search', 'Activo::SearchActivo');
 $routes->post('/activos/validateNew', 'Activo::ValidateActivo');
@@ -64,6 +64,10 @@ $routes->get('/activos/getImageLeft/(:alphanum)', 'Activo::GetImageLeft/$1');
 $routes->get('/activos/getImageRight/(:alphanum)', 'Activo::GetImageRight/$1');
 $routes->post('/activos/setImage', 'Activo::SetImage');
 $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
+
+/** AJAX - scanner **/
+$routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
+$routes->get('/inventario/getItems', 'Inventary::GetImageFront');
 
 /**
  * --------------------------------------------------------------------

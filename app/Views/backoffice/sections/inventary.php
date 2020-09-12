@@ -291,7 +291,7 @@
 
                         <div class="form-group row">
                           <label for="name" class="col-8 col-form-label">
-                            No contabilizar
+                            ¿Contabilizar?
                             <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom"
                                     style="border-radius: 25px; font-size: 9px !important;"
                                     title="Solo será considerado para efectos de control general, no afectará el resultado financiero">
@@ -299,7 +299,7 @@
                             </button>
                           </label>
                           <div class="col-4 d-flex justify-content-center align-items-center">
-                            <input type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="warning" data-offstyle="outline-warning" data-style="ios">
+                            <input type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="warning" data-offstyle="warning" data-style="ios">
                           </div>
                         </div>
 
@@ -529,7 +529,7 @@
                               <div class="form-group row">
                                 <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="tipoActivo" id="iTipoActivo" disabled>
+                                  <select class="custom-select iTipoActivo" name="tipoActivo" id="newTipoActivo" disabled>
                                     <option value="">Muebles y utilidades</option>
                                   </select>
                                 </div>
@@ -559,7 +559,7 @@
                               <div class="form-group row">
                                 <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="cCosto" id="icCosto">
+                                  <select class="custom-select" name="cCosto" id="newCCosto">
                                     <option value="1">Administración</option>
                                     <option value="2">Producción</option>
                                     <option value="3">Marketing</option>
@@ -571,7 +571,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Asignado a</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion" id="iAsignacion">
+                                  <select class="custom-select iAsignacion" name="asignacion" id="newAsignacion">
 
                                   </select>
                                 </div>
@@ -586,7 +586,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion" id="iEmpresa">
+                                  <select class="custom-select iEmpresa" name="asignacion" id="newEmpresa">
 
                                   </select>
                                 </div>
@@ -595,7 +595,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion" id="iSucursal">
+                                  <select class="custom-select iSucursal" name="asignacion" id="newSucursal">
 
                                   </select>
                                 </div>
@@ -604,7 +604,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion" id="iArea">
+                                  <select class="custom-select iArea" name="asignacion" id="newArea">
 
                                   </select>
                                 </div>
@@ -1045,7 +1045,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Asignado a</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion" id="iAsignacion">
+                                  <select class="custom-select iAsignacion" name="asignacion" id="infoAsignacion">
 
                                   </select>
                                 </div>
@@ -1198,7 +1198,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion">
+                                  <select class="custom-select iEmpresa" name="asignacion">
 
                                   </select>
                                 </div>
@@ -1207,7 +1207,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion">
+                                  <select class="custom-select iSucursal" name="asignacion">
 
                                   </select>
                                 </div>
@@ -1216,7 +1216,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion">
+                                  <select class="custom-select iArea" name="asignacion">
 
                                   </select>
                                 </div>
