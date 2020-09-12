@@ -2,7 +2,7 @@
             <div class="inventary d-none">
 
               <div class="row text-center">
-                <div class="col-12 col-sm-12 text-center">
+                <div class="col-12 col-sm-12 col-md-12 text-center title-inv">
                   <b>Confirma y concilia tu inventario</b>
                 </div>
               </div>
@@ -13,8 +13,8 @@
                     <div class="bs-stepper-header" role="tablist">
                       <div class="step" data-target="#scan-part">
                         <div class="step-trigger">
-                          <span class="bs-stepper-circle select-circle" style="background: yellow">1</span>
-                          <span class="bs-stepper-label select-label" style="color: yellow">Seleccionar</span>
+                          <span class="bs-stepper-circle select-circle" style="background: #e6c84f">1</span>
+                          <span class="bs-stepper-label select-label" style="color: #e6c84f">Seleccionar</span>
                         </div>
                       </div>
                       <div class="line"></div>
@@ -224,7 +224,7 @@
 
                         <div class="col-6 col-sm-6 col-md-6">
                           <button type="button" class="btn btn-block btn-primary btn-sm" id="continueNew" onclick="NewActiveForm( )">
-                            Es activo nuevo
+                            No, continuar
                           </button>
                         </div>
                       </div>
@@ -299,10 +299,7 @@
                             </button>
                           </label>
                           <div class="col-4 d-flex justify-content-center align-items-center">
-                            <div class="custom-control custom-switch">
-                              <input type="checkbox" class="custom-control-input" id="contabilizar">
-                              <label class="custom-control-label" for="contabilizar"></label>
-                            </div>
+                            <input type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="warning" data-offstyle="outline-warning" data-style="ios">
                           </div>
                         </div>
 
@@ -647,7 +644,7 @@
                               <div class="form-group row mb-5">
                                 <div class="col-3 col-sm-3"></div>
                                 <div class="col-6 col-sm-6">
-                                  <button type="button" class="btn btn-primary btn-block" onclick="InfoNew( )">
+                                  <button type="button" class="btn btn-primary btn-block" data-dismiss="modal" onclick="InfoNew( )">
                                     Continuar
                                   </button>
                                 </div>
@@ -1170,7 +1167,60 @@
                           </div>
                           <div class="card-body">
                             <div class="text-center">
-                              < ------Filtros----- >
+                              <div class="form-group row">
+                                <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
+                                <div class="col-sm-10">
+                                  <select class="custom-select" name="tipoActivo">
+                                    <option value="">Muebles y utilidades</option>
+                                  </select>
+                                </div>
+                              </div>
+
+							                <div class="form-group row">
+                                <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
+                                <div class="col-sm-10">
+                                  <select class="custom-select" name="cCosto">
+                                    <option value="1">Administración</option>
+                                    <option value="2">Producción</option>
+                                    <option value="3">Marketing</option>
+                                    <option value="4">Comercial</option>
+                                  </select>
+                                </div>
+                              </div>
+
+
+                              <div class="row">
+                                <div class="col-12 text-center">
+                                  <span><b>Ubicación</b></span>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
+                                <div class="col-sm-10">
+                                  <select class="custom-select" name="asignacion">
+
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
+                                <div class="col-sm-10">
+                                  <select class="custom-select" name="asignacion">
+
+                                  </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
+                                <div class="col-sm-10">
+                                  <select class="custom-select" name="asignacion">
+
+                                  </select>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>

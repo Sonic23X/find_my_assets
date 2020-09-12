@@ -25,7 +25,8 @@
     <!-- stepper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
 
-    <link rel="stylesheet" href="./resources/plugins/datepicker/css/bootstrap-datepicker.min.css">
+    <!-- Switch bootstrap4 -->
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
