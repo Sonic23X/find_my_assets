@@ -15,8 +15,8 @@
                     <div class="bs-stepper-header" role="tablist">
                       <div class="step" data-target="#scan-part">
                         <div class="step-trigger">
-                          <span class="bs-stepper-circle scan-circle" style="background: yellow">1</span>
-                          <span class="bs-stepper-label scan-label" style="color: yellow">Escanear</span>
+                          <span class="bs-stepper-circle scan-circle" style="background: #e6c84f">1</span>
+                          <span class="bs-stepper-label scan-label" style="color: #e6c84f">Escanear</span>
                         </div>
                       </div>
                       <div class="line"></div>
@@ -301,7 +301,7 @@
                             onChange="putImage(this, 'front')"
                             tabindex=-1/>
                     </label>
-                    <p>Imagen frontal</p>
+                    <p>Frontal</p>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-front">
@@ -327,7 +327,7 @@
                             onChange="putImage(this, 'right')"
                             tabindex=-1/>
                     </label>
-                    <p>lateral derecha</p>
+                    <p>Derecha</p>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-right">
@@ -353,7 +353,7 @@
                             onChange="putImage(this, 'left')"
                             tabindex=-1/>
                     </label>
-                    <p>lateral izquierda</p>
+                    <p>Izquierda</p>
                   </div>
                   <div class="col-4 col-sm-4 col-md-4 vertial-content-align">
                     <div id="scanner-image-left">

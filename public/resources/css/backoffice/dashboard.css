@@ -231,6 +231,25 @@ html, body
   border-radius: 50px;
 }
 
+.toggle.ios, .toggle-on.ios, .toggle-off.ios
+{
+  border-radius: 20rem;
+}
+
+.toggle.ios .toggle-handle
+{
+  border-radius: 20rem;
+}
+
+/* --- Inventario --- */
+
+.title-inv
+{
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
 
 /* --- Fin Secciones --- */
 

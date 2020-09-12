@@ -494,8 +494,8 @@ function setInsMessage( view, update = false )
   switch ( view )
   {
     case '.scanner-start':
-      $( '.scan-circle' ).css('background', '#ffde59');
-      $( '.scan-label' ).css('color', '#ffde59');
+      $( '.scan-circle' ).css('background', '#e6c84f');
+      $( '.scan-label' ).css('color', '#e6c84f');
       $( '.update-circle' ).css('background', '#6c757d');
       $( '.update-label' ).css('color', '#6c757d');
       $( '.photo-circle' ).css('background', '#6c757d');
@@ -505,8 +505,8 @@ function setInsMessage( view, update = false )
     case '.scanner-status':
       $( '.scan-circle' ).css('background', '#6c757d');
       $( '.scan-label' ).css('color', '#6c757d');
-      $( '.update-circle' ).css('background', '#ffde59');
-      $( '.update-label' ).css('color', '#ffde59');
+      $( '.update-circle' ).css('background', '#e6c84f');
+      $( '.update-label' ).css('color', '#e6c84f');
       $( '.photo-circle' ).css('background', '#6c757d');
       $( '.photo-label' ).css('color', '#6c757d');
       message = 'Estás inventariando';
@@ -514,8 +514,8 @@ function setInsMessage( view, update = false )
     case '.scanner-form':
       $( '.scan-circle' ).css('background', '#6c757d');
       $( '.scan-label' ).css('color', '#6c757d');
-      $( '.update-circle' ).css('background', '#ffde59');
-      $( '.update-label' ).css('color', '#ffde59');
+      $( '.update-circle' ).css('background', '#e6c84f');
+      $( '.update-label' ).css('color', '#e6c84f');
       $( '.photo-circle' ).css('background', '#6c757d');
       $( '.photo-label' ).css('color', '#6c757d');
       if ( update )
@@ -526,8 +526,8 @@ function setInsMessage( view, update = false )
     case '.scanner-geolocation':
       $( '.scan-circle' ).css('background', '#6c757d');
       $( '.scan-label' ).css('color', '#6c757d');
-      $( '.update-circle' ).css('background', '#ffde59');
-      $( '.update-label' ).css('color', '#ffde59');
+      $( '.update-circle' ).css('background', '#e6c84f');
+      $( '.update-label' ).css('color', '#e6c84f');
       $( '.photo-circle' ).css('background', '#6c757d');
       $( '.photo-label' ).css('color', '#6c757d');
       if ( update )
@@ -548,8 +548,8 @@ function setInsMessage( view, update = false )
       $( '.scan-label' ).css('color', '#6c757d');
       $( '.update-circle' ).css('background', '#6c757d');
       $( '.update-label' ).css('color', '#6c757d');
-      $( '.photo-circle' ).css('background', '#ffde59');
-      $( '.photo-label' ).css('color', '#ffde59');
+      $( '.photo-circle' ).css('background', '#e6c84f');
+      $( '.photo-label' ).css('color', '#e6c84f');
       message = 'Ingresa las imagenes del activo';
       break;
     case '.scanner-without-scan':
