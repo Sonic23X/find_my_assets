@@ -11,6 +11,7 @@ class Inventary extends BaseController
 	protected $empresaModel;
 	protected $draftModel;
 	protected $sucursalModel;
+  protected $db;
 
   function __construct()
   {
@@ -20,6 +21,7 @@ class Inventary extends BaseController
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
 		$this->draftModel = model( 'App\Models\DraftModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
+    $this->db = \Config\Database::connect();
   }
 
   //método que funciona exclusivamente con AJAX - JQUERY
@@ -29,27 +31,38 @@ class Inventary extends BaseController
     {
       try
       {
-				$campos =
-				[
-					'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
-			    'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
-			    'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
-					'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
-			    'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
-					'User_Create', 'User_Update', '	User_Delete',
-			    'TS_Create', 'TS_Update', 'TS_Delete'
-				];
+        $builder = $this->db->table( 'draft' );
+        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
+        $activos = $builder->get( );
 
-        $activos = $this->draftModel->select( $campos )->get( );
-
-				if ( $activo == null )
+				if ( $activos == null )
 				{
 					echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
 					return;
 				}
 
-				print_r( $activos );
+        $data = [ ];
+        $num = 0;
+        foreach ( $activos->getResult( ) as $row )
+        {
+          $fecha = explode( ' ', $row->TS_Create );
 
+          $json =
+          [
+            'id' => $row->Id,
+            'tipo' => $row->Desc,
+            'nombre' => $row->Nom_Activo,
+            'usuario' => $row->nombre . $row->apellidos,
+            'fecha' => $fecha[ 0 ],
+          ];
+
+          array_push( $data, $json );
+          $num++;
+        }
+
+        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num ) );
       }
       catch (\Exception $e)
       {

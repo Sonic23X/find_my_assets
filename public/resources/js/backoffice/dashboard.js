@@ -1013,6 +1013,61 @@ function getInvFormData( )
   });
 }
 
+function getNewItems( )
+{
+  $.ajax({
+    url: url + '/inventario/getItems',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    console.log( response );
+
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+
+      activos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+            <td class="align-middle">
+              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
+                <i class="fas fa-angle-right"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+
+        $( '.table-new-actives' ).append( typePlantilla );
+
+      });
+
+      $( '.number-new-actives' ).html( response.number );
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
 $(document).ready(function( )
 {
 
@@ -1524,6 +1579,8 @@ $(document).ready(function( )
   $( '#inv-new' ).click( event =>
   {
     event.preventDefault( );
+
+    getNewItems( );
 
     //colocamos
     setBackgroundButtons( 'new' );

@@ -59,7 +59,7 @@
 
                           <div class="row">
                             <div class="col-6 float-left align-middle">
-                              <span>Total de activos: <b>XX</b> </span>
+                              <span>Total de activos: <b class="number-new-actives">XX</b> </span>
                             </div>
                             <div class="col-6 float-right">
                               <label class="sr-only" for="searchActiveInv">Buscar</label>
@@ -84,107 +84,8 @@
                                   <th scope="col"></th>
                                 </tr>
                               </thead>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
+                              <tbody class="table-new-actives">
+
                               </tbody>
                             </table>
                           </div>
