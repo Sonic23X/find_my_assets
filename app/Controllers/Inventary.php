@@ -35,6 +35,7 @@ class Inventary extends BaseController
         $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
+        $builder->where( 'draft.status', 'nuevo' );
         $activos = $builder->get( );
 
 				if ( $activos == null )
@@ -74,7 +75,7 @@ class Inventary extends BaseController
   }
 
   //método que funciona exclusivamente con AJAX - JQUERY
-  function SearchItemInfo( )
+  function SearchItemInfo( $id )
   {
     if ( $this->request->isAJAX( ) )
     {
@@ -91,7 +92,7 @@ class Inventary extends BaseController
 			    'TS_Create', 'TS_Update', 'TS_Delete'
 				];
 
-        $activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+        $activo = $this->draftModel->where( 'Id', $id )
 																	 ->select( $campos )
                                    ->first( );
 
@@ -101,12 +102,7 @@ class Inventary extends BaseController
 					return;
 				}
 
-				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
-
-
-				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
-
-        echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
+        echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
 
       }
       catch (\Exception $e)

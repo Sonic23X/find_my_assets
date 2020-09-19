@@ -439,7 +439,7 @@
                               <div class="form-group row">
                                 <label for="name" class="col-sm-2 col-form-label">Nombre</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="iName" placeholder="Ej. Mackbook PRO">
+                                  <input type="text" class="form-control" id="newName" placeholder="Ej. Mackbook PRO">
                                 </div>
                               </div>
 
@@ -453,7 +453,7 @@
                                   </button>
                                 </label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="iSerie" placeholder="Ej. Nombre">
+                                  <input type="text" class="form-control" id="newSerie" placeholder="Ej. Nombre">
                                 </div>
                               </div>
 
@@ -514,7 +514,7 @@
                               <div class="form-group row">
                                 <label for="desc" class="col-sm-2 col-form-label">Descripción</label>
                                 <div class="col-sm-10">
-                                  <textarea class="form-control" id="iDesc" rows="3"></textarea>
+                                  <textarea class="form-control" id="newDesc" rows="3"></textarea>
                                 </div>
                               </div>
 
@@ -526,17 +526,23 @@
 
                               <div class="row text-center">
                                 <div class="col-4">
-                                  <i class="fas fa-5x fa-image"></i>
+                                  <div class="new-image-front">
+                                    <i class="fas fa-5x fa-image"></i>
+                                  </div>
                                   <br>
                                   <label>Frontal</label>
                                 </div>
                                 <div class="col-4">
-                                  <i class="fas fa-5x fa-image"></i>
+                                  <div class="new-image-right">
+                                    <i class="fas fa-5x fa-image"></i>
+                                  </div>
                                   <br>
                                   <label>Lat. Der.</label>
                                 </div>
                                 <div class="col-4">
-                                  <i class="fas fa-5x fa-image"></i>
+                                  <div class="new-image-left">
+                                    <i class="fas fa-5x fa-image"></i>
+                                  </div>
                                   <br>
                                   <label>Lat. Izq.</label>
                                 </div>

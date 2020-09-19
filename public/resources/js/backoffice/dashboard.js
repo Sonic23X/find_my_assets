@@ -1022,8 +1022,6 @@ function getNewItems( )
   })
   .done( response =>
   {
-    console.log( response );
-
     if ( response.status == 200 )
     {
       let activos = response.activos;
@@ -1035,7 +1033,7 @@ function getNewItems( )
         `
           <tr>
             <td>
-              <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
+              <a class="text-dark text-decoration-none" onClick="getDraftInfoNew( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1065,6 +1063,91 @@ function getNewItems( )
     {
       imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
     }
+  });
+}
+
+function getDraftInfoNew( id )
+{
+  $.ajax({
+    url: url + `/inventario/getDraftInfo/${ id }`,
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activo = response.activo;
+
+      $( '#newTipoActivo' ).val( activo.ID_Tipo );
+      $( '#newName' ).val( activo.Nom_Activo );
+      $( '#newSerie' ).val( activo.NSerie_Activo );
+      $( '#newCCosto' ).val( activo.ID_CC );
+      $( '#newAsignacion' ).val( activo.User_Inventario );
+      $( '#newEmpresa' ).val( activo.ID_Company );
+      $( '#newSucursal' ).val( activo.ID_Sucursal );
+      $( '#newArea' ).val( activo.ID_Area );
+      $( '#newDesc' ).val( activo.Desc_Activo );
+
+      $.ajax({
+        url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.new-image-front' ).html( response );
+        }
+        else
+        {
+          $( '.new-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageLeft/${ activo.ID_Activo }`,
+        type: 'GET',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.new-image-left' ).html( response );
+        }
+        else
+        {
+          $( '.new-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageRight/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.new-image-right' ).html( response );
+        }
+        else
+        {
+          $( '.new-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $( '#newInvModal' ).modal( 'show' );
+    }
+
   });
 }
 

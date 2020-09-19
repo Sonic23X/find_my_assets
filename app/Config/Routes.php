@@ -68,6 +68,7 @@ $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 /** AJAX - inventary **/
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
 $routes->get('/inventario/getItems', 'Inventary::SearchItemList');
+$routes->get('/inventario/getDraftInfo/(:num)', 'Inventary::SearchItemInfo/$1');
 
 
 /**
