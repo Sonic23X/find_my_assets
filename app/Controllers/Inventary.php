@@ -200,6 +200,144 @@ class Inventary extends BaseController
   }
 
   //método que funciona exclusivamente con AJAX - JQUERY
+  function SearchItemsConciliar( $id )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+        $activo = $this->draftModel->where( 'ID_Activo', $id )->first( );
+
+				$similarData =
+        [
+          'Nom_Activo' => $activo[ 'Nom_Activo' ],
+          'ID_Sucursal' => $activo[ 'ID_Sucursal' ],
+          'ID_Area' => $activo[ 'ID_Area' ],
+          'ID_CC' => $activo[ 'ID_CC' ],
+          'Fec_Compra' => $activo[ 'Fec_Compra' ],
+          'Fec_Expira' => $activo[ 'Fec_Expira' ],
+          'NSerie_Activo' => $activo[ 'NSerie_Activo' ],
+          'ID_Tipo' => $activo[ 'ID_Tipo' ],
+          'ID_MetDepre' => $activo[ 'ID_MetDepre' ],
+          'Vida_Activo' => $activo[ 'Vida_Activo' ],
+        ];
+
+        $builder = $this->db->table( 'activos' );
+
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.ID_Sucursal, activos.ID_Area,
+                          activos.ID_CC, activos.Fec_Compra, activos.Fec_Expira, activos.NSerie_Activo,
+                          activos.ID_Tipo, activos.ID_MetDepre, activos.Vida_Activo, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.ID_Activo !=', $id );
+        $builder->orlike( $similarData );
+        $builder->where( 'activos.TS_Delete', null );
+        $activos = $builder->get( );
+
+        $data = [ ];
+        foreach ( $activos->getResult( ) as $row )
+        {
+          $porcentaje = 0;
+          if ( $row->Nom_Activo == $activo[ 'Nom_Activo' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->ID_Area == $activo[ 'ID_Area' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->ID_CC == $activo[ 'ID_CC' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->Fec_Compra == $activo[ 'Fec_Compra' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->Fec_Expira == $activo[ 'Fec_Expira' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->NSerie_Activo == $activo[ 'NSerie_Activo' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->ID_MetDepre == $activo[ 'ID_MetDepre' ] )
+          {
+            $porcentaje += 10;
+          }
+          if ( $row->Vida_Activo == $activo[ 'Vida_Activo' ] )
+          {
+            $porcentaje += 10;
+          }
+
+          $json =
+          [
+            'id' => $row->Id,
+            'tipo' => $row->Desc,
+            'nombre' => $row->Nom_Activo,
+            'usuario' => $row->nombre . $row->apellidos,
+            'id_activo' => $row->ID_Activo,
+            'porcentaje' => $porcentaje,
+          ];
+
+          array_push( $data, $json );
+        }
+
+        echo json_encode( array( 'status' => 200, 'activos' => $data ) );
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
+  //método que funciona exclusivamente con AJAX - JQUERY
+  function SearchDataConciliar( )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+        $builder = $this->db->table( 'draft' );
+        $builder->select( 'draft.Id, draft.NSerie_Activo, draft.ID_Activo, empresas.nombre as empresa, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
+        $builder->join( 'empresas', 'empresas.id_empresa = draft.ID_Company' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
+        $builder->where( 'draft.ID_Activo', $this->request->getVar( 'actual' ) );
+        $act = $builder->get( )->getResult( );
+
+        $builder = $this->db->table( 'activos' );
+        $builder->select( 'activos.Id, activos.NSerie_Activo, activos.ID_Activo, empresas.nombre as empresa, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+        $builder->join( 'empresas', 'empresas.id_empresa = activos.ID_Company' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.Id', $this->request->getVar( 'old' ) );
+        $old = $builder->get( )->getResult( );
+
+        echo json_encode( array( 'status' => 200, 'actual' => $act, 'old' => $old ) );
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
+  //método que funciona exclusivamente con AJAX - JQUERY
   function SaveDraftBuyDetails( )
   {
     if ( $this->request->isAJAX( ) )

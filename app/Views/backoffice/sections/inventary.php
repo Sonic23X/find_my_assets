@@ -271,58 +271,8 @@
                                   <th scope="col">%</th>
                                 </tr>
                               </thead>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-success btn-sm" name="button" data-toggle="modal" data-target="#conciliarModal">
-                                      90%
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#conciliarModal">
-                                      80%
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" data-toggle="modal" data-target="#conciliarModal">
-                                      70%
-                                    </button>
-                                  </td>
-                                </tr>
+                              <tbody class="inventary-conciliacion-table">
+
                               </tbody>
                             </table>
                           </div>
@@ -578,7 +528,7 @@
 
                             <div class="row">
                               <div class="col-12 text-center">
-                                <span class="badge badge-success">--%</span>
+                                <span class="badge badge-success conciliar-porcentaje">--%</span>
                               </div>
                             </div>
 
@@ -594,29 +544,29 @@
                                   </thead>
                                   <tbody>
                                     <tr>
-                                      <td>NN</td>
+                                      <td class="conciliar-tipo-new">NN</td>
                                       <td><b>Tipo</b></td>
-                                      <td>NN</td>
+                                      <td class="conciliar-tipo-old">NN</td>
                                     </tr>
                                     <tr>
-                                      <td>NN</td>
+                                      <td class="conciliar-serie-new">NN</td>
                                       <td><b>No. Serie</b></td>
-                                      <td>NN</td>
+                                      <td class="conciliar-serie-old">NN</td>
                                     </tr>
                                     <tr>
-                                      <td>NN</td>
+                                      <td class="conciliar-ubicacion-new">NN</td>
                                       <td><b>Ubicación</b></td>
-                                      <td>NN</td>
+                                      <td class="conciliar-ubicacion-old">NN</td>
                                     </tr>
                                     <tr>
-                                      <td>NN</td>
+                                      <td class="conciliar-cc-new">NN</td>
                                       <td><b>Centro de costo</b></td>
-                                      <td>NN</td>
+                                      <td class="conciliar-cc-old">NN</td>
                                     </tr>
                                     <tr>
-                                      <td>NN</td>
+                                      <td class="conciliar-asignacion-new">NN</td>
                                       <td><b>Asignación</b></td>
-                                      <td>NN</td>
+                                      <td class="conciliar-asignacion-old">NN</td>
                                     </tr>
                                   </tbody>
                                 </table>

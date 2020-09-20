@@ -74,7 +74,8 @@ $routes->get('/inventario/getDraftBuyDetails/(:num)', 'Inventary::SearcItemBuyDe
 $routes->post('/inventario/saveDraftBuyDetails', 'Inventary::SaveDraftBuyDetails');
 $routes->post('/inventario/draftToActivo', 'Inventary::draftToActivo');
 $routes->post('/inventario/draftDelete', 'Inventary::draftDelete');
-
+$routes->get('/inventario/concilar/(:num)', 'Inventary::SearchItemsConciliar/$1');
+$routes->post('/inventario/concilarActivo', 'Inventary::SearchDataConciliar');
 $routes->get('/inventario/getProcessItems', 'Inventary::ProcessList');
 $routes->get('/inventario/getInventaryItems', 'Inventary::SearchInventaryList');
 $routes->get('/inventario/getActivoInfo/(:num)', 'Inventary::SearchActiveInfo/$1');

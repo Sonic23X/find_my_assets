@@ -1001,16 +1001,123 @@ function ConfirmNew( )
 
 function IsConcilar( )
 {
-  $( '.inv-news-confirm' ).addClass( 'd-none' );
-  $( '.inv-news-conciliar' ).removeClass( 'd-none' );
-  $( '.inv-step' ).removeClass( 'd-none' );
+  let id = localStorage.getItem( 'new-inventary' );
+  $( '.inventary-conciliacion-table' ).html( '' );
 
-  $( '.select-circle' ).css('background', '#ffde59');
-  $( '.select-label' ).css('color', '#ffde59');
-  $( '.confirm-circle' ).css('background', '#6c757d');
-  $( '.confirm-label' ).css('color', '#6c757d');
+  $.ajax({
+    url: url + `/inventario/concilar/${ id }`,
+    type: 'GET',
+    dataType: 'json'
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+      let aNuevos = response.nuevos;
 
-  $( '#inv-instructions' ).html( 'Selecciona el activo a conciliar' );
+      activos.forEach( ( activo, i ) =>
+      {
+        let button;
+        if( activo.porcentaje > 80 )
+        {
+          button =
+          `
+            <button type="button" class="btn btn-success btn-sm" name="button" onClick="conciliarDetails( ${ activo.id }, ${ activo.porcentaje } )">
+              ${ activo.porcentaje }%
+            </button>
+          `;
+        }
+        else
+        {
+          button =
+          `
+            <button type="button" class="btn btn-primary btn-sm" name="button" onClick="conciliarDetails( ${ activo.id }, ${ activo.porcentaje } )">
+              ${ activo.porcentaje }%
+            </button>
+          `;
+        }
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="infoItemConcilar( ${ activo.id } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ button }
+            </td>
+          </tr>
+        `;
+
+        $( '.inventary-conciliacion-table' ).append( typePlantilla );
+      });
+
+      $( '.inv-news-confirm' ).addClass( 'd-none' );
+      $( '.inv-news-conciliar' ).removeClass( 'd-none' );
+      $( '.inv-step' ).removeClass( 'd-none' );
+
+      $( '.select-circle' ).css('background', '#ffde59');
+      $( '.select-label' ).css('color', '#ffde59');
+      $( '.confirm-circle' ).css('background', '#6c757d');
+      $( '.confirm-label' ).css('color', '#6c757d');
+
+      $( '#inv-instructions' ).html( 'Selecciona el activo a conciliar' );
+    }
+  });
+}
+
+function infoItemConcilar( id )
+{
+  $( '#newInvModal' ).modal( 'show' );
+}
+
+function conciliarDetails( id, porcentaje )
+{
+  localStorage.setItem( 'conciliar-activo', id );
+  let actual = localStorage.getItem( 'new-inventary' );
+  $( '.conciliar-porcentaje' ).html( porcentaje + '%' );
+
+  $.ajax({
+    url: url + `/inventario/concilarActivo`,
+    type: 'POST',
+    dataType: 'json',
+    data: { old: id, actual: actual },
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      console.log( response );
+      let newA = response.actual[ 0 ];
+      let oldA = response.old[ 0 ];
+
+      $( '.conciliar-tipo-new' ).html( newA.Desc );
+      $( '.conciliar-tipo-old' ).html( oldA.Desc );
+
+      $( '.conciliar-serie-new' ).html( newA.NSerie_Activo );
+      $( '.conciliar-serie-old' ).html( oldA.NSerie_Activo );
+
+      $( '.conciliar-ubicacion-new' ).html( newA.empresa );
+      $( '.conciliar-ubicacion-old' ).html( oldA.empresa );
+
+      $( '.conciliar-cc-new' ).html( 'N/A' );
+      $( '.conciliar-cc-old' ).html( 'N/A' );
+
+      $( '.conciliar-asignacion-new' ).html( newA.nombre + newA.apellidos );
+      $( '.conciliar-asignacion-old' ).html( oldA.nombre + oldA.apellidos );
+
+      $( '#conciliarModal' ).modal( 'show' );
+    }
+  });
+
 }
 
 function ConfirmConciliar( )
