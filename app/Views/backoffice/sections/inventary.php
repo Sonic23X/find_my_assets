@@ -59,7 +59,7 @@
 
                           <div class="row">
                             <div class="col-6 float-left align-middle">
-                              <span>Total de activos: <b>XX</b> </span>
+                              <span>Total de activos: <b class="number-new-actives">XX</b> </span>
                             </div>
                             <div class="col-6 float-right">
                               <label class="sr-only" for="searchActiveInv">Buscar</label>
@@ -84,107 +84,8 @@
                                   <th scope="col"></th>
                                 </tr>
                               </thead>
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#newInvModal">
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </a>
-                                  </td>
-                                  <td class="align-middle">
-                                    [asignado]
-                                  </td>
-                                  <td class="align-middle">
-                                    dd/mm/aa
-                                  </td>
-                                  <td class="align-middle">
-                                    <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
-                                      <i class="fas fa-angle-right"></i>
-                                    </button>
-                                  </td>
-                                </tr>
+                              <tbody class="table-new-actives">
+
                               </tbody>
                             </table>
                           </div>
@@ -197,15 +98,15 @@
 
                       <div class="row mt-2 text-center">
                         <div class="col-12 col-sm-12 col-md-12">
-                            <span id="scanner-subtipo">[Subtipo de activo]</span> / <span id="scanner-nombre">[Tipo de activo]</span>
+                            <span id="new-subtipo"></span> / <span id="new-nombre"></span>
                           <br>
-                          <span>Serie: <b id="scanner-serie">[Numero de serie]</b></span>
+                          <span>Serie: <b id="new-serie"></b></span>
                         </div>
                       </div>
 
                       <div class="row mt-3 text-center">
                         <div class="col-12 col-sm-12 col-md-12">
-                          <span>Asignado a <b id="scanner-asignacion">[Asignado]</b></span>
+                          <span>Asignado a <b id="new-asignacion"></b></span>
                         </div>
                       </div>
 
@@ -251,7 +152,7 @@
                         <div class="form-group row">
                           <label for="precio" class="col-sm-2 col-form-label">Precio del activo (CLP)</label>
                           <div class="col-sm-10">
-                            <input type="number" class="form-control" name="clp" placeholder="$1,000,000">
+                            <input type="number" id="clp" class="form-control" name="clp" placeholder="$1,000,000">
                           </div>
                         </div>
 
@@ -265,21 +166,21 @@
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Factura/boleta</label>
                           <div class="col-sm-10">
-                            <input type="file" class="form-control-file" placeholder="Factura">
+                            <input type="file" id="factura" class="form-control-file" placeholder="Factura">
                           </div>
                         </div>
 
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Garantía (opcional)</label>
                           <div class="col-sm-10">
-                            <input type="file" class="form-control-file" placeholder="Garantia">
+                            <input type="file" id="garantia" class="form-control-file" placeholder="Garantia">
                           </div>
                         </div>
 
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Fecha de expiracion de garantia (opcional)</label>
                           <div class="col-sm-10">
-                            <input id="fechagarantia" type="text" class="form-control" placeholder="dd/mm/aaaa">
+                            <input id="fechagarantia" type="text" class="form-control" placeholder="aaaa/mm/dd">
                           </div>
                         </div>
 
@@ -299,14 +200,15 @@
                             </button>
                           </label>
                           <div class="col-4 d-flex justify-content-center align-items-center">
-                            <input type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No" data-onstyle="warning" data-offstyle="warning" data-style="ios">
+                            <input type="checkbox" checked data-toggle="toggle" data-on="Si" data-off="No"
+                                   data-onstyle="warning" data-offstyle="warning" data-style="ios" id="contabilizar">
                           </div>
                         </div>
 
                         <div class="form-group row">
                           <label for="medotoD" class="col-sm-2 col-form-label">Metodo de depreciacion</label>
                           <div class="col-sm-10">
-                            <select class="custom-select" name="medotoD">
+                            <select class="custom-select" name="medotoD" id="metodo_depreciacion">
 
                             </select>
                           </div>
@@ -315,14 +217,14 @@
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Fecha de inicio</label>
                           <div class="col-sm-10">
-                            <input id="fechastart" type="text" class="form-control" placeholder="dd/mm/aaaa">
+                            <input id="fechastart" type="text" class="form-control" placeholder="aaaa/mm/dd">
                           </div>
                         </div>
 
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Vida útil ( --- )</label>
                           <div class="col-sm-10">
-                            <input id="vidautlnew" type="text" class="form-control">
+                            <input id="vidautilnew" type="text" class="form-control">
                           </div>
                         </div>
 
@@ -538,7 +440,7 @@
                               <div class="form-group row">
                                 <label for="name" class="col-sm-2 col-form-label">Nombre</label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="iName" placeholder="Ej. Mackbook PRO">
+                                  <input type="text" class="form-control" id="newName" placeholder="Ej. Mackbook PRO">
                                 </div>
                               </div>
 
@@ -552,7 +454,7 @@
                                   </button>
                                 </label>
                                 <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="iSerie" placeholder="Ej. Nombre">
+                                  <input type="text" class="form-control" id="newSerie" placeholder="Ej. Nombre">
                                 </div>
                               </div>
 
@@ -613,7 +515,7 @@
                               <div class="form-group row">
                                 <label for="desc" class="col-sm-2 col-form-label">Descripción</label>
                                 <div class="col-sm-10">
-                                  <textarea class="form-control" id="iDesc" rows="3"></textarea>
+                                  <textarea class="form-control" id="newDesc" rows="3"></textarea>
                                 </div>
                               </div>
 
@@ -625,17 +527,23 @@
 
                               <div class="row text-center">
                                 <div class="col-4">
-                                  <i class="fas fa-5x fa-image"></i>
+                                  <div class="new-image-front">
+                                    <i class="fas fa-5x fa-image"></i>
+                                  </div>
                                   <br>
                                   <label>Frontal</label>
                                 </div>
                                 <div class="col-4">
-                                  <i class="fas fa-5x fa-image"></i>
+                                  <div class="new-image-right">
+                                    <i class="fas fa-5x fa-image"></i>
+                                  </div>
                                   <br>
                                   <label>Lat. Der.</label>
                                 </div>
                                 <div class="col-4">
-                                  <i class="fas fa-5x fa-image"></i>
+                                  <div class="new-image-left">
+                                    <i class="fas fa-5x fa-image"></i>
+                                  </div>
                                   <br>
                                   <label>Lat. Izq.</label>
                                 </div>
@@ -734,7 +642,7 @@
                     <div class="card collapsed-card">
                       <div class="card-header text-center card-background-color">
                         <span>Activos con ajustes</span>
-                        <span class="badge badge-warning text-white">XX</span>
+                        <span class="badge badge-warning text-white inventary-process-with-count">XX</span>
                         <div class="card-tools">
                           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white"
                             onclick="setInvInstruccions( 'Selecciona uno de tus activos' )">
@@ -745,7 +653,7 @@
                       <div class="card-body">
                         <div class="row">
                           <div class="col-6 float-left align-middle">
-                            <span>Total de activos: <b>XX</b> </span>
+                            <span>Total de activos: <b class="inventary-process-with-count">XX</b> </span>
                           </div>
                           <div class="col-6 float-right">
                             <label class="sr-only" for="searchActiveInv">Buscar</label>
@@ -755,7 +663,7 @@
                                   <i class="fas fa-search"></i>
                                 </div>
                               </div>
-                              <input type="text" class="form-control" id="searchActiveInv" placeholder="Buscar">
+                              <input type="text" class="form-control" id="searchActiveProcess" placeholder="Buscar">
                             </div>
                           </div>
                         </div>
@@ -770,107 +678,8 @@
                                 <th scope="col"></th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#updateModal">
-                                    [subtipo de activo]
-                                    <br>
-                                    [tipo de activo]
-                                  </a>
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                                <td class="align-middle">
-                                  <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
-                                    <i class="fas fa-angle-right"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#updateModal">
-                                    [subtipo de activo]
-                                    <br>
-                                    [tipo de activo]
-                                  </a>
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                                <td class="align-middle">
-                                  <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
-                                    <i class="fas fa-angle-right"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#updateModal">
-                                    [subtipo de activo]
-                                    <br>
-                                    [tipo de activo]
-                                  </a>
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                                <td class="align-middle">
-                                  <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
-                                    <i class="fas fa-angle-right"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#updateModal">
-                                    [subtipo de activo]
-                                    <br>
-                                    [tipo de activo]
-                                  </a>
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                                <td class="align-middle">
-                                  <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
-                                    <i class="fas fa-angle-right"></i>
-                                  </button>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <a class="text-dark text-decoration-none" data-toggle="modal" data-target="#updateModal">
-                                    [subtipo de activo]
-                                    <br>
-                                    [tipo de activo]
-                                  </a>
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                                <td class="align-middle">
-                                  <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate()">
-                                    <i class="fas fa-angle-right"></i>
-                                  </button>
-                                </td>
-                              </tr>
+                            <tbody class="inventary-process-table">
+
                             </tbody>
                           </table>
                         </div>
@@ -880,7 +689,7 @@
                     <div class="card collapsed-card">
                       <div class="card-header text-center card-background-color">
                         <span>Activos sin ajustes</span>
-                        <span class="badge badge-warning text-white">XX</span>
+                        <span class="badge badge-warning text-white inventary-process-without-count">XX</span>
                         <div class="card-tools">
                           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white"
                                   onclick="setInvInstruccions( 'Consulta los datos de tus activos act.' )">
@@ -892,7 +701,7 @@
 
                         <div class="row">
                           <div class="col-6 float-left align-middle">
-                            <span>Total de activos: <b>XX</b> </span>
+                            <span>Total de activos: <b class="inventary-process-without-count">XX</b> </span>
                           </div>
                           <div class="col-6 float-right">
                             <label class="sr-only" for="searchActiveInv">Buscar</label>
@@ -916,72 +725,8 @@
                                 <th scope="col">Cargado</th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
+                            <tbody class="inventary-process-table2">
+
                             </tbody>
                           </table>
                         </div>
@@ -1141,7 +886,7 @@
 
                         <div class="row mb-3">
                           <div class="col-6 float-left align-middle">
-                            <span>Total de activos: <b>XX</b> </span>
+                            <span>Total de activos: <b class="inventary-count">XX</b> </span>
                           </div>
                           <div class="col-6 float-right">
                             <label class="sr-only" for="searchActiveInv">Buscar</label>
@@ -1151,7 +896,7 @@
                                   <i class="fas fa-search"></i>
                                 </div>
                               </div>
-                              <input type="text" class="form-control" id="searchActiveInv" placeholder="Buscar">
+                              <input type="text" class="form-control" id="inventary-search" placeholder="Buscar">
                             </div>
                           </div>
                         </div>
@@ -1225,7 +970,7 @@
                           </div>
                         </div>
 
-                        <div class="mt-3 table-responsive">
+                        <div class="mt-3 table-responsive text-center">
                           <table class="table table-hover">
                             <thead>
                               <tr>
@@ -1234,72 +979,8 @@
                                 <th scope="col">Cargado</th>
                               </tr>
                             </thead>
-                            <tbody>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  [subtipo de activo]
-                                  <br>
-                                  [tipo de activo]
-                                </td>
-                                <td class="align-middle">
-                                  [asignado]
-                                </td>
-                                <td class="align-middle">
-                                  dd/mm/aa
-                                </td>
-                              </tr>
+                            <tbody class="table-inventary-actives">
+
                             </tbody>
                           </table>
                         </div>

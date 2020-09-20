@@ -33,7 +33,7 @@ class Database extends \CodeIgniter\Database\Config
 		'DSN'      => '',
 		'hostname' => 'localhost',
 		'username' => 'root',
-		'password' => '1f#Z9ho7}hVS8L7E',
+		'password' => '',
 		'database' => 'fa',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
