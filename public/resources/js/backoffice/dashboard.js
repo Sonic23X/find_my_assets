@@ -796,11 +796,11 @@ function ConfirmUpdate( idActivo )
 {
   let id;
   if ( idActivo == null )
-    id = localStorage.getItem( 'new-inventary' );
+    id = localStorage.getItem( 'process-inventary' );
   else
   {
     id = idActivo;
-    localStorage.setItem( 'new-inventary', id );
+    localStorage.setItem( 'process-inventary', id );
   }
 
   Swal.fire(
@@ -1278,6 +1278,7 @@ function getDraftInfoNew( id )
 function getProcessItems()
 {
   $( '.inventary-process-table' ).html( '' );
+  $( '.inventary-process-table2' ).html( '' );
 
   $.ajax({
     url: url + '/inventario/getProcessItems',
@@ -1298,7 +1299,7 @@ function getProcessItems()
         `
           <tr>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id_activo } )">
+              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1329,7 +1330,7 @@ function getProcessItems()
         `
           <tr>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id_activo } )">
+              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1373,15 +1374,15 @@ function viewProcessInfo( id )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
-      $( '#newTipoActivo' ).val( activo.ID_Tipo );
-      $( '#newName' ).val( activo.Nom_Activo );
-      $( '#newSerie' ).val( activo.NSerie_Activo );
-      $( '#newCCosto' ).val( activo.ID_CC );
-      $( '#newAsignacion' ).val( activo.User_Inventario );
-      $( '#newEmpresa' ).val( activo.ID_Company );
-      $( '#newSucursal' ).val( activo.ID_Sucursal );
-      $( '#newArea' ).val( activo.ID_Area );
-      $( '#newDesc' ).val( activo.Desc_Activo );
+      $( '#iTipoActivo' ).val( activo.ID_Tipo );
+      $( '#iName' ).val( activo.Nom_Activo );
+      $( '#iSerie' ).val( activo.NSerie_Activo );
+      $( '#icCosto' ).val( activo.ID_CC );
+      $( '#iAsignacion' ).val( activo.User_Inventario );
+      $( '#iEmpresa' ).val( activo.ID_Company );
+      $( '#iSucursal' ).val( activo.ID_Sucursal );
+      $( '#iArea' ).val( activo.ID_Area );
+      $( '#iDesc' ).val( activo.Desc_Activo );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
@@ -1394,11 +1395,11 @@ function viewProcessInfo( id )
       {
         if ( response != '' )
         {
-          $( '.new-image-front' ).html( response );
+          $( '.process-image-front' ).html( response );
         }
         else
         {
-          $( '.new-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
+          $( '.process-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
       });
 
@@ -1412,11 +1413,11 @@ function viewProcessInfo( id )
       {
         if ( response != '' )
         {
-          $( '.new-image-left' ).html( response );
+          $( '.process-image-left' ).html( response );
         }
         else
         {
-          $( '.new-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
+          $( '.process-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
       });
 
@@ -1431,15 +1432,15 @@ function viewProcessInfo( id )
       {
         if ( response != '' )
         {
-          $( '.new-image-right' ).html( response );
+          $( '.process-image-right' ).html( response );
         }
         else
         {
-          $( '.new-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
+          $( '.process-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
       });
 
-      $( '#newInvModal' ).modal( 'show' );
+      $( '#updateModal' ).modal( 'show' );
     }
 
   });
@@ -1468,7 +1469,7 @@ function getInventaryItems( )
         `
           <tr>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewInventaryInfo( ${ activo.id_activo } )">
+              <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1496,6 +1497,92 @@ function getInventaryItems( )
   });
 }
 
+function viewInvInfo( id )
+{
+  $.ajax({
+    url: url + `/inventario/getActivoInfo/${ id }`,
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activo = response.activo;
+
+      localStorage.setItem( 'process-inventary', activo.ID_Activo );
+
+      $( '#infoTipoActivo' ).val( activo.ID_Tipo );
+      $( '#infoName' ).val( activo.Nom_Activo );
+      $( '#infoSerie' ).val( activo.NSerie_Activo );
+      $( '#infocCosto' ).val( activo.ID_CC );
+      $( '#infoAsignacion' ).val( activo.User_Inventario );
+      $( '#infoEmpresa' ).val( activo.ID_Company );
+      $( '#infoSucursal' ).val( activo.ID_Sucursal );
+      $( '#infoArea' ).val( activo.ID_Area );
+      $( '#infoDesc' ).val( activo.Desc_Activo );
+
+      $.ajax({
+        url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.info-image-front' ).html( response );
+        }
+        else
+        {
+          $( '.info-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageLeft/${ activo.ID_Activo }`,
+        type: 'GET',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.info-image-left' ).html( response );
+        }
+        else
+        {
+          $( '.info-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageRight/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.info-image-right' ).html( response );
+        }
+        else
+        {
+          $( '.info-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $( '#infoModal' ).modal( 'show' );
+    }
+
+  });
+}
 
 
 $(document).ready(function( )

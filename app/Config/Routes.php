@@ -77,6 +77,7 @@ $routes->post('/inventario/draftDelete', 'Inventary::draftDelete');
 
 $routes->get('/inventario/getProcessItems', 'Inventary::ProcessList');
 $routes->get('/inventario/getInventaryItems', 'Inventary::SearchInventaryList');
+$routes->get('/inventario/getActivoInfo/(:num)', 'Inventary::SearchActiveInfo/$1');
 
 
 /**
