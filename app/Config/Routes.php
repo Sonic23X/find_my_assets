@@ -69,6 +69,14 @@ $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
 $routes->get('/inventario/getItems', 'Inventary::SearchItemList');
 $routes->get('/inventario/getDraftInfo/(:num)', 'Inventary::SearchItemInfo/$1');
+$routes->get('/inventario/getDraftDetails/(:num)', 'Inventary::SearcItemDetails/$1');
+$routes->get('/inventario/getDraftBuyDetails/(:num)', 'Inventary::SearcItemBuyDetails/$1');
+$routes->post('/inventario/saveDraftBuyDetails', 'Inventary::SaveDraftBuyDetails');
+$routes->post('/inventario/draftToActivo', 'Inventary::draftToActivo');
+$routes->post('/inventario/draftDelete', 'Inventary::draftDelete');
+
+$routes->get('/inventario/getProcessItems', 'Inventary::ProcessList');
+$routes->get('/inventario/getInventaryItems', 'Inventary::SearchInventaryList');
 
 
 /**

@@ -792,8 +792,17 @@ function setBackgroundButtons( button )
   }
 }
 
-function ConfirmUpdate( )
+function ConfirmUpdate( idActivo )
 {
+  let id;
+  if ( idActivo == null )
+    id = localStorage.getItem( 'new-inventary' );
+  else
+  {
+    id = idActivo;
+    localStorage.setItem( 'new-inventary', id );
+  }
+
   Swal.fire(
   {
     title: '¡Atención!',
@@ -804,77 +813,188 @@ function ConfirmUpdate( )
   {
     if ( result.value )
     {
-      Swal.fire(
-      {
-        title: '¡Excelente!',
-        text: 'El activo ha sido actualizado exitosamente',
-        icon: 'success',
-        confirmButtonColor: '#5cb85c',
+      $.ajax({
+        url: url + `/inventario/draftToActivo`,
+        type: 'POST',
+        dataType: 'json',
+        data: { codigo: id }
       })
-      .then( result =>
+      .done( response =>
       {
-        $( '#updateModal' ).modal( 'hide' );
+        if ( response.status == 200 )
+        {
+          getProcessItems( );
+
+          Swal.fire(
+          {
+            title: '¡Excelente!',
+            text: 'El activo ha sido actualizado exitosamente',
+            icon: 'success',
+            confirmButtonColor: '#5cb85c',
+          })
+          .then( result =>
+          {
+            $( '#updateModal' ).modal( 'hide' );
+          });
+        }
       });
     }
   });
 }
 
-function InfoNew( )
+function InfoNew( idActivo = null )
 {
-  $( '.inv-news-home' ).addClass( 'd-none' );
-  $( '.inv-buttons' ).addClass( 'd-none' );
-  $( '.inv-news-confirm' ).removeClass( 'd-none' );
+  let id;
+  if ( idActivo == null )
+    id = localStorage.getItem( 'new-inventary' );
+  else
+  {
+    id = idActivo;
+    localStorage.setItem( 'new-inventary', id );
+  }
 
-  $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
+  $.ajax({
+    url: url + `/inventario/getDraftDetails/${ id }`,
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+
+      let activo = response.activo;
+      let tipo = response.tipo;
+      let usuario = response.user;
+
+      $( '#new-subtipo' ).html( tipo.Desc );
+      $( '#new-nombre' ).html( activo.Nom_Activo );
+      $( '#new-serie' ).html( activo.NSerie_Activo );
+      $( '#new-asignacion' ).html( usuario.nombre + ' ' + usuario.apellidos );
+
+      $( '.inv-news-home' ).addClass( 'd-none' );
+      $( '.inv-buttons' ).addClass( 'd-none' );
+      $( '.inv-news-confirm' ).removeClass( 'd-none' );
+
+      $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
+    }
+  });
 }
 
 function NewActiveForm( )
 {
-  $( '.inv-news-confirm' ).addClass( 'd-none' );
-  $( '.inv-news-active-new' ).removeClass( 'd-none' );
+  let id = localStorage.getItem( 'new-inventary' );
+  $.ajax({
+    url: url + `/inventario/getDraftBuyDetails/${ id }`,
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activo = response.activo;
 
-  $( '#inv-instructions' ).html( 'Ingresa los últimos datos del alta' );
+      $( '#clp' ).val( activo.Pre_Compra );
+      $( '#fechadecompra' ).val( activo.Fec_Compra );
+      $( '#fechagarantia' ).val( activo.Fec_Expira );
+
+      if( activo.contabilizar == 0 )
+        $( '#contabilizar' ).bootstrapToggle( 'off' );
+      else
+        $( '#contabilizar' ).bootstrapToggle( 'on' );
+
+      $( '#metodo_depreciacion' ).val( activo.ID_MetDepre );
+      $( '#fechastart' ).val( activo.Fec_InicioDepre );
+      $( '#vidautilnew' ).val( activo.Vida_Activo );
+
+      $( '.inv-news-confirm' ).addClass( 'd-none' );
+      $( '.inv-news-active-new' ).removeClass( 'd-none' );
+
+      $( '#inv-instructions' ).html( 'Ingresa los últimos datos del alta' );
+    }
+  });
 }
 
 function ConfirmNew( )
 {
-  Swal.fire(
+
+  let id = localStorage.getItem( 'new-inventary' );
+
+  let info =
   {
-    title: '¡Atención!',
-    text: 'Estas a un click de confirmar el alta de tu activo, esta acción no se podrá deshacer',
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#ffde59',
-    cancelButtonColor: '#d9534f',
-    cancelButtonText: 'Guardar y seguir luego',
-    confirmButtonText: 'Continuar',
-  }).then( result =>
+    codigo: id,
+    contabilizar: $( '#contabilizar' ).prop( 'checked' ) ? 1 : 0,
+    clp: $( '#clp' ).val( ),
+    fecha_compra: $( '#fechadecompra' ).val( ),
+    fecha_garantia: $( '#fechagarantia' ).val( ),
+    metodo: $( '#metodo_depreciacion' ).val( ),
+    fecha_metodo: $( '#fechastart' ).val( ),
+    vida_util: $( '#vidautilnew' ).val( ),
+  };
+
+  $.ajax({
+    url: url + `/inventario/saveDraftBuyDetails`,
+    type: 'POST',
+    dataType: 'json',
+    data: info ,
+  })
+  .done( response =>
   {
-    if ( result.value )
+    if ( response.status == 200 )
     {
       Swal.fire(
       {
-        title: '¡Excelente!',
-        text: 'El activo ha sido dado de alta exitosamente',
-        icon: 'success',
-        confirmButtonColor: '#5cb85c',
-      })
-      .then( result =>
+        title: '¡Atención!',
+        text: 'Estas a un click de confirmar el alta de tu activo, esta acción no se podrá deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ffde59',
+        cancelButtonColor: '#d9534f',
+        cancelButtonText: 'Guardar y seguir luego',
+        confirmButtonText: 'Continuar',
+      }).then( result =>
       {
-        $( '.inv-news-active-new' ).addClass( 'd-none' );
-        $( '.inv-news-home' ).removeClass( 'd-none' );
-        $( '.inv-buttons' ).removeClass( 'd-none' );
+        if ( result.value )
+        {
+          $.ajax({
+            url: url + `/inventario/draftToActivo`,
+            type: 'POST',
+            dataType: 'json',
+            data: { 'codigo': id } ,
+          })
+          .done( response =>
+          {
+            Swal.fire(
+            {
+              title: '¡Excelente!',
+              text: 'El activo ha sido dado de alta exitosamente',
+              icon: 'success',
+              confirmButtonColor: '#5cb85c',
+            })
+            .then( result =>
+            {
+              getNewItems( );
 
-        $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
+              $( '.inv-news-active-new' ).addClass( 'd-none' );
+              $( '.inv-news-home' ).removeClass( 'd-none' );
+              $( '.inv-buttons' ).removeClass( 'd-none' );
+
+              $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
+            });
+          });
+        }
+        else if ( result.dismiss === Swal.DismissReason.cancel )
+        {
+          getNewItems( );
+
+          $( '.inv-news-active-new' ).addClass( 'd-none' );
+          $( '.inv-news-home' ).removeClass( 'd-none' );
+          $( '.inv-buttons' ).removeClass( 'd-none' );
+
+          $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
+        }
       });
-    }
-    else if ( result.dismiss === Swal.DismissReason.cancel )
-    {
-      $( '.inv-news-active-new' ).addClass( 'd-none' );
-      $( '.inv-news-home' ).removeClass( 'd-none' );
-      $( '.inv-buttons' ).removeClass( 'd-none' );
-
-      $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
     }
   });
 }
@@ -1015,6 +1135,8 @@ function getInvFormData( )
 
 function getNewItems( )
 {
+  $( '.table-new-actives' ).html( '' );
+
   $.ajax({
     url: url + '/inventario/getItems',
     type: 'GET',
@@ -1046,7 +1168,7 @@ function getNewItems( )
               ${ activo.fecha }
             </td>
             <td class="align-middle">
-              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew()">
+              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew( ${ activo.id_activo } )">
                 <i class="fas fa-angle-right"></i>
               </button>
             </td>
@@ -1078,6 +1200,8 @@ function getDraftInfoNew( id )
     if ( response.status == 200 )
     {
       let activo = response.activo;
+
+      localStorage.setItem( 'new-inventary', activo.ID_Activo );
 
       $( '#newTipoActivo' ).val( activo.ID_Tipo );
       $( '#newName' ).val( activo.Nom_Activo );
@@ -1150,6 +1274,229 @@ function getDraftInfoNew( id )
 
   });
 }
+
+function getProcessItems()
+{
+  $( '.inventary-process-table' ).html( '' );
+
+  $.ajax({
+    url: url + '/inventario/getProcessItems',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+      let aNuevos = response.nuevos;
+
+      activos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id_activo } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+            <td class="align-middle">
+              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate( ${ activo.id_activo } )">
+                <i class="fas fa-angle-right"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+
+        $( '.inventary-process-table' ).append( typePlantilla );
+
+      });
+
+      aNuevos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id_activo } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+          </tr>
+        `;
+
+        $( '.inventary-process-table2' ).append( typePlantilla );
+
+      });
+
+      $( '.inventary-process-with-count' ).html( response.number );
+      $( '.inventary-process-without-count' ).html( response.number2 );
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
+function viewProcessInfo( id )
+{
+  $.ajax({
+    url: url + `/inventario/getDraftInfo/${ id }`,
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activo = response.activo;
+
+      localStorage.setItem( 'process-inventary', activo.ID_Activo );
+
+      $( '#newTipoActivo' ).val( activo.ID_Tipo );
+      $( '#newName' ).val( activo.Nom_Activo );
+      $( '#newSerie' ).val( activo.NSerie_Activo );
+      $( '#newCCosto' ).val( activo.ID_CC );
+      $( '#newAsignacion' ).val( activo.User_Inventario );
+      $( '#newEmpresa' ).val( activo.ID_Company );
+      $( '#newSucursal' ).val( activo.ID_Sucursal );
+      $( '#newArea' ).val( activo.ID_Area );
+      $( '#newDesc' ).val( activo.Desc_Activo );
+
+      $.ajax({
+        url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.new-image-front' ).html( response );
+        }
+        else
+        {
+          $( '.new-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageLeft/${ activo.ID_Activo }`,
+        type: 'GET',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.new-image-left' ).html( response );
+        }
+        else
+        {
+          $( '.new-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageRight/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.new-image-right' ).html( response );
+        }
+        else
+        {
+          $( '.new-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $( '#newInvModal' ).modal( 'show' );
+    }
+
+  });
+}
+
+function getInventaryItems( )
+{
+  $( '.table-inventary-actives' ).html( '' );
+
+  $.ajax({
+    url: url + '/inventario/getInventaryItems',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+      let aNuevos = response.nuevos;
+
+      activos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="viewInventaryInfo( ${ activo.id_activo } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+          </tr>
+        `;
+
+        $( '.table-inventary-actives' ).append( typePlantilla );
+
+      });
+
+      $( '.inventary-count' ).html( response.number );
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
+
 
 $(document).ready(function( )
 {
@@ -1682,6 +2029,8 @@ $(document).ready(function( )
 
     setBackgroundButtons( 'update' );
 
+    getProcessItems( );
+
     //mostramos
     $( '.inv-news-table' ).addClass( 'd-none' );
     $( '.inv-inv-table' ).addClass( 'd-none' );
@@ -1693,6 +2042,8 @@ $(document).ready(function( )
   $( '#inv-inv' ).click( event =>
   {
     event.preventDefault( );
+
+    getInventaryItems( );
 
     setBackgroundButtons( 'inv' );
 
@@ -1706,18 +2057,34 @@ $(document).ready(function( )
 
   $( '#deleteNewActivo' ).click( event =>
   {
-    Swal.fire(
-    {
-      title: '¡Listo',
-      text: 'El activo ha sido eliminado exitosamente',
-      icon: 'success',
-      confirmButtonColor: '#5cb85c',
+    let id = localStorage.getItem( 'new-inventary' );
+
+    $.ajax({
+      url: url + '/inventario/draftDelete',
+      type: 'POST',
+      dataType: 'json',
+      data: { codigo: id },
     })
-    .then( result =>
+    .done( response =>
     {
-      $( '.inv-news-confirm' ).addClass( 'd-none' );
-      $( '.inv-news-home' ).removeClass( 'd-none' );
-      $( '.inv-buttons' ).removeClass( 'd-none' );
+      if ( response.status == 200 )
+      {
+        getNewItems( );
+
+        Swal.fire(
+        {
+          title: '¡Listo',
+          text: 'El activo ha sido eliminado exitosamente',
+          icon: 'success',
+          confirmButtonColor: '#5cb85c',
+        })
+        .then( result =>
+        {
+          $( '.inv-news-confirm' ).addClass( 'd-none' );
+          $( '.inv-news-home' ).removeClass( 'd-none' );
+          $( '.inv-buttons' ).removeClass( 'd-none' );
+        });
+      }
     });
   });
 
