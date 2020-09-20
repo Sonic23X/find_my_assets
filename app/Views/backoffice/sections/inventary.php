@@ -300,20 +300,8 @@
                                     <th scope="col">Cargado</th>
                                   </tr>
                                 </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </td>
-                                    <td class="align-middle">
-                                      [asignado]
-                                    </td>
-                                    <td class="align-middle">
-                                      dd/mm/aa
-                                    </td>
-                                  </tr>
+                                <tbody class="conciliar-new">
+
                                 </tbody>
                               </table>
                             </div>
@@ -337,20 +325,8 @@
                                     <th scope="col">Cargado</th>
                                   </tr>
                                 </thead>
-                                <tbody>
-                                  <tr>
-                                    <td>
-                                      [subtipo de activo]
-                                      <br>
-                                      [tipo de activo]
-                                    </td>
-                                    <td class="align-middle">
-                                      [asignado]
-                                    </td>
-                                    <td class="align-middle">
-                                      dd/mm/aa
-                                    </td>
-                                  </tr>
+                                <tbody class="conciliar-old">
+
                                 </tbody>
                               </table>
                             </div>

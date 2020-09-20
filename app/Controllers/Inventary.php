@@ -338,6 +338,99 @@ class Inventary extends BaseController
   }
 
   //método que funciona exclusivamente con AJAX - JQUERY
+  function SearchDataConciliarConfirm( )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+        $builder = $this->db->table( 'draft' );
+        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
+        $builder->where( 'draft.ID_Activo', $this->request->getVar( 'actual' ) );
+        $act = $builder->get( )->getResult( );
+
+        $builder = $this->db->table( 'activos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.Id', $this->request->getVar( 'old' ) );
+        $old = $builder->get( )->getResult( );
+
+        echo json_encode( array( 'status' => 200, 'actual' => $act, 'old' => $old ) );
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
+  //método que funciona exclusivamente con AJAX - JQUERY
+  function Conciliar(  )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+
+        $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->first( );
+        //$activo = $this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->first( );
+
+        $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'conciliado' ] )->update( );
+
+        $activoData =
+        [
+          'ID_Activo' => $draft[ 'ID_Activo' ],
+          'Nom_Activo' => $draft[ 'Nom_Activo' ],
+          'BC_Activo' => $draft[ 'BC_Activo' ],
+          'ID_Company' => $draft[ 'ID_Company' ],
+          'ID_Sucursal' => $draft[ 'ID_Sucursal' ],
+          'ID_Area' => $draft[ 'ID_Area' ],
+          'ID_CC' => $draft[ 'ID_CC' ],
+          'ID_Asignado' => $draft[ 'ID_Asignado' ],
+          'ID_Proceso' => $draft[ 'ID_Proceso' ],
+          'ID_Status' => $draft[ 'ID_Status' ],
+          'Fec_Compra' => $draft[ 'Fec_Compra' ],
+          'Img_FacCompra' => $draft[ 'Img_FacCompra' ],
+          'Pre_Compra' => $draft[ 'Pre_Compra' ],
+          'Fec_Expira' => $draft[ 'Fec_Expira' ],
+          'Img_Garantia' => $draft[ 'Img_Garantia' ],
+          'NSerie_Activo' => $draft[ 'NSerie_Activo' ],
+          'ID_Tipo' => $draft[ 'ID_Tipo' ],
+          'Des_Activo' => $draft[ 'Des_Activo' ],
+          'Fec_InicioDepre' => $draft[ 'Fec_InicioDepre' ],
+          'ID_MetDepre' => $draft[ 'ID_MetDepre' ],
+          'Vida_Activo' => $draft[ 'Vida_Activo' ],
+          'GPS' => $draft[ 'GPS' ],
+          'Fec_Inventario' => $draft[ 'Fec_Inventario' ],
+          'User_Inventario' => $draft[ 'User_Inventario' ],
+          'Comentarios' => $draft[ 'Comentarios' ],
+          'User_Create' => $draft[ 'User_Create' ],
+          'User_Update' => $draft[ 'User_Update' ],
+          'User_Delete' => $draft[ 'User_Delete' ],
+          'TS_Create' => $draft[ 'TS_Create' ],
+          'TS_Update' => $draft[ 'TS_Update' ],
+          'TS_Delete' => $draft[ 'TS_Delete' ],
+        ];
+
+        //$this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->update( $activoData );
+
+        echo json_encode( array( 'status' => 200 ) );
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
+  //método que funciona exclusivamente con AJAX - JQUERY
   function SaveDraftBuyDetails( )
   {
     if ( $this->request->isAJAX( ) )
