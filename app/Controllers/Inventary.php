@@ -476,4 +476,44 @@ class Inventary extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+  //método que funciona exclusivamente con AJAX - JQUERY
+  function SearchActiveInfo( $id )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+        $campos =
+        [
+          'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
+          'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
+          'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
+          'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
+          'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
+          'User_Create', 'User_Update', '	User_Delete',
+          'TS_Create', 'TS_Update', 'TS_Delete'
+        ];
+
+        $activo = $this->activoModel->where( 'Id', $id )
+                                   ->select( $campos )
+                                   ->first( );
+
+        if ( $activo == null )
+        {
+          echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
+          return;
+        }
+
+        echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
+
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
 }
