@@ -1082,6 +1082,7 @@ function infoItemConcilar( id )
 function conciliarDetails( id, porcentaje )
 {
   localStorage.setItem( 'conciliar-activo', id );
+
   let actual = localStorage.getItem( 'new-inventary' );
   $( '.conciliar-porcentaje' ).html( porcentaje + '%' );
 
@@ -1095,7 +1096,6 @@ function conciliarDetails( id, porcentaje )
   {
     if ( response.status == 200 )
     {
-      console.log( response );
       let newA = response.actual[ 0 ];
       let oldA = response.old[ 0 ];
 
@@ -1122,37 +1122,118 @@ function conciliarDetails( id, porcentaje )
 
 function ConfirmConciliar( )
 {
-  $( '.inv-news-conciliar' ).addClass( 'd-none' );
-  $( '.inv-news-conciliar-confirm' ).removeClass( 'd-none' );
+  let id = localStorage.getItem( 'conciliar-activo' );
 
-  $( '.select-circle' ).css('background', '#6c757d');
-  $( '.select-label' ).css('color', '#6c757d');
-  $( '.confirm-circle' ).css('background', '#ffde59');
-  $( '.confirm-label' ).css('color', '#ffde59');
+  let actual = localStorage.getItem( 'new-inventary' );
 
-  $( '#inv-instructions' ).html( 'Confirma la conciliación' );
+  $.ajax({
+    url: url + `/inventario/concilarActivoConfirm`,
+    type: 'POST',
+    dataType: 'json',
+    data: { old: id, actual: actual },
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let newA = response.actual[ 0 ];
+      let oldA = response.old[ 0 ];
+
+      let newFecha = newA.TS_Create.split( ' ' );
+      let oldFecha = oldA.TS_Create.split( ' ' );
+
+      let newPlantilla =
+      `
+        <tr>
+          <td>
+            ${ newA.Desc }
+            <br>
+            ${ newA.Nom_Activo }
+          </td>
+          <td class="align-middle">
+            ${ newA.nombre + ' ' +newA.apellidos }
+          </td>
+          <td class="align-middle">
+            ${ newFecha[ 0 ] }
+          </td>
+        </tr>
+      `;
+
+      $( '.conciliar-new' ).append( newPlantilla );
+
+      let oldPlantilla =
+      `
+        <tr>
+          <td>
+            ${ oldA.Desc }
+            <br>
+            ${ oldA.Nom_Activo }
+          </td>
+          <td class="align-middle">
+            ${ oldA.nombre + ' ' + oldA.apellidos }
+          </td>
+          <td class="align-middle">
+            ${ oldFecha[ 0 ] }
+          </td>
+        </tr>
+      `;
+
+      $( '.conciliar-old' ).append( oldPlantilla );
+
+
+      $( '.inv-news-conciliar' ).addClass( 'd-none' );
+      $( '.inv-news-conciliar-confirm' ).removeClass( 'd-none' );
+
+      $( '.select-circle' ).css('background', '#6c757d');
+      $( '.select-label' ).css('color', '#6c757d');
+      $( '.confirm-circle' ).css('background', '#ffde59');
+      $( '.confirm-label' ).css('color', '#ffde59');
+
+      $( '#inv-instructions' ).html( 'Confirma la conciliación' );
+    }
+  });
+
 }
 
 function ConfirmConciliarMsg( )
 {
-  Swal.fire(
-  {
-    title: '¡Excelente!',
-    text: 'El activo en tu inventario ha sido actualizado exitosamente',
-    icon: 'success',
-    confirmButtonColor: '#5cb85c',
-  }).then( result =>
-  {
-    if ( result.value )
-    {
-      $( '.inv-news-conciliar-confirm' ).addClass( 'd-none' );
-      $( '.inv-step' ).addClass( 'd-none' );
-      $( '.inv-news-home' ).removeClass( 'd-none' );
-      $( '.inv-buttons' ).removeClass( 'd-none' );
+  let id = localStorage.getItem( 'conciliar-activo' );
 
-      $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
+  let actual = localStorage.getItem( 'new-inventary' );
+
+  $.ajax({
+    url: url + `/inventario/conciliarFinish`,
+    type: 'POST',
+    dataType: 'json',
+    data: { old: id, actual: actual },
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      Swal.fire(
+      {
+        title: '¡Excelente!',
+        text: 'El activo en tu inventario ha sido actualizado exitosamente',
+        icon: 'success',
+        confirmButtonColor: '#5cb85c',
+      }).then( result =>
+      {
+        if ( result.value )
+        {
+          getNewItems( );
+
+          $( '.inv-news-conciliar-confirm' ).addClass( 'd-none' );
+          $( '.inv-step' ).addClass( 'd-none' );
+          $( '.inv-news-home' ).removeClass( 'd-none' );
+          $( '.inv-buttons' ).removeClass( 'd-none' );
+
+          $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
+        }
+      });
     }
   });
+
 }
 
 function setInvInstruccions( text )
