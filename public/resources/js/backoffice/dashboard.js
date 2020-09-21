@@ -6,6 +6,12 @@ var lat;
 var isNew = false;
 var activeMap;
 
+var newTable = null;
+var conciliarTable = null;
+var procesoCTable = null;
+var procesoWTable = null;
+var inventarioTable = null;
+
 function dataURLtoFile( dataurl, filename )
 {
 
@@ -21,6 +27,34 @@ function dataURLtoFile( dataurl, filename )
 
    return new File([u8arr], filename, {type:mime});
 }
+
+let spanish =
+{
+  sProcessing: 'Procesando...',
+  sLengthMenu: 'Mostrar _MENU_ registros',
+  sZeroRecords: 'No se encontraron resultados',
+  sEmptyTable: 'Ningún dato disponible en esta tabla',
+  sInfo: 'Mostrando _START_ - _END_ de _TOTAL_',
+  sInfoEmpty: 'Sin registros',
+  sInfoFiltered: '(filtrado de un total de _MAX_ registros)',
+  sInfoPostFix: '',
+  sSearch: 'Buscar:',
+  sUrl: '',
+  sInfoThousands: ',',
+  sLoadingRecords: 'Cargando...',
+  oPaginate:
+  {
+    sFirst: 'Primero',
+    sLast: 'Último',
+    sNext: 'Siguiente',
+    sPrevious: 'Anterior',
+  },
+  oAria:
+  {
+    sSortAscending: ': Activar para ordenar la columna de manera ascendente',
+    sSortDescending: ': Activar para ordenar la columna de manera descendente',
+  },
+};
 
 /* --- scanner --- */
 var wizzardActualView = '.scanner-start';
@@ -1367,6 +1401,20 @@ function getNewItems( )
 
       });
 
+      //borramos la tabla si existe
+      if ( newTable != null )
+        newTable.destroy();
+
+      //creamos la tabla dinamica
+      newTable = $( '.table-new-items' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
+      });
+
       $( '.number-new-actives' ).html( response.number );
     }
     else
@@ -1511,6 +1559,21 @@ function getProcessItems()
 
       });
 
+      //borramos la tabla si existe
+      if ( procesoCTable != null )
+        procesoCTable.destroy( );
+
+      //creamos la tabla dinamica
+      procesoCTable = $( '.inventary-process-table-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
+      });
+
+
       aNuevos.forEach( ( activo, i ) =>
       {
 
@@ -1535,6 +1598,20 @@ function getProcessItems()
 
         $( '.inventary-process-table2' ).append( typePlantilla );
 
+      });
+
+      //borramos la tabla si existe
+      if ( procesoWTable != null )
+        procesoWTable.destroy( );
+
+      //creamos la tabla dinamica
+      procesoWTable = $( '.inventary-process-table2-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
       });
 
       $( '.inventary-process-with-count' ).html( response.number );
@@ -1674,6 +1751,19 @@ function getInventaryItems( )
 
         $( '.table-inventary-actives' ).append( typePlantilla );
 
+      });
+
+      if ( inventarioTable != null )
+        inventarioTable.destroy( );
+
+      //creamos la tabla dinamica
+      inventarioTable = $( '.table-inventary-actives-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
       });
 
       $( '.inventary-count' ).html( response.number );

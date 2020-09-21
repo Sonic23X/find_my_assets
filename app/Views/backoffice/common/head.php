@@ -28,6 +28,9 @@
     <!-- Switch bootstrap4 -->
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
 
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.22/datatables.min.css"/>
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
 
