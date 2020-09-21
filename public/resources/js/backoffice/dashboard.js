@@ -1456,12 +1456,50 @@ function getInvFormData( )
 
       });
 
+      let depreciaciones = response.depreciacion;
+
+      depreciaciones.forEach( ( depreciacion , i ) =>
+      {
+
+        let unidad = depreciacion.Observaciones.split( ' ' );
+
+        let typePlantilla =
+        `
+          <option value="${ depreciacion.id }">
+            ${ depreciacion.Metodo }
+          </option>
+        `;
+
+        $( '#metodo_depreciacion' ).append( typePlantilla );
+
+      });
+
     }
     else
     {
       imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
     }
   });
+}
+
+function setDepre( )
+{
+  let id = $( '#metodo_depreciacion' ).val( );
+  switch ( id )
+  {
+    case '1':
+      $( '#unidad-text' ).html( 'meses' );
+      break;
+    case '2':
+      $( '#unidad-text' ).html( 'unidades' );
+      break;
+    case '3':
+      $( '#unidad-text' ).html( 'kilometros' );
+      break;
+    case '4':
+      $( '#unidad-text' ).html( 'horas' );
+      break;
+  }
 }
 
 function getNewItems( )
