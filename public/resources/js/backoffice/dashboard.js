@@ -1036,7 +1036,20 @@ function ConfirmNew( )
 function IsConcilar( )
 {
   let id = localStorage.getItem( 'new-inventary' );
-  $( '.inventary-conciliacion-table' ).html( '' );
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">%</th>
+      </tr>
+    </thead>
+    <tbody class="inventary-conciliacion-table">
+
+    </tbody>
+  `;
+  $( '.inventary-conciliacion-table-content' ).html( base );
 
   $.ajax({
     url: url + `/inventario/concilar/${ id }`,
@@ -1050,6 +1063,7 @@ function IsConcilar( )
       let activos = response.activos;
       let aNuevos = response.nuevos;
 
+      $( '.inventary-conciliacion-table' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
         let button;
@@ -1094,6 +1108,20 @@ function IsConcilar( )
         $( '.inventary-conciliacion-table' ).append( typePlantilla );
       });
 
+      //borramos la tabla si existe
+      if ( conciliarTable != null )
+        conciliarTable.destroy( );
+
+      //creamos la tabla dinamica
+      conciliarTable = $( '.inventary-conciliacion-table-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
+      });
+
       $( '.inv-news-confirm' ).addClass( 'd-none' );
       $( '.inv-news-conciliar' ).removeClass( 'd-none' );
       $( '.inv-step' ).removeClass( 'd-none' );
@@ -1110,7 +1138,88 @@ function IsConcilar( )
 
 function infoItemConcilar( id )
 {
-  $( '#newInvModal' ).modal( 'show' );
+
+  $.ajax({
+    url: url + `/inventario/getActivoInfo/${ id }`,
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activo = response.activo;
+
+      $( '#ciTipoActivo' ).val( activo.ID_Tipo );
+      $( '#ciName' ).val( activo.Nom_Activo );
+      $( '#ciSerie' ).val( activo.NSerie_Activo );
+      $( '#ciCCosto' ).val( activo.ID_CC );
+      $( '#ciAsignacion' ).val( activo.User_Inventario );
+      $( '#ciEmpresa' ).val( activo.ID_Company );
+      $( '#ciSucursal' ).val( activo.ID_Sucursal );
+      $( '#ciArea' ).val( activo.ID_Area );
+      $( '#ciDesc' ).val( activo.Desc_Activo );
+
+      $.ajax({
+        url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.ci-image-front' ).html( response );
+        }
+        else
+        {
+          $( '.ci-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageLeft/${ activo.ID_Activo }`,
+        type: 'GET',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.ci-image-left' ).html( response );
+        }
+        else
+        {
+          $( '.ci-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageRight/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.ci-image-right' ).html( response );
+        }
+        else
+        {
+          $( '.ci-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $( '#conciliarInfoModal' ).modal( 'show' );
+    }
+
+  });
 }
 
 function conciliarDetails( id, porcentaje )
@@ -1357,7 +1466,23 @@ function getInvFormData( )
 
 function getNewItems( )
 {
-  $( '.table-new-actives' ).html( '' );
+
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody class="table-new-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-new-items' ).html( base );
 
   $.ajax({
     url: url + '/inventario/getItems',
@@ -1370,6 +1495,7 @@ function getNewItems( )
     {
       let activos = response.activos;
 
+      $( '.table-new-actives' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
 
@@ -1513,8 +1639,37 @@ function getDraftInfoNew( id )
 
 function getProcessItems()
 {
-  $( '.inventary-process-table' ).html( '' );
-  $( '.inventary-process-table2' ).html( '' );
+  let base1 =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody class="inventary-process-table">
+
+    </tbody>
+  `;
+
+  let base2 =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+      </tr>
+    </thead>
+    <tbody class="inventary-process-table2">
+
+    </tbody>
+  `;
+
+  $( '.inventary-process-table-content' ).html( base1 );
+  $( '.inventary-process-table2-content' ).html( base2 );
 
   $.ajax({
     url: url + '/inventario/getProcessItems',
@@ -1528,6 +1683,7 @@ function getProcessItems()
       let activos = response.activos;
       let aNuevos = response.nuevos;
 
+      $( '.inventary-process-table' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
 
@@ -1573,7 +1729,7 @@ function getProcessItems()
         language: spanish,
       });
 
-
+      $( '.inventary-process-table2' ).html( '' );
       aNuevos.forEach( ( activo, i ) =>
       {
 
@@ -1713,7 +1869,21 @@ function viewProcessInfo( id )
 
 function getInventaryItems( )
 {
-  $( '.table-inventary-actives' ).html( '' );
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+      </tr>
+    </thead>
+    <tbody class="table-inventary-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-inventary-actives-content' ).html( base );
 
   $.ajax({
     url: url + '/inventario/getInventaryItems',
@@ -1727,6 +1897,7 @@ function getInventaryItems( )
       let activos = response.activos;
       let aNuevos = response.nuevos;
 
+      $( '.table-inventary-actives' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
 
@@ -1862,6 +2033,96 @@ function viewInvInfo( id )
   });
 }
 
+function inventaryFiltros( )
+{
+
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+      </tr>
+    </thead>
+    <tbody class="table-inventary-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-inventary-actives-content' ).html( base );
+
+
+  let filtros =
+  {
+    tipo: $( '#invFTipo' ).val( ),
+    cc: $( '#invFCC' ).val( ),
+    empresa: $( '#invFEmpresa' ).val( ),
+    sucursal: $( '#invFSucursal' ).val( ),
+    area: $( '#invFArea' ).val( ),
+  };
+
+  $.ajax({
+    url: url + '/inventario/getInventaryItemsFilter',
+    type: 'POST',
+    dataType: 'json',
+    data: filtros,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+      let aNuevos = response.nuevos;
+
+      $( '.table-inventary-actives' ).html( '' );
+      activos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+          </tr>
+        `;
+
+        $( '.table-inventary-actives' ).append( typePlantilla );
+
+      });
+
+      if ( inventarioTable != null )
+        inventarioTable.destroy( );
+
+      //creamos la tabla dinamica
+      inventarioTable = $( '.table-inventary-actives-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
+      });
+
+      $( '.inventary-count' ).html( response.number );
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
 
 $(document).ready(function( )
 {

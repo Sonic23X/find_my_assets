@@ -81,6 +81,7 @@ $routes->post('/inventario/conciliarFinish', 'Inventary::Conciliar');
 $routes->get('/inventario/getProcessItems', 'Inventary::ProcessList');
 $routes->get('/inventario/getInventaryItems', 'Inventary::SearchInventaryList');
 $routes->get('/inventario/getActivoInfo/(:num)', 'Inventary::SearchActiveInfo/$1');
+$routes->post('/inventario/getInventaryItemsFilter', 'Inventary::SearchInventaryListFilter');
 
 
 /**
