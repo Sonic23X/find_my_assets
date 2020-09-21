@@ -1036,7 +1036,20 @@ function ConfirmNew( )
 function IsConcilar( )
 {
   let id = localStorage.getItem( 'new-inventary' );
-  $( '.inventary-conciliacion-table' ).html( '' );
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">%</th>
+      </tr>
+    </thead>
+    <tbody class="inventary-conciliacion-table">
+
+    </tbody>
+  `;
+  $( '.inventary-conciliacion-table-content' ).html( base );
 
   $.ajax({
     url: url + `/inventario/concilar/${ id }`,
@@ -1050,6 +1063,7 @@ function IsConcilar( )
       let activos = response.activos;
       let aNuevos = response.nuevos;
 
+      $( '.inventary-conciliacion-table' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
         let button;
@@ -1124,6 +1138,7 @@ function IsConcilar( )
 
 function infoItemConcilar( id )
 {
+
   $.ajax({
     url: url + `/inventario/getActivoInfo/${ id }`,
     type: 'GET',
@@ -1451,7 +1466,23 @@ function getInvFormData( )
 
 function getNewItems( )
 {
-  $( '.table-new-actives' ).html( '' );
+
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody class="table-new-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-new-items' ).html( base );
 
   $.ajax({
     url: url + '/inventario/getItems',
@@ -1464,6 +1495,7 @@ function getNewItems( )
     {
       let activos = response.activos;
 
+      $( '.table-new-actives' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
 
@@ -2091,7 +2123,6 @@ function inventaryFiltros( )
     }
   });
 }
-
 
 $(document).ready(function( )
 {

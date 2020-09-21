@@ -242,15 +242,7 @@
 
                             </div>
                             <div class="col-6 float-right">
-                              <label class="sr-only" for="searchActiveInv">Buscar</label>
-                              <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text">
-                                    <i class="fas fa-search"></i>
-                                  </div>
-                                </div>
-                                <input type="text" class="form-control" id="searchActiveNew" placeholder="Buscar">
-                              </div>
+                              
                             </div>
                           </div>
 
