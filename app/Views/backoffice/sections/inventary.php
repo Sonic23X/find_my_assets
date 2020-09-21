@@ -200,7 +200,7 @@
                         <div class="form-group row">
                           <label for="medotoD" class="col-sm-2 col-form-label">Metodo de depreciacion</label>
                           <div class="col-sm-10">
-                            <select class="custom-select" name="medotoD" id="metodo_depreciacion">
+                            <select class="custom-select" name="medotoD" id="metodo_depreciacion" onchange="setDepre( )">
 
                             </select>
                           </div>
@@ -214,7 +214,7 @@
                         </div>
 
                         <div class="form-group row">
-                          <label for="name" class="col-sm-2 col-form-label">Vida útil ( --- )</label>
+                          <label for="name" class="col-sm-2 col-form-label">Vida útil ( <span id="unidad-text"></span> )</label>
                           <div class="col-sm-10">
                             <input id="vidautilnew" type="text" class="form-control">
                           </div>
@@ -242,7 +242,7 @@
 
                             </div>
                             <div class="col-6 float-right">
-                              
+
                             </div>
                           </div>
 
