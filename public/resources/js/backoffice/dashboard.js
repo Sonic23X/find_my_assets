@@ -1607,8 +1607,37 @@ function getDraftInfoNew( id )
 
 function getProcessItems()
 {
-  $( '.inventary-process-table' ).html( '' );
-  $( '.inventary-process-table2' ).html( '' );
+  let base1 =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody class="inventary-process-table">
+
+    </tbody>
+  `;
+
+  let base2 =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+      </tr>
+    </thead>
+    <tbody class="inventary-process-table2">
+
+    </tbody>
+  `;
+
+  $( '.inventary-process-table-content' ).html( base1 );
+  $( '.inventary-process-table2-content' ).html( base2 );
 
   $.ajax({
     url: url + '/inventario/getProcessItems',
@@ -1622,6 +1651,7 @@ function getProcessItems()
       let activos = response.activos;
       let aNuevos = response.nuevos;
 
+      $( '.inventary-process-table' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
 
@@ -1667,6 +1697,7 @@ function getProcessItems()
         language: spanish,
       });
 
+      $( '.inventary-process-table2' ).html( '' );
       aNuevos.forEach( ( activo, i ) =>
       {
 
@@ -1806,7 +1837,21 @@ function viewProcessInfo( id )
 
 function getInventaryItems( )
 {
-  $( '.table-inventary-actives' ).html( '' );
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+      </tr>
+    </thead>
+    <tbody class="table-inventary-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-inventary-actives-content' ).html( base );
 
   $.ajax({
     url: url + '/inventario/getInventaryItems',
@@ -1820,6 +1865,7 @@ function getInventaryItems( )
       let activos = response.activos;
       let aNuevos = response.nuevos;
 
+      $( '.table-inventary-actives' ).html( '' );
       activos.forEach( ( activo, i ) =>
       {
 
@@ -1952,6 +1998,97 @@ function viewInvInfo( id )
       $( '#infoModal' ).modal( 'show' );
     }
 
+  });
+}
+
+function inventaryFiltros( )
+{
+
+  let base =
+  `
+    <thead>
+      <tr>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+      </tr>
+    </thead>
+    <tbody class="table-inventary-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-inventary-actives-content' ).html( base );
+
+
+  let filtros =
+  {
+    tipo: $( '#invFTipo' ).val( ),
+    cc: $( '#invFCC' ).val( ),
+    empresa: $( '#invFEmpresa' ).val( ),
+    sucursal: $( '#invFSucursal' ).val( ),
+    area: $( '#invFArea' ).val( ),
+  };
+
+  $.ajax({
+    url: url + '/inventario/getInventaryItemsFilter',
+    type: 'POST',
+    dataType: 'json',
+    data: filtros,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+      let aNuevos = response.nuevos;
+
+      $( '.table-inventary-actives' ).html( '' );
+      activos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+          </tr>
+        `;
+
+        $( '.table-inventary-actives' ).append( typePlantilla );
+
+      });
+
+      if ( inventarioTable != null )
+        inventarioTable.destroy( );
+
+      //creamos la tabla dinamica
+      inventarioTable = $( '.table-inventary-actives-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
+      });
+
+      $( '.inventary-count' ).html( response.number );
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
   });
 }
 

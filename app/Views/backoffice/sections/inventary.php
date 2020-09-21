@@ -954,8 +954,8 @@
                               <div class="form-group row">
                                 <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="tipoActivo">
-                                    <option value="">Muebles y utilidades</option>
+                                  <select class="custom-select iTipoActivo" id="invFTipo" name="tipoActivo" onchange="inventaryFiltros( )">
+                                    <option value="">Todos</option>
                                   </select>
                                 </div>
                               </div>
@@ -963,7 +963,8 @@
 							                <div class="form-group row">
                                 <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" name="cCosto">
+                                  <select class="custom-select" id="invFCC" name="cCosto" onchange="inventaryFiltros( )">
+                                    <option value="">Todas</option>
                                     <option value="1">Administración</option>
                                     <option value="2">Producción</option>
                                     <option value="3">Marketing</option>
@@ -982,8 +983,8 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select iEmpresa" name="asignacion">
-
+                                  <select class="custom-select iEmpresa" id="invFEmpresa" name="asignacion" onchange="inventaryFiltros( )">
+                                    <option value="">Todos</option>
                                   </select>
                                 </div>
                               </div>
@@ -991,8 +992,8 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select iSucursal" name="asignacion">
-
+                                  <select class="custom-select iSucursal" id="invFSucursal" name="asignacion" onchange="inventaryFiltros( )">
+                                    <option value="">Todas</option>
                                   </select>
                                 </div>
                               </div>
@@ -1000,8 +1001,8 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select iArea" name="asignacion">
-
+                                  <select class="custom-select iArea" id="invFArea" name="asignacion" onchange="inventaryFiltros( )">
+                                    <option value="">Todas</option>
                                   </select>
                                 </div>
                               </div>
