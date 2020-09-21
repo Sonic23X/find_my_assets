@@ -1009,6 +1009,7 @@ function ConfirmNew( )
             .then( result =>
             {
               getNewItems( );
+              resetFormNew( );
 
               $( '.inv-news-active-new' ).addClass( 'd-none' );
               $( '.inv-news-home' ).removeClass( 'd-none' );
@@ -1021,6 +1022,7 @@ function ConfirmNew( )
         else if ( result.dismiss === Swal.DismissReason.cancel )
         {
           getNewItems( );
+          resetFormNew( );
 
           $( '.inv-news-active-new' ).addClass( 'd-none' );
           $( '.inv-news-home' ).removeClass( 'd-none' );
@@ -1031,6 +1033,16 @@ function ConfirmNew( )
       });
     }
   });
+}
+
+function resetFormNew( )
+{
+  $( '#clp' ).val( '' );
+  $( '#fechadecompra' ).val( '' );
+  $( '#fechagarantia' ).val( '' );
+  $( '#metodo_depreciacion' ).val( '' );
+  $( '#fechastart' ).val( '' );
+  $( '#vidautilnew' ).val( '' );
 }
 
 function IsConcilar( )
