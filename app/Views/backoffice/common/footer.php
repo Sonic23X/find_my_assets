@@ -64,6 +64,9 @@
     <!-- stepper -->
     <script rel="stylesheet" href="./resources/plugins/stepper/stepper.min.js"></script>
 
+    <!-- datatables -->
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.22/datatables.min.js"></script>
+
     <!-- Switch bootstrap4 -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 

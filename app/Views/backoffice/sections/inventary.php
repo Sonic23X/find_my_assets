@@ -62,20 +62,12 @@
                               <span>Total de activos: <b class="number-new-actives">XX</b> </span>
                             </div>
                             <div class="col-6 float-right">
-                              <label class="sr-only" for="searchActiveInv">Buscar</label>
-                              <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                  <div class="input-group-text">
-                                    <i class="fas fa-search"></i>
-                                  </div>
-                                </div>
-                                <input type="text" class="form-control" id="searchActiveNew" placeholder="Buscar">
-                              </div>
+
                             </div>
                           </div>
 
                           <div class="mt-3 table-responsive text-center">
-                            <table class="table table-sm table-hover">
+                            <table class="table table-sm table-hover table-new-items">
                               <thead>
                                 <tr>
                                   <th scope="col">Activo</th>
@@ -582,20 +574,12 @@
                             <span>Total de activos: <b class="inventary-process-with-count">XX</b> </span>
                           </div>
                           <div class="col-6 float-right">
-                            <label class="sr-only" for="searchActiveInv">Buscar</label>
-                            <div class="input-group mb-2">
-                              <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                  <i class="fas fa-search"></i>
-                                </div>
-                              </div>
-                              <input type="text" class="form-control" id="searchActiveProcess" placeholder="Buscar">
-                            </div>
+
                           </div>
                         </div>
 
                         <div class="mt-3 table-responsive text-center">
-                          <table class="table table-sm table-hover">
+                          <table class="table table-sm table-hover inventary-process-table-content">
                             <thead>
                               <tr>
                                 <th scope="col">Activo</th>
@@ -631,19 +615,11 @@
                           </div>
                           <div class="col-6 float-right">
                             <label class="sr-only" for="searchActiveInv">Buscar</label>
-                            <div class="input-group mb-2">
-                              <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                  <i class="fas fa-search"></i>
-                                </div>
-                              </div>
-                              <input type="text" class="form-control" id="searchActiveWiUpdate" placeholder="Buscar">
-                            </div>
                           </div>
                         </div>
 
                         <div class="mt-3 table-responsive text-center">
-                          <table class="table table-hover">
+                          <table class="table table-hover inventary-process-table2-content">
                             <thead>
                               <tr>
                                 <th scope="col">Activo</th>
@@ -821,15 +797,7 @@
                             <span>Total de activos: <b class="inventary-count">XX</b> </span>
                           </div>
                           <div class="col-6 float-right">
-                            <label class="sr-only" for="searchActiveInv">Buscar</label>
-                            <div class="input-group mb-2">
-                              <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                  <i class="fas fa-search"></i>
-                                </div>
-                              </div>
-                              <input type="text" class="form-control" id="inventary-search" placeholder="Buscar">
-                            </div>
+
                           </div>
                         </div>
 
@@ -903,7 +871,7 @@
                         </div>
 
                         <div class="mt-3 table-responsive text-center">
-                          <table class="table table-hover">
+                          <table class="table table-hover table-inventary-actives-content">
                             <thead>
                               <tr>
                                 <th scope="col">Activo</th>
