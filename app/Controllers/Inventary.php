@@ -380,10 +380,9 @@ class Inventary extends BaseController
       {
 
         $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->first( );
-        //$activo = $this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->first( );
-
         $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'conciliado' ] )->update( );
 
+        $builder = $this->db->table( 'activos' );
         $activoData =
         [
           'ID_Activo' => $draft[ 'ID_Activo' ],
@@ -419,7 +418,8 @@ class Inventary extends BaseController
           'TS_Delete' => $draft[ 'TS_Delete' ],
         ];
 
-        //$this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->update( $activoData );
+        $builder->where( 'Id', $this->request->getVar( 'old' ) );
+        $builder->replace( $activoData );
 
         echo json_encode( array( 'status' => 200 ) );
       }
