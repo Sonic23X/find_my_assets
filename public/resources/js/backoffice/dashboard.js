@@ -950,6 +950,59 @@ function NewActiveForm( )
   });
 }
 
+function setFactura( node )
+{
+  let formData = new FormData( );
+
+  formData.set( 'activo', localStorage.getItem( 'new-inventary' ) );
+  formData.append( 'file', node.files[0] );
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/inventario/setFactura',
+    type: 'POST',
+    dataType: 'json',
+    data: formData,
+    processData: false,
+    contentType: false,
+  })
+  .done( response =>
+  {
+
+  })
+  .fail( ( ) =>
+  {
+
+  });
+}
+
+function setGarantia( node )
+{
+  let formData = new FormData( );
+
+  formData.set( 'type', type );
+  formData.set( 'activo', localStorage.getItem( 'new-inventary' ) );
+  formData.append( 'file', node.files[0] );
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/inventario/setGarantia',
+    type: 'POST',
+    dataType: 'json',
+    data: formData,
+    processData: false,
+    contentType: false,
+  })
+  .done( response =>
+  {
+
+  })
+  .fail( ( ) =>
+  {
+
+  });
+}
+
 function ConfirmNew( )
 {
 
@@ -1037,6 +1090,7 @@ function ConfirmNew( )
 
 function resetFormNew( )
 {
+
   $( '#clp' ).val( '' );
   $( '#fechadecompra' ).val( '' );
   $( '#fechagarantia' ).val( '' );
@@ -1079,7 +1133,7 @@ function IsConcilar( )
       activos.forEach( ( activo, i ) =>
       {
         let button;
-        if( activo.porcentaje > 80 )
+        if( activo.porcentaje > 40 )
         {
           button =
           `

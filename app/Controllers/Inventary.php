@@ -449,6 +449,7 @@ class Inventary extends BaseController
           'Fec_InicioDepre' => $this->request->getVar( 'fecha_metodo' ),
           'Vida_Activo' => $this->request->getVar( 'vida_util' ),
           'contabilizar' => $this->request->getVar( 'contabilizar' ),
+          'TS_Update' => date( 'Y/n/j' ),
           'status' => 'editado',
         ];
 
@@ -475,7 +476,7 @@ class Inventary extends BaseController
       {
         $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->first( );
 
-        $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ) ] )->update( );
+        $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'activado' ] )->update( );
 
         $activoData =
         [
@@ -538,7 +539,7 @@ class Inventary extends BaseController
     {
       try
       {
-        if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ) ] )->update( ) )
+        if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'eliminado' ] )->update( ) )
           echo json_encode( array( 'status' => 200 ) );
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
