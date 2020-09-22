@@ -158,14 +158,14 @@
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Factura/boleta</label>
                           <div class="col-sm-10">
-                            <input type="file" id="factura" class="form-control-file" placeholder="Factura">
+                            <input type="file" id="factura" class="form-control-file" placeholder="Factura" onChange="setFactura(this)">
                           </div>
                         </div>
 
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Garantía (opcional)</label>
                           <div class="col-sm-10">
-                            <input type="file" id="garantia" class="form-control-file" placeholder="Garantia">
+                            <input type="file" id="garantia" class="form-control-file" placeholder="Garantia" onChange="setGarantia(this)">
                           </div>
                         </div>
 

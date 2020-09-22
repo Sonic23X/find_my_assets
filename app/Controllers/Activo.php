@@ -324,8 +324,6 @@ class Activo extends BaseController
     {
       try
       {
-				// TODO: Conseguir imagen anterior, y si existe, borrarla
-				// TODO: Conseguir el id de la empresa
 				$update = [ ];
 
 				$photo = $this->request->getFile( 'file' );
