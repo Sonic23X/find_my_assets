@@ -925,6 +925,7 @@ function NewActiveForm( )
   })
   .done( response =>
   {
+    console.log( response );
     if ( response.status == 200 )
     {
       let activo = response.activo;
@@ -947,6 +948,10 @@ function NewActiveForm( )
 
       $( '#inv-instructions' ).html( 'Ingresa los últimos datos del alta' );
     }
+    else
+    {
+      console.log( 'asd' );
+    }
   });
 }
 
@@ -968,11 +973,14 @@ function setFactura( node )
   })
   .done( response =>
   {
-
+    if ( response.status == 200 )
+      imprimir( 'Hecho', response.msg, 'success' );
+    else
+      imprimir( 'Ups..', response.msg, 'error' );
   })
   .fail( ( ) =>
   {
-
+    imprimir( 'Ups..', 'Error al conectar con el servidor', 'error' );
   });
 }
 
@@ -980,7 +988,6 @@ function setGarantia( node )
 {
   let formData = new FormData( );
 
-  formData.set( 'type', type );
   formData.set( 'activo', localStorage.getItem( 'new-inventary' ) );
   formData.append( 'file', node.files[0] );
 
@@ -995,11 +1002,14 @@ function setGarantia( node )
   })
   .done( response =>
   {
-
+    if ( response.status == 200 )
+      imprimir( 'Hecho', response.msg, 'success' );
+    else
+      imprimir( 'Ups..', response.msg, 'error' );
   })
   .fail( ( ) =>
   {
-
+    imprimir( 'Ups..', 'Error al conectar con el servidor', 'error' );
   });
 }
 

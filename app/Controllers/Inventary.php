@@ -380,10 +380,9 @@ class Inventary extends BaseController
       {
 
         $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->first( );
-        //$activo = $this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->first( );
-
         $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'conciliado' ] )->update( );
 
+        $builder = $this->db->table( 'activos' );
         $activoData =
         [
           'ID_Activo' => $draft[ 'ID_Activo' ],
@@ -419,7 +418,8 @@ class Inventary extends BaseController
           'TS_Delete' => $draft[ 'TS_Delete' ],
         ];
 
-        //$this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->update( $activoData );
+        $builder->where( 'Id', $this->request->getVar( 'old' ) );
+        $builder->replace( $activoData );
 
         echo json_encode( array( 'status' => 200 ) );
       }
@@ -583,6 +583,76 @@ class Inventary extends BaseController
     else
       return view( 'errors/cli/error_404' );
   }
+
+  //método que funciona exclusivamente con AJAX - JQUERY
+	function SetFactura( )
+	{
+		if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+				$update = [ ];
+
+				$file = $this->request->getFile( 'file' );
+
+				$dataFile = file_get_contents( $file->getTempName( )  );
+
+        $update =
+        [
+          'Img_FacCompra' => $dataFile,
+        ];
+
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
+        {
+          echo json_encode( array( 'status' => 200, 'msg' => '¡Factura cargada con exito!' ) );
+        }
+        else
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al cargar la factura del activo. Intente más tarde' ) );
+
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+	}
+
+  //método que funciona exclusivamente con AJAX - JQUERY
+	function SetGarantia( )
+	{
+		if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+				$update = [ ];
+
+				$file = $this->request->getFile( 'file' );
+
+				$dataFile = file_get_contents( $file->getTempName( )  );
+
+        $update =
+        [
+          'Img_Garantia' => $dataFile,
+        ];
+
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
+        {
+          echo json_encode( array( 'status' => 200, 'msg' => '¡Garantia cargada con exito!' ) );
+        }
+        else
+          echo json_encode( array( 'status' => 400, 'msg' => 'Error al cargar la garantia del activo. Intente más tarde' ) );
+
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+	}
 
   //método que funciona exclusivamente con AJAX - JQUERY
   function ProcessList( )
