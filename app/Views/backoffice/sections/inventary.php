@@ -151,7 +151,7 @@
                         <div class="form-group row">
                           <label for="fechadecompra" class="col-sm-2 col-form-label">Fecha de compra</label>
                           <div class="col-sm-10">
-                            <input id="fechadecompra" type="text" class="form-control" placeholder="dd/mm/aaaa">
+                            <input id="fechadecompra" type="text" class="form-control" placeholder="aaaa/mm/dd">
                           </div>
                         </div>
 

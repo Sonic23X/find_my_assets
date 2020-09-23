@@ -176,7 +176,7 @@ class Inventary extends BaseController
 				[
 					'ID_Activo', 'Fec_Compra', 'Pre_Compra', 'Fec_Expira',
 					'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
-			    'Vida_Activo', 'Img_Garantia', 'Img_FacCompra', 'contabilizar'
+			    'Vida_Activo', 'contabilizar'
 				];
 
         $activo = $this->draftModel->where( 'ID_Activo', $id )
