@@ -102,23 +102,35 @@
                         </div>
                       </div>
 
-                      <div class="row mt-3 text-center">
-                        <div class="col-12 col-sm-12 col-md-12">
-                          <span>El activo es similar a los que tienes en tu inventario</span>
-                          <br>
-                          <span><b>¿Deseas conciliarlo?</b></span>
+                      <div class="inv-form-conciliar d-none">
+                        <div class="row mt-3 text-center">
+                          <div class="col-12 col-sm-12 col-md-12">
+                            <span>El activo es similar a los que tienes en tu inventario</span>
+                            <br>
+                            <span><b>¿Deseas conciliarlo?</b></span>
+                          </div>
+                        </div>
+
+                        <div class="row mt-2 text-center">
+                          <div class="col-6 col-sm-6 col-md-6">
+                            <button type="button" class="btn btn-block btn-success btn-sm" id="conciliar1" onclick="IsConcilar( )">Sí</button>
+                          </div>
+
+                          <div class="col-6 col-sm-6 col-md-6">
+                            <button type="button" class="btn btn-block btn-primary btn-sm" id="continueNew" onclick="NewActiveForm( )">
+                              No, continuar
+                            </button>
+                          </div>
                         </div>
                       </div>
 
-                      <div class="row mt-2 text-center">
-                        <div class="col-6 col-sm-6 col-md-6">
-                          <button type="button" class="btn btn-block btn-success btn-sm" id="conciliar1" onclick="IsConcilar( )">Sí</button>
-                        </div>
-
-                        <div class="col-6 col-sm-6 col-md-6">
-                          <button type="button" class="btn btn-block btn-primary btn-sm" id="continueNew" onclick="NewActiveForm( )">
-                            No, continuar
-                          </button>
+                      <div class="inv-form-continue-info d-none">
+                        <div class="row mt-3 text-center">
+                          <div class="col-12 col-sm-12 col-md-12">
+                            <button type="button" class="btn btn-block btn-primary btn-sm" id="continueNew" onclick="NewActiveForm( )">
+                              Continuar
+                            </button>
+                          </div>
                         </div>
                       </div>
 
