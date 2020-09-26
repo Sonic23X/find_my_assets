@@ -209,76 +209,94 @@ class Inventary extends BaseController
       try
       {
         $activo = $this->draftModel->where( 'ID_Activo', $id )->first( );
+        $similarData = null;
+        $serie = true;
 
-				$similarData =
-        [
-          'Nom_Activo' => $activo[ 'Nom_Activo' ],
-          'ID_Sucursal' => $activo[ 'ID_Sucursal' ],
-          'ID_Area' => $activo[ 'ID_Area' ],
-          'ID_CC' => $activo[ 'ID_CC' ],
-          'Fec_Compra' => $activo[ 'Fec_Compra' ],
-          'Fec_Expira' => $activo[ 'Fec_Expira' ],
-          'NSerie_Activo' => $activo[ 'NSerie_Activo' ],
-          'ID_Tipo' => $activo[ 'ID_Tipo' ],
-          'ID_MetDepre' => $activo[ 'ID_MetDepre' ],
-          'Vida_Activo' => $activo[ 'Vida_Activo' ],
-        ];
+        if ( $activo[ 'NSerie_Activo' ] == '' || $activo[ 'NSerie_Activo' ] == null )
+        {
+          $similarData =
+          [
+            'ID_Sucursal' => $activo[ 'ID_Sucursal' ],
+            'ID_Area' => $activo[ 'ID_Area' ],
+            'ID_CC' => $activo[ 'ID_CC' ],
+            'NSerie_Activo' => $activo[ 'NSerie_Activo' ],
+            'ID_Tipo' => $activo[ 'ID_Tipo' ],
+            'User_Inventario' => $activo[ 'User_Inventario' ],
+          ];
+          $serie = false;
+        }
+        else
+        {
+          $similarData =
+          [
+            'Nom_Activo' => $activo[ 'Nom_Activo' ],
+            'ID_Sucursal' => $activo[ 'ID_Sucursal' ],
+            'ID_Area' => $activo[ 'ID_Area' ],
+            'ID_CC' => $activo[ 'ID_CC' ],
+            'NSerie_Activo' => $activo[ 'NSerie_Activo' ],
+            'ID_Tipo' => $activo[ 'ID_Tipo' ],
+            'User_Inventario' => $activo[ 'User_Inventario' ],
+          ];
+        }
 
         $builder = $this->db->table( 'activos' );
 
         $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.ID_Sucursal, activos.ID_Area,
-                          activos.ID_CC, activos.Fec_Compra, activos.Fec_Expira, activos.NSerie_Activo,
+                          activos.ID_CC, activos.Fec_Compra, activos.Fec_Expira, activos.NSerie_Activo, activos.status,
                           activos.ID_Tipo, activos.ID_MetDepre, activos.Vida_Activo, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.status !=', 'eliminado' );
         $builder->where( 'activos.ID_Activo !=', $id );
         $builder->orlike( $similarData );
-        $builder->where( 'activos.TS_Delete', null );
         $activos = $builder->get( );
 
         $data = [ ];
         foreach ( $activos->getResult( ) as $row )
         {
           $porcentaje = 0;
-          if ( $row->Nom_Activo == $activo[ 'Nom_Activo' ] )
+
+          if ( $serie )
           {
-            $porcentaje += 10;
+            if ( $row->NSerie_Activo == $activo[ 'NSerie_Activo' ] )
+            {
+              $porcentaje += 60;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Tipo' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_CC == $activo[ 'ID_CC' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_CC == $activo[ 'User_Inventario' ] )
+            {
+              $porcentaje += 10;
+            }
           }
-          if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
+          else
           {
-            $porcentaje += 10;
-          }
-          if ( $row->ID_Area == $activo[ 'ID_Area' ] )
-          {
-            $porcentaje += 10;
-          }
-          if ( $row->ID_CC == $activo[ 'ID_CC' ] )
-          {
-            $porcentaje += 10;
-          }
-          if ( $row->Fec_Compra == $activo[ 'Fec_Compra' ] )
-          {
-            $porcentaje += 10;
-          }
-          if ( $row->Fec_Expira == $activo[ 'Fec_Expira' ] )
-          {
-            $porcentaje += 10;
-          }
-          if ( $row->NSerie_Activo == $activo[ 'NSerie_Activo' ] )
-          {
-            $porcentaje += 10;
-          }
-          if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
-          {
-            $porcentaje += 10;
-          }
-          if ( $row->ID_MetDepre == $activo[ 'ID_MetDepre' ] )
-          {
-            $porcentaje += 10;
-          }
-          if ( $row->Vida_Activo == $activo[ 'Vida_Activo' ] )
-          {
-            $porcentaje += 10;
+            if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Tipo' ] )
+            {
+              $porcentaje += 30;
+            }
+            if ( $row->ID_CC == $activo[ 'ID_CC' ] )
+            {
+              $porcentaje += 20;
+            }
+            if ( $row->ID_CC == $activo[ 'User_Inventario' ] )
+            {
+              $porcentaje += 30;
+            }
           }
 
           $json =
@@ -291,7 +309,10 @@ class Inventary extends BaseController
             'porcentaje' => $porcentaje,
           ];
 
-          array_push( $data, $json );
+          if ( $row->status != 'eliminado' )
+          {
+            array_push( $data, $json );
+          }
         }
 
         echo json_encode( array( 'status' => 200, 'activos' => $data ) );
