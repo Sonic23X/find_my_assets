@@ -88,7 +88,6 @@ $routes->post('/inventario/setGarantia', 'Inventary::setGarantia');
 /** AJAX - downs **/
 $routes->get('/bajas/getItems', 'Down::SearchList');
 $routes->post('/bajas/getItemsFilter', 'Down::SearchListFilter');
-
 $routes->post('/bajas/down', 'Down::activosDelete');
 
 
