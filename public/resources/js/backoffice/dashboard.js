@@ -902,11 +902,23 @@ function InfoNew( idActivo = null )
       let activo = response.activo;
       let tipo = response.tipo;
       let usuario = response.user;
+      let conciliar = response.concilar;
 
       $( '#new-subtipo' ).html( tipo.Desc );
       $( '#new-nombre' ).html( activo.Nom_Activo );
       $( '#new-serie' ).html( activo.NSerie_Activo );
       $( '#new-asignacion' ).html( usuario.nombre + ' ' + usuario.apellidos );
+
+      if ( conciliar == 1 )
+      {
+        $( '.inv-form-conciliar' ).removeClass( 'd-none' );
+        $( '.inv-form-continue-info' ).addClass( 'd-none' );
+      }
+      else
+      {
+        $( '.inv-form-continue-info' ).removeClass( 'd-none' );
+        $( '.inv-form-conciliar' ).addClass( 'd-none' );
+      }
 
       $( '.inv-news-home' ).addClass( 'd-none' );
       $( '.inv-buttons' ).addClass( 'd-none' );

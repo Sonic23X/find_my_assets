@@ -150,11 +150,43 @@ class Inventary extends BaseController
 
 				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
 
-
 				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
 
-        echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
+        $similarData =
+        [
+          'ID_Sucursal' => $activo[ 'ID_Sucursal' ],
+          'ID_Area' => $activo[ 'ID_Area' ],
+          'ID_CC' => $activo[ 'ID_CC' ],
+          'NSerie_Activo' => $activo[ 'NSerie_Activo' ],
+          'ID_Tipo' => $activo[ 'ID_Tipo' ],
+          'User_Inventario' => $activo[ 'User_Inventario' ],
+        ];
 
+        $builder = $this->db->table( 'activos' );
+
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.ID_Sucursal, activos.ID_Area, activos.User_Inventario,
+                          activos.ID_CC, activos.Fec_Compra, activos.Fec_Expira, activos.NSerie_Activo, activos.status,
+                          activos.ID_Tipo, activos.ID_MetDepre, activos.Vida_Activo, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.status !=', 'eliminado' );
+        $builder->where( 'activos.ID_Activo !=', $id );
+        $builder->orlike( $similarData );
+        $activos = $builder->get( );
+
+        $num = 0;
+        foreach ( $activos->getResult( ) as $row )
+        {
+          if ( $row->status != 'eliminado' )
+          {
+            $num++;
+          }
+        }
+
+        if ( $num > 0 )
+          echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo, 'concilar' => 1 ) );
+        else
+          echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo, 'concilar' => 0 ) );
       }
       catch (\Exception $e)
       {
