@@ -2506,6 +2506,93 @@ function confirmDownDelete( )
   });
 }
 
+function viewDownInfo( id )
+{
+  $.ajax({
+    url: url + `/inventario/getActivoInfo/${ id }`,
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activo = response.activo;
+
+      localStorage.setItem( 'process-inventary', activo.ID_Activo );
+
+      $( '#downTipoActivo' ).val( activo.ID_Tipo );
+      $( '#downName' ).val( activo.Nom_Activo );
+      $( '#downSerie' ).val( activo.NSerie_Activo );
+      $( '#downcCosto' ).val( activo.ID_CC );
+      $( '#downAsignacion' ).val( activo.User_Inventario );
+      $( '#downEmpresa' ).val( activo.ID_Company );
+      $( '#downSucursal' ).val( activo.ID_Sucursal );
+      $( '#downArea' ).val( activo.ID_Area );
+      $( '#downDesc' ).val( activo.Desc_Activo );
+
+      $.ajax({
+        url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.down-image-front' ).html( response );
+        }
+        else
+        {
+          $( '.down-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageLeft/${ activo.ID_Activo }`,
+        type: 'GET',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.down-image-left' ).html( response );
+        }
+        else
+        {
+          $( '.down-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $.ajax({
+        url: url + `/activos/getImageRight/${ activo.ID_Activo }`,
+        type: 'GET',
+        responseType: 'blob',
+        contentType: false,
+        processData: false,
+      })
+      .done( response =>
+      {
+        if ( response != '' )
+        {
+          $( '.down-image-right' ).html( response );
+        }
+        else
+        {
+          $( '.down-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
+        }
+      });
+
+      $( '#downInfoModal' ).modal( 'show' );
+    }
+
+  });
+}
+
 $(document).ready(function( )
 {
 
