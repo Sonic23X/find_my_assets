@@ -17,11 +17,11 @@
           <i class="fas fa-home nav__icon"></i>
           <span class="nav__text">Inicio</span>
         </a>
-        <a href="#" id="historico" class="nav-item-botom">
+        <a href="#" id="down" class="nav-item-botom">
           <i class="fas fa-cloud-download-alt nav__icon"></i>
           <span class="nav__text">Bajar</span>
         </a>
-        <a href="#" id="notify" class="nav-item-botom">
+        <a href="#" id="still" class="nav-item-botom">
           <i class="fas fa-clipboard-list nav__icon"></i>
           <span class="nav__text">Mantener</span>
         </a>

@@ -19,7 +19,7 @@ class ActivoModel extends Model
     'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
     'Ima_Activo0', 'Ima_ActivoLeft', 'Ima_ActivoRight', 'Ima_ActivoFront',
     'Ima_ActivoBack', 'User_Create', 'User_Update', 'User_Delete',
-    'TS_Create', 'TS_Update', 'TS_Delete'
+    'TS_Create', 'TS_Update', 'TS_Delete', 'status', 'deleteComent', 'deleteReason',
   ];
 
 }

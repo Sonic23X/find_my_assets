@@ -82,9 +82,14 @@ $routes->get('/inventario/getProcessItems', 'Inventary::ProcessList');
 $routes->get('/inventario/getInventaryItems', 'Inventary::SearchInventaryList');
 $routes->get('/inventario/getActivoInfo/(:num)', 'Inventary::SearchActiveInfo/$1');
 $routes->post('/inventario/getInventaryItemsFilter', 'Inventary::SearchInventaryListFilter');
-
 $routes->post('/inventario/setFactura', 'Inventary::setFactura');
 $routes->post('/inventario/setGarantia', 'Inventary::setGarantia');
+
+/** AJAX - downs **/
+$routes->get('/bajas/getItems', 'Down::SearchList');
+$routes->post('/bajas/getItemsFilter', 'Down::SearchListFilter');
+
+$routes->post('/bajas/down', 'Down::activosDelete');
 
 
 /**
