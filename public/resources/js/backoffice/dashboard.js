@@ -12,6 +12,8 @@ var procesoCTable = null;
 var procesoWTable = null;
 var inventarioTable = null;
 
+var downTable = null;
+
 function dataURLtoFile( dataurl, filename )
 {
 
@@ -93,7 +95,7 @@ function activeItem( activar )
   //removemos la clase de todos los elementos
   $( '#home' ).removeClass( 'active' );
   $( '#scanner' ).removeClass( 'active' );
-  $( '#historico' ).removeClass( 'active' );
+  $( '#down' ).removeClass( 'active' );
   $( '#notify' ).removeClass( 'active' );
   $( '#inventario' ).removeClass( 'active' );
 
@@ -2238,6 +2240,272 @@ function inventaryFiltros( )
   });
 }
 
+/* --- Bajas --- */
+
+function down( )
+{
+
+  let base =
+  `
+    <thead>
+      <tr>
+        <th></th>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-down-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-down-actives-content' ).html( base );
+
+  $.ajax({
+    url: url + '/bajas/getItems',
+    type: 'GET',
+    dataType: 'json'
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+
+      $( '.table-down-actives' ).html( '' );
+      activos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <input type="checkbox" name="select_${ activo.id }" onClick="downCheckbox( this )" class="downCheck">
+            </td>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="viewDownInfo( ${ activo.id } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm" name="button" onclick="deleteDown( ${ activo.id } )">
+                <i class="fas fa-angle-right"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+
+        $( '.table-down-actives' ).append( typePlantilla );
+
+      });
+
+      if ( downTable != null )
+        downTable.destroy( );
+
+      //creamos la tabla dinamica
+      downTable = $( '.table-down-actives-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
+      });
+
+      $( '.down-count' ).html( response.number );
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
+function downFiltros( )
+{
+
+  let base =
+  `
+    <thead>
+      <tr>
+        <th></th>
+        <th scope="col">Activo</th>
+        <th scope="col">Asignación</th>
+        <th scope="col">Cargado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody class="table-down-actives">
+
+    </tbody>
+  `;
+
+  $( '.table-down-actives-content' ).html( base );
+
+
+  let filtros =
+  {
+    tipo: $( '#downTipo' ).val( ),
+    cc: $( '#downCC' ).val( ),
+    empresa: $( '#downEmpresa' ).val( ),
+    sucursal: $( '#downSucursal' ).val( ),
+    area: $( '#downArea' ).val( ),
+  };
+
+  $.ajax({
+    url: url + '/bajas/getItemsFilter',
+    type: 'POST',
+    dataType: 'json',
+    data: filtros,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let activos = response.activos;
+
+      $( '.table-down-actives' ).html( '' );
+      activos.forEach( ( activo, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <tr>
+            <td>
+              <input type="checkbox" name="select_${ activo.id }" onClick="downCheckbox( this )" class="downCheck">
+            </td>
+            <td>
+              <a class="text-dark text-decoration-none" onClick="viewDownInfo( ${ activo.id } )">
+                ${ activo.tipo }
+                <br>
+                ${ activo.nombre }
+              </a>
+            </td>
+            <td class="align-middle">
+              ${ activo.usuario }
+            </td>
+            <td class="align-middle">
+              ${ activo.fecha }
+            </td>
+            <td>
+              <button type="button" class="btn btn-danger btn-sm" name="button" onclick="deleteDown( ${ activo.id } )">
+                <i class="fas fa-angle-right"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+
+        $( '.table-down-actives' ).append( typePlantilla );
+
+      });
+
+      if ( downTable != null )
+        downTable.destroy( );
+
+      //creamos la tabla dinamica
+      downTable = $( '.table-down-actives-content' ).DataTable(
+      {
+        bInfo: false,
+        searching: true,
+        bLengthChange: false,
+        pageLength: 5,
+        language: spanish,
+      });
+
+      $( '.down-count' ).html( response.number );
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
+function downCheckbox( node )
+{
+  let num = 0;
+  $( '.downCheck:checked' ).each(function()
+  {
+    num++;
+  });
+
+  if ( num > 0)
+    $( '.delete-button-down' ).removeClass( 'd-none' );
+  else
+    $( '.delete-button-down' ).addClass( 'd-none' );
+}
+
+function deleteDown( id )
+{
+  localStorage.setItem( 'down-item', id );
+
+  $( '#deleteActivo' ).modal( 'show' );
+}
+
+function multipleDelete( )
+{
+  let data = [ ];
+  $( '.downCheck:checked' ).each(function( )
+  {
+    let getId = this.name.split( '_' )[ 1 ];
+    data.push( getId );
+  });
+
+  localStorage.setItem( 'down-item', data );
+
+  $( '#deleteActivo' ).modal( 'show' );
+}
+
+function confirmDownDelete( )
+{
+  let deleteItems = localStorage.getItem( 'down-item' );
+
+  let json =
+  {
+    items: deleteItems,
+    motivo: $( '#down-select' ).val( ),
+    desc: $( '#motivo-down' ).val( ),
+  };
+
+  $.ajax({
+    url: url + '/bajas/down',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      $( '#deleteActivo' ).modal( 'hide' );
+      $( '#motivo-down' ).val( '' );
+      $( '#down-select' ).val( '1' );
+
+      Swal.fire(
+      {
+        title: '¡Listo!',
+        text: 'El/Los activo(s) han sido dados de baja exitosamente',
+        icon: 'success',
+        confirmButtonColor: '#5cb85c',
+      })
+      .then( result =>
+      {
+        downFiltros( );
+      });
+    }
+  });
+}
+
 $(document).ready(function( )
 {
 
@@ -2272,6 +2540,9 @@ $(document).ready(function( )
         case '.home':
           $( actualView ).addClass( 'd-none' );
           break;
+        case '.down':
+          $( actualView ).addClass( 'd-none' );
+          break;
       }
 
       actualView = '.inventary';
@@ -2296,6 +2567,9 @@ $(document).ready(function( )
           $( actualView ).addClass( 'd-none' );
           break;
         case '.inventary':
+          $( actualView ).addClass( 'd-none' );
+          break;
+        case '.down':
           $( actualView ).addClass( 'd-none' );
           break;
       }
@@ -2324,6 +2598,9 @@ $(document).ready(function( )
         case '.inventary':
           $( actualView ).addClass( 'd-none' );
           break;
+        case '.down':
+          $( actualView ).addClass( 'd-none' );
+          break;
       }
 
       actualView = '.scanner';
@@ -2332,14 +2609,35 @@ $(document).ready(function( )
 
   });
 
-  $( '#historico' ).click( event =>
+  $( '#down' ).click( event =>
   {
 
     event.preventDefault( );
 
     //activamos el color
-    activeItem( '#historico' );
+    activeItem( '#down' );
 
+    if ( actualView != '.down' )
+    {
+      switch ( actualView )
+      {
+        case '.home':
+          $( actualView ).addClass( 'd-none' );
+          break;
+        case '.inventary':
+          $( actualView ).addClass( 'd-none' );
+          break;
+        case '.scanner':
+          $( actualView ).addClass( 'd-none' );
+          break;
+      }
+
+      actualView = '.down';
+
+      down( );
+
+      $( actualView ).removeClass( 'd-none' );
+    }
 
 
   });
@@ -2826,6 +3124,13 @@ $(document).ready(function( )
         });
       }
     });
+  });
+
+  /* --- Bajas --- */
+
+  $( '#down-select' ).change( (event) =>
+  {
+    $( '.motivo-down-form' ).removeClass( 'd-none' );
   });
 
 });

@@ -250,6 +250,20 @@ html, body
   font-size: 20px;
 }
 
+/* --- Bajas --- */
+
+.title-downs
+{
+  text-align: center;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.down-aviso
+{
+  font-size: 10px;
+}
+
 
 /* --- Fin Secciones --- */
 
