@@ -241,7 +241,7 @@ class Inventary extends BaseController
 
         $builder = $this->db->table( 'activos' );
 
-        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.ID_Sucursal, activos.ID_Area,
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.ID_Sucursal, activos.ID_Area, activos.User_Inventario,
                           activos.ID_CC, activos.Fec_Compra, activos.Fec_Expira, activos.NSerie_Activo, activos.status,
                           activos.ID_Tipo, activos.ID_MetDepre, activos.Vida_Activo, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
@@ -266,7 +266,7 @@ class Inventary extends BaseController
             {
               $porcentaje += 10;
             }
-            if ( $row->ID_Sucursal == $activo[ 'ID_Tipo' ] )
+            if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
             {
               $porcentaje += 10;
             }
@@ -274,7 +274,7 @@ class Inventary extends BaseController
             {
               $porcentaje += 10;
             }
-            if ( $row->ID_CC == $activo[ 'User_Inventario' ] )
+            if ( $row->User_Inventario == $activo[ 'User_Inventario' ] )
             {
               $porcentaje += 10;
             }
@@ -285,7 +285,7 @@ class Inventary extends BaseController
             {
               $porcentaje += 10;
             }
-            if ( $row->ID_Sucursal == $activo[ 'ID_Tipo' ] )
+            if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
             {
               $porcentaje += 30;
             }
@@ -293,7 +293,7 @@ class Inventary extends BaseController
             {
               $porcentaje += 20;
             }
-            if ( $row->ID_CC == $activo[ 'User_Inventario' ] )
+            if ( $row->User_Inventario == $activo[ 'User_Inventario' ] )
             {
               $porcentaje += 30;
             }
