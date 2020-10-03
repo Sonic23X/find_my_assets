@@ -3401,12 +3401,11 @@ $(document).ready(function( )
         $( '.inv-news-conciliar-confirm' ).addClass( 'd-none' );
         $( InvActualView ).removeClass( 'd-none' );
         $( '#inv-instructions' ).html( 'Selecciona el activo a conciliar' );
-        
+
         $( '.select-circle' ).css('background', '#ffde59');
         $( '.select-label' ).css('color', '#ffde59');
         $( '.confirm-circle' ).css('background', '#6c757d');
         $( '.confirm-label' ).css('color', '#6c757d');
-
         break;
       default:
 
