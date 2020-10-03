@@ -604,7 +604,6 @@ function setInsMessage( view, update = false )
 
 function navSteps( tipo )
 {
-
   switch ( tipo )
   {
     case 1:
@@ -2913,6 +2912,28 @@ $(document).ready(function( )
         localStorage.setItem( 'codigo', response.activo.ID_Activo );
         isNew = false;
         actualStepScanner = 2;
+
+        if ( response.activo.ID_MetDepre != null )
+        {
+          switch ( response.activo.ID_MetDepre )
+          {
+            case '0':
+              $( '#scanner-vida-util' ).html( '( hr / km / un )' );
+              break;
+            case '1':
+              $( '#scanner-vida-util' ).html( '( meses )' );
+              break;
+            case '2':
+              $( '#scanner-vida-util' ).html( '( unidades )' );
+              break;
+            case '3':
+              $( '#scanner-vida-util' ).html( '( kilometros )' );
+              break;
+            case '4':
+              $( '#scanner-vida-util' ).html( '( horas )' );
+              break;
+          }
+        }
 
         wizzardPreviewView = wizzardActualView;
         wizzardActualView = '.scanner-status';

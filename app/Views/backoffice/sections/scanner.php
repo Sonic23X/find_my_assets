@@ -199,7 +199,7 @@
                   <div class="col-10 col-sm-10">
                     <div class="form-group row">
                       <label for="alternativa" class="col-sm-4 col-form-label">
-                        Vida útil actual (hr / km / un):
+                        Vida útil actual <span id="scanner-vida-util"> </span> :
                         <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                 style="border-radius: 25px; font-size: 9px !important;"
                                 title="Para los activos con vida útil en meses se considera la fecha cuando se ingresa en su inventario">
