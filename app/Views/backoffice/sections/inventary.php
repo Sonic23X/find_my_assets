@@ -163,7 +163,7 @@
                         <div class="form-group row">
                           <label for="fechadecompra" class="col-sm-2 col-form-label">Fecha de compra</label>
                           <div class="col-sm-10">
-                            <input id="fechadecompra" type="text" class="form-control" placeholder="aaaa/mm/dd">
+                            <input id="fechadecompra" type="date" class="form-control">
                           </div>
                         </div>
 
@@ -184,7 +184,7 @@
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Fecha de expiracion de garantia (opcional)</label>
                           <div class="col-sm-10">
-                            <input id="fechagarantia" type="text" class="form-control" placeholder="aaaa/mm/dd">
+                            <input id="fechagarantia" type="date" class="form-control">
                           </div>
                         </div>
 
@@ -221,14 +221,14 @@
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Fecha de inicio</label>
                           <div class="col-sm-10">
-                            <input id="fechastart" type="text" class="form-control" placeholder="aaaa/mm/dd">
+                            <input id="fechastart" type="date" class="form-control">
                           </div>
                         </div>
 
                         <div class="form-group row">
                           <label for="name" class="col-sm-2 col-form-label">Vida útil ( <span id="unidad-text"></span> )</label>
                           <div class="col-sm-10">
-                            <input id="vidautilnew" type="text" class="form-control">
+                            <input id="vidautilnew" type="number" class="form-control">
                           </div>
                         </div>
 
@@ -351,23 +351,23 @@
                             <form class="active-inventary-form">
 
                               <div class="form-group row">
-                                <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iTipoActivo" name="tipoActivo" id="newTipoActivo" disabled>
+                                <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="newTipoActivo" disabled>
                                     <option value="">Muebles y utilidades</option>
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="name" class="col-sm-2 col-form-label">Nombre</label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="newName" placeholder="Ej. Mackbook PRO">
+                                <label for="name" class="col-sm-4 col-form-label">Nombre</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="newName" placeholder="Ej. Mackbook PRO" disabled>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="serie" class="col-sm-2 col-form-label">
+                                <label for="serie" class="col-sm-4 col-form-label">
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
@@ -375,15 +375,15 @@
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="newSerie" placeholder="Ej. Nombre">
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="newSerie" placeholder="Ej. Nombre" disabled>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select" name="cCosto" id="newCCosto">
+                                <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext" name="cCosto" id="newCCosto" disabled>
                                     <option value="1">Administración</option>
                                     <option value="2">Producción</option>
                                     <option value="3">Marketing</option>
@@ -393,9 +393,9 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Asignado a</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iAsignacion" name="asignacion" id="newAsignacion">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Asignado a</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iAsignacion" name="asignacion" id="newAsignacion" disabled>
 
                                   </select>
                                 </div>
@@ -408,36 +408,38 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iEmpresa" name="asignacion" id="newEmpresa">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iEmpresa" name="asignacion" id="newEmpresa" disabled>
 
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iSucursal" name="asignacion" id="newSucursal">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Sucursal</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iSucursal" name="asignacion" id="newSucursal" disabled>
 
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iArea" name="asignacion" id="newArea">
-
+                                <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iArea" name="asignacion" id="newArea" disabled>
+                                    <option value="1">Sector tecnólogico</option>
+                                    <option value="2">Sala de gerencia</option>
+                                    <option value="3">Galpón</option>
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="desc" class="col-sm-2 col-form-label">Descripción</label>
-                                <div class="col-sm-10">
-                                  <textarea class="form-control" id="newDesc" rows="3"></textarea>
+                                <label for="desc" class="col-sm-4 col-form-label">Descripción</label>
+                                <div class="col-sm-8">
+                                  <textarea class="form-control-plaintext" id="newDesc" rows="3" disabled></textarea>
                                 </div>
                               </div>
 
@@ -500,23 +502,23 @@
                             <form class="active-inventary-form">
 
                               <div class="form-group row">
-                                <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iTipoActivo" name="tipoActivo" id="ciTipoActivo" disabled>
-                                    <option value="">Muebles y utilidades</option>
+                                <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="ciTipoActivo" disabled>
+
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="name" class="col-sm-2 col-form-label">Nombre</label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="ciName" placeholder="Ej. Mackbook PRO">
+                                <label for="name" class="col-sm-4 col-form-label">Nombre</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="ciName" placeholder="Ej. Mackbook PRO" disabled>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="serie" class="col-sm-2 col-form-label">
+                                <label for="serie" class="col-sm-4 col-form-label">
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
@@ -524,15 +526,15 @@
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="ciSerie" placeholder="Ej. Nombre">
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="ciSerie" placeholder="Ej. Nombre" disabled>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select" name="cCosto" id="ciCCosto">
+                                <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext" name="cCosto" id="ciCCosto" disabled>
                                     <option value="1">Administración</option>
                                     <option value="2">Producción</option>
                                     <option value="3">Marketing</option>
@@ -542,9 +544,9 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Asignado a</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iAsignacion" name="asignacion" id="ciAsignacion">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Asignado a</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iAsignacion" name="asignacion" id="ciAsignacion" disabled>
 
                                   </select>
                                 </div>
@@ -557,36 +559,38 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iEmpresa" name="asignacion" id="ciEmpresa">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iEmpresa" name="asignacion" id="ciEmpresa" disabled>
 
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iSucursal" name="asignacion" id="ciSucursal">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Sucursal</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iSucursal" name="asignacion" id="ciSucursal" disabled>
 
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iArea" name="asignacion" id="ciArea">
-
+                                <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iArea" name="asignacion" id="ciArea" disabled>
+                                    <option value="1">Sector tecnólogico</option>
+                                    <option value="2">Sala de gerencia</option>
+                                    <option value="3">Galpón</option>
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="desc" class="col-sm-2 col-form-label">Descripción</label>
-                                <div class="col-sm-10">
-                                  <textarea class="form-control" id="ciDesc" rows="3"></textarea>
+                                <label for="desc" class="col-sm-4 col-form-label">Descripción</label>
+                                <div class="col-sm-8">
+                                  <textarea class="form-control-plaintext" id="ciDesc" rows="3" disabled></textarea>
                                 </div>
                               </div>
 
@@ -791,23 +795,23 @@
                             <form class="active-inventary-form">
 
                               <div class="form-group row">
-                                <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iTipoActivo" name="tipoActivo" id="iTipoActivo" disabled>
+                                <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="iTipoActivo" disabled>
 
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="name" class="col-sm-2 col-form-label">Nombre</label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="iName" placeholder="Ej. Mackbook PRO">
+                                <label for="name" class="col-sm-4 col-form-label">Nombre</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iName" placeholder="Ej. Mackbook PRO" disabled>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="serie" class="col-sm-2 col-form-label">
+                                <label for="serie" class="col-sm-4 col-form-label">
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
@@ -815,15 +819,15 @@
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
-                                <div class="col-sm-10">
-                                  <input type="text" class="form-control" id="iSerie" placeholder="Ej. Nombre">
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iSerie" placeholder="Ej. Nombre" disabled>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select" name="cCosto" id="icCosto">
+                                <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext" name="cCosto" id="icCosto" disabled>
                                     <option value="1">Administración</option>
                                     <option value="2">Producción</option>
                                     <option value="3">Marketing</option>
@@ -833,9 +837,9 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Asignado a</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iAsignacion" name="asignacion" id="iAsignacion">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Asignado a</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iAsignacion" name="asignacion" id="iAsignacion" disabled>
 
                                   </select>
                                 </div>
@@ -848,36 +852,38 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iEmpresa" name="asignacion" id="iEmpresa">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iEmpresa" name="asignacion" id="iEmpresa" disabled>
 
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select iSucursal" name="asignacion" id="iSucursal">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Sucursal</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext iSucursal" name="asignacion" id="iSucursal" disabled>
 
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
-                                <div class="col-sm-10">
-                                  <select class="custom-select" name="asignacion" id="iArea">
-
+                                <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
+                                <div class="col-sm-8">
+                                  <select class="form-control-plaintext" name="asignacion" id="iArea" disabled>
+                                    <option value="1">Sector tecnólogico</option>
+                                    <option value="2">Sala de gerencia</option>
+                                    <option value="3">Galpón</option>
                                   </select>
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="desc" class="col-sm-2 col-form-label">Descripción</label>
-                                <div class="col-sm-10">
-                                  <textarea class="form-control" id="iDesc" rows="3"></textarea>
+                                <label for="desc" class="col-sm-4 col-form-label">Descripción</label>
+                                <div class="col-sm-8">
+                                  <textarea class="form-control-plaintext" id="iDesc" rows="3" disabled></textarea>
                                 </div>
                               </div>
 
@@ -1007,6 +1013,9 @@
                                 <div class="col-sm-10">
                                   <select class="custom-select iArea" id="invFArea" name="asignacion" onchange="inventaryFiltros( )">
                                     <option value="">Todas</option>
+                                    <option value="1">Sector tecnólogico</option>
+                                    <option value="2">Sala de gerencia</option>
+                                    <option value="3">Galpón</option>
                                   </select>
                                 </div>
                               </div>

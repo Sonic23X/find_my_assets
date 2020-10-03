@@ -29,10 +29,10 @@ class Activo extends BaseController
     {
       try
       {
-				$tipos = $this->tipoModel->findAll( );
-				$usuarios = $this->userModel->findAll( );
-				$empresas = $this->empresaModel->findAll( );
-				$sucursales = $this->sucursalModel->findAll( );
+			$tipos = $this->tipoModel->findAll( );
+			$usuarios = $this->userModel->findAll( );
+			$empresas = $this->empresaModel->findAll( );
+			$sucursales = $this->sucursalModel->findAll( );
 
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
@@ -51,50 +51,50 @@ class Activo extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
-  //método que funciona exclusivamente con AJAX - JQUERY
-  function SearchActivo( )
-  {
-    if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
-				$campos =
-				[
-					'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
-			    'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
-			    'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
-					'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
-			    'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
-					'User_Create', 'User_Update', '	User_Delete',
-			    'TS_Create', 'TS_Update', 'TS_Delete'
-				];
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function SearchActivo( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+		try
+		{
+			$campos =
+			[
+				'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
+				'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
+				'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
+				'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
+				'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
+				'User_Create', 'User_Update', '	User_Delete',
+				'TS_Create', 'TS_Update', 'TS_Delete'
+			];
 
-        $activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																	 ->select( $campos )
-                                   ->first( );
+			$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																 ->select( $campos )
+																 ->first( );
 
-				if ( $activo == null )
-				{
-					echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
-					return;
-				}
+			if ( $activo == null )
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
+				return;
+			}
 
-				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
+			$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
 
 
-				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
+			$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
 
-        echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
+			echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
 
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
-  }
+		}
+		catch (\Exception $e)
+		{
+			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+		}
+		}
+		else
+		return view( 'errors/cli/error_404' );
+	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
 	function ValidateActivo( )
@@ -110,7 +110,7 @@ class Activo extends BaseController
 				echo json_encode( array( 'status' => 200 ) );
 		}
 		else
-      return view( 'errors/cli/error_404' );
+		return view( 'errors/cli/error_404' );
 	}
 
   //método que funciona exclusivamente con AJAX - JQUERY
@@ -120,16 +120,16 @@ class Activo extends BaseController
     {
       try
       {
-				//validar que no exista un activo con ese id
-				// TODO: anexar ID empresa
-				$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																		->first( );
+			//validar que no exista un activo con ese id
+			// TODO: anexar ID empresa
+			$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																	->first( );
 
-				if ( $already )
-				{
-					echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
-					return;
-				}
+			if ( $already )
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+				return;
+			}
 
         $insert =
         [
@@ -140,6 +140,7 @@ class Activo extends BaseController
           'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
           'ID_CC' => $this->request->getVar( 'centro_costo' ),
           'User_Inventario' => $this->request->getVar( 'asignacion' ),
+					'TS_Create' => date( 'Y/n/j' ),
         ];
 
         if ( $this->draftModel->insert( $insert ) )
