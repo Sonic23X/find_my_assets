@@ -6,6 +6,7 @@ var lat;
 var isNew = false;
 var activeMap;
 var actualStepScanner = 1;
+var actualStepInv = 1;
 
 var newTable = null;
 var conciliarTable = null;
@@ -846,6 +847,8 @@ function viewImageRight( )
 }
 
 /* --- inventario --- */
+var InvActualView = '.inv-news-home';
+var InvPreviewView = '';
 
 function setBackgroundButtons( button )
 {
@@ -930,6 +933,20 @@ function ConfirmUpdate( idActivo )
             $( '#updateModal' ).modal( 'hide' );
           });
         }
+        else
+        {
+          Swal.fire(
+          {
+            title: 'Ups..!',
+            text: 'Ha ocurrido un error, intente más tarde',
+            icon: 'error',
+            confirmButtonColor: '#5cb85c',
+          })
+          .then( result =>
+          {
+            $( '#updateModal' ).modal( 'hide' );
+          });
+        }
       });
     }
   });
@@ -970,12 +987,16 @@ function InfoNew( idActivo = null )
       {
         $( '.inv-form-conciliar' ).removeClass( 'd-none' );
         $( '.inv-form-continue-info' ).addClass( 'd-none' );
+        $( '.inv-back' ).removeClass( 'd-none' );
       }
       else
       {
         $( '.inv-form-continue-info' ).removeClass( 'd-none' );
         $( '.inv-form-conciliar' ).addClass( 'd-none' );
+        $( '.inv-back' ).removeClass( 'd-none' );
       }
+
+      InvActualView = '.inv-news-confirm';
 
       $( '.inv-news-home' ).addClass( 'd-none' );
       $( '.inv-buttons' ).addClass( 'd-none' );
@@ -1015,6 +1036,8 @@ function NewActiveForm( )
 
       $( '.inv-news-confirm' ).addClass( 'd-none' );
       $( '.inv-news-active-new' ).removeClass( 'd-none' );
+
+      InvActualView = '.inv-news-active-new';
 
       $( '#inv-instructions' ).html( 'Ingresa los últimos datos del alta' );
     }
@@ -1147,6 +1170,8 @@ function ConfirmNew( )
               $( '.inv-news-active-new' ).addClass( 'd-none' );
               $( '.inv-news-home' ).removeClass( 'd-none' );
               $( '.inv-buttons' ).removeClass( 'd-none' );
+              $( '.inv-back' ).addClass( 'd-none' );
+              InvActualView = '.inv-news-home';
 
               $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
             });
@@ -1160,6 +1185,8 @@ function ConfirmNew( )
           $( '.inv-news-active-new' ).addClass( 'd-none' );
           $( '.inv-news-home' ).removeClass( 'd-none' );
           $( '.inv-buttons' ).removeClass( 'd-none' );
+          $( '.inv-back' ).addClass( 'd-none' );
+          InvActualView = '.inv-news-home';
 
           $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
         }
@@ -1181,6 +1208,7 @@ function resetFormNew( )
 
 function IsConcilar( )
 {
+
   let id = localStorage.getItem( 'new-inventary' );
   let base =
   `
@@ -1266,11 +1294,13 @@ function IsConcilar( )
         bLengthChange: false,
         pageLength: 5,
         language: spanish,
+        aaSorting: [[ 2, "desc" ]],
       });
 
       $( '.inv-news-confirm' ).addClass( 'd-none' );
       $( '.inv-news-conciliar' ).removeClass( 'd-none' );
       $( '.inv-step' ).removeClass( 'd-none' );
+      InvActualView = '.inv-news-conciliar';
 
       $( '.select-circle' ).css('background', '#ffde59');
       $( '.select-label' ).css('color', '#ffde59');
@@ -1516,7 +1546,8 @@ function ConfirmConciliarMsg( )
           $( '.inv-step' ).addClass( 'd-none' );
           $( '.inv-news-home' ).removeClass( 'd-none' );
           $( '.inv-buttons' ).removeClass( 'd-none' );
-
+          $( '.inv-back' ).addClass( 'd-none' );
+          InvActualView = '.inv-news-hone';
           $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
         }
       });
@@ -1745,6 +1776,10 @@ function getDraftInfoNew( id )
   {
     if ( response.status == 200 )
     {
+      $( '.new-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+
       let activo = response.activo;
 
       localStorage.setItem( 'new-inventary', activo.ID_Activo );
@@ -1821,7 +1856,7 @@ function getDraftInfoNew( id )
   });
 }
 
-function getProcessItems()
+function getProcessItems( )
 {
   let base1 =
   `
@@ -1921,7 +1956,7 @@ function getProcessItems()
         `
           <tr>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id }, 0 )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1964,7 +1999,7 @@ function getProcessItems()
   });
 }
 
-function viewProcessInfo( id )
+function viewProcessInfo( id, details = 1 )
 {
   $.ajax({
     url: url + `/inventario/getDraftInfo/${ id }`,
@@ -1988,6 +2023,11 @@ function viewProcessInfo( id )
       $( '#iSucursal' ).val( activo.ID_Sucursal );
       $( '#iArea' ).val( activo.ID_Area );
       $( '#iDesc' ).val( activo.Desc_Activo );
+
+      if ( details == 1 )
+        $( '.modalProcessButton' ).removeClass( 'd-none' );
+      else
+        $( '.modalProcessButton' ).addClass( 'd-none' );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
@@ -2132,6 +2172,10 @@ function getInventaryItems( )
 
 function viewInvInfo( id )
 {
+  $( '.info-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+  $( '.info-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+  $( '.info-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+
   $.ajax({
     url: url + `/inventario/getActivoInfo/${ id }`,
     type: 'GET',
@@ -2306,6 +2350,11 @@ function inventaryFiltros( )
       imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
     }
   });
+}
+
+function navStepsInv( )
+{
+
 }
 
 /* --- Bajas --- */
@@ -2852,20 +2901,6 @@ $(document).ready(function( )
 
   /* --- scanner - wizzard --- */
 
-  $( '.scan-back' ).click( event =>
-  {
-    event.preventDefault( );
-
-    setInsMessage( wizzardPreviewView );
-
-    $( wizzardActualView ).addClass( 'd-none' );
-    $( wizzardPreviewView ).removeClass( 'd-none' );
-
-    wizzardActualView = wizzardPreviewView;
-    wizzardPreviewView = '.menu-start';
-
-  });
-
   //ready
   $( '#without-scan' ).click( event =>
   {
@@ -3329,9 +3364,53 @@ $(document).ready(function( )
           $( '.inv-news-confirm' ).addClass( 'd-none' );
           $( '.inv-news-home' ).removeClass( 'd-none' );
           $( '.inv-buttons' ).removeClass( 'd-none' );
+          $( '.inv-back' ).addClass( 'd-none' );
         });
       }
     });
+  });
+
+  $( '.inv-back' ).click( event =>
+  {
+    event.preventDefault( );
+
+    switch ( InvActualView )
+    {
+      case '.inv-news-confirm':
+        InvActualView = '.inv-news-home';
+        $( '.inv-news-confirm' ).addClass( 'd-none' );
+        $( InvActualView ).removeClass( 'd-none' );
+        $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
+        $( '.inv-back' ).addClass( 'd-none' );
+        break;
+      case '.inv-news-active-new':
+        InvActualView = '.inv-news-confirm';
+        $( '.inv-news-active-new' ).addClass( 'd-none' );
+        $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
+        $( InvActualView ).removeClass( 'd-none' );
+        break;
+      case '.inv-news-conciliar':
+        InvActualView = '.inv-news-confirm';
+        $( '.inv-news-conciliar' ).addClass( 'd-none' );
+        $( InvActualView ).removeClass( 'd-none' );
+        $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
+        $( '.inv-step' ).addClass( 'd-none' );
+        break;
+      case '.inv-news-conciliar-confirm':
+        InvActualView = '.inv-news-conciliar';
+        $( '.inv-news-conciliar-confirm' ).addClass( 'd-none' );
+        $( InvActualView ).removeClass( 'd-none' );
+        $( '#inv-instructions' ).html( 'Selecciona el activo a conciliar' );
+        
+        $( '.select-circle' ).css('background', '#ffde59');
+        $( '.select-label' ).css('color', '#ffde59');
+        $( '.confirm-circle' ).css('background', '#6c757d');
+        $( '.confirm-label' ).css('color', '#6c757d');
+
+        break;
+      default:
+
+    }
   });
 
   /* --- Bajas --- */
