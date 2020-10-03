@@ -177,7 +177,7 @@ class Inventary extends BaseController
         $num = 0;
         foreach ( $activos->getResult( ) as $row )
         {
-          /*$porcentaje = 0;
+          $porcentaje = 0;
           if ( $activo[ 'NSerie_Activo' ] != null || $activo[ 'NSerie_Activo' ] != '' )
           {
             if ( $row->NSerie_Activo == $activo[ 'NSerie_Activo' ] )
@@ -231,10 +231,9 @@ class Inventary extends BaseController
             {
               $porcentaje += 30;
             }
-          }*/
+          }
 
-          //if ( $row->status != 'eliminado' && $porcentaje > 50 )
-          if ( $row->status != 'eliminado' )
+          if ( $row->status != 'eliminado' && $porcentaje > 50 )
           {
             $num++;
           }
