@@ -14,14 +14,14 @@
                   <div class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
                       <div class="step" data-target="#scan-part">
-                        <div class="step-trigger">
+                        <div class="step-trigger" onclick="navSteps( 1 )">
                           <span class="bs-stepper-circle scan-circle" style="background: #e6c84f">1</span>
                           <span class="bs-stepper-label scan-label" style="color: #e6c84f">Escanear</span>
                         </div>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#update-part-part">
-                        <div class="step-trigger">
+                        <div class="step-trigger" onclick="navSteps( 2 )">
                           <span class="bs-stepper-circle update-circle">2</span>
                           <span class="bs-stepper-label update-label">Actualizar</span>
                         </div>
@@ -199,7 +199,7 @@
                   <div class="col-10 col-sm-10">
                     <div class="form-group row">
                       <label for="alternativa" class="col-sm-4 col-form-label">
-                        Vida útil actual (hr / km / un):
+                        Vida útil actual <span id="scanner-vida-util"> </span> :
                         <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                 style="border-radius: 25px; font-size: 9px !important;"
                                 title="Para los activos con vida útil en meses se considera la fecha cuando se ingresa en su inventario">
@@ -444,7 +444,7 @@
                   </div>
                   <div class="col-1 col-sm-1"></div>
                 </div>
-                
+
                 <div class="row mt-3 text-center">
                   <div class="col-1 col-sm-1"></div>
                   <div class="col-10 col-sm-10">

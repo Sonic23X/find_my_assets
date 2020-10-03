@@ -56,44 +56,42 @@ class Activo extends BaseController
 	{
 		if ( $this->request->isAJAX( ) )
 		{
-		try
-		{
-			$campos =
-			[
-				'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
-				'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
-				'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
-				'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
-				'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
-				'User_Create', 'User_Update', '	User_Delete',
-				'TS_Create', 'TS_Update', 'TS_Delete'
-			];
-
-			$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																 ->select( $campos )
-																 ->first( );
-
-			if ( $activo == null )
+			try
 			{
-				echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
-				return;
+				$campos =
+				[
+					'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
+					'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
+					'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
+					'Des_Activo', 'ID_MetDepre', 'Vida_Activo', 'GPS', 'Fec_Inventario',
+					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', '	User_Delete',
+				];
+
+				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																	 ->select( $campos )
+																	 ->first( );
+
+				if ( $activo == null )
+				{
+					echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
+					return;
+				}
+
+				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
+
+
+				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
+
+				echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
+
 			}
-
-			$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
-
-
-			$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
-
-			echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
-
-		}
-		catch (\Exception $e)
-		{
-			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-		}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
 		}
 		else
-		return view( 'errors/cli/error_404' );
+			return view( 'errors/cli/error_404' );
 	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
