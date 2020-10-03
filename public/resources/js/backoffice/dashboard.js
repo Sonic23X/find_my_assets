@@ -5,13 +5,13 @@ var lon;
 var lat;
 var isNew = false;
 var activeMap;
+var actualStepScanner = 1;
 
 var newTable = null;
 var conciliarTable = null;
 var procesoCTable = null;
 var procesoWTable = null;
 var inventarioTable = null;
-
 var downTable = null;
 
 function dataURLtoFile( dataurl, filename )
@@ -600,6 +600,64 @@ function setInsMessage( view, update = false )
   }
 
   $( '#instructions' ).html( message );
+}
+
+function navSteps( tipo )
+{
+
+  switch ( tipo )
+  {
+    case 1:
+      if ( wizzardActualView != '.scanner-start' && actualStepScanner > 1 )
+      {
+        if (isNew)
+        {
+          wizzardPreviewView = wizzardActualView;
+          wizzardActualView = '.scanner-start';
+          actualStepScanner = 1;
+          setInsMessage( wizzardActualView, true );
+
+          $( wizzardPreviewView ).addClass( 'd-none' );
+          $( wizzardActualView ).removeClass( 'd-none' );
+        }
+        else
+        {
+          wizzardPreviewView = wizzardActualView;
+          wizzardActualView = '.scanner-start';
+          actualStepScanner = 1;
+          setInsMessage( wizzardActualView );
+
+          $( wizzardPreviewView ).addClass( 'd-none' );
+          $( wizzardActualView ).removeClass( 'd-none' );
+        }
+      }
+      break;
+    case 2:
+      if ( wizzardActualView != '.scanner-status' && actualStepScanner > 2 )
+      {
+        if (isNew)
+        {
+          wizzardPreviewView = wizzardActualView;
+          wizzardActualView = '.scanner-status';
+          actualStepScanner = 2;
+          setInsMessage( wizzardActualView, true );
+
+          $( wizzardPreviewView ).addClass( 'd-none' );
+          $( wizzardActualView ).removeClass( 'd-none' );
+        }
+        else
+        {
+          wizzardPreviewView = wizzardActualView;
+          wizzardActualView = '.scanner-status';
+          actualStepScanner = 2;
+          setInsMessage( wizzardActualView );
+
+          $( wizzardPreviewView ).addClass( 'd-none' );
+          $( wizzardActualView ).removeClass( 'd-none' );
+        }
+      }
+      break;
+  }
 }
 
 function setImageFront( )
@@ -2854,6 +2912,7 @@ $(document).ready(function( )
         $( '#area' ).val( response.activo.ID_Area );
         localStorage.setItem( 'codigo', response.activo.ID_Activo );
         isNew = false;
+        actualStepScanner = 2;
 
         wizzardPreviewView = wizzardActualView;
         wizzardActualView = '.scanner-status';
@@ -2995,6 +3054,7 @@ $(document).ready(function( )
       {
         localStorage.setItem( 'codigo', codigo );
         isNew = true;
+        actualStepScanner = 2;
 
         wizzardPreviewView = wizzardActualView;
         wizzardActualView = '.scanner-form';
@@ -3114,6 +3174,7 @@ $(document).ready(function( )
         {
           wizzardPreviewView = wizzardActualView;
           wizzardActualView = '.scanner-photos';
+          actualStepScanner = 3;
 
           setInsMessage( wizzardActualView );
 
@@ -3155,6 +3216,7 @@ $(document).ready(function( )
 
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-start';
+    actualStepScanner = 1;
 
     setInsMessage( wizzardActualView );
 
@@ -3252,7 +3314,6 @@ $(document).ready(function( )
   });
 
   /* --- Bajas --- */
-
 
   $( '#down-select' ).change( (event) =>
   {

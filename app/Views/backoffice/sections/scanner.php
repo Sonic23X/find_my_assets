@@ -14,14 +14,14 @@
                   <div class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
                       <div class="step" data-target="#scan-part">
-                        <div class="step-trigger">
+                        <div class="step-trigger" onclick="navSteps( 1 )">
                           <span class="bs-stepper-circle scan-circle" style="background: #e6c84f">1</span>
                           <span class="bs-stepper-label scan-label" style="color: #e6c84f">Escanear</span>
                         </div>
                       </div>
                       <div class="line"></div>
                       <div class="step" data-target="#update-part-part">
-                        <div class="step-trigger">
+                        <div class="step-trigger" onclick="navSteps( 2 )">
                           <span class="bs-stepper-circle update-circle">2</span>
                           <span class="bs-stepper-label update-label">Actualizar</span>
                         </div>
@@ -444,7 +444,7 @@
                   </div>
                   <div class="col-1 col-sm-1"></div>
                 </div>
-                
+
                 <div class="row mt-3 text-center">
                   <div class="col-1 col-sm-1"></div>
                   <div class="col-10 col-sm-10">
