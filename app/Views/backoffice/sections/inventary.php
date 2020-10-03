@@ -2,9 +2,15 @@
             <div class="inventary d-none">
 
               <div class="row text-center">
-                <div class="col-12 col-sm-12 col-md-12 text-center title-inv">
+                <div class="col-1 col-sm-1">
+                  <a href="#" class="inv-back d-none">
+                    <i class="fas fa-arrow-left"></i>
+                  </a>
+                </div>
+                <div class="col-10 col-sm-10 col-md-10 text-center title-inv">
                   <b>Confirma y concilia tu inventario</b>
                 </div>
+                <div class="col-1 col-sm-1"></div>
               </div>
 
               <div class="row inv-step d-none">
@@ -12,7 +18,7 @@
                   <div class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
                       <div class="step" data-target="#scan-part">
-                        <div class="step-trigger">
+                        <div class="step-trigger" onclick="navStepsInv( )">
                           <span class="bs-stepper-circle select-circle" style="background: #e6c84f">1</span>
                           <span class="bs-stepper-label select-label" style="color: #e6c84f">Seleccionar</span>
                         </div>
@@ -89,6 +95,7 @@
                     <div class="inv-news-confirm d-none">
 
                       <div class="row mt-2 text-center">
+
                         <div class="col-12 col-sm-12 col-md-12">
                             <span id="new-subtipo"></span> / <span id="new-nombre"></span>
                           <br>
@@ -706,7 +713,7 @@
 
                     <div class="card collapsed-card">
                       <div class="card-header text-center card-background-color">
-                        <span>Activos con ajustes</span>
+                        <span>Draft completo</span>
                         <span class="badge badge-warning text-white inventary-process-with-count">XX</span>
                         <div class="card-tools">
                           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white"
@@ -745,7 +752,7 @@
 
                     <div class="card collapsed-card">
                       <div class="card-header text-center card-background-color">
-                        <span>Activos sin ajustes</span>
+                        <span>Draft incompleto</span>
                         <span class="badge badge-warning text-white inventary-process-without-count">XX</span>
                         <div class="card-tools">
                           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white"
@@ -917,7 +924,7 @@
                                 </div>
                               </div>
 
-                              <div class="form-group row mb-5">
+                              <div class="form-group row mb-5 modalProcessButton">
                                 <div class="col-3 col-sm-3"></div>
                                 <div class="col-6 col-sm-6">
                                   <button type="button" class="btn btn-primary btn-block" onclick="ConfirmUpdate( )">
@@ -1053,8 +1060,8 @@
                             <form class="active-inventary-form">
 
                               <div class="form-group row">
-                                <label for="tipoActivo" class="col-sm-2 col-form-label">Tipo de activo</label>
-                                <div class="col-sm-10">
+                                <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
+                                <div class="col-sm-8">
                                   <select class="custom-select iTipoActivo" name="tipoActivo" id="infoTipoActivo" disabled>
 
                                   </select>
@@ -1062,14 +1069,14 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="name" class="col-sm-2 col-form-label">Nombre</label>
-                                <div class="col-sm-10">
+                                <label for="name" class="col-sm-4 col-form-label">Nombre</label>
+                                <div class="col-sm-8">
                                   <input type="text" class="form-control" id="infoName" placeholder="Ej. Mackbook PRO">
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="serie" class="col-sm-2 col-form-label">
+                                <label for="serie" class="col-sm-4 col-form-label">
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
@@ -1077,14 +1084,14 @@
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-8">
                                   <input type="text" class="form-control" id="infoSerie" placeholder="Ej. Nombre">
                                 </div>
                               </div>
 
                               <div class="form-group row">
-                                <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
-                                <div class="col-sm-10">
+                                <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
+                                <div class="col-sm-8">
                                   <select class="custom-select" name="cCosto" id="infocCosto">
                                     <option value="1">Administración</option>
                                     <option value="2">Producción</option>
@@ -1095,8 +1102,8 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Asignado a</label>
-                                <div class="col-sm-10">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Asignado a</label>
+                                <div class="col-sm-8">
                                   <select class="custom-select iAsignacion" name="asignacion" id="infoAsignacion">
 
                                   </select>
@@ -1110,8 +1117,8 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
-                                <div class="col-sm-10">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
+                                <div class="col-sm-8">
                                   <select class="custom-select iEmpresa" name="asignacion" id="infoEmpresa">
 
                                   </select>
@@ -1119,8 +1126,8 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Sucursal</label>
-                                <div class="col-sm-10">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Sucursal</label>
+                                <div class="col-sm-8">
                                   <select class="custom-select iSucursal" name="asignacion" id="infoSucursal">
 
                                   </select>
@@ -1128,8 +1135,8 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="asignacion" class="col-sm-2 col-form-label">Área</label>
-                                <div class="col-sm-10">
+                                <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
+                                <div class="col-sm-8">
                                   <select class="custom-select" name="asignacion" id="infoArea">
 
                                   </select>
@@ -1137,8 +1144,8 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="desc" class="col-sm-2 col-form-label">Descripción</label>
-                                <div class="col-sm-10">
+                                <label for="desc" class="col-sm-4 col-form-label">Descripción</label>
+                                <div class="col-sm-8">
                                   <textarea class="form-control" id="infoDesc" rows="3"></textarea>
                                 </div>
                               </div>

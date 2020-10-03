@@ -177,6 +177,63 @@ class Inventary extends BaseController
         $num = 0;
         foreach ( $activos->getResult( ) as $row )
         {
+          /*$porcentaje = 0;
+          if ( $activo[ 'NSerie_Activo' ] != null || $activo[ 'NSerie_Activo' ] != '' )
+          {
+            if ( $row->NSerie_Activo == $activo[ 'NSerie_Activo' ] )
+            {
+              $porcentaje += 60;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
+            {
+              $porcentaje += 3;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
+            {
+              $porcentaje += 3;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_CC' ] )
+            {
+              $porcentaje += 4;
+            }
+            if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_CC == $activo[ 'ID_CC' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->User_Inventario == $activo[ 'User_Inventario' ] )
+            {
+              $porcentaje += 10;
+            }
+          }
+          else
+          {
+            if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
+            {
+              $porcentaje += 30;
+            }
+            if ( $row->ID_CC == $activo[ 'ID_CC' ] )
+            {
+              $porcentaje += 20;
+            }
+            if ( $row->User_Inventario == $activo[ 'User_Inventario' ] )
+            {
+              $porcentaje += 30;
+            }
+          }*/
+
+          //if ( $row->status != 'eliminado' && $porcentaje > 50 )
           if ( $row->status != 'eliminado' )
           {
             $num++;
@@ -296,7 +353,15 @@ class Inventary extends BaseController
             }
             if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 3;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
+            {
+              $porcentaje += 3;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_CC' ] )
+            {
+              $porcentaje += 4;
             }
             if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
             {
@@ -314,6 +379,10 @@ class Inventary extends BaseController
           else
           {
             if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
+            {
+              $porcentaje += 10;
+            }
+            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
             {
               $porcentaje += 10;
             }
@@ -341,7 +410,7 @@ class Inventary extends BaseController
             'porcentaje' => $porcentaje,
           ];
 
-          if ( $row->status != 'eliminado' )
+          if ( $row->status != 'eliminado' && $porcentaje > 50 )
           {
             array_push( $data, $json );
           }

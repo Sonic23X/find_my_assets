@@ -1,8 +1,8 @@
 
             <div class="scanner d-none">
 
-              <div class="row">
-                <div class="col-12 col-sm-12 col-md-12 mt-2 title-scanner">
+              <div class="row mt-2">
+                <div class="col-12 col-sm-12 col-md-12 title-scanner">
                   <span>Carga tu inventario en 3 simples pasos</span>
                 </div>
               </div>
@@ -39,12 +39,7 @@
               </div>
 
               <div class="row mt-3 p-2 instructions text-center">
-                <div class="col-1 col-sm-1">
-                  <a href="#" class="scan-back">
-                    <i class="fas fa-arrow-left"></i>
-                  </a>
-                </div>
-                <div class="col-11 col-sm-11 text-center">
+                <div class="col-12 col-sm-12 text-center">
                   <span id="instructions">Selecciona el tipo de etiqueta que tiene el activo</span>
                 </div>
               </div>
@@ -92,7 +87,7 @@
                   <div class="col-12 col-sm-12 col-md-12 mt-3 title-scanner">
                     <span>¿El activo es nuevo?</span>
                     <br>
-                    <button type="button" class="btn btn-success mt-1" id="new-scan">Continuar sin escanear</button>
+                    <button type="button" class="btn btn-success mt-1" id="new-scan">Ingresarlo</button>
                   </div>
                 </div>
 
