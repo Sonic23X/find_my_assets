@@ -939,7 +939,6 @@ function NewActiveForm( )
   })
   .done( response =>
   {
-    console.log( response );
     if ( response.status == 200 )
     {
       let activo = response.activo;
@@ -964,7 +963,7 @@ function NewActiveForm( )
     }
     else
     {
-      console.log( 'asd' );
+
     }
   });
 }
@@ -2866,7 +2865,32 @@ $(document).ready(function( )
       }
       else
       {
-        imprimir( 'Ups..', response.msg, 'error' );
+        Swal.fire({
+          icon: 'error',
+          title: 'Ups..',
+          text: response.msg,
+          allowOutsideClick: false,
+          showCancelButton: true,
+          confirmButtonColor: '#5cb85c',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Crear como nuevo',
+          cancelButtonText: 'Aceptar',
+        })
+        .then((result) => {
+          if (result.isConfirmed)
+          {
+            localStorage.setItem( 'codigo', $( '#numActivoS1' ).val( ) );
+            isNew = true;
+
+            wizzardPreviewView = wizzardActualView;
+            wizzardActualView = '.scanner-form';
+
+            setInsMessage( wizzardActualView );
+
+            $( wizzardPreviewView ).addClass( 'd-none' );
+            $( wizzardActualView ).removeClass( 'd-none' );
+          }
+        });
       }
     });
   });
@@ -3141,6 +3165,8 @@ $(document).ready(function( )
 
   /* --- inventario --- */
 
+  $( '#fechadecompra' ).attr( 'max', new Date().toISOString().split("T")[0] );
+
   getInvFormData( );
 
   $( '#inv-new' ).click( event =>
@@ -3226,6 +3252,7 @@ $(document).ready(function( )
   });
 
   /* --- Bajas --- */
+
 
   $( '#down-select' ).change( (event) =>
   {

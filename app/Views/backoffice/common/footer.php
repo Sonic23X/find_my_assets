@@ -5,17 +5,17 @@
       </div>
 
       <nav class="main-header nav bottom-navbar fixed-bottom">
-        <a href="#" id="inventario" class="nav-item-botom">
-          <i class="fas fa-warehouse nav__icon"></i>
-          <span class="nav__text">Inventario</span>
+        <a href="#" id="home" class="nav-item-botom active">
+          <i class="fas fa-home nav__icon"></i>
+          <span class="nav__text">Inicio</span>
         </a>
         <a href="#" id="scanner" class="nav-item-botom">
           <i class="fas fa-cloud-upload-alt nav__icon"></i>
           <span class="nav__text">Cargar</span>
         </a>
-        <a href="#" id="home" class="nav-item-botom active">
-          <i class="fas fa-home nav__icon"></i>
-          <span class="nav__text">Inicio</span>
+        <a href="#" id="inventario" class="nav-item-botom">
+          <i class="fas fa-warehouse nav__icon"></i>
+          <span class="nav__text">Inventario</span>
         </a>
         <a href="#" id="down" class="nav-item-botom">
           <i class="fas fa-cloud-download-alt nav__icon"></i>

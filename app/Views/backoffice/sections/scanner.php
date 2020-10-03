@@ -444,7 +444,7 @@
                   </div>
                   <div class="col-1 col-sm-1"></div>
                 </div>
-
+                
                 <div class="row mt-3 text-center">
                   <div class="col-1 col-sm-1"></div>
                   <div class="col-10 col-sm-10">
@@ -461,7 +461,7 @@
                 <div class="form-group row mb-5">
                   <div class="col-3 col-sm-3"></div>
                   <div class="col-6 col-sm-6">
-                    <button type="button" class="btn btn-primary btn-block" id="update2">Buscar</button>
+                    <button type="button" class="btn btn-primary btn-block" id="update2">Continuar</button>
                   </div>
                   <div class="col-3 col-sm-3"></div>
                 </div>
