@@ -118,16 +118,16 @@ class Activo extends BaseController
     {
       try
       {
-			//validar que no exista un activo con ese id
-			// TODO: anexar ID empresa
-			$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																	->first( );
+				//validar que no exista un activo con ese id
+				// TODO: anexar ID empresa
+				$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+																		->first( );
 
-			if ( $already )
-			{
-				echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
-				return;
-			}
+				if ( $already )
+				{
+					echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
+					return;
+				}
 
         $insert =
         [

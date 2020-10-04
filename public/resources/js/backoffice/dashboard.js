@@ -2901,6 +2901,14 @@ $(document).ready(function( )
 
   /* --- scanner - wizzard --- */
 
+  $( '#numActivoS2' ).keydown( e =>
+  {
+    if ( e.keyCode == 32 || e.keyCode == 192 )
+      return false;
+    else
+      return true;
+  });
+
   //ready
   $( '#without-scan' ).click( event =>
   {
