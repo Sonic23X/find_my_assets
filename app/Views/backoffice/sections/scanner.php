@@ -446,7 +446,7 @@
                     <div class="form-group row">
                       <label for="numActivoS1" class="col-sm-6 col-form-label">Numero de activo</label>
                       <div class="col-sm-6">
-                        <input class="form-control" type="text" name="numActivoS1" id="numActivoS2" placeholder="Ej. 123456">
+                        <input class="form-control" type="text" id="numActivoS2" placeholder="Ej. 123456">
                       </div>
                     </div>
                   </div>
