@@ -186,38 +186,30 @@ class Inventary extends BaseController
             }
             if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
             {
-              $porcentaje += 3;
-            }
-            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
-            {
-              $porcentaje += 3;
-            }
-            if ( $row->ID_Sucursal == $activo[ 'ID_CC' ] )
-            {
-              $porcentaje += 4;
+              $porcentaje += 5;
             }
             if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 15;
             }
             if ( $row->ID_CC == $activo[ 'ID_CC' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 5;
             }
             if ( $row->User_Inventario == $activo[ 'User_Inventario' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 15;
             }
           }
           else
           {
             if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 15;
             }
-            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
+            if ( $row->ID_Area == $activo[ 'ID_Area' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 5;
             }
             if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
             {
@@ -233,7 +225,7 @@ class Inventary extends BaseController
             }
           }
 
-          if ( $row->status != 'eliminado' && $porcentaje > 50 )
+          if ( $row->status != 'eliminado' && $porcentaje > 40 )
           {
             $num++;
           }
@@ -352,38 +344,30 @@ class Inventary extends BaseController
             }
             if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
             {
-              $porcentaje += 3;
-            }
-            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
-            {
-              $porcentaje += 3;
-            }
-            if ( $row->ID_Sucursal == $activo[ 'ID_CC' ] )
-            {
-              $porcentaje += 4;
+              $porcentaje += 5;
             }
             if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 15;
             }
             if ( $row->ID_CC == $activo[ 'ID_CC' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 5;
             }
             if ( $row->User_Inventario == $activo[ 'User_Inventario' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 15;
             }
           }
           else
           {
             if ( $row->ID_Sucursal == $activo[ 'ID_Sucursal' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 15;
             }
-            if ( $row->ID_Sucursal == $activo[ 'ID_Area' ] )
+            if ( $row->ID_Area == $activo[ 'ID_Area' ] )
             {
-              $porcentaje += 10;
+              $porcentaje += 5;
             }
             if ( $row->ID_Tipo == $activo[ 'ID_Tipo' ] )
             {
