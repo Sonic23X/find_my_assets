@@ -327,6 +327,8 @@ function newScanQR( node )
 
         $( wizzardPreviewView ).addClass( 'd-none' );
         $( wizzardActualView ).removeClass( 'd-none' );
+
+        window.scroll(0, 0);
       }
       else
       {
@@ -619,6 +621,8 @@ function navSteps( tipo )
 
           $( wizzardPreviewView ).addClass( 'd-none' );
           $( wizzardActualView ).removeClass( 'd-none' );
+
+          window.scroll(0, 0);
         }
         else
         {
@@ -629,6 +633,8 @@ function navSteps( tipo )
 
           $( wizzardPreviewView ).addClass( 'd-none' );
           $( wizzardActualView ).removeClass( 'd-none' );
+
+          window.scroll(0, 0);
         }
       }
       break;
@@ -644,6 +650,8 @@ function navSteps( tipo )
 
           $( wizzardPreviewView ).addClass( 'd-none' );
           $( wizzardActualView ).removeClass( 'd-none' );
+
+          window.scroll(0, 0);
         }
         else
         {
@@ -654,6 +662,8 @@ function navSteps( tipo )
 
           $( wizzardPreviewView ).addClass( 'd-none' );
           $( wizzardActualView ).removeClass( 'd-none' );
+
+          window.scroll(0, 0);
         }
       }
       break;
@@ -931,6 +941,8 @@ function ConfirmUpdate( idActivo )
           .then( result =>
           {
             $( '#updateModal' ).modal( 'hide' );
+
+            window.scroll(0, 0);
           });
         }
         else
@@ -945,6 +957,8 @@ function ConfirmUpdate( idActivo )
           .then( result =>
           {
             $( '#updateModal' ).modal( 'hide' );
+
+            window.scroll(0, 0);
           });
         }
       });
@@ -1002,6 +1016,8 @@ function InfoNew( idActivo = null )
       $( '.inv-buttons' ).addClass( 'd-none' );
       $( '.inv-news-confirm' ).removeClass( 'd-none' );
 
+      window.scroll(0, 0);
+
       $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
     }
   });
@@ -1038,6 +1054,7 @@ function NewActiveForm( )
       $( '.inv-news-active-new' ).removeClass( 'd-none' );
 
       InvActualView = '.inv-news-active-new';
+      window.scroll(0, 0);
 
       $( '#inv-instructions' ).html( 'Ingresa los últimos datos del alta' );
     }
@@ -1173,6 +1190,8 @@ function ConfirmNew( )
               $( '.inv-back' ).addClass( 'd-none' );
               InvActualView = '.inv-news-home';
 
+              window.scroll(0, 0);
+
               $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
             });
           });
@@ -1187,6 +1206,8 @@ function ConfirmNew( )
           $( '.inv-buttons' ).removeClass( 'd-none' );
           $( '.inv-back' ).addClass( 'd-none' );
           InvActualView = '.inv-news-home';
+
+          window.scroll(0, 0);
 
           $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
         }
@@ -1307,6 +1328,7 @@ function IsConcilar( )
       $( '.confirm-circle' ).css('background', '#6c757d');
       $( '.confirm-label' ).css('color', '#6c757d');
 
+      window.scroll(0, 0);
       $( '#inv-instructions' ).html( 'Selecciona el activo a conciliar' );
     }
   });
@@ -1498,7 +1520,7 @@ function ConfirmConciliar( )
       `;
 
       $( '.conciliar-old' ).append( oldPlantilla );
-
+      InvActualView = '.inv-news-conciliar-confirm';
 
       $( '.inv-news-conciliar' ).addClass( 'd-none' );
       $( '.inv-news-conciliar-confirm' ).removeClass( 'd-none' );
@@ -1508,6 +1530,7 @@ function ConfirmConciliar( )
       $( '.confirm-circle' ).css('background', '#ffde59');
       $( '.confirm-label' ).css('color', '#ffde59');
 
+      window.scroll(0, 0);
       $( '#inv-instructions' ).html( 'Confirma la conciliación' );
     }
   });
@@ -1548,6 +1571,8 @@ function ConfirmConciliarMsg( )
           $( '.inv-buttons' ).removeClass( 'd-none' );
           $( '.inv-back' ).addClass( 'd-none' );
           InvActualView = '.inv-news-hone';
+
+          window.scroll(0, 0);
           $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
         }
       });
@@ -2241,6 +2266,7 @@ function getInventaryItems( )
         language: spanish,
       });
 
+      window.scroll(0, 0);
       $( '.inventary-count' ).html( response.number );
     }
     else
@@ -2996,6 +3022,7 @@ $(document).ready(function( )
     $( wizzardPreviewView ).addClass( 'd-none' );
     $( wizzardActualView ).removeClass( 'd-none' );
 
+    window.scroll(0, 0);
   });
 
   //ready
@@ -3060,6 +3087,8 @@ $(document).ready(function( )
 
         $( wizzardPreviewView ).addClass( 'd-none' );
         $( wizzardActualView ).removeClass( 'd-none' );
+
+        window.scroll(0, 0);
       }
       else
       {
@@ -3087,6 +3116,8 @@ $(document).ready(function( )
 
             $( wizzardPreviewView ).addClass( 'd-none' );
             $( wizzardActualView ).removeClass( 'd-none' );
+
+            window.scroll(0, 0);
           }
         });
       }
@@ -3105,6 +3136,8 @@ $(document).ready(function( )
 
     $( wizzardPreviewView ).addClass( 'd-none' );
     $( wizzardActualView ).removeClass( 'd-none' );
+
+    window.scroll(0, 0);
   });
 
   //ready
@@ -3119,6 +3152,7 @@ $(document).ready(function( )
     $( wizzardPreviewView ).addClass( 'd-none' );
     $( wizzardActualView ).removeClass( 'd-none' );
 
+    window.scroll(0, 0);
   });
 
   //ready
@@ -3159,6 +3193,8 @@ $(document).ready(function( )
 
         $( wizzardPreviewView ).addClass( 'd-none' );
         $( wizzardActualView ).removeClass( 'd-none' );
+
+        window.scroll(0, 0);
       }
       else
       {
@@ -3202,6 +3238,8 @@ $(document).ready(function( )
 
         $( wizzardPreviewView ).addClass( 'd-none' );
         $( wizzardActualView ).removeClass( 'd-none' );
+
+        window.scroll(0, 0);
       }
       else
       {
@@ -3264,6 +3302,8 @@ $(document).ready(function( )
 
         $( wizzardPreviewView ).addClass( 'd-none' );
         $( wizzardActualView ).removeClass( 'd-none' );
+
+        window.scroll(0, 0);
       }
       else
       {
@@ -3319,6 +3359,8 @@ $(document).ready(function( )
 
           $( wizzardPreviewView ).addClass( 'd-none' );
           $( wizzardActualView ).removeClass( 'd-none' );
+
+          window.scroll(0, 0);
         }
       }
       else
@@ -3353,6 +3395,10 @@ $(document).ready(function( )
     $( '#numActivoS1' ).val( '' );
     $( '#numActivoS2' ).val( '' );
 
+    $( '#scanner-image-front' ).html( '<span>Sin imagen</span>' );
+    $( '#scanner-image-right' ).html( '<span>Sin imagen</span>' );
+    $( '#scanner-image-left' ).html( '<span>Sin imagen</span>' );
+
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-start';
     actualStepScanner = 1;
@@ -3362,6 +3408,7 @@ $(document).ready(function( )
     $( wizzardPreviewView ).addClass( 'd-none' );
     $( wizzardActualView ).removeClass( 'd-none' );
 
+    window.scroll(0, 0);
   });
 
   /* --- inventario --- */
@@ -3385,6 +3432,8 @@ $(document).ready(function( )
 
     $( '.inv-news-table' ).removeClass( 'd-none' );
     $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
+
+    window.scroll(0, 0);
   });
 
   $( '#inv-update' ).click( event =>
@@ -3401,6 +3450,8 @@ $(document).ready(function( )
 
     $( '.inv-update-table' ).removeClass( 'd-none' );
     $( '#inv-instructions' ).html( 'Selecciona uno de los grupos de activos actualizados' );
+
+    window.scroll(0, 0);
   });
 
   $( '#inv-inv' ).click( event =>
@@ -3417,6 +3468,8 @@ $(document).ready(function( )
 
     $( '.inv-inv-table' ).removeClass( 'd-none' );
     $( '#inv-instructions' ).html( 'Consulta la información online de tus activos' );
+
+    window.scroll(0, 0);
   });
 
   $( '#deleteNewActivo' ).click( event =>
@@ -3456,7 +3509,7 @@ $(document).ready(function( )
   $( '.inv-back' ).click( event =>
   {
     event.preventDefault( );
-
+    console.log( InvActualView );
     switch ( InvActualView )
     {
       case '.inv-news-confirm':
@@ -3465,12 +3518,16 @@ $(document).ready(function( )
         $( InvActualView ).removeClass( 'd-none' );
         $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
         $( '.inv-back' ).addClass( 'd-none' );
+
+        window.scroll(0, 0);
         break;
       case '.inv-news-active-new':
         InvActualView = '.inv-news-confirm';
         $( '.inv-news-active-new' ).addClass( 'd-none' );
         $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
         $( InvActualView ).removeClass( 'd-none' );
+
+        window.scroll(0, 0);
         break;
       case '.inv-news-conciliar':
         InvActualView = '.inv-news-confirm';
@@ -3478,6 +3535,8 @@ $(document).ready(function( )
         $( InvActualView ).removeClass( 'd-none' );
         $( '#inv-instructions' ).html( 'Confirmar alta de activo' );
         $( '.inv-step' ).addClass( 'd-none' );
+
+        window.scroll(0, 0);
         break;
       case '.inv-news-conciliar-confirm':
         InvActualView = '.inv-news-conciliar';
@@ -3489,6 +3548,8 @@ $(document).ready(function( )
         $( '.select-label' ).css('color', '#ffde59');
         $( '.confirm-circle' ).css('background', '#6c757d');
         $( '.confirm-label' ).css('color', '#6c757d');
+
+        window.scroll(0, 0);
         break;
       default:
 
