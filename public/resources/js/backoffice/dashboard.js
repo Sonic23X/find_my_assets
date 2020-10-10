@@ -1498,7 +1498,7 @@ function ConfirmConciliar( )
       `;
 
       $( '.conciliar-old' ).append( oldPlantilla );
-
+      InvActualView = '.inv-news-conciliar-confirm';
 
       $( '.inv-news-conciliar' ).addClass( 'd-none' );
       $( '.inv-news-conciliar-confirm' ).removeClass( 'd-none' );
@@ -3278,6 +3278,10 @@ $(document).ready(function( )
     $( '#numActivoS1' ).val( '' );
     $( '#numActivoS2' ).val( '' );
 
+    $( '#scanner-image-front' ).html( '<span>Sin imagen</span>' );
+    $( '#scanner-image-right' ).html( '<span>Sin imagen</span>' );
+    $( '#scanner-image-left' ).html( '<span>Sin imagen</span>' );
+
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-start';
     actualStepScanner = 1;
@@ -3381,7 +3385,7 @@ $(document).ready(function( )
   $( '.inv-back' ).click( event =>
   {
     event.preventDefault( );
-
+    console.log( InvActualView );
     switch ( InvActualView )
     {
       case '.inv-news-confirm':
