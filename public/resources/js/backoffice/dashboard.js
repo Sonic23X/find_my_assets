@@ -1686,6 +1686,7 @@ function getNewItems( )
   `
     <thead>
       <tr>
+        <th scope="col"></th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
         <th scope="col">Cargado</th>
@@ -1717,6 +1718,9 @@ function getNewItems( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              <input type="checkbox" name="select_${ activo.id }" onClick="downInvCheckbox( this )" class="newInvCheck">
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="getDraftInfoNew( ${ activo.id } )">
                 ${ activo.tipo }
@@ -1763,6 +1767,82 @@ function getNewItems( )
       imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
     }
   });
+}
+
+function downInvCheckbox( node )
+{
+  let num = 0;
+
+  $( '.newInvCheck:checked' ).each(function()
+  {
+    num++;
+  });
+
+  if ( num > 0)
+    $( '.delete-button-inv' ).removeClass( 'd-none' );
+  else
+    $( '.delete-button-inv' ).addClass( 'd-none' );
+}
+
+function multipleInvDelete( )
+{
+  let data = [ ];
+
+  $( '.newInvCheck:checked' ).each(function( )
+  {
+    let getId = this.name.split( '_' )[ 1 ];
+    data.push( getId );
+  });
+
+  Swal.fire({
+    icon: 'question',
+    title: 'Atención',
+    text: '¿Estas seguro de eliminar estos elementos del sistema?',
+    allowOutsideClick: false,
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#5cb85c',
+    confirmButtonText: 'Eliminar',
+    cancelButtonText: 'Cancelar',
+  })
+  .then((result) => 
+  {
+    if ( result.isConfirmed )
+    {
+
+      let json = 
+      {
+        items: data,
+      };
+
+      $.ajax({
+        url: url + '/inventario/deleteNews',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {    
+          Swal.fire(
+          {
+            title: '¡Listo!',
+            text: 'El/Los activo(s) han sido dados de baja exitosamente',
+            icon: 'success',
+            confirmButtonColor: '#5cb85c',
+          })
+          .then( result =>
+          {
+            $( '.delete-button-inv' ).addClass( 'd-none' );
+
+            getNewItems( );
+          });
+        }
+      });
+    }
+  });
+
 }
 
 function getDraftInfoNew( id )
@@ -2350,11 +2430,6 @@ function inventaryFiltros( )
       imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
     }
   });
-}
-
-function navStepsInv( )
-{
-
 }
 
 /* --- Bajas --- */
