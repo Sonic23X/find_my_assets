@@ -72,6 +72,10 @@
                             </div>
                           </div>
 
+                          <div class="mt-2 mb-2 delete-button-inv d-none">
+                            <button type="button" class="btn btn-sm btn-danger btn-block" onclick="multipleInvDelete( )">Eliminar</button>
+                          </div>
+
                           <div class="mt-3 table-responsive text-center">
                             <table class="table table-sm table-hover table-new-items">
                               <thead>
