@@ -3,6 +3,7 @@
 var url = $('#url').val( );
 var lon;
 var lat;
+var points = null;
 var isNew = false;
 var activeMap;
 var actualStepScanner = 1;
@@ -58,6 +59,145 @@ let spanish =
     sSortDescending: ': Activar para ordenar la columna de manera descendente',
   },
 };
+
+/* --- Dashboard --- */
+function dashboardData( ) 
+{
+  $( '.table-1-valor-activos' ).html( '' );
+  $( '.table-2-activos-alta' ).html( '' );
+  $( '.table-3-activos-baja' ).html( '' );
+
+  $.ajax({
+    url: url + '/dashboard/data',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let tabla1 = response.montos;
+      if ( tabla1.length == 0 ) 
+      {
+        $( '.table-1-valor-activos' ).append( '<tr><td>Sin activos</td><td></td></tr>' );
+      } 
+      else 
+      {
+        tabla1.forEach( monto => 
+        {
+          let plantilla = ``;
+          if ( monto.monto == 0 ) 
+          {
+            plantilla = 
+            `
+              <tr>
+                <td>${ monto.tipo }</td>
+                <td><span class="badge bg-success">$${ monto.monto }</span></td>
+              </tr>
+            `;
+          }
+          else
+          {
+            plantilla = 
+            `
+              <tr>
+                <td>${ monto.tipo }</td>
+                <td><span class="badge bg-success">$${ monto.monto / 1000 }K</span></td>
+              </tr>
+            `;
+          }
+          
+          $( '.table-1-valor-activos' ).append( plantilla );
+        }); 
+      }
+
+      //grafica de dona - variables
+      var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+      var donutData =
+      {
+        labels: response.graficaLabels,
+        datasets:
+        [
+          {
+            data: response.graficaValues,
+            backgroundColor:
+            [
+              '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'
+            ],
+          }
+        ]
+      };
+      var donutOptions =
+      {
+        maintainAspectRatio: false,
+        responsive: true,
+      };
+
+      //creación de la grafica
+      var donutChart = new Chart(donutChartCanvas,
+      {
+        type: 'doughnut',
+        data: donutData,
+        options: donutOptions
+      });
+
+      //tabla altas
+      let altas = response.altas;
+
+      if ( altas.length == 0 ) 
+      {
+        $( '.table-2-activos-alta' ).append( '<tr><td>Sin altas</td><td></td></tr>' );
+      } 
+      else 
+      {
+        altas.forEach( item => 
+        {
+          let plantilla = 
+          `
+            <tr>
+              <td>${ item.Nom_Activo }</td>
+              <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+            </tr>
+          `;
+  
+          $( '.table-2-activos-alta' ).append( plantilla );
+        });
+      }
+
+      //tabla bajas
+      let bajas = response.bajas;
+
+      if (bajas.length == 0) 
+      {
+        $( '.table-3-activos-baja' ).append( '<tr><td>Sin bajas</td><td></td></tr>' );
+      }
+      else
+      {
+        bajas.forEach( item => 
+        {
+          let plantilla = 
+          `
+            <tr>
+              <td>${ item.Nom_Activo }</td>
+              <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+            </tr>
+          `;
+  
+          $( '.table-3-activos-baja' ).append( plantilla );
+        });
+      }
+
+      //mapa
+      points = response.points;
+      navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
+
+    }
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups..', 'Error al conectar con el servidor2', 'error' );
+  });
+}
 
 /* --- scanner --- */
 var wizzardActualView = '.scanner-start';
@@ -205,6 +345,8 @@ function setCoordenadasMapG( position )
   lon = position.coords.longitude;
   lat = position.coords.latitude;
 
+  console.log( lon );
+
   var globalMap = L.map( 'globalMap' ).setView( [ lat, lon ], 16 );
 
   L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
@@ -217,9 +359,17 @@ function setCoordenadasMapG( position )
       accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
   }).addTo( globalMap );
 
-  L.marker( [ lat, lon ] ).addTo( globalMap )
-   .bindPopup( 'Esto es un marcador en el mapa' )
-   .openPopup( );
+  points.forEach( point =>
+  {
+    let coordenadas = point.GPS.split( ',' );
+    
+    let latitud = coordenadas[ 0 ];
+    let longitud = coordenadas[ 1 ];
+
+    L.marker( [ lat, lon ] ).addTo( globalMap )
+     .bindPopup( point.Nom_Activo )
+     .openPopup( );
+  });
 }
 
 function setCoordenadasActiveMap( position )
@@ -2817,8 +2967,7 @@ $(document).ready(function( )
   //tooltips
   $( '[data-toggle="tooltip"]' ).tooltip( );
 
-  //localización
-  navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
+  dashboardData( );
 
   //formularios
   getScannerFormData( );
@@ -2878,6 +3027,8 @@ $(document).ready(function( )
           $( actualView ).addClass( 'd-none' );
           break;
       }
+
+      dashboardData( );
 
       actualView = '.home';
       $( actualView ).removeClass( 'd-none' );
@@ -2957,47 +3108,6 @@ $(document).ready(function( )
 
 
 
-  });
-
-  //grafica de dona - variables
-  var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
-  var donutData =
-  {
-    labels:
-    [
-      'Muebles y útiles',
-      'Herramientas',
-      'Equipo computacional',
-      'Vehiculos',
-      'Maquinaria y equipo',
-      'Otro',
-    ],
-    datasets:
-    [
-      {
-        data:
-        [
-          700, 500, 400, 600, 300, 100
-        ],
-        backgroundColor:
-        [
-          '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'
-        ],
-      }
-    ]
-  };
-  var donutOptions =
-  {
-    maintainAspectRatio: false,
-    responsive: true,
-  };
-
-  //creación de la grafica
-  var donutChart = new Chart(donutChartCanvas,
-  {
-    type: 'doughnut',
-    data: donutData,
-    options: donutOptions
   });
 
   /* --- scanner - wizzard --- */

@@ -52,6 +52,9 @@ $routes->get('/salir', 'Auth::Logout');
 /** Backoffice - Inicio **/
 $routes->get('/dashboard', 'Dashboard::Index');
 
+/** AJAX - Inicio **/
+$routes->get('/dashboard/data', 'Dashboard::getData');
+
 /** AJAX - scanner **/
 $routes->get('/activos/getFormData', 'Activo::GetDataForm');
 $routes->post('/activos/search', 'Activo::SearchActivo');

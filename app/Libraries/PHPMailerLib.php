@@ -19,12 +19,13 @@ class PHPMailerLib
 
     $this->email = new PHPMailer( );
 
+    $this->email->SMTPDebug = 2;
     $this->email->isSMTP( );
 
-    $this->email->Host       = 'smtp.gmail.com';
+    $this->email->Host       = 'mail.de2.mx';
     $this->email->SMTPAuth   = true;
-    $this->email->Username   = 'correos.automatizador@gmail.com';
-    $this->email->Password   = '12Febrero70';
+    $this->email->Username   = 'contacto@de2.mx';
+    $this->email->Password   = 'C0mpuvive';
     $this->email->SMTPSecure = 'tls';
     $this->email->Port       = 587;
     $this->email->CharSet    = 'UTF-8';
