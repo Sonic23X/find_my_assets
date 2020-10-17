@@ -3,6 +3,7 @@
 var url = $('#url').val( );
 var lon;
 var lat;
+var points = null;
 var isNew = false;
 var activeMap;
 var actualStepScanner = 1;
@@ -187,6 +188,7 @@ function dashboardData( )
       }
 
       //mapa
+      points = response.points;
       navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
 
     }
@@ -343,6 +345,8 @@ function setCoordenadasMapG( position )
   lon = position.coords.longitude;
   lat = position.coords.latitude;
 
+  console.log( lon );
+
   var globalMap = L.map( 'globalMap' ).setView( [ lat, lon ], 16 );
 
   L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
@@ -355,9 +359,17 @@ function setCoordenadasMapG( position )
       accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
   }).addTo( globalMap );
 
-  L.marker( [ lat, lon ] ).addTo( globalMap )
-   .bindPopup( 'Esto es un marcador en el mapa' )
-   .openPopup( );
+  points.forEach( point =>
+  {
+    let coordenadas = point.GPS.split( ',' );
+    
+    let latitud = coordenadas[ 0 ];
+    let longitud = coordenadas[ 1 ];
+
+    L.marker( [ lat, lon ] ).addTo( globalMap )
+     .bindPopup( point.Nom_Activo )
+     .openPopup( );
+  });
 }
 
 function setCoordenadasActiveMap( position )

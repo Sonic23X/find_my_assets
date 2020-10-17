@@ -90,7 +90,9 @@ class Dashboard extends BaseController
 
 		$altas = $this->activoModel->where( 'TS_Delete', null )->select( 'TS_Create, Nom_Activo' )->findAll( );
 
-		echo json_encode( array( 'status' => 200, 'montos' => $table1, 'graficaLabels' => $labels, 'graficaValues' => $values, 'bajas' => $bajas, 'altas' => $altas ) );
+		$points = $this->activoModel->where( 'TS_Delete', null )->select( 'Nom_Activo, GPS' )->findAll( );
+
+		echo json_encode( array( 'status' => 200, 'montos' => $table1, 'graficaLabels' => $labels, 'graficaValues' => $values, 'bajas' => $bajas, 'altas' => $altas, 'points' => $points ) );
 	}
 
 }
