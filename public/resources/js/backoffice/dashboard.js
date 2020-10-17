@@ -62,6 +62,10 @@ let spanish =
 /* --- Dashboard --- */
 function dashboardData( ) 
 {
+  $( '.table-1-valor-activos' ).html( '' );
+  $( '.table-2-activos-alta' ).html( '' );
+  $( '.table-3-activos-baja' ).html( '' );
+
   $.ajax({
     url: url + '/dashboard/data',
     type: 'GET',
