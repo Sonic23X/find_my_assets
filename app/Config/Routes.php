@@ -87,6 +87,7 @@ $routes->get('/inventario/getActivoInfo/(:num)', 'Inventary::SearchActiveInfo/$1
 $routes->post('/inventario/getInventaryItemsFilter', 'Inventary::SearchInventaryListFilter');
 $routes->post('/inventario/setFactura', 'Inventary::setFactura');
 $routes->post('/inventario/setGarantia', 'Inventary::setGarantia');
+$routes->post('/inventario/deleteNews', 'Inventary::deleteNews');
 
 /** AJAX - downs **/
 $routes->get('/bajas/getItems', 'Down::SearchList');

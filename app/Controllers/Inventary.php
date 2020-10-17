@@ -1000,4 +1000,29 @@ class Inventary extends BaseController
       return view( 'errors/cli/error_404' );
   }
 
+  //método que funciona exclusivamente con AJAX - JQUERY
+  function deleteNews( )
+  {
+    if ( $this->request->isAJAX( ) )
+    {
+      try
+      {
+        $request = $this->request->getVar( 'items' );
+
+        foreach ( $request as $item )
+        {
+          $this->draftModel->where( 'Id', $item )->delete( );
+        }
+
+        echo json_encode( array( 'status' => 200 ) );
+      }
+      catch (\Exception $e)
+      {
+        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+      }
+    }
+    else
+      return view( 'errors/cli/error_404' );
+  }
+
 }
