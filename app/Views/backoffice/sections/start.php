@@ -21,31 +21,8 @@
                             <th style="width: 40px">Valor</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            <td>Muebles y útiles</td>
-                            <td><span class="badge bg-success">$ --K</span></td>
-                          </tr>
-                          <tr>
-                            <td>Herramientas</td>
-                            <td><span class="badge bg-success">$ --K</span></td>
-                          </tr>
-                          <tr>
-                            <td>Equipo computacional</td>
-                            <td><span class="badge bg-success">$ --K</span></td>
-                          </tr>
-                          <tr>
-                            <td>Vehiculos</td>
-                            <td><span class="badge bg-success">$ --K</span></td>
-                          </tr>
-                          <tr>
-                            <td>Maquinaria y equipo</td>
-                            <td><span class="badge bg-success">$ --K</span></td>
-                          </tr>
-                          <tr>
-                            <td>Otro</td>
-                            <td><span class="badge bg-success">$ --K</span></td>
-                          </tr>
+                        <tbody class="table-1-valor-activos">
+                          
                         </tbody>
                       </table>
                     </div>
@@ -83,27 +60,8 @@
                     </div>
                     <div class="card-body">
                       <table class="table table-striped">
-                        <tbody>
-                          <tr>
-                            <td>Muebles y útiles</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Herramientas</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Equipo computacional</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Vehiculos</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Maquinaria y equipo</td>
-                            <td>--/--/--</td>
-                          </tr>
+                        <tbody class="table-2-activos-alta">
+                          
                         </tbody>
                       </table>
                     </div>
@@ -122,27 +80,8 @@
                     </div>
                     <div class="card-body">
                       <table class="table table-striped">
-                        <tbody>
-                          <tr>
-                            <td>Muebles y útiles</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Herramientas</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Equipo computacional</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Vehiculos</td>
-                            <td>--/--/--</td>
-                          </tr>
-                          <tr>
-                            <td>Maquinaria y equipo</td>
-                            <td>--/--/--</td>
-                          </tr>
+                        <tbody class="table-3-activos-baja">
+                          
                         </tbody>
                       </table>
                     </div>

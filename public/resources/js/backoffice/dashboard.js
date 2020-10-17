@@ -59,6 +59,140 @@ let spanish =
   },
 };
 
+/* --- Dashboard --- */
+function dashboardData( ) 
+{
+  $.ajax({
+    url: url + '/dashboard/data',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      let tabla1 = response.montos;
+      if ( tabla1.length == 0 ) 
+      {
+        $( '.table-1-valor-activos' ).append( '<tr><td>Sin activos</td><td></td></tr>' );
+      } 
+      else 
+      {
+        tabla1.forEach( monto => 
+        {
+          let plantilla = ``;
+          if ( monto.monto == 0 ) 
+          {
+            plantilla = 
+            `
+              <tr>
+                <td>${ monto.tipo }</td>
+                <td><span class="badge bg-success">$${ monto.monto }</span></td>
+              </tr>
+            `;
+          }
+          else
+          {
+            plantilla = 
+            `
+              <tr>
+                <td>${ monto.tipo }</td>
+                <td><span class="badge bg-success">$${ monto.monto / 1000 }K</span></td>
+              </tr>
+            `;
+          }
+          
+          $( '.table-1-valor-activos' ).append( plantilla );
+        }); 
+      }
+
+      //grafica de dona - variables
+      var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+      var donutData =
+      {
+        labels: response.graficaLabels,
+        datasets:
+        [
+          {
+            data: response.graficaValues,
+            backgroundColor:
+            [
+              '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'
+            ],
+          }
+        ]
+      };
+      var donutOptions =
+      {
+        maintainAspectRatio: false,
+        responsive: true,
+      };
+
+      //creación de la grafica
+      var donutChart = new Chart(donutChartCanvas,
+      {
+        type: 'doughnut',
+        data: donutData,
+        options: donutOptions
+      });
+
+      //tabla altas
+      let altas = response.altas;
+
+      if ( altas.length == 0 ) 
+      {
+        $( '.table-2-activos-alta' ).append( '<tr><td>Sin altas</td><td></td></tr>' );
+      } 
+      else 
+      {
+        altas.forEach( item => 
+        {
+          let plantilla = 
+          `
+            <tr>
+              <td>${ item.Nom_Activo }</td>
+              <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+            </tr>
+          `;
+  
+          $( '.table-2-activos-alta' ).append( plantilla );
+        });
+      }
+
+      //tabla bajas
+      let bajas = response.bajas;
+
+      if (bajas.length == 0) 
+      {
+        $( '.table-3-activos-baja' ).append( '<tr><td>Sin bajas</td><td></td></tr>' );
+      }
+      else
+      {
+        bajas.forEach( item => 
+        {
+          let plantilla = 
+          `
+            <tr>
+              <td>${ item.Nom_Activo }</td>
+              <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+            </tr>
+          `;
+  
+          $( '.table-3-activos-baja' ).append( plantilla );
+        });
+      }
+
+      //mapa
+      navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
+
+    }
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups..', 'Error al conectar con el servidor2', 'error' );
+  });
+}
+
 /* --- scanner --- */
 var wizzardActualView = '.scanner-start';
 var wizzardPreviewView = '.scanner-start';
@@ -2742,8 +2876,7 @@ $(document).ready(function( )
   //tooltips
   $( '[data-toggle="tooltip"]' ).tooltip( );
 
-  //localización
-  navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
+  dashboardData( );
 
   //formularios
   getScannerFormData( );
@@ -2803,6 +2936,8 @@ $(document).ready(function( )
           $( actualView ).addClass( 'd-none' );
           break;
       }
+
+      dashboardData( );
 
       actualView = '.home';
       $( actualView ).removeClass( 'd-none' );
@@ -2882,47 +3017,6 @@ $(document).ready(function( )
 
 
 
-  });
-
-  //grafica de dona - variables
-  var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
-  var donutData =
-  {
-    labels:
-    [
-      'Muebles y útiles',
-      'Herramientas',
-      'Equipo computacional',
-      'Vehiculos',
-      'Maquinaria y equipo',
-      'Otro',
-    ],
-    datasets:
-    [
-      {
-        data:
-        [
-          700, 500, 400, 600, 300, 100
-        ],
-        backgroundColor:
-        [
-          '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'
-        ],
-      }
-    ]
-  };
-  var donutOptions =
-  {
-    maintainAspectRatio: false,
-    responsive: true,
-  };
-
-  //creación de la grafica
-  var donutChart = new Chart(donutChartCanvas,
-  {
-    type: 'doughnut',
-    data: donutData,
-    options: donutOptions
   });
 
   /* --- scanner - wizzard --- */
