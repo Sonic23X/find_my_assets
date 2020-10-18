@@ -342,10 +342,19 @@ function getScannerFormData( )
 
 function setCoordenadasMapG( position )
 {
-  lon = position.coords.longitude;
-  lat = position.coords.latitude;
+  console.log( points );
+  if ( points.length > 0 ) 
+  {
+    let coord = points[ 0 ].GPS.split( ',' );
 
-  console.log( lon );
+    lon = coord[ 1 ];
+    lat = coord[ 0 ];
+  }
+  else
+  {
+    lon = position.coords.longitude;
+    lat = position.coords.latitude;
+  }
 
   var globalMap = L.map( 'globalMap' ).setView( [ lat, lon ], 16 );
 
@@ -366,7 +375,7 @@ function setCoordenadasMapG( position )
     let latitud = coordenadas[ 0 ];
     let longitud = coordenadas[ 1 ];
 
-    L.marker( [ lat, lon ] ).addTo( globalMap )
+    L.marker( [ latitud, longitud ] ).addTo( globalMap )
      .bindPopup( point.Nom_Activo )
      .openPopup( );
   });
