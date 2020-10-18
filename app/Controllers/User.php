@@ -35,7 +35,7 @@ class User extends BaseController
             echo view( 'backoffice/options/profile' );
 
             //Scripts y librerias
-            $footer = array( 'js' => 'dashboard' );
+            $footer = array( 'js' => 'user' );
             echo view( 'backoffice/common/footer2', $footer );
 		}
 		else
