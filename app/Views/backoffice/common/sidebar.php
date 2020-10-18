@@ -16,9 +16,9 @@
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-th"></i>
-                  Opción 1
+                <a href="<?= base_url( '/dashboard' ) ?>" class="nav-link">
+                  <i class="nav-icon fas fa-home"></i>
+                  Inicio
                 </a>
               </li>
               <li class="nav-item">
@@ -28,9 +28,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-th"></i>
-                  Opción 3
+                <a href="<?= base_url( '/perfil' ) ?>" class="nav-link">
+                  <i class="nav-icon fas fa-user"></i>
+                  Mi información
                 </a>
               </li>
               <li class="nav-item">

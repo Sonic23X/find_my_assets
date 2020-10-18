@@ -29,9 +29,18 @@ class PHPMailerLib
     $this->email->SMTPSecure = 'tls';
     $this->email->Port       = 587;
     $this->email->CharSet    = 'UTF-8';
+    $this->email->SMTPOptions = 
+    array(
+      'ssl' =>
+      array(
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+        'allow_self_signed' => true,
+      )
+    );
 
-    $this->email->setFrom( 'contacto@findmy-assets.com', 'Find my assets' );
-    $this->email->addReplyTo( 'contacto@findmy-assets.com', 'Find my assets' );
+    $this->email->setFrom( 'contacto@de2.mx', 'Find my assets' );
+    $this->email->addReplyTo( 'contacto@de2.mx', 'Find my assets' );
 
     $this->email->isHTML( TRUE );
   }
