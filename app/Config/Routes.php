@@ -52,6 +52,9 @@ $routes->get('/salir', 'Auth::Logout');
 /** Backoffice - Inicio **/
 $routes->get('/dashboard', 'Dashboard::Index');
 
+/** Backoffice - Perfil **/
+$routes->get('/perfil', 'User::Index');
+
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
 
