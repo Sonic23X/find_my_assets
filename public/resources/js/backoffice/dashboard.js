@@ -1021,6 +1021,23 @@ function viewImageRight( )
 var InvActualView = '.inv-news-home';
 var InvPreviewView = '';
 
+$( '#clp' ).on(
+{
+  'focus': function( event ) 
+  {
+    $( event.target ).select( );
+  },
+  
+  'keyup': function( event ) 
+  {
+    $( event.target ).val( function( index, value ) 
+    {
+      return value.replace(/\D/g, "")
+        .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+    });
+  }
+});
+
 function setBackgroundButtons( button )
 {
   switch ( button )
@@ -1293,7 +1310,7 @@ function ConfirmNew( )
   {
     codigo: id,
     contabilizar: $( '#contabilizar' ).prop( 'checked' ) ? 1 : 0,
-    clp: $( '#clp' ).val( ),
+    clp: $( '#clp' ).val( ).replace( ',', '' ),
     fecha_compra: $( '#fechadecompra' ).val( ),
     fecha_garantia: $( '#fechagarantia' ).val( ),
     metodo: $( '#metodo_depreciacion' ).val( ),
