@@ -86,11 +86,17 @@ class Dashboard extends BaseController
 			array_push( $values, $num );
 		}
 
-		$bajas = $this->activoModel->where( 'TS_Delete !=', null )->select( 'TS_Delete, Nom_Activo' )->findAll( );
+		$bajas = $this->activoModel->where( 'TS_Delete !=', null )->select( 'TS_Delete, Nom_Activo, Pre_Compra' )->findAll( );
 
-		$altas = $this->activoModel->where( 'TS_Delete', null )->select( 'TS_Create, Nom_Activo' )->findAll( );
+		$altas = $this->activoModel->where( 'TS_Delete', null )->select( 'TS_Create, Nom_Activo, , Pre_Compra' )->findAll( );
 
-		$points = $this->activoModel->where( 'TS_Delete', null )->select( 'Nom_Activo, GPS' )->findAll( );
+		//$points = $this->activoModel->where( 'TS_Delete', null )->select( 'Nom_Activo, GPS' )->findAll( );
+		$builder = $this->db->table( 'activos' );
+        $builder->select( 'activos.Nom_Activo, activos.GPS, tipos.Desc, usuarios.nombre' );
+        $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.TS_Delete', null );
+        $points = $builder->get( )->getResult( );
 
 		echo json_encode( array( 'status' => 200, 'montos' => $table1, 'graficaLabels' => $labels, 'graficaValues' => $values, 'bajas' => $bajas, 'altas' => $altas, 'points' => $points ) );
 	}

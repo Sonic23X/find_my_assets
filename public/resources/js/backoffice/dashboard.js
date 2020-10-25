@@ -102,7 +102,7 @@ function dashboardData( )
             `
               <tr>
                 <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success">$${ monto.monto / 1000 }K</span></td>
+                <td><span class="badge bg-success">$${ monto.monto / 1000000 }MM</span></td>
               </tr>
             `;
           }
@@ -143,10 +143,11 @@ function dashboardData( )
 
       //tabla altas
       let altas = response.altas;
+      
 
       if ( altas.length == 0 ) 
       {
-        $( '.table-2-activos-alta' ).append( '<tr><td>Sin altas</td><td></td></tr>' );
+        $( '.table-2-activos-alta' ).append( '<tr><td>Sin altas</td><td></td><td></td></tr>' );
       } 
       else 
       {
@@ -157,6 +158,7 @@ function dashboardData( )
             <tr>
               <td>${ item.Nom_Activo }</td>
               <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+              <td>$${ parseInt( item.Pre_Compra ) / 1000000}MM</td>
             </tr>
           `;
   
@@ -180,6 +182,7 @@ function dashboardData( )
             <tr>
               <td>${ item.Nom_Activo }</td>
               <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+              <td>$${ parseInt( item.Pre_Compra ) / 1000000}MM</td>
             </tr>
           `;
   
@@ -342,7 +345,6 @@ function getScannerFormData( )
 
 function setCoordenadasMapG( position )
 {
-  console.log( points );
   if ( points.length > 0 ) 
   {
     let coord = points[ 0 ].GPS.split( ',' );
@@ -376,7 +378,7 @@ function setCoordenadasMapG( position )
     let longitud = coordenadas[ 1 ];
 
     L.marker( [ latitud, longitud ] ).addTo( globalMap )
-     .bindPopup( point.Nom_Activo )
+     .bindPopup( point.Desc + '.\n' + point.Nom_Activo + '.\n A.:' + point.nombre)
      .openPopup( );
   });
 }
