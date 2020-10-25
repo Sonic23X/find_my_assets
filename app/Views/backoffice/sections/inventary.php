@@ -167,7 +167,7 @@
                         <div class="form-group row">
                           <label for="precio" class="col-sm-2 col-form-label">Precio del activo (CLP)</label>
                           <div class="col-sm-10">
-                            <input type="number" id="clp" class="form-control" name="clp" placeholder="$1,000,000">
+                            <input type="text" id="clp" class="form-control" name="clp" placeholder="$1,000,000">
                           </div>
                         </div>
 
