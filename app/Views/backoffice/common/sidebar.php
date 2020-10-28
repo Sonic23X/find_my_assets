@@ -9,7 +9,7 @@
               </div>
               <br>
               <div class="info mt-2">
-                <a href="#" class="d-block">¡Bienvenido, <?= $name ?>!</a>
+                <a href="<?= base_url( '/perfil' ) ?>" class="d-block">Hola, <?= $name ?></a>
               </div>
             </div>
           </div>
@@ -21,22 +21,37 @@
                   Inicio
                 </a>
               </li>
+              <li class="nav-header">Mantenedores</li>
               <li class="nav-item">
                 <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-th"></i>
-                  Opción 2
+                  <i class="nav-icon fas fa-user-plus"></i>
+                  Usuarios
                 </a>
               </li>
               <li class="nav-item">
-                <a href="<?= base_url( '/perfil' ) ?>" class="nav-link">
-                  <i class="nav-icon fas fa-user"></i>
-                  Mi información
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-wallet"></i>
+                  Empresas y locaciones
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-laptop"></i>
+                  Tipos de activos
+                </a>
+              </li>
+              <li class="nav-header"></li>
+              <li class="nav-header"></li>
+              <li class="nav-item">
+                <a href="" class="nav-link">
+                  <i class="nav-icon fas fa-id-card"></i>
+                  Medios de pago y facturación
                 </a>
               </li>
               <li class="nav-item">
                 <a href="<?= base_url( '/salir' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-sign-out-alt"></i>
-                  Salir
+                  Cerrar sesión
                 </a>
               </li>
             </ul>
