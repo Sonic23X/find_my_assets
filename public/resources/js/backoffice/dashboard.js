@@ -77,6 +77,7 @@ function dashboardData( )
     if ( response.status == 200 )
     {
       let tabla1 = response.montos;
+
       if ( tabla1.length == 0 ) 
       {
         $( '.table-1-valor-activos' ).append( '<tr><td>Sin activos</td><td></td></tr>' );
@@ -92,7 +93,7 @@ function dashboardData( )
             `
               <tr>
                 <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success">$${ monto.monto }</span></td>
+                <td><span class="badge bg-success">$0MM</span></td>
               </tr>
             `;
           }
@@ -102,7 +103,7 @@ function dashboardData( )
             `
               <tr>
                 <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success">$${ monto.monto / 1000000 }MM</span></td>
+                <td><span class="badge bg-success">$${ Number( ( monto.monto / 1000000 ).toFixed( 2 ) ) }MM</span></td>
               </tr>
             `;
           }
@@ -143,7 +144,6 @@ function dashboardData( )
 
       //tabla altas
       let altas = response.altas;
-      
 
       if ( altas.length == 0 ) 
       {
@@ -158,7 +158,7 @@ function dashboardData( )
             <tr>
               <td>${ item.Nom_Activo }</td>
               <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
-              <td>$${ parseInt( item.Pre_Compra ) / 1000000}MM</td>
+              <td>$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</td>
             </tr>
           `;
   
@@ -3647,7 +3647,6 @@ $(document).ready(function( )
   $( '.inv-back' ).click( event =>
   {
     event.preventDefault( );
-    console.log( InvActualView );
     switch ( InvActualView )
     {
       case '.inv-news-confirm':
