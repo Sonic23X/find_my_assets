@@ -55,6 +55,9 @@ $routes->get('/dashboard', 'Dashboard::Index');
 /** Backoffice - Perfil **/
 $routes->get('/perfil', 'User::Index');
 
+/** Backoffice - Pagos **/
+$routes->get('/pagos', 'Payment::Index');
+
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
 
