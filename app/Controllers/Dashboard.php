@@ -57,7 +57,7 @@ class Dashboard extends BaseController
 			}
 			else
 			{
-				$data = array( 'url' => base_url( '/ingrephp sso' ) );
+				$data = array( 'url' => base_url( '/ingreso' ) );
 				return view( 'functions/redirect', $data );
 			}
 	}

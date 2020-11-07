@@ -100,6 +100,12 @@ $routes->get('/bajas/getItems', 'Down::SearchList');
 $routes->post('/bajas/getItemsFilter', 'Down::SearchListFilter');
 $routes->post('/bajas/down', 'Down::activosDelete');
 
+/**  test **/
+$routes->get('/usuarios/test', 'Home::Users');
+$routes->post('/usuarios/generateurl', 'Home::GenerateUrl');
+
+$routes->get('/url/(:any)', 'Home::Url/$1');
+$routes->post('/usuarios/nuevo', 'Home::Invitado');
 
 /**
  * --------------------------------------------------------------------
