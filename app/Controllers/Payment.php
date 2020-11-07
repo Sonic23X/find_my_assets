@@ -2,9 +2,8 @@
 
 namespace App\Controllers;
 
-class User extends BaseController
+class Payment extends BaseController
 {
-
     protected $session;
     protected $userModel;
     protected $db;
@@ -32,7 +31,7 @@ class User extends BaseController
             echo view( 'backoffice/common/navbar' );
 
             //content - inicio
-            echo view( 'backoffice/options/profile' );
+            echo view( 'backoffice/options/payment' );
 
             //Scripts y librerias
             $footer = array( 'js' => 'user' );
@@ -40,7 +39,7 @@ class User extends BaseController
 		}
 		else
 		{
-			$data = array( 'url' => base_url( '/ingreso' ) );
+			$data = array( 'url' => base_url( '/ingrephp sso' ) );
             return view( 'functions/redirect', $data );
     	}
 	

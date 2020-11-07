@@ -1,7 +1,7 @@
 
       <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <a class="navbar-brand" href="#">
-          <img src="./favicon.png" alt="Logo" class="img-fluid" style="width: 50px;">
+          <img src="<?= base_url( ) ?>/favicon.png" alt="Logo" class="img-fluid" style="width: 50px;">
         </a>
         <button class="navbar-toggler" type="button" data-widget="pushmenu">
           <span class="navbar-toggler-icon"></span>

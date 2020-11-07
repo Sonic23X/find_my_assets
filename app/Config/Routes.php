@@ -55,6 +55,9 @@ $routes->get('/dashboard', 'Dashboard::Index');
 /** Backoffice - Perfil **/
 $routes->get('/perfil', 'User::Index');
 
+/** Backoffice - Pagos **/
+$routes->get('/pagos', 'Payment::Index');
+
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
 
@@ -97,6 +100,12 @@ $routes->get('/bajas/getItems', 'Down::SearchList');
 $routes->post('/bajas/getItemsFilter', 'Down::SearchListFilter');
 $routes->post('/bajas/down', 'Down::activosDelete');
 
+/**  test **/
+$routes->get('/usuarios/test', 'Home::Users');
+$routes->post('/usuarios/generateurl', 'Home::GenerateUrl');
+
+$routes->get('/url/(:any)', 'Home::Url/$1');
+$routes->post('/usuarios/nuevo', 'Home::Invitado');
 
 /**
  * --------------------------------------------------------------------

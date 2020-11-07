@@ -7,20 +7,20 @@
 
     <title><?= $title ?></title>
 
-    <link rel="icon" href="./favicon.png">
+    <link rel="icon" href="<?= base_url( ) ?>/favicon.png">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <!-- AdminLTE style -->
-    <link rel="stylesheet" href="./resources/plugins/admin-lte/css/adminlte.min.css">
+    <link rel="stylesheet" href="<?= base_url( ) ?>/resources/plugins/admin-lte/css/adminlte.min.css">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 
     <!-- Leaflet -->
-    <link rel="stylesheet" href="./resources/plugins/leaflet/leaflet.css">
-    <script type="text/javascript" src="./resources/plugins/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="<?= base_url( ) ?>/resources/plugins/leaflet/leaflet.css">
+    <script type="text/javascript" src="<?= base_url( ) ?>/resources/plugins/leaflet/leaflet.js"></script>
 
     <!-- stepper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.22/datatables.min.css"/>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="./resources/css/backoffice/<?= $css ?>.css">
+    <link rel="stylesheet" href="<?= base_url( ) ?>/resources/css/backoffice/<?= $css ?>.css">
 
   </head>
   <body class="hold-transition sidebar-collapse">

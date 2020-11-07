@@ -43,7 +43,7 @@
               <li class="nav-header"></li>
               <li class="nav-header"></li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="<?= base_url( '/pagos' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-id-card"></i>
                   Medios de pago y facturación
                 </a>
