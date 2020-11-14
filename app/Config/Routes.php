@@ -104,8 +104,7 @@ $routes->post('/bajas/down', 'Down::activosDelete');
 $routes->get('/usuarios/test', 'Home::Users');
 $routes->post('/usuarios/generateurl', 'Home::GenerateUrl');
 
-$routes->get('/url/(:any)', 'Home::Url/$1');
-$routes->post('/usuarios/nuevo', 'Home::Invitado');
+$routes->get('/carga/(:any)', 'Home::Url/$1');
 
 /**
  * --------------------------------------------------------------------

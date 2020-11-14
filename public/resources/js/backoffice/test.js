@@ -1,19 +1,21 @@
-$( document ).ready( ( ) => 
-{
-    
-});
-
 var url = $('#url').val( );
 
-function getUrl(  )
+$( document ).ready( ( ) => 
 {
-    let data = 
+    $( '#registro' ).submit( event => 
     {
-        email : $( '#email' ).val( ),
-        password: $( '#password' ).val( ),
-    };
+      event.preventDefault( );
 
-    $.ajax({
+      let data = 
+      {
+          nombre: $( '#nombre' ).val( ),
+          apellidos: $( '#apellidos' ).val( ),
+          email: $( '#email' ).val( ),
+          password: $( '#password' ).val( ),
+      };
+
+      $.ajax(
+      {
         url: url + '/usuarios/generateurl',
         type: 'POST',
         dataType: 'json',
@@ -23,11 +25,18 @@ function getUrl(  )
       {
         if ( response.status == 200 )
         {
-          console.log(response.url);
           $( '#urlcifrada' ).val( response.url );
         }
+        else if ( response.status == 201 )
+        {
+          alert( response.msg );
+          $( '#urlcifrada' ).val( response.url );
+        }
+        else
+        {
+          alert( response.msg );
+        }
       });
-    
 
-
-}
+    });
+});
