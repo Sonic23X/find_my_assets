@@ -127,35 +127,13 @@ class Home extends BaseController
 		if ( $this->request->isAJAX( ) )
 		{
 
-			$requestEmail = $this->request->getVar( 'email' );
-			$requestPassword = $this->request->getVar( 'password' );
-
-			//aqui cifras
-			$cifrado = crypt( $requestPassword, '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
-
-			echo json_encode( array( 'status' => 200, 'url' => base_url( ) . '/url/' . $cifrado  ) );
-		}
-	}
-
-	//metodo para mostrar la vista
-	public function Url( $cifrado )
-	{
-		return view( 'auth/invited' );
-	}
-
-	//crear usuario ligado a empresa y redirigir a dashboard
-	public function Invitado( )
-	{
-		if ( $this->request->isAJAX( ) )
-		{
-			
 			$user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )
 						 ->first( );
 
 			//el usuario ya está registado
 			if ( $user )
 			{
-				echo json_encode( array( 'status' => 401, 'msg' => 'El correo ya está registrado' ) );
+				echo json_encode( array( 'status' => 201, 'msg' => 'El correo ya está registrado', 'url' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ] ) );
 				return;
 			}
 
@@ -177,11 +155,43 @@ class Home extends BaseController
 
 			$this->userModel->insert( $insert );
 
-			$this->session->set( 'isLoggin', true );
-            $this->session->set( 'name', $this->request->getVar( 'nombre' ) );
+			//enviar email aqui
 			
-			echo json_encode( array( 'status' => 200, 'url' => base_url( '/dashboard' ) ) );
-
+			echo json_encode( array( 'status' => 200, 'url' => base_url( '/carga' ) . '/' . $emailEncrypt ) );
 		}
 	}
+
+	//metodo para mostrar la vista
+	public function Url( $cifrado )
+	{
+		$user = $this->userModel->where( 'email_encriptado', $cifrado )
+								 ->first( );
+								 
+		if ( $user != null)
+		{
+			$this->session->set( 'isLoggin', true );
+			$this->session->set( 'name', $user[ 'nombre' ] );
+			
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Carga | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
+
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
+
+			//navbar
+			echo view( 'backoffice/test/navbar' );
+
+			//scanner
+			echo view( 'backoffice/test/scanner' );
+
+			//Scripts y librerias
+			$footer = array( 'js' => 'dashboard' );
+			echo view( 'backoffice/test/footer', $footer );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
 }
