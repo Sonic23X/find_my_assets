@@ -13,6 +13,7 @@ class Inventary extends BaseController
   protected $activoModel;
 	protected $sucursalModel;
   protected $depreciacionModel;
+  protected $ccModel;
   protected $db;
 
   function __construct()
@@ -25,6 +26,7 @@ class Inventary extends BaseController
 		$this->draftModel = model( 'App\Models\DraftModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
     $this->depreciacionModel = model( 'App\Models\DepreciacionModel' );
+    $this->ccModel = model( 'App\Models\ccModel' );
     $this->db = \Config\Database::connect();
   }
 
@@ -670,11 +672,14 @@ class Inventary extends BaseController
         $empresas = $this->empresaModel->findAll( );
         $sucursales = $this->sucursalModel->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
+        $cc = $this->ccModel->findAll( );
+        
 
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
                          'empresas' => $empresas, 'sucursales' => $sucursales,
-                         'depreciacion' => $depreciaciones );
+                         'depreciacion' => $depreciaciones,
+                         'cc' => $cc );
         else
           $json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 

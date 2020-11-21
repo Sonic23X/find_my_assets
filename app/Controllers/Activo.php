@@ -11,16 +11,18 @@ class Activo extends BaseController
 	protected $empresaModel;
 	protected $draftModel;
 	protected $sucursalModel;
+	protected $ccModel;
 
-  function __construct()
-  {
-    $this->session = \Config\Services::session( );
+	function __construct()
+	{
+    	$this->session = \Config\Services::session( );
 		$this->tipoModel = model( 'App\Models\TipoModel' );
 		$this->userModel = model( 'App\Models\UserModel' );
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
 		$this->draftModel = model( 'App\Models\DraftModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
-  }
+		$this->ccModel = model( 'App\Models\ccModel' );
+  	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
   function GetDataForm( )
@@ -33,10 +35,12 @@ class Activo extends BaseController
 			$usuarios = $this->userModel->findAll( );
 			$empresas = $this->empresaModel->findAll( );
 			$sucursales = $this->sucursalModel->findAll( );
+			$cc = $this->ccModel->findAll( );
 
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
-												 'empresas' => $empresas, 'sucursales' => $sucursales );
+										  'empresas' => $empresas, 'sucursales' => $sucursales,
+										  'cc' => $cc );
         else
           $json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 

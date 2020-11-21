@@ -394,11 +394,7 @@
                               <div class="form-group row">
                                 <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
                                 <div class="col-sm-8">
-                                  <select class="form-control-plaintext" name="cCosto" id="newCCosto" disabled>
-                                    <option value="1">Administración</option>
-                                    <option value="2">Producción</option>
-                                    <option value="3">Marketing</option>
-                                    <option value="4">Comercial</option>
+                                  <select class="form-control-plaintext iCC" name="cCosto" id="newCCosto" disabled>
                                   </select>
                                 </div>
                               </div>
@@ -545,11 +541,7 @@
                               <div class="form-group row">
                                 <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
                                 <div class="col-sm-8">
-                                  <select class="form-control-plaintext" name="cCosto" id="ciCCosto" disabled>
-                                    <option value="1">Administración</option>
-                                    <option value="2">Producción</option>
-                                    <option value="3">Marketing</option>
-                                    <option value="4">Comercial</option>
+                                  <select class="form-control-plaintext iCC" name="cCosto" id="ciCCosto" disabled>
                                   </select>
                                 </div>
                               </div>
@@ -838,11 +830,7 @@
                               <div class="form-group row">
                                 <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
                                 <div class="col-sm-8">
-                                  <select class="form-control-plaintext" name="cCosto" id="icCosto" disabled>
-                                    <option value="1">Administración</option>
-                                    <option value="2">Producción</option>
-                                    <option value="3">Marketing</option>
-                                    <option value="4">Comercial</option>
+                                  <select class="form-control-plaintext iCC" name="cCosto" id="icCosto" disabled>
                                   </select>
                                 </div>
                               </div>
@@ -984,12 +972,8 @@
 							                <div class="form-group row">
                                 <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
                                 <div class="col-sm-10">
-                                  <select class="custom-select" id="invFCC" name="cCosto" onchange="inventaryFiltros( )">
+                                  <select class="custom-select iCC" id="invFCC" name="cCosto" onchange="inventaryFiltros( )">
                                     <option value="">Todas</option>
-                                    <option value="1">Administración</option>
-                                    <option value="2">Producción</option>
-                                    <option value="3">Marketing</option>
-                                    <option value="4">Comercial</option>
                                   </select>
                                 </div>
                               </div>
@@ -1096,11 +1080,7 @@
                               <div class="form-group row">
                                 <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
                                 <div class="col-sm-8">
-                                  <select class="custom-select" name="cCosto" id="infocCosto">
-                                    <option value="1">Administración</option>
-                                    <option value="2">Producción</option>
-                                    <option value="3">Marketing</option>
-                                    <option value="4">Comercial</option>
+                                  <select class="custom-select iCCcx" name="cCosto" id="infocCosto">
                                   </select>
                                 </div>
                               </div>

@@ -262,6 +262,7 @@ function getScannerFormData( )
   $( '#tipoActivo' ).html( );
   $( '#asignacion' ).html( );
   $( '#empresas' ).html( );
+  $( '#cCosto' ).html( );
 
   $.ajax({
     url: url + '/activos/getFormData',
@@ -328,17 +329,24 @@ function getScannerFormData( )
 
       });
 
+      let cc = response.cc;
+
+      cc.forEach( ( ccUnico , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ ccUnico.id }">${ ccUnico.Desc }</option>
+        `;
+
+        $( '#cCosto' ).append( typePlantilla );
+
+      });
+
     }
     else
     {
-      if ( !isNew )
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
-
-        $( '#scanner-image-front' ).html( plantilla );
-        $( '#scanner-image-right' ).html( plantilla );
-        $( '#scanner-image-left' ).html( plantilla );
-      }
+      imprimir( 'Ups..', response.msg, 'error' );
     }
   });
 }
@@ -1770,6 +1778,7 @@ function getInvFormData( )
   $( '.iSucursal' ).html( );
   $( '.iEmpresa' ).html( );
   $( '.iTipoActivo' ).html( );
+  $( '.iCC' ).html( );
 
   $.ajax({
     url: url + '/inventario/getFormData',
@@ -1778,6 +1787,8 @@ function getInvFormData( )
   })
   .done( response =>
   {
+    console.log( response );
+
     if ( response.status == 200 )
     {
       let tipos = response.types;
@@ -1833,6 +1844,20 @@ function getInvFormData( )
         `;
 
         $( '.iSucursal' ).append( typePlantilla );
+
+      });
+
+      let cc = response.cc;
+
+      cc.forEach( ( ccUnico , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ ccUnico.id }">${ ccUnico.Desc }</option>
+        `;
+
+        $( '.iCC' ).append( typePlantilla );
 
       });
 
