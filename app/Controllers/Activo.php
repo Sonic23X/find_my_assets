@@ -21,7 +21,7 @@ class Activo extends BaseController
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
 		$this->draftModel = model( 'App\Models\DraftModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
-		$this->ccModel = model( 'App\Models\ccModel' );
+		$this->ccModel = model( 'App\Models\CCModel' );
   	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY

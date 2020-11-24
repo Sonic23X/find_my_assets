@@ -26,7 +26,7 @@ class Inventary extends BaseController
 		$this->draftModel = model( 'App\Models\DraftModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
     $this->depreciacionModel = model( 'App\Models\DepreciacionModel' );
-    $this->ccModel = model( 'App\Models\ccModel' );
+    $this->ccModel = model( 'App\Models\CCModel' );
     $this->db = \Config\Database::connect();
   }
 
