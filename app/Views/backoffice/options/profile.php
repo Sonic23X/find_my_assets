@@ -6,7 +6,7 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-12">
                         <img src="./images/backoffice/profile.png" alt="profile" class="w-75">
-                        <div class="mt-2 text-center">
+                        <div class="mt-2 text-center d-none">
                           <button class="btn btn-primary">Cambiar Imagen</button>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 </div>
               </div>
 
-              <div class="row text-center w-100">
+              <div class="row text-center w-100 d-none">
                 <div class="col-12">
                   <h2 class="mb-2 mt-2">Acciones</h2>
                 </div>
