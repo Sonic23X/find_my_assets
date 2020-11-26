@@ -93,7 +93,7 @@ function dashboardData( )
             `
               <tr>
                 <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success">$0MM</span></td>
+                <td><span class="badge bg-success dashboardTooltips" data-toggle="tooltip" data-placement="top" title="Sin monto">$0MM</span></td>
               </tr>
             `;
           }
@@ -103,7 +103,7 @@ function dashboardData( )
             `
               <tr>
                 <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success">$${ Number( ( monto.monto / 1000000 ).toFixed( 2 ) ) }MM</span></td>
+                <td><span class="badge bg-success dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( monto.monto ) ) }">$${ Number( ( monto.monto / 1000000 ).toFixed( 2 ) ) }MM</span></td>
               </tr>
             `;
           }
@@ -158,7 +158,9 @@ function dashboardData( )
             <tr>
               <td>${ item.Nom_Activo }</td>
               <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
-              <td>$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</td>
+              <td>
+                <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
+              </td>
             </tr>
           `;
   
@@ -182,7 +184,9 @@ function dashboardData( )
             <tr>
               <td>${ item.Nom_Activo }</td>
               <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
-              <td>$${ parseInt( item.Pre_Compra ) / 1000000}MM</td>
+              <td>
+                <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
+              </td>
             </tr>
           `;
   
@@ -193,6 +197,10 @@ function dashboardData( )
       //mapa
       points = response.points;
       navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
+
+      //tooltips
+      $( '.dashboardTooltips' ).tooltip( );
+  
 
     }
   })
@@ -3023,13 +3031,13 @@ function viewDownInfo( id )
 $(document).ready(function( )
 {
 
-  //tooltips
-  $( '[data-toggle="tooltip"]' ).tooltip( );
-
   dashboardData( );
 
   //formularios
   getScannerFormData( );
+
+  //tooltips
+  $( '[data-toggle="tooltip"]' ).tooltip( );
 
   //Vista actual
   let actualView = '.home';
