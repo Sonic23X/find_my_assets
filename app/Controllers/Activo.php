@@ -11,6 +11,7 @@ class Activo extends BaseController
 	protected $empresaModel;
 	protected $draftModel;
 	protected $sucursalModel;
+	protected $serieModel;
 	protected $ccModel;
 
 	function __construct()
@@ -21,39 +22,40 @@ class Activo extends BaseController
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
 		$this->draftModel = model( 'App\Models\DraftModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
+		$this->serieModel = model( 'App\Models\SerieModel' );
 		$this->ccModel = model( 'App\Models\CCModel' );
   	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
-  function GetDataForm( )
-  {
-    if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
-			$tipos = $this->tipoModel->findAll( );
-			$usuarios = $this->userModel->findAll( );
-			$empresas = $this->empresaModel->findAll( );
-			$sucursales = $this->sucursalModel->findAll( );
-			$cc = $this->ccModel->findAll( );
+	function GetDataForm( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+		try
+		{
+				$tipos = $this->tipoModel->findAll( );
+				$usuarios = $this->userModel->findAll( );
+				$empresas = $this->empresaModel->findAll( );
+				$sucursales = $this->sucursalModel->findAll( );
+				$cc = $this->ccModel->findAll( );
 
-        if ( $tipos )
-          $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
-										  'empresas' => $empresas, 'sucursales' => $sucursales,
-										  'cc' => $cc );
-        else
-          $json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
+			if ( $tipos )
+			$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
+											'empresas' => $empresas, 'sucursales' => $sucursales,
+											'cc' => $cc );
+			else
+			$json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 
-        echo json_encode( $json );
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
-  }
+			echo json_encode( $json );
+		}
+		catch (\Exception $e)
+		{
+			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+		}
+		}
+		else
+		return view( 'errors/cli/error_404' );
+	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
 	function SearchActivo( )
@@ -72,8 +74,8 @@ class Activo extends BaseController
 				];
 
 				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																	 ->select( $campos )
-																	 ->first( );
+																		->select( $campos )
+																		->first( );
 
 				if ( $activo == null )
 				{
@@ -112,16 +114,16 @@ class Activo extends BaseController
 				echo json_encode( array( 'status' => 200 ) );
 		}
 		else
-		return view( 'errors/cli/error_404' );
+			return view( 'errors/cli/error_404' );
 	}
 
-  //método que funciona exclusivamente con AJAX - JQUERY
-  function NewActivo( )
-  {
-    if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function NewActivo( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
 				//validar que no exista un activo con ese id
 				// TODO: anexar ID empresa
 				$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
@@ -133,67 +135,72 @@ class Activo extends BaseController
 					return;
 				}
 
-        $insert =
-        [
-          'ID_Activo' => $this->request->getVar( 'codigo' ),
-          'Nom_Activo' => $this->request->getVar( 'nombre' ),
-          'ID_Tipo' => $this->request->getVar( 'tipo' ),
-          'Des_Activo' => $this->request->getVar( 'descripcion' ),
-          'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
-          'ID_CC' => $this->request->getVar( 'centro_costo' ),
-          'User_Inventario' => $this->request->getVar( 'asignacion' ),
+				$insert =
+				[
+					'ID_Activo' => $this->request->getVar( 'codigo' ),
+					'Nom_Activo' => $this->request->getVar( 'nombre' ),
+					'ID_Tipo' => $this->request->getVar( 'tipo' ),
+					'Des_Activo' => $this->request->getVar( 'descripcion' ),
+					'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
+					'ID_CC' => $this->request->getVar( 'centro_costo' ),
+					'User_Inventario' => $this->request->getVar( 'asignacion' ),
 					'TS_Create' => date( 'Y/n/j' ),
-        ];
+				];
 
-        if ( $this->draftModel->insert( $insert ) )
-        {
-          echo json_encode( array( 'status' => 200, 'msg' => '¡Activo registrado!' ) );
-        }
-        else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrar el activo. Intente más tarde' ) );
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
-  }
+				if ( $this->draftModel->insert( $insert ) )
+				{
+					echo json_encode( array( 'status' => 200, 'msg' => '¡Activo registrado!' ) );
+				}
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrar el activo. Intente más tarde' ) );
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
 
-  //método que funciona exclusivamente con AJAX - JQUERY
-  function UpdateInfoActivo( )
-  {
-    if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function UpdateInfoActivo( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
+				//obtenemos el numero de serie previo
+				$draftItem = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->first( );
+
 				$update =
-        [
-          'Nom_Activo' => $this->request->getVar( 'nombre' ),
-          'ID_Tipo' => $this->request->getVar( 'tipo' ),
-          'Des_Activo' => $this->request->getVar( 'descripcion' ),
-          'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
-          'ID_CC' => $this->request->getVar( 'centro_costo' ),
-          'User_Inventario' => $this->request->getVar( 'asignacion' ),
-        ];
+				[
+					'Nom_Activo' => $this->request->getVar( 'nombre' ),
+					'ID_Tipo' => $this->request->getVar( 'tipo' ),
+					'Des_Activo' => $this->request->getVar( 'descripcion' ),
+					'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
+					'ID_CC' => $this->request->getVar( 'centro_costo' ),
+					'User_Inventario' => $this->request->getVar( 'asignacion' ),
+				];
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
-        {
-          echo json_encode( array( 'status' => 200, 'msg' => '¡Activo registrado!' ) );
-        }
-        else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
+				{
+					//Creamos registro en el historial
+					$this->serieModel->insert( [ 'id_activo' => null, 'id_draft' => $draftItem[ 'Id' ], 'num_serie' => $draftItem[ 'NSerie_Activo' ] ] );
+					echo json_encode( array( 'status' => 200, 'msg' => '¡Activo registrado!' ) );
+				}
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
 
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
-  }
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
   function SetCoordenadas( )

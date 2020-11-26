@@ -21,7 +21,7 @@
           <i class="fas fa-cloud-download-alt nav__icon"></i>
           <span class="nav__text">Bajar</span>
         </a>
-        <a href="#" id="still" class="nav-item-botom">
+        <a href="#" id="still" class="nav-item-botom d-none">
           <i class="fas fa-clipboard-list nav__icon"></i>
           <span class="nav__text">Mantener</span>
         </a>

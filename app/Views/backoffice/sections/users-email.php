@@ -18,7 +18,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="btn-group w-100">
                             <input type="button" class="btn btn-outline-dark" value="Nuevo usuario" data-toggle="modal" data-target="#newUserModal" />
-                            <input type="button" class="btn btn-outline-dark" value="Cargar excel" />
+                            <input type="button" class="btn btn-outline-dark d-none" value="Cargar excel" />
                         </div>
                     </div>
                 </div>
