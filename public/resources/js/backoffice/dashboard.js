@@ -1550,7 +1550,7 @@ function infoItemConcilar( id )
       $( '#ciEmpresa' ).val( activo.ID_Company );
       $( '#ciSucursal' ).val( activo.ID_Sucursal );
       $( '#ciArea' ).val( activo.ID_Area );
-      $( '#ciDesc' ).val( activo.Desc_Activo );
+      $( '#ciDesc' ).val( activo.Des_Activo );
 
       $( '#ciButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -2110,7 +2110,7 @@ function getDraftInfoNew( id )
       $( '#newEmpresa' ).val( activo.ID_Company );
       $( '#newSucursal' ).val( activo.ID_Sucursal );
       $( '#newArea' ).val( activo.ID_Area );
-      $( '#newDesc' ).val( activo.Desc_Activo );
+      $( '#newDesc' ).val( activo.Des_Activo );
 
       $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -2342,7 +2342,7 @@ function viewProcessInfo( id, details = 1 )
       $( '#iEmpresa' ).val( activo.ID_Company );
       $( '#iSucursal' ).val( activo.ID_Sucursal );
       $( '#iArea' ).val( activo.ID_Area );
-      $( '#iDesc' ).val( activo.Desc_Activo );
+      $( '#iDesc' ).val( activo.Des_Activo );
 
       if ( details == 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
@@ -2497,6 +2497,8 @@ function viewInvInfo( id )
   $( '.info-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
   $( '.info-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
+  $( 'textarea[ name="infoDesc" ]' ).val( 'asd' );
+
   $.ajax({
     url: url + `/inventario/getActivoInfo/${ id }`,
     type: 'GET',
@@ -2518,7 +2520,7 @@ function viewInvInfo( id )
       $( '#infoEmpresa' ).val( activo.ID_Company );
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
-      $( '#infoDesc' ).val( activo.Desc_Activo );
+      $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
 
       $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -2964,7 +2966,7 @@ function viewDownInfo( id )
       $( '#downEmpresa' ).val( activo.ID_Company );
       $( '#downSucursal' ).val( activo.ID_Sucursal );
       $( '#downArea' ).val( activo.ID_Area );
-      $( '#downDesc' ).val( activo.Desc_Activo );
+      $( '#downDesc' ).val( activo.Des_Activo );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
