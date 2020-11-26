@@ -13,6 +13,8 @@ class Inventary extends BaseController
   protected $activoModel;
 	protected $sucursalModel;
   protected $depreciacionModel;
+  protected $ccModel;
+  protected $serieModel;
   protected $db;
 
   function __construct()
@@ -25,6 +27,8 @@ class Inventary extends BaseController
 		$this->draftModel = model( 'App\Models\DraftModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
     $this->depreciacionModel = model( 'App\Models\DepreciacionModel' );
+    $this->ccModel = model( 'App\Models\CCModel' );
+    $this->serieModel = model( 'App\Models\SerieModel' );
     $this->db = \Config\Database::connect();
   }
 
@@ -106,9 +110,18 @@ class Inventary extends BaseController
 				{
 					echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
 					return;
-				}
+        }
+        
+        //buscamos si hay registro previo de numero de serie
+        $serie = $this->serieModel->where( 'id_draft', $id )->orderBy( 'id', 'desc' )->first( );
 
-        echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
+        $tooltip = null;
+        if ( $serie == null ) 
+          $tooltip = 'Sin cambios';
+        else
+          $tooltip = 'Campo actualizado, valor anterior: ' . $serie[ 'num_serie' ];
+
+        echo json_encode( array( 'status' => 200, 'activo' => $activo, 'tooltip' => $tooltip ) );
 
       }
       catch (\Exception $e)
@@ -418,18 +431,20 @@ class Inventary extends BaseController
       try
       {
         $builder = $this->db->table( 'draft' );
-        $builder->select( 'draft.Id, draft.NSerie_Activo, draft.ID_Activo, empresas.nombre as empresa, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'draft.Id, draft.NSerie_Activo, draft.ID_Activo, empresas.nombre as empresa, tipos.Desc, usuarios.nombre, usuarios.apellidos, cc.Desc as cc' );
         $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
         $builder->join( 'empresas', 'empresas.id_empresa = draft.ID_Company' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
+        $builder->join( 'cc', 'cc.ID_CC = draft.ID_CC' );
         $builder->where( 'draft.ID_Activo', $this->request->getVar( 'actual' ) );
         $act = $builder->get( )->getResult( );
 
         $builder = $this->db->table( 'activos' );
-        $builder->select( 'activos.Id, activos.NSerie_Activo, activos.ID_Activo, empresas.nombre as empresa, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'activos.Id, activos.NSerie_Activo, activos.ID_Activo, empresas.nombre as empresa, tipos.Desc, usuarios.nombre, usuarios.apellidos, cc.Desc as cc' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'empresas', 'empresas.id_empresa = activos.ID_Company' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->join( 'cc', 'cc.ID_CC = activos.ID_CC' );
         $builder->where( 'activos.Id', $this->request->getVar( 'old' ) );
         $old = $builder->get( )->getResult( );
 
@@ -487,6 +502,8 @@ class Inventary extends BaseController
         $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->first( );
         $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'conciliado' ] )->update( );
 
+        $activo = $this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->select( 'NSerie_Activo' )->first( );
+
         $builder = $this->db->table( 'activos' );
         $activoData =
         [
@@ -525,6 +542,9 @@ class Inventary extends BaseController
 
         $builder->where( 'Id', $this->request->getVar( 'old' ) );
         $builder->replace( $activoData );
+
+        //creamos registro del cambio de numero de serie
+        $this->serieModel->insert( [ 'id_activo' => $this->request->getVar( 'old' ), 'id_draft' => null, 'num_serie' => $activo[ 'NSerie_Activo' ] ] ); 
 
         echo json_encode( array( 'status' => 200 ) );
       }
@@ -670,11 +690,14 @@ class Inventary extends BaseController
         $empresas = $this->empresaModel->findAll( );
         $sucursales = $this->sucursalModel->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
+        $cc = $this->ccModel->findAll( );
+        
 
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
                          'empresas' => $empresas, 'sucursales' => $sucursales,
-                         'depreciacion' => $depreciaciones );
+                         'depreciacion' => $depreciaciones,
+                         'cc' => $cc );
         else
           $json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 
@@ -982,13 +1005,23 @@ class Inventary extends BaseController
                                    ->select( $campos )
                                    ->first( );
 
+        
         if ( $activo == null )
         {
           echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
           return;
         }
 
-        echo json_encode( array( 'status' => 200, 'activo' => $activo ) );
+        //buscamos si hay registro previo de numero de serie
+        $serie = $this->serieModel->where( 'id_activo', $id )->orderBy( 'id', 'desc' )->first( );
+
+        $tooltip = null;
+        if ( $serie == null ) 
+          $tooltip = 'Sin cambios';
+        else
+          $tooltip = 'Campo actualizado, valor anterior: ' . $serie[ 'num_serie' ];
+
+        echo json_encode( array( 'status' => 200, 'activo' => $activo, 'tooltip' => $tooltip ) );
 
       }
       catch (\Exception $e)

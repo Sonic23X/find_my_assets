@@ -144,10 +144,6 @@
                     <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
                     <div class="col-sm-10">
                       <select class="custom-select" name="cCosto" id="cCosto">
-                        <option value="1">Administración</option>
-                        <option value="2">Producción</option>
-                        <option value="3">Marketing</option>
-                        <option value="4">Comercial</option>
                       </select>
                     </div>
                   </div>

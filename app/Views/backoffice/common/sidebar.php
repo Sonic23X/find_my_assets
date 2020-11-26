@@ -23,18 +23,18 @@
               </li>
               <li class="nav-header">Mantenedores</li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="<?= base_url( '/usuarios' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-user-plus"></i>
                   Usuarios
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-wallet"></i>
                   Empresas y locaciones
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-laptop"></i>
                   Tipos de activos
@@ -42,7 +42,7 @@
               </li>
               <li class="nav-header"></li>
               <li class="nav-header"></li>
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="<?= base_url( '/pagos' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-id-card"></i>
                   Medios de pago y facturación

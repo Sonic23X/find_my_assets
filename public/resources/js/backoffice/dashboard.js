@@ -262,6 +262,7 @@ function getScannerFormData( )
   $( '#tipoActivo' ).html( );
   $( '#asignacion' ).html( );
   $( '#empresas' ).html( );
+  $( '#cCosto' ).html( );
 
   $.ajax({
     url: url + '/activos/getFormData',
@@ -328,17 +329,24 @@ function getScannerFormData( )
 
       });
 
+      let cc = response.cc;
+
+      cc.forEach( ( ccUnico , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ ccUnico.id }">${ ccUnico.Desc }</option>
+        `;
+
+        $( '#cCosto' ).append( typePlantilla );
+
+      });
+
     }
     else
     {
-      if ( !isNew )
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
-
-        $( '#scanner-image-front' ).html( plantilla );
-        $( '#scanner-image-right' ).html( plantilla );
-        $( '#scanner-image-left' ).html( plantilla );
-      }
+      imprimir( 'Ups..', response.msg, 'error' );
     }
   });
 }
@@ -1536,6 +1544,8 @@ function infoItemConcilar( id )
       $( '#ciArea' ).val( activo.ID_Area );
       $( '#ciDesc' ).val( activo.Desc_Activo );
 
+      $( '#ciButtonSerie' ).attr( 'data-original-title', response.tooltip );
+
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
         type: 'GET',
@@ -1627,8 +1637,8 @@ function conciliarDetails( id, porcentaje )
       $( '.conciliar-ubicacion-new' ).html( newA.empresa );
       $( '.conciliar-ubicacion-old' ).html( oldA.empresa );
 
-      $( '.conciliar-cc-new' ).html( 'N/A' );
-      $( '.conciliar-cc-old' ).html( 'N/A' );
+      $( '.conciliar-cc-new' ).html( newA.cc );
+      $( '.conciliar-cc-old' ).html( oldA.cc );
 
       $( '.conciliar-asignacion-new' ).html( newA.nombre + newA.apellidos );
       $( '.conciliar-asignacion-old' ).html( oldA.nombre + oldA.apellidos );
@@ -1770,6 +1780,7 @@ function getInvFormData( )
   $( '.iSucursal' ).html( );
   $( '.iEmpresa' ).html( );
   $( '.iTipoActivo' ).html( );
+  $( '.iCC' ).html( );
 
   $.ajax({
     url: url + '/inventario/getFormData',
@@ -1778,6 +1789,8 @@ function getInvFormData( )
   })
   .done( response =>
   {
+    console.log( response );
+
     if ( response.status == 200 )
     {
       let tipos = response.types;
@@ -1833,6 +1846,20 @@ function getInvFormData( )
         `;
 
         $( '.iSucursal' ).append( typePlantilla );
+
+      });
+
+      let cc = response.cc;
+
+      cc.forEach( ( ccUnico , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ ccUnico.id }">${ ccUnico.Desc }</option>
+        `;
+
+        $( '.iCC' ).append( typePlantilla );
 
       });
 
@@ -2076,6 +2103,8 @@ function getDraftInfoNew( id )
       $( '#newSucursal' ).val( activo.ID_Sucursal );
       $( '#newArea' ).val( activo.ID_Area );
       $( '#newDesc' ).val( activo.Desc_Activo );
+
+      $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
@@ -2482,6 +2511,8 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( activo.Desc_Activo );
+
+      $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,

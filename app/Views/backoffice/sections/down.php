@@ -48,12 +48,8 @@
                         <div class="form-group row">
                           <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
                           <div class="col-sm-10">
-                            <select class="custom-select" id="downFCC" name="cCosto" onchange="downFiltros( )">
+                            <select class="custom-select iCC" id="downFCC" name="cCosto" onchange="downFiltros( )">
                               <option value="">Todas</option>
-                              <option value="1">Administración</option>
-                              <option value="2">Producción</option>
-                              <option value="3">Marketing</option>
-                              <option value="4">Comercial</option>
                             </select>
                           </div>
                         </div>
@@ -201,11 +197,7 @@
                         <div class="form-group row">
                           <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
                           <div class="col-sm-8">
-                            <select class="form-control-plaintext" name="cCosto" id="downcCosto" disabled>
-                              <option value="1">Administración</option>
-                              <option value="2">Producción</option>
-                              <option value="3">Marketing</option>
-                              <option value="4">Comercial</option>
+                            <select class="form-control-plaintext iCC" name="cCosto" id="downcCosto" disabled>
                             </select>
                           </div>
                         </div>

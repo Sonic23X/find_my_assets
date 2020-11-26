@@ -122,45 +122,6 @@ class Home extends BaseController
     	}
 	}
 
-	public function GenerateUrl( )
-	{
-		if ( $this->request->isAJAX( ) )
-		{
-
-			$user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )
-						 ->first( );
-
-			//el usuario ya está registado
-			if ( $user )
-			{
-				echo json_encode( array( 'status' => 201, 'msg' => 'El correo ya está registrado', 'url' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ] ) );
-				return;
-			}
-
-			$password = crypt( $this->request->getVar( 'password' ), '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
-			$emailEncrypt = md5( $this->request->getVar( 'email' ) );
-
-			$insert =
-			[
-				'perfil' => 'user',
-				'nombre' => $this->request->getVar( 'nombre' ),
-				'apellidos' => $this->request->getVar( 'apellidos' ),
-				'email' => $this->request->getVar( 'email' ),
-				'password' => $password,
-				'suscripcion' => 0,
-				'verificacion' => 0,
-				'email_encriptado' => $emailEncrypt,
-				'patrocinador' => 'N/A',
-			];
-
-			$this->userModel->insert( $insert );
-
-			//enviar email aqui
-			
-			echo json_encode( array( 'status' => 200, 'url' => base_url( '/carga' ) . '/' . $emailEncrypt ) );
-		}
-	}
-
 	//metodo para mostrar la vista
 	public function Url( $cifrado )
 	{
