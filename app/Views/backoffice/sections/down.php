@@ -176,7 +176,7 @@
                         <div class="form-group row">
                           <label for="name" class="col-sm-4 col-form-label">Nombre</label>
                           <div class="col-sm-8">
-                            <input type="text" class="form-control-plaintext" id="downName" placeholder="Ej. Mackbook PRO" disabled>
+                            <input type="text" class="form-control-plaintext" id="downName" placeholder="Ej. Macbook PRO" disabled>
                           </div>
                         </div>
 
