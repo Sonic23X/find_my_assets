@@ -1544,6 +1544,8 @@ function infoItemConcilar( id )
       $( '#ciArea' ).val( activo.ID_Area );
       $( '#ciDesc' ).val( activo.Desc_Activo );
 
+      $( '#ciButtonSerie' ).attr( 'data-original-title', response.tooltip );
+
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
         type: 'GET',
@@ -1635,8 +1637,8 @@ function conciliarDetails( id, porcentaje )
       $( '.conciliar-ubicacion-new' ).html( newA.empresa );
       $( '.conciliar-ubicacion-old' ).html( oldA.empresa );
 
-      $( '.conciliar-cc-new' ).html( 'N/A' );
-      $( '.conciliar-cc-old' ).html( 'N/A' );
+      $( '.conciliar-cc-new' ).html( newA.cc );
+      $( '.conciliar-cc-old' ).html( oldA.cc );
 
       $( '.conciliar-asignacion-new' ).html( newA.nombre + newA.apellidos );
       $( '.conciliar-asignacion-old' ).html( oldA.nombre + oldA.apellidos );
@@ -2102,6 +2104,8 @@ function getDraftInfoNew( id )
       $( '#newArea' ).val( activo.ID_Area );
       $( '#newDesc' ).val( activo.Desc_Activo );
 
+      $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
+
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
         type: 'GET',
@@ -2507,6 +2511,8 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( activo.Desc_Activo );
+
+      $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,

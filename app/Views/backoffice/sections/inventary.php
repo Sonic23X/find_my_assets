@@ -382,7 +382,7 @@
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
-                                          title="Campo actualizado, valor anterior: MXN56231">
+                                          title="Campo actualizado, valor anterior: MXN56231" id="newButtonSerie">
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
@@ -529,7 +529,7 @@
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
-                                          title="Campo actualizado, valor anterior: MXN56231">
+                                          title="Campo actualizado, valor anterior: MXN56231" id="ciButtonSerie">
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
@@ -1068,7 +1068,7 @@
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
-                                          title="Campo actualizado, valor anterior: MXN56231">
+                                          title="Campo actualizado, valor anterior: MXN56231" id="infoButtonSerie">
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
