@@ -70,7 +70,7 @@ class Activo extends BaseController
 					'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
 					'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
 					'Des_Activo', 'ID_MetDepre', 'Vida_Activo', 'GPS', 'Fec_Inventario',
-					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', '	User_Delete',
+					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', 'User_Delete',
 				];
 
 				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )

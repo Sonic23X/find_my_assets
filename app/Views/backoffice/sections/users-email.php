@@ -53,7 +53,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form id="registro" action="<?= base_url( '/usuarios/nuevo' ) ?>">
+                            <form id="registro">
                                 <div class="row">
                                     <div class="col-sm">
                                         <input type="text" class="form-control" placeholder="Nombre" id="nombre" required>
@@ -86,6 +86,45 @@
                                     <div class="btn-group w-100">
                                         <input type="button" class="btn btn-dark" value="Cancelar" />
                                         <input type="submit" class="btn btn-primary" value="Guardar" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModal" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editUserModal">Editar usuario</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="actualizar">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <input type="text" class="form-control" placeholder="Nombre" id="eNombre" required>
+                                    </div>
+                                    <div class="col-sm">
+                                        <input type="text" class="form-control" placeholder="Apellidos" id="eApellidos" required>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3 mb-3">
+                                    <div class="col-sm">
+                                        <input type="email" class="form-control" placeholder="Correo Electrónico" id="eEmail" required>
+                                    </div>
+                                </div>
+
+                                <div class="justify-content-center">
+                                    <div class="btn-group w-100">
+                                        <input type="button" class="btn btn-dark" value="Cancelar" />
+                                        <input type="submit" class="btn btn-primary" value="Actualizar" />
                                     </div>
                                 </div>
                             </form>
