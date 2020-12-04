@@ -136,7 +136,7 @@
                   <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">Nombre</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="name" placeholder="Ej. Mackbook PRO">
+                      <input type="text" class="form-control" id="name" placeholder="Ej. Macbook PRO">
                     </div>
                   </div>
 

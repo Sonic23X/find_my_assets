@@ -93,7 +93,7 @@ function dashboardData( )
             `
               <tr>
                 <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success">$0MM</span></td>
+                <td><span class="badge bg-success dashboardTooltips" data-toggle="tooltip" data-placement="top" title="Sin monto">$0MM</span></td>
               </tr>
             `;
           }
@@ -103,7 +103,7 @@ function dashboardData( )
             `
               <tr>
                 <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success">$${ Number( ( monto.monto / 1000000 ).toFixed( 2 ) ) }MM</span></td>
+                <td><span class="badge bg-success dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( monto.monto ) ) }">$${ Number( ( monto.monto / 1000000 ).toFixed( 2 ) ) }MM</span></td>
               </tr>
             `;
           }
@@ -158,7 +158,9 @@ function dashboardData( )
             <tr>
               <td>${ item.Nom_Activo }</td>
               <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
-              <td>$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</td>
+              <td>
+                <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
+              </td>
             </tr>
           `;
   
@@ -182,7 +184,9 @@ function dashboardData( )
             <tr>
               <td>${ item.Nom_Activo }</td>
               <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
-              <td>$${ parseInt( item.Pre_Compra ) / 1000000}MM</td>
+              <td>
+                <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
+              </td>
             </tr>
           `;
   
@@ -193,6 +197,10 @@ function dashboardData( )
       //mapa
       points = response.points;
       navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
+
+      //tooltips
+      $( '.dashboardTooltips' ).tooltip( );
+  
 
     }
   })
@@ -1542,7 +1550,7 @@ function infoItemConcilar( id )
       $( '#ciEmpresa' ).val( activo.ID_Company );
       $( '#ciSucursal' ).val( activo.ID_Sucursal );
       $( '#ciArea' ).val( activo.ID_Area );
-      $( '#ciDesc' ).val( activo.Desc_Activo );
+      $( '#ciDesc' ).val( activo.Des_Activo );
 
       $( '#ciButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -1654,6 +1662,9 @@ function ConfirmConciliar( )
   let id = localStorage.getItem( 'conciliar-activo' );
 
   let actual = localStorage.getItem( 'new-inventary' );
+
+  $( '.conciliar-new' ).html( '' );
+  $( '.conciliar-old' ).html( '' );
 
   $.ajax({
     url: url + `/inventario/concilarActivoConfirm`,
@@ -1789,8 +1800,6 @@ function getInvFormData( )
   })
   .done( response =>
   {
-    console.log( response );
-
     if ( response.status == 200 )
     {
       let tipos = response.types;
@@ -2102,7 +2111,7 @@ function getDraftInfoNew( id )
       $( '#newEmpresa' ).val( activo.ID_Company );
       $( '#newSucursal' ).val( activo.ID_Sucursal );
       $( '#newArea' ).val( activo.ID_Area );
-      $( '#newDesc' ).val( activo.Desc_Activo );
+      $( '#newDesc' ).val( activo.Des_Activo );
 
       $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -2334,7 +2343,7 @@ function viewProcessInfo( id, details = 1 )
       $( '#iEmpresa' ).val( activo.ID_Company );
       $( '#iSucursal' ).val( activo.ID_Sucursal );
       $( '#iArea' ).val( activo.ID_Area );
-      $( '#iDesc' ).val( activo.Desc_Activo );
+      $( '#iDesc' ).val( activo.Des_Activo );
 
       if ( details == 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
@@ -2489,6 +2498,8 @@ function viewInvInfo( id )
   $( '.info-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
   $( '.info-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
+  $( 'textarea[ name="infoDesc" ]' ).val( 'asd' );
+
   $.ajax({
     url: url + `/inventario/getActivoInfo/${ id }`,
     type: 'GET',
@@ -2510,7 +2521,7 @@ function viewInvInfo( id )
       $( '#infoEmpresa' ).val( activo.ID_Company );
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
-      $( '#infoDesc' ).val( activo.Desc_Activo );
+      $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
 
       $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -2956,7 +2967,7 @@ function viewDownInfo( id )
       $( '#downEmpresa' ).val( activo.ID_Company );
       $( '#downSucursal' ).val( activo.ID_Sucursal );
       $( '#downArea' ).val( activo.ID_Area );
-      $( '#downDesc' ).val( activo.Desc_Activo );
+      $( '#downDesc' ).val( activo.Des_Activo );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
@@ -3023,13 +3034,13 @@ function viewDownInfo( id )
 $(document).ready(function( )
 {
 
-  //tooltips
-  $( '[data-toggle="tooltip"]' ).tooltip( );
-
   dashboardData( );
 
   //formularios
   getScannerFormData( );
+
+  //tooltips
+  $( '[data-toggle="tooltip"]' ).tooltip( );
 
   //Vista actual
   let actualView = '.home';

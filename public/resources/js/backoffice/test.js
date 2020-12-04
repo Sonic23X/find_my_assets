@@ -1,5 +1,33 @@
 var url = $('#url').val( );
 
+let spanish =
+{
+  sProcessing: 'Procesando...',
+  sLengthMenu: 'Mostrar _MENU_ registros',
+  sZeroRecords: 'No se encontraron resultados',
+  sEmptyTable: 'Ningún dato disponible en esta tabla',
+  sInfo: 'Mostrando _START_ - _END_ de _TOTAL_',
+  sInfoEmpty: 'Sin registros',
+  sInfoFiltered: '(filtrado de un total de _MAX_ registros)',
+  sInfoPostFix: '',
+  sSearch: 'Buscar:',
+  sUrl: '',
+  sInfoThousands: ',',
+  sLoadingRecords: 'Cargando...',
+  oPaginate:
+  {
+    sFirst: 'Primero',
+    sLast: 'Último',
+    sNext: 'Siguiente',
+    sPrevious: 'Anterior',
+  },
+  oAria:
+  {
+    sSortAscending: ': Activar para ordenar la columna de manera ascendente',
+    sSortDescending: ': Activar para ordenar la columna de manera descendente',
+  },
+};
+
 function imprimir ( titulo, mensaje, tipo )
 {
   Swal.fire({
@@ -12,7 +40,6 @@ function imprimir ( titulo, mensaje, tipo )
 
 var tabla = null;
 
-
 function getUserTableData(  ) 
 {
   let base =
@@ -21,6 +48,7 @@ function getUserTableData(  )
       <tr>
           <th scope="col">Nombre</th>
           <th scope="col">Email</th>
+          <th>#</th>
       </tr>
     </thead>
     <tbody class="table-users-items">
@@ -55,6 +83,18 @@ function getUserTableData(  )
             <td class="align-middle">
               ${ usuario.email }
             </td>
+            <th>
+              <div class="dropdown">
+                <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Opciones
+                </button>
+                <div class="dropdown-menu text-center" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item" href="#" onClick="editUser( ${ usuario.id_usuario } )">Editar</a>
+                  <a class="dropdown-item" href="#" onClick="deleteUser( ${ usuario.id_usuario } )">Borrar</a>
+                  <a class="dropdown-item" href="#" onClick="sendEmail( ${ usuario.id_usuario } )">Reenviar correo</a>
+                </div>
+              </div>
+            </th>
           </tr>
         `;
 
@@ -70,15 +110,90 @@ function getUserTableData(  )
       tabla = $( '.table-users' ).DataTable(
       {
         bInfo: false,
-        searching: true,
+        searching: false,
         bLengthChange: false,
-        pageLength: 5,
+        pageLength: 10,
         language: spanish,
       });
     }
     else
     {
       imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
+function editUser( id ) 
+{
+  localStorage.setItem( 'user', id );
+
+  $.ajax(
+  {
+    url: url + '/usuarios/usuario',
+    type: 'POST',
+    dataType: 'json',
+    data: { id: id },
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      $( '#eNombre' ).val( response.data.nombre );
+      $( '#eApellidos' ).val( response.data.apellidos );
+      $( '#eEmail' ).val( response.data.email );
+
+      $( '#editUserModal' ).modal( 'show' );
+    }
+    else
+    {
+      imprimir( 'Error', response.msg, 'error' );
+    }
+  });
+
+  //buscamos la información y la colocamos en el modal
+}
+
+function deleteUser( id ) 
+{
+  $.ajax(
+  {
+    url: url + '/usuarios/delete',
+    type: 'POST',
+    dataType: 'json',
+    data: { id: id },
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      getUserTableData( );
+      imprimir( '¡Hecho!', response.msg, 'success' );
+    }
+    else
+    {
+      imprimir( 'Error', response.msg, 'error' );
+    }
+  });
+}
+
+function sendEmail( id ) 
+{
+  $.ajax(
+  {
+    url: url + '/usuarios/sendEmail',
+    type: 'POST',
+    dataType: 'json',
+    data: { id: id },
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+    }
+    else
+    {
+      imprimir( 'Error', response.msg, 'error' );
     }
   });
 }
@@ -130,4 +245,43 @@ $( document ).ready( ( ) =>
       });
 
     });
+
+    $( '#actualizar' ).submit( event => 
+    {
+      event.preventDefault( );
+
+      let data = 
+      {
+          id: localStorage.getItem( 'user' ),
+          nombre: $( '#eNombre' ).val( ),
+          apellidos: $( '#eApellidos' ).val( ),
+          email: $( '#eEmail' ).val( ),
+      };
+
+      $.ajax(
+      {
+        url: url + '/usuarios/actualizar',
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          getUserTableData( );
+
+          imprimir( '¡Hecho!', response.msg, 'success' );
+
+          //cerramos modal
+          $( '#editUserModal' ).modal( 'hide' );
+        }
+        else
+        {
+          imprimir( 'Error', response.msg, 'error' );
+        }
+      });
+
+    });
+
 });

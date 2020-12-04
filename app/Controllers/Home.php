@@ -126,7 +126,8 @@ class Home extends BaseController
 	public function Url( $cifrado )
 	{
 		$user = $this->userModel->where( 'email_encriptado', $cifrado )
-								 ->first( );
+								->where( 'deleted_at', null )
+								->first( );
 								 
 		if ( $user != null)
 		{

@@ -373,7 +373,7 @@
                               <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label">Nombre</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control-plaintext" id="newName" placeholder="Ej. Mackbook PRO" disabled>
+                                  <input type="text" class="form-control-plaintext" id="newName" placeholder="Ej. Macbook PRO" disabled>
                                 </div>
                               </div>
 
@@ -520,7 +520,7 @@
                               <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label">Nombre</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control-plaintext" id="ciName" placeholder="Ej. Mackbook PRO" disabled>
+                                  <input type="text" class="form-control-plaintext" id="ciName" placeholder="Ej. Macbook PRO" disabled>
                                 </div>
                               </div>
 
@@ -809,7 +809,7 @@
                               <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label">Nombre</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control-plaintext" id="iName" placeholder="Ej. Mackbook PRO" disabled>
+                                  <input type="text" class="form-control-plaintext" id="iName" placeholder="Ej. Macbook PRO" disabled>
                                 </div>
                               </div>
 
@@ -1059,7 +1059,7 @@
                               <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label">Nombre</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="infoName" placeholder="Ej. Mackbook PRO">
+                                  <input type="text" class="form-control" id="infoName" placeholder="Ej. Macbook PRO">
                                 </div>
                               </div>
 

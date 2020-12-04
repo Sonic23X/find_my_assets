@@ -70,10 +70,11 @@ class Activo extends BaseController
 					'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
 					'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
 					'Des_Activo', 'ID_MetDepre', 'Vida_Activo', 'GPS', 'Fec_Inventario',
-					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', '	User_Delete',
+					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', 'User_Delete',
 				];
 
 				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+										   ->where( 'ID_Company', $this->session->empresa )
 																		->select( $campos )
 																		->first( );
 
@@ -139,6 +140,7 @@ class Activo extends BaseController
 				[
 					'ID_Activo' => $this->request->getVar( 'codigo' ),
 					'Nom_Activo' => $this->request->getVar( 'nombre' ),
+					'ID_Company' => $this->session->empresa,
 					'ID_Tipo' => $this->request->getVar( 'tipo' ),
 					'Des_Activo' => $this->request->getVar( 'descripcion' ),
 					'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
