@@ -33,11 +33,11 @@ class Activo extends BaseController
 		{
 		try
 		{
-				$tipos = $this->tipoModel->findAll( );
-				$usuarios = $this->userModel->findAll( );
+				$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
+				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 				$empresas = $this->empresaModel->findAll( );
-				$sucursales = $this->sucursalModel->findAll( );
-				$cc = $this->ccModel->findAll( );
+				$sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
+				$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 
 			if ( $tipos )
 			$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,

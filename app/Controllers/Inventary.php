@@ -694,7 +694,7 @@ class Inventary extends BaseController
         $empresas = $this->empresaModel->findAll( );
         $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
-        $cc = $this->ccModel->findAll( );
+        $cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
