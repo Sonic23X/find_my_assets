@@ -85,9 +85,28 @@ class User extends BaseController
         {
             try
             {
-                $usuarios = $this->userModel->findAll( );
+                $usuarios = $this->userModel->where( 'deleted_at', null )->where( 'id_empresa', $this->session->empresa )->findAll( );
 
                 echo json_encode( array( 'status' => 200, 'data' => $usuarios ) );
+            }
+            catch (\Exception $e)
+            {
+                echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+            }
+        }
+        else
+            return view( 'errors/cli/error_404' );
+    }
+
+    public function GetOneUser( )
+    {
+        if ( $this->request->isAJAX( ) )
+        {
+            try
+            {
+                $user = $this->userModel->where( 'deleted_at', null )->where( 'id_usuario', $this->request->getVar( 'id' ) )->first( );
+
+                echo json_encode( array( 'status' => 200, 'data' => $user ) );
             }
             catch (\Exception $e)
             {
@@ -126,7 +145,8 @@ class User extends BaseController
 				'suscripcion' => 0,
 				'verificacion' => 0,
 				'email_encriptado' => $emailEncrypt,
-				'patrocinador' => 'N/A',
+                'patrocinador' => 'N/A',
+                'id_empresa' => $this->session->empresa,
 			];
 
 			if ( $this->userModel->insert( $insert ) )
@@ -149,11 +169,86 @@ class User extends BaseController
             }
             else
                 echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrarse, intente más tarde' ) );
-			
-			//echo json_encode( array( 'status' => 200, 'url' => base_url( '/carga' ) . '/' . $emailEncrypt ) );
         }
         else
             return view( 'errors/cli/error_404' );
-	}
+    }
+    
+    public function Update( )
+    {
+        if ( $this->request->isAJAX( ) )
+        {
+            try
+            {
+                $update =
+                [
+                    'nombre' => $this->request->getVar( 'nombre' ),
+                    'apellidos' => $this->request->getVar( 'apellidos' ),
+                    'email' => $this->request->getVar( 'email' ),
+                ];
+
+                if ( $this->userModel->update( $this->request->getVar( 'id' ), $update ) )
+                    echo json_encode( array( 'status' => 200, 'msg' => 'Actualización completada' ) );
+                else
+                    echo json_encode( array( 'status' => 400, 'msg' => 'No se pudo actualizar al usuario' ) );
+            }
+            catch (\Exception $e)
+            {
+                echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+            }
+        }
+        else
+            return view( 'errors/cli/error_404' );
+    }
+
+    public function SendEmail( )
+    {
+        if ( $this->request->isAJAX( ) )
+		{
+            $user = $this->userModel->find( $this->request->getVar( 'id' ) );
+            
+            $viewData =
+            [
+                'urlUsuario' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ],
+            ];
+
+            $content = View( 'emails/accesoUsuario', $viewData );
+
+            //cargamos la configuración del email
+            $correo = $this->email->preparEmail( $user[ 'email' ], 'Enlace de acceso', $content );
+
+            if ( !$correo->send( ) )
+                echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
+            else
+                echo json_encode( array( 'status' => 200, 'msg' => 'Verifique la bandeja de entrada del correo ingresado' ) );
+        }
+        else
+            return view( 'errors/cli/error_404' );
+    }
+
+    public function Delete( )
+    {
+        if ( $this->request->isAJAX( ) )
+        {
+            try
+            {
+                $update =
+                [
+                    'deleted_at' => date( 'Y' ) . '/' . date( 'm' ) . '/' . date( 'd' ),
+                ];
+
+                if ( $this->userModel->update( $this->request->getVar( 'id' ), $update ) )
+                    echo json_encode( array( 'status' => 200, 'msg' => 'Usuario eliminado' ) );
+                else
+                    echo json_encode( array( 'status' => 400, 'msg' => 'No se pudo eliminar al usuario' ) );
+            }
+            catch (\Exception $e)
+            {
+                echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+            }
+        }
+        else
+            return view( 'errors/cli/error_404' );
+    }
 
 }

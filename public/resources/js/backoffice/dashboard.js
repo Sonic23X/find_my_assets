@@ -1663,6 +1663,9 @@ function ConfirmConciliar( )
 
   let actual = localStorage.getItem( 'new-inventary' );
 
+  $( '.conciliar-new' ).html( '' );
+  $( '.conciliar-old' ).html( '' );
+
   $.ajax({
     url: url + `/inventario/concilarActivoConfirm`,
     type: 'POST',
@@ -1797,8 +1800,6 @@ function getInvFormData( )
   })
   .done( response =>
   {
-    console.log( response );
-
     if ( response.status == 200 )
     {
       let tipos = response.types;

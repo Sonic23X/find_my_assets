@@ -29,6 +29,7 @@ class Down extends BaseController
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.TS_Delete', null );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
 
         $activos = $builder->get( );
 
