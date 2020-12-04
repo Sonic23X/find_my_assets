@@ -133,6 +133,7 @@ class Home extends BaseController
 		{
 			$this->session->set( 'isLoggin', true );
 			$this->session->set( 'name', $user[ 'nombre' ] );
+			$this->session->set( 'empresa', $user[ 'id_empresa' ] );
 			
 			//CSS, METAS y titulo
 			$head = array( 'title' => 'Carga | Find my assets', 'css' => 'dashboard' );
