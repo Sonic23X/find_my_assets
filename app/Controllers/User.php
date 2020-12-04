@@ -85,7 +85,7 @@ class User extends BaseController
         {
             try
             {
-                $usuarios = $this->userModel->where( 'deleted_at', null )->findAll( );
+                $usuarios = $this->userModel->where( 'deleted_at', null )->where( 'id_empresa', $this->session->empresa )->findAll( );
 
                 echo json_encode( array( 'status' => 200, 'data' => $usuarios ) );
             }
@@ -145,7 +145,8 @@ class User extends BaseController
 				'suscripcion' => 0,
 				'verificacion' => 0,
 				'email_encriptado' => $emailEncrypt,
-				'patrocinador' => 'N/A',
+                'patrocinador' => 'N/A',
+                'id_empresa' => $this->session->empresa,
 			];
 
 			if ( $this->userModel->insert( $insert ) )

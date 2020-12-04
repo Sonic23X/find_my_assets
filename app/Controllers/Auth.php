@@ -81,6 +81,7 @@ class Auth extends BaseController
           {
             $this->session->set( 'isLoggin', true );
             $this->session->set( 'name', $user[ 'nombre' ] );
+            $this->session->set( 'empresa', $user[ 'id_empresa' ] );
             $json = array( 'status' => 200, 'url' => base_url( '/dashboard' ) );
           }
           else

@@ -74,6 +74,7 @@ class Activo extends BaseController
 				];
 
 				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+										   ->where( 'ID_Company', $this->session->empresa )
 																		->select( $campos )
 																		->first( );
 
@@ -139,6 +140,7 @@ class Activo extends BaseController
 				[
 					'ID_Activo' => $this->request->getVar( 'codigo' ),
 					'Nom_Activo' => $this->request->getVar( 'nombre' ),
+					'ID_Company' => $this->session->empresa,
 					'ID_Tipo' => $this->request->getVar( 'tipo' ),
 					'Des_Activo' => $this->request->getVar( 'descripcion' ),
 					'NSerie_Activo' => $this->request->getVar( 'no_serie' ),

@@ -14,7 +14,7 @@ class UserModel extends Model
   [
     'perfil', 'nombre', 'apellidos', 'email', 'password',
     'suscripcion', 'verificacion', 'email_encriptado',
-    'patrocinador', 'deleted_at',
+    'patrocinador', 'deleted_at', 'id_empresa',
   ];
 
 }

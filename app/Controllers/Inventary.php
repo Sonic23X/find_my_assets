@@ -45,6 +45,7 @@ class Inventary extends BaseController
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
         $builder->where( 'draft.status', 'nuevo' );
         $builder->where( 'draft.TS_Delete', null );
+        $builder->where( 'draft.ID_Company', $this->session->empresa );
         $activos = $builder->get( );
 
 				if ( $activos == null )
@@ -103,6 +104,7 @@ class Inventary extends BaseController
 				];
 
         $activo = $this->draftModel->where( 'Id', $id )
+                                   ->where( 'ID_Company', $this->session->empresa )
 																	 ->select( $campos )
                                    ->first( );
 
@@ -184,6 +186,7 @@ class Inventary extends BaseController
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.status !=', 'eliminado' );
         $builder->where( 'activos.ID_Activo !=', $id );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
         $builder->orlike( $similarData );
         $activos = $builder->get( );
 
@@ -341,6 +344,7 @@ class Inventary extends BaseController
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.status !=', 'eliminado' );
         $builder->where( 'activos.ID_Activo !=', $id );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
         $builder->orlike( $similarData );
         $activos = $builder->get( );
 
@@ -541,7 +545,7 @@ class Inventary extends BaseController
         ];
 
         $builder->where( 'Id', $this->request->getVar( 'old' ) );
-        $builder->replace( $activoData );
+        $builder->update( $activoData );
 
         //creamos registro del cambio de numero de serie
         $this->serieModel->insert( [ 'id_activo' => $this->request->getVar( 'old' ), 'id_draft' => null, 'num_serie' => $activo[ 'NSerie_Activo' ] ] ); 
@@ -685,14 +689,13 @@ class Inventary extends BaseController
     {
       try
       {
-        $tipos = $this->tipoModel->findAll( );
-        $usuarios = $this->userModel->findAll( );
+        $tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
+        $usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         $empresas = $this->empresaModel->findAll( );
-        $sucursales = $this->sucursalModel->findAll( );
+        $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
         $cc = $this->ccModel->findAll( );
         
-
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
                          'empresas' => $empresas, 'sucursales' => $sucursales,
@@ -794,12 +797,14 @@ class Inventary extends BaseController
         $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
         $builder->where( 'draft.TS_Delete', null );
+        $builder->where( 'draft.ID_Company', $this->session->empresa );
         $activos = $builder->where( 'draft.status', 'editado' )->get( );
 
         $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
         $builder->where( 'draft.TS_Delete', null );
+        $builder->where( 'draft.ID_Company', $this->session->empresa );
         $nuevos = $builder->where( 'draft.status', 'nuevo' )->get( );
 
 				if ( $activos == null )
@@ -870,6 +875,7 @@ class Inventary extends BaseController
         $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
         $builder->where( 'activos.TS_Delete', null );
         $activos = $builder->get( );
 
