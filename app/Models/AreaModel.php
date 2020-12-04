@@ -4,15 +4,15 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class TipoModel extends Model
+class AreaModel extends Model
 {
 
-  protected $table      = 'tipos';
+  protected $table      = 'areas';
   protected $primaryKey = 'id';
 
   protected $allowedFields =
   [
-    'Desc', 'ID_Empresa'
+    'descripcion', 'id_empresa'
   ];
 
 }
