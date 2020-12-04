@@ -260,9 +260,6 @@
                       <label class="col-sm-2 col-form-label">Área</label>
                       <div class="col-sm-6">
                         <select class="custom-select" name="area" id="area">
-                          <option value="1">Sector tecnólogico</option>
-                          <option value="2">Sala de gerencia</option>
-                          <option value="3">Galpón</option>
                         </select>
                       </div>
                     </div>

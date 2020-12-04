@@ -271,6 +271,7 @@ function getScannerFormData( )
   $( '#asignacion' ).html( );
   $( '#empresas' ).html( );
   $( '#cCosto' ).html( );
+  $( '#area' ).html( );
 
   $.ajax({
     url: url + '/activos/getFormData',
@@ -348,6 +349,20 @@ function getScannerFormData( )
         `;
 
         $( '#cCosto' ).append( typePlantilla );
+
+      });
+
+      let areas = response.areas;
+      
+      areas.forEach( ( area , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ area.id }">${ area.descripcion }</option>
+        `;
+
+        $( '#area' ).append( typePlantilla );
 
       });
 
@@ -1800,6 +1815,7 @@ function getInvFormData( )
   })
   .done( response =>
   {
+    console.log( response );
     if ( response.status == 200 )
     {
       let tipos = response.types;
@@ -1887,6 +1903,20 @@ function getInvFormData( )
         `;
 
         $( '#metodo_depreciacion' ).append( typePlantilla );
+
+      });
+
+      let areas = response.areas;
+      
+      areas.forEach( ( area , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ area.id }">${ area.descripcion }</option>
+        `;
+
+        $( '.iArea' ).append( typePlantilla );
 
       });
 
