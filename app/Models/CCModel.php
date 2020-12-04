@@ -12,7 +12,7 @@ class CCModel extends Model
 
   protected $allowedFields =
   [
-    'ID_CC', 'Desc', 'Subcuenta'
+    'ID_CC', 'Desc', 'Subcuenta', 'id_empresa',
   ];
 
 }

@@ -436,9 +436,6 @@
                                 <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iArea" name="asignacion" id="newArea" disabled>
-                                    <option value="1">Sector tecnólogico</option>
-                                    <option value="2">Sala de gerencia</option>
-                                    <option value="3">Galpón</option>
                                   </select>
                                 </div>
                               </div>
@@ -583,9 +580,6 @@
                                 <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iArea" name="asignacion" id="ciArea" disabled>
-                                    <option value="1">Sector tecnólogico</option>
-                                    <option value="2">Sala de gerencia</option>
-                                    <option value="3">Galpón</option>
                                   </select>
                                 </div>
                               </div>
@@ -871,10 +865,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
                                 <div class="col-sm-8">
-                                  <select class="form-control-plaintext" name="asignacion" id="iArea" disabled>
-                                    <option value="1">Sector tecnólogico</option>
-                                    <option value="2">Sala de gerencia</option>
-                                    <option value="3">Galpón</option>
+                                  <select class="form-control-plaintext iArea" name="asignacion" id="iArea" disabled>
                                   </select>
                                 </div>
                               </div>
@@ -1008,9 +999,6 @@
                                 <div class="col-sm-10">
                                   <select class="custom-select iArea" id="invFArea" name="asignacion" onchange="inventaryFiltros( )">
                                     <option value="">Todas</option>
-                                    <option value="1">Sector tecnólogico</option>
-                                    <option value="2">Sala de gerencia</option>
-                                    <option value="3">Galpón</option>
                                   </select>
                                 </div>
                               </div>
