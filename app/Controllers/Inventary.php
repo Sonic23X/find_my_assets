@@ -693,11 +693,15 @@ class Inventary extends BaseController
       {
         $tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
-        $empresas = $this->empresaModel->findAll( );
         $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
         $cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         $areas = $this->areaModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+
+        $SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+			
+        $builder = $this->db->query( $SQL );
+        $empresas = $builder->getResult( );
         
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
@@ -943,6 +947,10 @@ class Inventary extends BaseController
         if ( $this->request->getVar( 'empresa' ) != null )
         {
           $builder->where( 'activos.ID_Company', $this->request->getVar( 'empresa' ) );
+        }
+        else
+        {
+          $builder->where( 'activos.ID_Company', $this->session->empresa );
         }
         if ( $this->request->getVar( 'sucursal' ) != null )
         {

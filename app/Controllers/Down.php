@@ -95,6 +95,10 @@ class Down extends BaseController
         {
           $builder->where( 'activos.ID_Company', $this->request->getVar( 'empresa' ) );
         }
+        else
+        {
+          $builder->where( 'activos.ID_Company', $this->session->empresa );
+        }
         if ( $this->request->getVar( 'sucursal' ) != null )
         {
           $builder->where( 'activos.ID_Sucursal', $this->request->getVar( 'sucursal' ) );

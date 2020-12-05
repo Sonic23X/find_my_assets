@@ -283,7 +283,7 @@ function getScannerFormData( )
     if ( response.status == 200 )
     {
       let tipos = response.types;
-
+      
       tipos.forEach( ( tipo, i ) =>
       {
 
