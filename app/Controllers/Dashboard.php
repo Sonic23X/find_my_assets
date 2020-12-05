@@ -23,43 +23,43 @@ class Dashboard extends BaseController
 
 	function Index( )
 	{
-		if ( $this->session->has( 'isLoggin' ) )
-			{
-				//CSS, METAS y titulo
-				$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
-				echo view( 'backoffice/common/head', $head );
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) )
+		{
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
 
-				//sidebar
-				$sidebar = array( 'name' => $this->session->name );
-				echo view( 'backoffice/common/sidebar', $sidebar );
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
 
-				//navbar
-				echo view( 'backoffice/common/navbar' );
+			//navbar
+			echo view( 'backoffice/common/navbar' );
 
-				//content - inicio
-				echo view( 'backoffice/sections/start' );
+			//content - inicio
+			echo view( 'backoffice/sections/start' );
 
-				//content - scanner
-				echo view( 'backoffice/sections/scanner' );
+			//content - scanner
+			echo view( 'backoffice/sections/scanner' );
 
-				//content - bajar
-				echo view( 'backoffice/sections/down' );
+			//content - bajar
+			echo view( 'backoffice/sections/down' );
 
-				//content - mantener
-				echo view( 'backoffice/sections/keep' );
+			//content - mantener
+			echo view( 'backoffice/sections/keep' );
 
-				//content - Inventario
-				echo view( 'backoffice/sections/inventary' );
+			//content - Inventario
+			echo view( 'backoffice/sections/inventary' );
 
-				//Scripts y librerias
-				$footer = array( 'js' => 'dashboard' );
-				echo view( 'backoffice/common/footer', $footer );
-			}
-			else
-			{
-				$data = array( 'url' => base_url( '/ingreso' ) );
-				return view( 'functions/redirect', $data );
-			}
+			//Scripts y librerias
+			$footer = array( 'js' => 'dashboard' );
+			echo view( 'backoffice/common/footer', $footer );
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+			return view( 'functions/redirect', $data );
+		}
 	}
 
 	function getData( )

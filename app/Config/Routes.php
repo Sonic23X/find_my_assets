@@ -58,6 +58,9 @@ $routes->get('/perfil', 'User::Index');
 /** Backoffice - Pagos **/
 $routes->get('/pagos', 'Payment::Index');
 
+/** Backoffice - Escaneo **/
+$routes->get('/escaneo', 'Home::OnlyScan');
+
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
 

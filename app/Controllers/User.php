@@ -10,12 +10,14 @@ class User extends BaseController
     protected $session;
     protected $userModel;
     protected $email;
+    protected $draftModel;
     protected $db;
 
     function __construct()
     {
         $this->session = \Config\Services::session( );
         $this->userModel = model( 'App\Models\UserModel' );
+        $this->draftModel = model( 'App\Models\DraftModel' );
         $this->db = \Config\Database::connect( );
         $this->email = new PHPMailerLib( );
     }
@@ -122,7 +124,7 @@ class User extends BaseController
 		if ( $this->request->isAJAX( ) )
 		{
 
-			$user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )
+			$user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )->where( 'deleted_at', null )
 						 ->first( );
 
 			//el usuario ya está registado
@@ -143,7 +145,7 @@ class User extends BaseController
 				'email' => $this->request->getVar( 'email' ),
 				'password' => $password,
 				'suscripcion' => 0,
-				'verificacion' => 0,
+				'verificacion' => 1,
 				'email_encriptado' => $emailEncrypt,
                 'patrocinador' => 'N/A',
                 'id_empresa' => $this->session->empresa,
@@ -155,6 +157,8 @@ class User extends BaseController
                 $viewData =
                 [
                     'urlUsuario' => base_url( '/carga' ) . '/' . $emailEncrypt,
+                    'nombre' => $this->request->getVar( 'nombre' ) . ' ' . $this->request->getVar( 'apellidos' ),
+                    'activos' => null,
                 ];
 
                 $content = View( 'emails/accesoUsuario', $viewData );
@@ -210,6 +214,8 @@ class User extends BaseController
             $viewData =
             [
                 'urlUsuario' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ],
+                'nombre' => $user[ 'nombre' ] . ' ' . $user[ 'apellidos' ],
+                'activos' =>  $this->draftModel->select( 'ID_Activo, Nom_Activo' )->where( 'User_Inventario', $this->request->getVar( 'id' ) )->findAll( ),
             ];
 
             $content = View( 'emails/accesoUsuario', $viewData );

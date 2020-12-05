@@ -83,7 +83,12 @@ class Auth extends BaseController
             $this->session->set( 'id', $user[ 'id_usuario' ] );
             $this->session->set( 'name', $user[ 'nombre' ] );
             $this->session->set( 'empresa', $user[ 'id_empresa' ] );
-            $json = array( 'status' => 200, 'url' => base_url( '/dashboard' ) );
+            $this->session->set( 'tipo', $user[ 'perfil' ] );
+
+            if ( $this->session->tipo == 'admin' )
+              $json = array( 'status' => 200, 'url' => base_url( '/dashboard' ) );
+            else
+              $json = array( 'status' => 200, 'url' => base_url( '/escaneo' ) );
           }
           else
           {
