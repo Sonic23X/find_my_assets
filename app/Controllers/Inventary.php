@@ -693,11 +693,17 @@ class Inventary extends BaseController
       {
         $tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
-        $empresas = $this->empresaModel->findAll( );
-        $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
         $cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         $areas = $this->areaModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+
+        $SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+        $builder = $this->db->query( $SQL );
+        $empresas = $builder->getResult( );
+
+        $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builder = $this->db->query( $SQL );
+        $sucursales = $builder->getResult( );
         
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
@@ -926,6 +932,7 @@ class Inventary extends BaseController
     {
       try
       {
+        $sucursales = null;
         $builder = $this->db->table( 'activos' );
         $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
@@ -942,7 +949,14 @@ class Inventary extends BaseController
         }
         if ( $this->request->getVar( 'empresa' ) != null )
         {
+          $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->request->getVar( 'empresa' ))->findAll( );
           $builder->where( 'activos.ID_Company', $this->request->getVar( 'empresa' ) );
+        }
+        else
+        {
+          $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+          $builderSucursales = $this->db->query( $SQL );
+          $sucursales = $builderSucursales->getResult( );
         }
         if ( $this->request->getVar( 'sucursal' ) != null )
         {
@@ -981,7 +995,7 @@ class Inventary extends BaseController
           $num++;
         }
 
-        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num ) );
+        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num, 'sucursales' => $sucursales ) );
       }
       catch (\Exception $e)
       {

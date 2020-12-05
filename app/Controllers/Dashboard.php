@@ -64,7 +64,7 @@ class Dashboard extends BaseController
 
 	function getData( )
 	{
-		$tipos = $this->tipoModel->findAll( );
+		$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
 		
 		$table1 = [ ];
 		$labels = [ ];
@@ -86,15 +86,15 @@ class Dashboard extends BaseController
 			array_push( $values, $num );
 		}
 
-		$bajas = $this->activoModel->where( 'TS_Delete !=', null )->select( 'TS_Delete, Nom_Activo, Pre_Compra' )->findAll( );
+		$bajas = $this->activoModel->where( 'ID_Company', $this->session->empresa )->where( 'TS_Delete !=', null )->select( 'TS_Delete, Nom_Activo, Pre_Compra' )->findAll( );
 
-		$altas = $this->activoModel->where( 'TS_Delete', null )->select( 'TS_Create, Nom_Activo, , Pre_Compra' )->findAll( );
+		$altas = $this->activoModel->where( 'ID_Company', $this->session->empresa )->where( 'TS_Delete', null )->select( 'TS_Create, Nom_Activo, , Pre_Compra' )->findAll( );
 
-		//$points = $this->activoModel->where( 'TS_Delete', null )->select( 'Nom_Activo, GPS' )->findAll( );
 		$builder = $this->db->table( 'activos' );
         $builder->select( 'activos.Nom_Activo, activos.GPS, tipos.Desc, usuarios.nombre' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
-        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+		$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+		$builder->where( 'activos.ID_Company', $this->session->empresa );
         $builder->where( 'activos.TS_Delete', null );
         $points = $builder->get( )->getResult( );
 
