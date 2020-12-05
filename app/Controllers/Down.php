@@ -7,12 +7,14 @@ class Down extends BaseController
 
   //variables de la clase
   protected $session;
+  protected $sucursalModel;
   protected $activoModel;
   protected $db;
 
   function __construct()
   {
     $this->session = \Config\Services::session( );
+    $this->sucursalModel = model( 'App\Models\SucursalModel' );
     $this->activoModel = model( 'App\Models\ActivoModel' );
     $this->db = \Config\Database::connect();
   }
@@ -77,6 +79,7 @@ class Down extends BaseController
     {
       try
       {
+        $sucursales = null;
         $builder = $this->db->table( 'activos' );
         $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
@@ -93,11 +96,14 @@ class Down extends BaseController
         }
         if ( $this->request->getVar( 'empresa' ) != null )
         {
+          $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->request->getVar( 'empresa' ))->findAll( );
           $builder->where( 'activos.ID_Company', $this->request->getVar( 'empresa' ) );
         }
         else
         {
-          $builder->where( 'activos.ID_Company', $this->session->empresa );
+          $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+          $builderSucursales = $this->db->query( $SQL );
+          $sucursales = $builderSucursales->getResult( );
         }
         if ( $this->request->getVar( 'sucursal' ) != null )
         {
@@ -136,7 +142,7 @@ class Down extends BaseController
           $num++;
         }
 
-        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num ) );
+        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num, 'sucursales' => $sucursales ) );
       }
       catch (\Exception $e)
       {

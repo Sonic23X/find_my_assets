@@ -283,7 +283,7 @@ function getScannerFormData( )
     if ( response.status == 200 )
     {
       let tipos = response.types;
-      
+
       tipos.forEach( ( tipo, i ) =>
       {
 
@@ -2684,6 +2684,24 @@ function inventaryFiltros( )
 
         $( '.table-inventary-actives' ).append( typePlantilla );
 
+        $( '#invFSucursal' ).html( '' );
+        $( '#invFSucursal' ).append( '<option value="">Todas</option>' );
+
+        if ( response.sucursales != null) 
+        {
+          response.sucursales.forEach( ( sucursal, i ) =>
+          {
+
+            let typePlantilla =
+            `
+              <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+            `;
+
+            $( '#invFSucursal' ).append( typePlantilla );
+
+          });
+        }
+
       });
 
       if ( inventarioTable != null )
@@ -2891,6 +2909,24 @@ function downFiltros( )
       });
 
       $( '.down-count' ).html( response.number );
+
+      $( '#downSucursal' ).html( '' );
+      $( '#downSucursal' ).append( '<option value="">Todas</option>' );
+
+      if ( response.sucursales != null) 
+      {
+        response.sucursales.forEach( ( sucursal, i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+          `;
+
+          $( '#downSucursal' ).append( typePlantilla );
+
+        });
+      }
     }
     else
     {
