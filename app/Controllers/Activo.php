@@ -14,6 +14,7 @@ class Activo extends BaseController
 	protected $serieModel;
 	protected $ccModel;
 	protected $areaModel;
+	protected $db;
 
 	function __construct()
 	{
@@ -26,6 +27,7 @@ class Activo extends BaseController
 		$this->serieModel = model( 'App\Models\SerieModel' );
 		$this->ccModel = model( 'App\Models\CCModel' );
 		$this->areaModel = model( 'App\Models\AreaModel' );
+		$this->db = \Config\Database::connect();
   	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
@@ -35,12 +37,17 @@ class Activo extends BaseController
 		{
 		try
 		{
-				$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
-				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
-				$empresas = $this->empresaModel->findAll( );
-				$sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
-				$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
-				$areas = $this->areaModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+			$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
+			$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+			//$empresas = $this->empresaModel->findAll( );
+			$sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
+			$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+			$areas = $this->areaModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+
+			$SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+			
+			$builder = $this->db->query( $SQL );
+			$empresas = $builder->getResult( );
 
 			if ( $tipos )
 			$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
