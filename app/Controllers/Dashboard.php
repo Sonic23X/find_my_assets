@@ -71,10 +71,12 @@ class Dashboard extends BaseController
 		$values = [ ];
 		foreach( $tipos as $tipo )
 		{
-			$activos = $this->activoModel->where( 'ID_Tipo', $tipo['id'] )->where( 'activos.TS_Delete', null )->select( 'Pre_Compra' )->findAll( );
+			$activos = $this->activoModel->where( 'ID_Tipo', $tipo['id'] )
+										 ->where( 'TS_Delete', null )
+										 ->select( 'Pre_Compra' )
+										 ->findAll( );
 			$monto = 0;
 			$num = 0;
-
 			foreach( $activos as $activo )
 			{
 				$monto = $monto + $activo[ 'Pre_Compra' ];
