@@ -2683,25 +2683,6 @@ function inventaryFiltros( )
         `;
 
         $( '.table-inventary-actives' ).append( typePlantilla );
-
-        $( '#invFSucursal' ).html( '' );
-        $( '#invFSucursal' ).append( '<option value="">Todas</option>' );
-
-        if ( response.sucursales != null) 
-        {
-          response.sucursales.forEach( ( sucursal, i ) =>
-          {
-
-            let typePlantilla =
-            `
-              <option value="${ sucursal.id }">${ sucursal.Desc }</option>
-            `;
-
-            $( '#invFSucursal' ).append( typePlantilla );
-
-          });
-        }
-
       });
 
       if ( inventarioTable != null )
@@ -2909,24 +2890,6 @@ function downFiltros( )
       });
 
       $( '.down-count' ).html( response.number );
-
-      $( '#downSucursal' ).html( '' );
-      $( '#downSucursal' ).append( '<option value="">Todas</option>' );
-
-      if ( response.sucursales != null) 
-      {
-        response.sucursales.forEach( ( sucursal, i ) =>
-        {
-
-          let typePlantilla =
-          `
-            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
-          `;
-
-          $( '#downSucursal' ).append( typePlantilla );
-
-        });
-      }
     }
     else
     {
@@ -3559,9 +3522,56 @@ $(document).ready(function( )
 
   });
 
-  $( '#sucursal' ).change(function(event)
+  $( '#empresas' ).change( event =>
   {
-    //obtenemos las areas conforme el valor de la sucursal
+    let data = 
+    {
+      empresa: $( '#empresas' ).val( ),
+    };
+
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/activos/dinamicForm',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        $( '#sucursal' ).html( '' );
+        $( '#area' ).html( '' );
+
+        response.sucursales.forEach( ( sucursal , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+          `;
+
+          $( '#sucursal' ).append( typePlantilla );
+
+        });
+
+        response.areas.forEach( ( area , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ area.id }">${ area.descripcion }</option>
+          `;
+
+          $( '#area' ).append( typePlantilla );
+
+        });
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
   });
 
   //ready
@@ -3801,11 +3811,119 @@ $(document).ready(function( )
     }
   });
 
+  $( '#invFEmpresa' ).change( event =>
+  {
+    let data = 
+    {
+      empresa: $( '#invFEmpresa' ).val( ),
+    };
+
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/inventario/sucursales',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        $( '#invFSucursal' ).html( '' );
+        $( '#invFSucursal' ).append( '<option value="">Todas</option>' );
+        $( '#invFArea' ).html( '' );
+        $( '#invFArea' ).append( '<option value="">Todas</option>' );
+
+        response.sucursales.forEach( ( sucursal , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+          `;
+
+          $( '#invFSucursal' ).append( typePlantilla );
+
+        });
+
+        response.areas.forEach( ( area , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ area.id }">${ area.descripcion }</option>
+          `;
+
+          $( '#invFArea' ).append( typePlantilla );
+
+        });
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
+  });
+
   /* --- Bajas --- */
 
   $( '#down-select' ).change( (event) =>
   {
     $( '.motivo-down-form' ).removeClass( 'd-none' );
+  });
+
+  $( '#downEmpresa' ).change( event =>
+  {
+    let data = 
+    {
+      empresa: $( '#downEmpresa' ).val( ),
+    };
+
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/inventario/sucursales',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        $( '#downSucursal' ).html( '' );
+        $( '#downSucursal' ).append( '<option value="">Todas</option>' );
+        $( '#downArea' ).html( '' );
+        $( '#downArea' ).append( '<option value="">Todas</option>' );
+
+        response.sucursales.forEach( ( sucursal , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+          `;
+
+          $( '#downSucursal' ).append( typePlantilla );
+
+        });
+
+        response.areas.forEach( ( area , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ area.id }">${ area.descripcion }</option>
+          `;
+
+          $( '#downArea' ).append( typePlantilla );
+
+        });
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
   });
 
 });

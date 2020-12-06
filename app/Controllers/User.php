@@ -153,6 +153,9 @@ class User extends BaseController
 
 			if ( $this->userModel->insert( $insert ) )
             {
+                $user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )->first( );
+                $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
+                $builder = $this->db->query( $SQL );
 
                 $viewData =
                 [
