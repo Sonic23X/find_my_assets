@@ -123,7 +123,7 @@ function dashboardData( )
             data: response.graficaValues,
             backgroundColor:
             [
-              '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'
+              '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de', '#ffffff',
             ],
           }
         ]
