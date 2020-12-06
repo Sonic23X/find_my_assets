@@ -114,6 +114,9 @@ function dashboardData( )
 
       //grafica de dona - variables
       var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+
+      console.log(response);
+
       var donutData =
       {
         labels: response.graficaLabels,
