@@ -58,6 +58,9 @@ $routes->get('/perfil', 'User::Index');
 /** Backoffice - Pagos **/
 $routes->get('/pagos', 'Payment::Index');
 
+/** Backoffice - Escaneo **/
+$routes->get('/escaneo', 'Home::OnlyScan');
+
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
 
@@ -67,6 +70,7 @@ $routes->post('/activos/search', 'Activo::SearchActivo');
 $routes->post('/activos/validateNew', 'Activo::ValidateActivo');
 $routes->post('/activos/new', 'Activo::NewActivo');
 $routes->post('/activos/updateInfo', 'Activo::UpdateInfoActivo');
+$routes->post('/activos/dinamicForm', 'Activo::UpdateSucursal');
 $routes->post('/activos/setGeo', 'Activo::SetCoordenadas');
 $routes->get('/activos/getImageFront/(:alphanum)', 'Activo::GetImageFront/$1');
 $routes->get('/activos/getImageLeft/(:alphanum)', 'Activo::GetImageLeft/$1');
@@ -91,6 +95,7 @@ $routes->get('/inventario/getProcessItems', 'Inventary::ProcessList');
 $routes->get('/inventario/getInventaryItems', 'Inventary::SearchInventaryList');
 $routes->get('/inventario/getActivoInfo/(:num)', 'Inventary::SearchActiveInfo/$1');
 $routes->post('/inventario/getInventaryItemsFilter', 'Inventary::SearchInventaryListFilter');
+$routes->post('/inventario/sucursales', 'Inventary::UpdateSucursal');
 $routes->post('/inventario/setFactura', 'Inventary::setFactura');
 $routes->post('/inventario/setGarantia', 'Inventary::setGarantia');
 $routes->post('/inventario/deleteNews', 'Inventary::deleteNews');
