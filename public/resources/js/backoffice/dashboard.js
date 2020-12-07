@@ -114,9 +114,6 @@ function dashboardData( )
 
       //grafica de dona - variables
       var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
-
-      console.log(response);
-
       var donutData =
       {
         labels: response.graficaLabels,
@@ -1818,7 +1815,6 @@ function getInvFormData( )
   })
   .done( response =>
   {
-    console.log( response );
     if ( response.status == 200 )
     {
       let tipos = response.types;
