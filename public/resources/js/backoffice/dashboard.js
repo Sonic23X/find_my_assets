@@ -2125,7 +2125,7 @@ function getDraftInfoNew( id )
     if ( response.status == 200 )
     {
       $( '.new-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
-      $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.new-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
       $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
       let activo = response.activo;
@@ -2378,6 +2378,10 @@ function viewProcessInfo( id, details = 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
       else
         $( '.modalProcessButton' ).addClass( 'd-none' );
+
+      $( '.process-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.process-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.process-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
