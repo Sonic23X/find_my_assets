@@ -35,37 +35,37 @@ class Activo extends BaseController
 	{
 		if ( $this->request->isAJAX( ) )
 		{
-		try
-		{
-			$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
-			$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
-			$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+			try
+			{
+				$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
+				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+				$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 
-			$SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
-			$builder = $this->db->query( $SQL );
-			$empresas = $builder->getResult( );
+				$SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+				$builder = $this->db->query( $SQL );
+				$empresas = $builder->getResult( );
 
-			$SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
-			$builder = $this->db->query( $SQL );
-			$sucursales = $builder->getResult( );
+				$SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+				$builder = $this->db->query( $SQL );
+				$sucursales = $builder->getResult( );
 
-			$SQL = "SELECT * FROM areas WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
-			$builder = $this->db->query( $SQL );
-			$areas = $builder->getResult( );
+				$SQL = "SELECT * FROM areas WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+				$builder = $this->db->query( $SQL );
+				$areas = $builder->getResult( );
 
-			if ( $tipos )
-			$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
-											'empresas' => $empresas, 'sucursales' => $sucursales,
-											'cc' => $cc, 'areas' => $areas );
-			else
-			$json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
+				if ( $tipos )
+				$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
+												'empresas' => $empresas, 'sucursales' => $sucursales,
+												'cc' => $cc, 'areas' => $areas );
+				else
+				$json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 
-			echo json_encode( $json );
-		}
-		catch (\Exception $e)
-		{
-			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-		}
+				echo json_encode( $json );
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
 		}
 		else
 		return view( 'errors/cli/error_404' );
@@ -87,10 +87,21 @@ class Activo extends BaseController
 					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', 'User_Delete',
 				];
 
+				$SQL = "SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id;
+
+				$SQLResult = $this->db->query( $SQL, [ $campos, $this->request->getVar( 'codigo' ) ] )->getResult( );
+
+				$empresas = [ ];
+				
+				foreach( $SQLResult as $empresa )
+				{
+					array_push( $empresas, $empresa->id_empresa );
+				}
+
 				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-										   ->where( 'ID_Company', $this->session->empresa )
-																		->select( $campos )
-																		->first( );
+										   ->whereIn( 'ID_Company', $empresas )
+											->select( $campos )
+											->first( );
 
 				if ( $activo == null )
 				{
@@ -139,17 +150,6 @@ class Activo extends BaseController
 		{
 			try
 			{
-				//validar que no exista un activo con ese id
-				// TODO: anexar ID empresa
-				$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																		->first( );
-
-				if ( $already )
-				{
-					echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
-					return;
-				}
-
 				$insert =
 				[
 					'ID_Activo' => $this->request->getVar( 'codigo' ),
@@ -219,47 +219,45 @@ class Activo extends BaseController
 	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
-  function SetCoordenadas( )
-  {
-    if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
+		function SetCoordenadas( )
+		{
+			if ( $this->request->isAJAX( ) )
+			{
+				try
+				{
 
-				$update =
-        [
-          'GPS' => $this->request->getVar( 'gps' ),
-					'Vida_Activo' => $this->request->getVar( 'vida' ),
-					'ID_Company' => $this->request->getVar( 'empresa' ),
-					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
-          'ID_Area' => $this->request->getVar( 'area' ),
-        ];
+					$update =
+					[
+						'GPS' => $this->request->getVar( 'gps' ),
+						'Vida_Activo' => $this->request->getVar( 'vida' ),
+						'ID_Company' => $this->request->getVar( 'empresa' ),
+						'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
+						'ID_Area' => $this->request->getVar( 'area' ),
+					];
 
-				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
-					echo json_encode( array( 'status' => 200 ) );
-				else
-					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
+					if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+						echo json_encode( array( 'status' => 200 ) );
+					else
+						echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
 
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
-  }
+				}
+				catch (\Exception $e)
+				{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+				}
+			}
+			else
+				return view( 'errors/cli/error_404' );
+		}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
 	function GetImageFront( $codigo )
 	{
 		if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
-				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
-																	 ->select( [ 'Ima_ActivoFront' ] )
-                                   ->first( );
+		{
+			try
+			{
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )->select( [ 'Ima_ActivoFront' ] )->first( );
 
 				$imgFront = null;
 
@@ -271,14 +269,14 @@ class Activo extends BaseController
 				}
 
 				echo $imgFront;
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
 	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
@@ -288,9 +286,7 @@ class Activo extends BaseController
 		{
 			try
 			{
-				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
-																	 ->select( [ 'Ima_ActivoRight' ] )
-																	 ->first( );
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )->select( [ 'Ima_ActivoRight' ] )->first( );
 
 				$imgRight = null;
 
@@ -319,9 +315,7 @@ class Activo extends BaseController
 		{
 			try
 			{
-				$activo = $this->draftModel->where( 'ID_Activo', $codigo )
-																	 ->select( [ 'Ima_ActivoLeft' ] )
-																	 ->first( );
+				$activo = $this->draftModel->where( 'ID_Activo', $codigo )->select( [ 'Ima_ActivoLeft' ] )->first( );
 
 				$imgLeft = null;
 
@@ -347,9 +341,9 @@ class Activo extends BaseController
 	function SetImage( )
 	{
 		if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
+		{
+			try
+			{
 				$update = [ ];
 
 				$photo = $this->request->getFile( 'file' );
@@ -379,29 +373,29 @@ class Activo extends BaseController
 				}
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
-        {
-          echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
-        }
-        else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );
+				{
+					echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
+				}
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );
 
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
 	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
 	function DeleteImage( )
 	{
 		if ( $this->request->isAJAX( ) )
-    {
-      try
-      {
+   		{
+      		try
+      		{
 				$activo = $this->request->getVar( 'codigo' );
 				$tipo;
 
@@ -424,20 +418,20 @@ class Activo extends BaseController
 				];
 
 				if ( $this->draftModel->where( 'ID_Activo', $activo )->set( $update )->update( ) )
-        {
-          echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen eliminada!' ) );
-        }
-        else
-          echo json_encode( array( 'status' => 400, 'msg' => 'Error al eliminar la imagen del activo. Intente más tarde' ) );
+				{
+					echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen eliminada!' ) );
+				}
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al eliminar la imagen del activo. Intente más tarde' ) );
 
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
-    }
-    else
-      return view( 'errors/cli/error_404' );
+			}
+			catch (\Exception $e)
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
 	}
 
 	public function UpdateSucursal( )
