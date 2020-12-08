@@ -45,11 +45,11 @@ class Activo extends BaseController
 				$builder = $this->db->query( $SQL );
 				$empresas = $builder->getResult( );
 
-				$SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+				$SQL = "SELECT * FROM sucursales WHERE ID_Empresa = " . $this->session->empresa;
 				$builder = $this->db->query( $SQL );
 				$sucursales = $builder->getResult( );
 
-				$SQL = "SELECT * FROM areas WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+				$SQL = "SELECT * FROM areas WHERE id_empresa = " . $this->session->empresa;
 				$builder = $this->db->query( $SQL );
 				$areas = $builder->getResult( );
 
@@ -111,10 +111,17 @@ class Activo extends BaseController
 
 				$user = $this->userModel->where( 'id_usuario', $activo[ 'User_Inventario' ] )->first( );
 
-
 				$tipo = $this->tipoModel->where( 'id', $activo[ 'ID_Tipo' ] )->first( );
 
-				echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo ) );
+				$SQL = "SELECT * FROM sucursales WHERE ID_Empresa = " . $activo[ 'ID_Company' ];
+				$builder = $this->db->query( $SQL );
+				$sucursales = $builder->getResult( );
+
+				$SQL = "SELECT * FROM areas WHERE id_empresa = " . $activo[ 'ID_Company' ];
+				$builder = $this->db->query( $SQL );
+				$areas = $builder->getResult( );
+
+				echo json_encode( array( 'status' => 200, 'activo' => $activo, 'user' => $user, 'tipo' => $tipo, 'sucursal' => $sucursales, 'areas' => $areas ) );
 
 			}
 			catch (\Exception $e)
@@ -219,36 +226,36 @@ class Activo extends BaseController
 	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
-		function SetCoordenadas( )
+	function SetCoordenadas( )
+	{
+		if ( $this->request->isAJAX( ) )
 		{
-			if ( $this->request->isAJAX( ) )
+			try
 			{
-				try
-				{
 
-					$update =
-					[
-						'GPS' => $this->request->getVar( 'gps' ),
-						'Vida_Activo' => $this->request->getVar( 'vida' ),
-						'ID_Company' => $this->request->getVar( 'empresa' ),
-						'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
-						'ID_Area' => $this->request->getVar( 'area' ),
-					];
+				$update =
+				[
+					'GPS' => $this->request->getVar( 'gps' ),
+					'Vida_Activo' => $this->request->getVar( 'vida' ),
+					'ID_Company' => $this->request->getVar( 'empresa' ),
+					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
+					'ID_Area' => $this->request->getVar( 'area' ),
+				];
 
-					if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
-						echo json_encode( array( 'status' => 200 ) );
-					else
-						echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+					echo json_encode( array( 'status' => 200 ) );
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
 
-				}
-				catch (\Exception $e)
-				{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-				}
 			}
-			else
-				return view( 'errors/cli/error_404' );
+			catch (\Exception $e)
+			{
+			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
 		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
 
 	//método que funciona exclusivamente con AJAX - JQUERY
 	function GetImageFront( $codigo )

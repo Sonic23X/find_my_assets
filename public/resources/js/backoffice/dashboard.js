@@ -324,20 +324,6 @@ function getScannerFormData( )
 
       });
 
-      let sucursales = response.sucursales;
-
-      sucursales.forEach( ( sucursal , i ) =>
-      {
-
-        let typePlantilla =
-        `
-          <option value="${ sucursal.id }">${ sucursal.Desc }</option>
-        `;
-
-        $( '#sucursal' ).append( typePlantilla );
-
-      });
-
       let cc = response.cc;
 
       cc.forEach( ( ccUnico , i ) =>
@@ -352,8 +338,22 @@ function getScannerFormData( )
 
       });
 
-      let areas = response.areas;
+      let sucursales = response.sucursal;
       
+      sucursales.forEach( ( sucursal , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+        `;
+
+        $( '#sucursal' ).append( typePlantilla );
+
+      });
+
+      let areas = response.areas;
+    
       areas.forEach( ( area , i ) =>
       {
 
@@ -3255,9 +3255,38 @@ $(document).ready(function( )
     })
     .done( response =>
     {
-
+      $( '#sucursal' ).html( '' );
+      $( '#area' ).html( '' );
       if (response.status == 200)
       {
+        let sucursales = response.sucursal;
+      
+        sucursales.forEach( ( sucursal , i ) =>
+        {
+  
+          let typePlantilla =
+          `
+            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+          `;
+  
+          $( '#sucursal' ).append( typePlantilla );
+  
+        });
+
+        let areas = response.areas;
+      
+        areas.forEach( ( area , i ) =>
+        {
+  
+          let typePlantilla =
+          `
+            <option value="${ area.id }">${ area.descripcion }</option>
+          `;
+  
+          $( '#area' ).append( typePlantilla );
+  
+        });
+
         $( '#scanner-subtipo' ).html( response.tipo.Desc );
         $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
         $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
@@ -3666,6 +3695,8 @@ $(document).ready(function( )
 
     $( wizzardPreviewView ).addClass( 'd-none' );
     $( wizzardActualView ).removeClass( 'd-none' );
+
+    getScannerFormData( );
 
     window.scroll(0, 0);
   });
