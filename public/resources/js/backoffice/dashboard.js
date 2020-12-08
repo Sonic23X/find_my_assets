@@ -267,11 +267,11 @@ function imprimir ( titulo, mensaje, tipo )
 
 function getScannerFormData( )
 {
-  $( '#tipoActivo' ).html( );
-  $( '#asignacion' ).html( );
-  $( '#empresas' ).html( );
-  $( '#cCosto' ).html( );
-  $( '#area' ).html( );
+  $( '#tipoActivo' ).html( '' );
+  $( '#asignacion' ).html( '' );
+  $( '#empresas' ).html( '' );
+  $( '#cCosto' ).html( '' );
+  $( '#area' ).html( '' );
 
   $.ajax({
     url: url + '/activos/getFormData',
