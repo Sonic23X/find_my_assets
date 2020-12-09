@@ -13,6 +13,7 @@ class Activo extends BaseController
 	protected $tipoModel;
 	protected $empresaModel;
 	protected $draftModel;
+	protected $activoModel;
 	protected $sucursalModel;
 	protected $serieModel;
 	protected $ccModel;
@@ -26,6 +27,7 @@ class Activo extends BaseController
 		$this->userModel = model( 'App\Models\UserModel' );
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
 		$this->draftModel = model( 'App\Models\DraftModel' );
+		$this->activoModel = model( 'App\Models\ActivoModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
 		$this->serieModel = model( 'App\Models\SerieModel' );
 		$this->ccModel = model( 'App\Models\CCModel' );
@@ -459,7 +461,8 @@ class Activo extends BaseController
 	public function ExcelActivos( )
 	{
 		$builder = $this->db->table( 'activos' );
-		$builder->select( 'activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area' );
+		$builder->select( 'activos.Id, activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, 
+							usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area, activos.TS_Create, activos.TS_Update' );
 		$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
 		$builder->join( 'cc', 'cc.ID_CC = activos.ID_CC' );
 		$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
@@ -484,6 +487,11 @@ class Activo extends BaseController
 		$sheet->getColumnDimension('H')->setWidth(20);
 		$sheet->getColumnDimension('I')->setWidth(20);
 		$sheet->getColumnDimension('J')->setWidth(20);
+		$sheet->getColumnDimension('K')->setWidth(20);
+		$sheet->getColumnDimension('L')->setWidth(20);
+		$sheet->getColumnDimension('M')->setWidth(50);
+		$sheet->getColumnDimension('N')->setWidth(50);
+		$sheet->getColumnDimension('O')->setWidth(50);
 
 		//iniciamos tabla 
 		$sheet->setCellValue( 'A1', 'Código QR' );
@@ -496,6 +504,11 @@ class Activo extends BaseController
 		$sheet->setCellValue( 'H1', 'Empresa' );
 		$sheet->setCellValue( 'I1', 'Sucursal' );
 		$sheet->setCellValue( 'J1', 'Área' );
+		$sheet->setCellValue( 'K1', 'Fecha de inventario' );
+		$sheet->setCellValue( 'L1', 'Ultima actualización' );
+		$sheet->setCellValue( 'M1', 'Foto Frontal' );
+		$sheet->setCellValue( 'N1', 'Foto Lat. Derecha' );
+		$sheet->setCellValue( 'O1', 'Foto Lat. Izquierda' );
 
 		$styleHeadArray = 
 		[
@@ -518,7 +531,7 @@ class Activo extends BaseController
 			],
 		];
 		
-		$sheet->getStyle('A1:J1')->applyFromArray($styleHeadArray);
+		$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
 
 		$fila = 2;
 		foreach( $activos as $activo )
@@ -533,6 +546,14 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'H' . $fila, $activo->empresa );
 			$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
 			$sheet->setCellValue( 'J' . $fila, $activo->area );
+			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
+			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
+			$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
+			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
+			$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
+			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
+			$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lf/' . $activo->Id );
+			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lf/' . $activo->Id );
 
 			$fila++;
 		}
@@ -550,7 +571,7 @@ class Activo extends BaseController
 			],
 		];
 		
-		$sheet->getStyle('A2:J'.($fila - 1))->applyFromArray($styleBodyArray);
+		$sheet->getStyle('A2:O'.($fila - 1))->applyFromArray($styleBodyArray);
 		
 		$writer = new Xls($spreadsheet);
 
@@ -564,14 +585,17 @@ class Activo extends BaseController
 	public function ExcelDraft( )
 	{
 		$builder = $this->db->table( 'draft' );
-		$builder->select( 'draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area' );
+		$builder->select( 'draft.Id, draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, 
+							usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area,
+							draft.TS_Create, draft.TS_Update' );
 		$builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
 		$builder->join( 'cc', 'cc.ID_CC = draft.ID_CC' );
 		$builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
 		$builder->join( 'empresas', 'empresas.id_empresa = draft.ID_Company' );
 		$builder->join( 'sucursales', 'sucursales.id = draft.ID_Sucursal' );
 		$builder->join( 'areas', 'areas.id = draft.ID_Area' );
-        $builder->where( 'draft.TS_Delete', null );
+		$builder->where( 'draft.TS_Delete', null );
+		$builder->where( 'draft.status', 'nuevo' );
         $builder->where( 'draft.ID_Company', $this->session->empresa );
 		$activos = $builder->get( )->getResult( );
 
@@ -589,6 +613,11 @@ class Activo extends BaseController
 		$sheet->getColumnDimension('H')->setWidth(20);
 		$sheet->getColumnDimension('I')->setWidth(20);
 		$sheet->getColumnDimension('J')->setWidth(20);
+		$sheet->getColumnDimension('K')->setWidth(20);
+		$sheet->getColumnDimension('L')->setWidth(20);
+		$sheet->getColumnDimension('M')->setWidth(50);
+		$sheet->getColumnDimension('N')->setWidth(50);
+		$sheet->getColumnDimension('O')->setWidth(50);
 
 		//iniciamos tabla 
 		$sheet->setCellValue( 'A1', 'Código QR' );
@@ -601,6 +630,11 @@ class Activo extends BaseController
 		$sheet->setCellValue( 'H1', 'Empresa' );
 		$sheet->setCellValue( 'I1', 'Sucursal' );
 		$sheet->setCellValue( 'J1', 'Área' );
+		$sheet->setCellValue( 'K1', 'Fecha de inventario' );
+		$sheet->setCellValue( 'L1', 'Ultima actualización' );
+		$sheet->setCellValue( 'M1', 'Foto Frontal' );
+		$sheet->setCellValue( 'N1', 'Foto Lat. Derecha' );
+		$sheet->setCellValue( 'O1', 'Foto Lat. Izquierda' );
 
 		$styleHeadArray = 
 		[
@@ -623,7 +657,7 @@ class Activo extends BaseController
 			],
 		];
 		
-		$sheet->getStyle('A1:J1')->applyFromArray($styleHeadArray);
+		$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
 
 		$fila = 2;
 		foreach( $activos as $activo )
@@ -638,6 +672,14 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'H' . $fila, $activo->empresa );
 			$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
 			$sheet->setCellValue( 'J' . $fila, $activo->area );
+			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
+			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
+			$sheet->setCellValue( 'M' . $fila, base_url() . '/draft/fp/' . $activo->Id );
+			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/fp/' . $activo->Id );
+			$sheet->setCellValue( 'N' . $fila, base_url() . '/draft/rp/' . $activo->Id );
+			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/rp/' . $activo->Id );
+			$sheet->setCellValue( 'O' . $fila, base_url() . '/draft/lf/' . $activo->Id );
+			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/lp/' . $activo->Id );
 
 			$fila++;
 		}
@@ -655,7 +697,7 @@ class Activo extends BaseController
 			],
 		];
 		
-		$sheet->getStyle('A2:J'.($fila - 1))->applyFromArray($styleBodyArray);
+		$sheet->getStyle('A2:O'.($fila - 1))->applyFromArray($styleBodyArray);
 		
 		$writer = new Xls($spreadsheet);
 
@@ -664,6 +706,74 @@ class Activo extends BaseController
 		header('Content-Disposition: attachment;filename="draft.xls"');
 		header('Cache-Control: max-age=0');
 		$writer->save('php://output');
+	}
+
+	public function DraftImage( $type, $id )
+	{
+		try
+		{
+			$select = null;
+			switch ($type) 
+			{
+				case 'fp':
+					$select = 'Ima_ActivoFront';
+					break;
+				case 'rp':
+					$select = 'Ima_ActivoRight';
+					break;
+				case 'lp':
+					$select = 'Ima_ActivoLeft';
+					break;
+			}
+
+			$activo = $this->draftModel->where( 'Id', $id )->select( [ $select ] )->first( );
+
+			if ( $activo != null && $activo[ $select ] != null )
+			{
+				$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ $select ] );
+				echo '<img src="'. $dataImage .'">';
+			}
+			else
+				echo "Sin imagen";
+		}
+		catch (\Exception $e)
+		{
+			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+		}
+	}
+
+	public function ActivoImage( $type, $id )
+	{
+		try
+		{
+			$select = null;
+			switch ($type) 
+			{
+				case 'fp':
+					$select = 'Ima_ActivoFront';
+					break;
+				case 'rp':
+					$select = 'Ima_ActivoRight';
+					break;
+				case 'lp':
+					$select = 'Ima_ActivoLeft';
+					break;
+			}
+
+			$activo = $this->activoModel->where( 'Id', $id )->select( [ $select ] )->first( );
+
+			if ( $activo != null && $activo[ $select ] != null )
+			{
+				$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ $select ] );
+				echo '<img src="'. $dataImage .'">';
+			}
+			else
+				echo "Sin imagen";
+		}
+		catch (\Exception $e)
+		{
+			echo "Sin imagen";
+		}
 	}
 
 }
