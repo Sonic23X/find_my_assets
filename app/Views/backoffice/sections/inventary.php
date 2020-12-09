@@ -67,8 +67,10 @@
                             <div class="col-6 float-left align-middle">
                               <span>Total de activos: <b class="number-new-actives">XX</b> </span>
                             </div>
-                            <div class="col-6 float-right">
-
+                            <div class="col-6 float-right align-middle">
+                              <a class="btn btn-primary btn-block" href="<?= base_url() ?>/excel/draft">
+                                Descargar copia excel
+                              </a>
                             </div>
                           </div>
 
@@ -718,7 +720,7 @@
                             <span>Total de activos: <b class="inventary-process-with-count">XX</b> </span>
                           </div>
                           <div class="col-6 float-right">
-
+                            
                           </div>
                         </div>
 
@@ -936,7 +938,9 @@
                             <span>Total de activos: <b class="inventary-count">XX</b> </span>
                           </div>
                           <div class="col-6 float-right">
-
+                            <a class="btn btn-primary btn-block" href="<?= base_url() ?>/excel/activos">
+                              Descargar
+                            </a>
                           </div>
                         </div>
 
