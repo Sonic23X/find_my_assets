@@ -2,6 +2,9 @@
 
 namespace App\Controllers;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xls;
+
 class Activo extends BaseController
 {
 
@@ -451,6 +454,216 @@ class Activo extends BaseController
 		}
 		else
 			return view( 'errors/cli/error_404' );
+	}
+
+	public function ExcelActivos( )
+	{
+		$builder = $this->db->table( 'activos' );
+		$builder->select( 'activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area' );
+		$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+		$builder->join( 'cc', 'cc.ID_CC = activos.ID_CC' );
+		$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+		$builder->join( 'empresas', 'empresas.id_empresa = activos.ID_Company' );
+		$builder->join( 'sucursales', 'sucursales.id = activos.ID_Sucursal' );
+		$builder->join( 'areas', 'areas.id = activos.ID_Area' );
+        $builder->where( 'activos.TS_Delete', null );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
+		$activos = $builder->get( )->getResult( );
+
+		$spreadsheet = new Spreadsheet( );
+		$sheet = $spreadsheet->getActiveSheet();
+
+		//iniciamos configuración inicial
+		$sheet->getColumnDimension('A')->setWidth(15);
+		$sheet->getColumnDimension('B')->setWidth(30);
+		$sheet->getColumnDimension('C')->setWidth(30);
+		$sheet->getColumnDimension('D')->setWidth(30);
+		$sheet->getColumnDimension('E')->setWidth(30);
+		$sheet->getColumnDimension('F')->setWidth(30);
+		$sheet->getColumnDimension('G')->setWidth(30);
+		$sheet->getColumnDimension('H')->setWidth(20);
+		$sheet->getColumnDimension('I')->setWidth(20);
+		$sheet->getColumnDimension('J')->setWidth(20);
+
+		//iniciamos tabla 
+		$sheet->setCellValue( 'A1', 'Código QR' );
+		$sheet->setCellValue( 'B1', 'CTA. Definitiva' );
+		$sheet->setCellValue( 'C1', 'Nombre bien' );
+		$sheet->setCellValue( 'D1', 'Centro de costos' );
+		$sheet->setCellValue( 'E1', 'Nombre usuario asignado' );
+		$sheet->setCellValue( 'F1', 'Apellido usuario asignado' );
+		$sheet->setCellValue( 'G1', 'Correo usuario asignado' );
+		$sheet->setCellValue( 'H1', 'Empresa' );
+		$sheet->setCellValue( 'I1', 'Sucursal' );
+		$sheet->setCellValue( 'J1', 'Área' );
+
+		$styleHeadArray = 
+		[
+			'font' => [
+				'bold' => true,
+				'color' => [ 'argb' => 'FFFF0000' ],
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
+				],
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				'color' => [ 'argb' => '00FFFF00' ]
+			],
+		];
+		
+		$sheet->getStyle('A1:J1')->applyFromArray($styleHeadArray);
+
+		$fila = 2;
+		foreach( $activos as $activo )
+		{
+			$sheet->setCellValue( 'A' . $fila, $activo->ID_Activo );
+			$sheet->setCellValue( 'B' . $fila, $activo->tipo );
+			$sheet->setCellValue( 'C' . $fila, $activo->Nom_Activo );
+			$sheet->setCellValue( 'D' . $fila, $activo->cc );
+			$sheet->setCellValue( 'E' . $fila, $activo->nombre );
+			$sheet->setCellValue( 'F' . $fila, $activo->apellidos );
+			$sheet->setCellValue( 'G' . $fila, $activo->email );
+			$sheet->setCellValue( 'H' . $fila, $activo->empresa );
+			$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
+			$sheet->setCellValue( 'J' . $fila, $activo->area );
+
+			$fila++;
+		}
+
+		$styleBodyArray = 
+		[
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
+				],
+			],
+		];
+		
+		$sheet->getStyle('A2:J'.($fila - 1))->applyFromArray($styleBodyArray);
+		
+		$writer = new Xls($spreadsheet);
+
+		//response
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="activos.xls"');
+		header('Cache-Control: max-age=0');
+		$writer->save('php://output');
+	}
+
+	public function ExcelDraft( )
+	{
+		$builder = $this->db->table( 'draft' );
+		$builder->select( 'draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area' );
+		$builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
+		$builder->join( 'cc', 'cc.ID_CC = draft.ID_CC' );
+		$builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
+		$builder->join( 'empresas', 'empresas.id_empresa = draft.ID_Company' );
+		$builder->join( 'sucursales', 'sucursales.id = draft.ID_Sucursal' );
+		$builder->join( 'areas', 'areas.id = draft.ID_Area' );
+        $builder->where( 'draft.TS_Delete', null );
+        $builder->where( 'draft.ID_Company', $this->session->empresa );
+		$activos = $builder->get( )->getResult( );
+
+		$spreadsheet = new Spreadsheet( );
+		$sheet = $spreadsheet->getActiveSheet();
+
+		//iniciamos configuración inicial
+		$sheet->getColumnDimension('A')->setWidth(15);
+		$sheet->getColumnDimension('B')->setWidth(30);
+		$sheet->getColumnDimension('C')->setWidth(30);
+		$sheet->getColumnDimension('D')->setWidth(30);
+		$sheet->getColumnDimension('E')->setWidth(30);
+		$sheet->getColumnDimension('F')->setWidth(30);
+		$sheet->getColumnDimension('G')->setWidth(30);
+		$sheet->getColumnDimension('H')->setWidth(20);
+		$sheet->getColumnDimension('I')->setWidth(20);
+		$sheet->getColumnDimension('J')->setWidth(20);
+
+		//iniciamos tabla 
+		$sheet->setCellValue( 'A1', 'Código QR' );
+		$sheet->setCellValue( 'B1', 'CTA. Definitiva' );
+		$sheet->setCellValue( 'C1', 'Nombre bien' );
+		$sheet->setCellValue( 'D1', 'Centro de costos' );
+		$sheet->setCellValue( 'E1', 'Nombre usuario asignado' );
+		$sheet->setCellValue( 'F1', 'Apellido usuario asignado' );
+		$sheet->setCellValue( 'G1', 'Correo usuario asignado' );
+		$sheet->setCellValue( 'H1', 'Empresa' );
+		$sheet->setCellValue( 'I1', 'Sucursal' );
+		$sheet->setCellValue( 'J1', 'Área' );
+
+		$styleHeadArray = 
+		[
+			'font' => [
+				'bold' => true,
+				'color' => [ 'argb' => 'FFFF0000' ],
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
+				],
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				'color' => [ 'argb' => '00FFFF00' ]
+			],
+		];
+		
+		$sheet->getStyle('A1:J1')->applyFromArray($styleHeadArray);
+
+		$fila = 2;
+		foreach( $activos as $activo )
+		{
+			$sheet->setCellValue( 'A' . $fila, $activo->ID_Activo );
+			$sheet->setCellValue( 'B' . $fila, $activo->tipo );
+			$sheet->setCellValue( 'C' . $fila, $activo->Nom_Activo );
+			$sheet->setCellValue( 'D' . $fila, $activo->cc );
+			$sheet->setCellValue( 'E' . $fila, $activo->nombre );
+			$sheet->setCellValue( 'F' . $fila, $activo->apellidos );
+			$sheet->setCellValue( 'G' . $fila, $activo->email );
+			$sheet->setCellValue( 'H' . $fila, $activo->empresa );
+			$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
+			$sheet->setCellValue( 'J' . $fila, $activo->area );
+
+			$fila++;
+		}
+
+		$styleBodyArray = 
+		[
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
+				],
+			],
+		];
+		
+		$sheet->getStyle('A2:J'.($fila - 1))->applyFromArray($styleBodyArray);
+		
+		$writer = new Xls($spreadsheet);
+
+		//response
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="draft.xls"');
+		header('Cache-Control: max-age=0');
+		$writer->save('php://output');
 	}
 
 }

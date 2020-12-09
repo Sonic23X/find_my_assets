@@ -338,7 +338,7 @@ function getScannerFormData( )
 
       });
 
-      let sucursales = response.sucursal;
+      let sucursales = response.sucursales;
       
       sucursales.forEach( ( sucursal , i ) =>
       {
@@ -3898,7 +3898,7 @@ $(document).ready(function( )
       }
     });
   });
-
+  
   /* --- Bajas --- */
 
   $( '#down-select' ).change( (event) =>
@@ -3958,6 +3958,7 @@ $(document).ready(function( )
         imprimir( 'Ups..', response.msg, 'error' );
       }
     });
+
   });
 
 });
