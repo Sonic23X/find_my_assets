@@ -691,11 +691,8 @@ class Inventary extends BaseController
     {
       try
       {
-        $tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
-        $cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
-        $areas = $this->areaModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 
         $SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
         $builder = $this->db->query( $SQL );
@@ -704,6 +701,18 @@ class Inventary extends BaseController
         $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
         $builder = $this->db->query( $SQL );
         $sucursales = $builder->getResult( );
+
+        $SQL = "SELECT * FROM areas WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builder = $this->db->query( $SQL );
+        $areas = $builder->getResult( );
+
+        $SQL = "SELECT * FROM cc WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builder = $this->db->query( $SQL );
+        $cc = $builder->getResult( );
+
+        $SQL = "SELECT * FROM tipos WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builder = $this->db->query( $SQL );
+        $tipos = $builder->getResult( );
         
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,

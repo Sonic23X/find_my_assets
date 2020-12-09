@@ -814,7 +814,7 @@
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
-                                          title="Campo actualizado, valor anterior: MXN56231">
+                                          title="Sin cambios" id="newButtonSerie">
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
@@ -1042,7 +1042,7 @@
                               <div class="form-group row">
                                 <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
                                 <div class="col-sm-8">
-                                  <select class="custom-select iTipoActivo" name="tipoActivo" id="infoTipoActivo" disabled>
+                                  <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="infoTipoActivo" disabled>
 
                                   </select>
                                 </div>
@@ -1051,7 +1051,7 @@
                               <div class="form-group row">
                                 <label for="name" class="col-sm-4 col-form-label">Nombre</label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="infoName" placeholder="Ej. Macbook PRO">
+                                  <input type="text" class="form-control-plaintext" id="infoName" placeholder="Ej. Macbook PRO" disabled>
                                 </div>
                               </div>
 
@@ -1060,19 +1060,19 @@
                                   No. de serie
                                   <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
-                                          title="Campo actualizado, valor anterior: MXN56231" id="infoButtonSerie">
+                                          title="Sin cambios" id="infoButtonSerie">
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
                                 <div class="col-sm-8">
-                                  <input type="text" class="form-control" id="infoSerie" placeholder="Ej. Nombre">
+                                  <input type="text" class="form-control-plaintext" id="infoSerie" placeholder="Ej. Nombre" disabled>
                                 </div>
                               </div>
 
                               <div class="form-group row">
                                 <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
                                 <div class="col-sm-8">
-                                  <select class="custom-select iCCcx" name="cCosto" id="infocCosto">
+                                  <select class="form-control-plaintext iCC" name="cCosto" id="infocCosto" disabled>
                                   </select>
                                 </div>
                               </div>
@@ -1080,7 +1080,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Asignado a</label>
                                 <div class="col-sm-8">
-                                  <select class="custom-select iAsignacion" name="asignacion" id="infoAsignacion">
+                                  <select class="form-control-plaintext iAsignacion" name="asignacion" id="infoAsignacion" disabled>
 
                                   </select>
                                 </div>
@@ -1095,7 +1095,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
                                 <div class="col-sm-8">
-                                  <select class="custom-select iEmpresa" name="asignacion" id="infoEmpresa">
+                                  <select class="form-control-plaintext iEmpresa" name="asignacion" id="infoEmpresa" disabled>
 
                                   </select>
                                 </div>
@@ -1104,7 +1104,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Sucursal</label>
                                 <div class="col-sm-8">
-                                  <select class="custom-select iSucursal" name="asignacion" id="infoSucursal">
+                                  <select class="form-control-plaintext iSucursal" name="asignacion" id="infoSucursal" disabled>
 
                                   </select>
                                 </div>
@@ -1113,7 +1113,7 @@
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
                                 <div class="col-sm-8">
-                                  <select class="custom-select" name="asignacion" id="infoArea">
+                                  <select class="form-control-plaintext iArea" name="asignacion" id="infoArea" disabled>
 
                                   </select>
                                 </div>
@@ -1122,7 +1122,7 @@
                               <div class="form-group row">
                                 <label for="desc" class="col-sm-4 col-form-label">Descripción</label>
                                 <div class="col-sm-8">
-                                  <textarea class="form-control" id="infoDesc" rows="3"></textarea>
+                                  <textarea class="form-control-plaintext" id="infoDesc" rows="3" disabled></textarea>
                                 </div>
                               </div>
 

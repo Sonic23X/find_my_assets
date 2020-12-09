@@ -3682,6 +3682,7 @@ $(document).ready(function( )
     $( '#desc' ).val( '' );
     $( '#numActivoS1' ).val( '' );
     $( '#numActivoS2' ).val( '' );
+    $( '#vidaUtil' ).val( '' );
 
     $( '#scanner-image-front' ).html( '<span>Sin imagen</span>' );
     $( '#scanner-image-right' ).html( '<span>Sin imagen</span>' );
@@ -3804,6 +3805,7 @@ $(document).ready(function( )
       case '.inv-news-confirm':
         InvActualView = '.inv-news-home';
         $( '.inv-news-confirm' ).addClass( 'd-none' );
+        $( '.inv-buttons' ).removeClass( 'd-none' );
         $( InvActualView ).removeClass( 'd-none' );
         $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
         $( '.inv-back' ).addClass( 'd-none' );
