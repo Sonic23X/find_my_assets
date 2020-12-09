@@ -78,9 +78,6 @@ $routes->get('/activos/getImageRight/(:alphanum)', 'Activo::GetImageRight/$1');
 $routes->post('/activos/setImage', 'Activo::SetImage');
 $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 
-$routes->get('/excel/activos', 'Activo::ExcelActivos');
-$routes->get('/excel/draft', 'Activo::ExcelDraft');
-
 /** AJAX - inventary **/
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
 $routes->get('/inventario/getItems', 'Inventary::SearchItemList');
@@ -102,6 +99,11 @@ $routes->post('/inventario/sucursales', 'Inventary::UpdateSucursal');
 $routes->post('/inventario/setFactura', 'Inventary::setFactura');
 $routes->post('/inventario/setGarantia', 'Inventary::setGarantia');
 $routes->post('/inventario/deleteNews', 'Inventary::deleteNews');
+
+$routes->get('/excel/activos', 'Activo::ExcelActivos');
+$routes->get('/activos/photos/(:alphanum)/(:num)', 'Activo::ActivoImage/$1/$2');
+$routes->get('/excel/draft', 'Activo::ExcelDraft');
+$routes->get('/draft/(:alphanum)/(:num)', 'Activo::DraftImage/$1/$2');
 
 /** AJAX - downs **/
 $routes->get('/bajas/getItems', 'Down::SearchList');
