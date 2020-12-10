@@ -3225,7 +3225,6 @@ $(document).ready(function( )
   //ready
   $( '#without-scan' ).click( event =>
   {
-
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-without-scan';
 
@@ -3384,7 +3383,6 @@ $(document).ready(function( )
   //ready
   $( '#new-scan' ).click( event =>
   {
-
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-new';
 
@@ -3668,6 +3666,24 @@ $(document).ready(function( )
       imprimir( '¡Hecho!', 'Activo cargado exitosamente', 'success' );
     else
       imprimir( '¡Hecho!', 'Activo actualizado exitosamente', 'success' );
+
+    //ajax de comprobación
+    let data = 
+    {
+      activo: localStorage.getItem( 'codigo' ),
+    };
+
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/activos/updateActivo',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      
+    });
 
     //borramos todo el caché
     isNew = false;
