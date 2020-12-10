@@ -77,6 +77,7 @@ $routes->get('/activos/getImageLeft/(:alphanum)', 'Activo::GetImageLeft/$1');
 $routes->get('/activos/getImageRight/(:alphanum)', 'Activo::GetImageRight/$1');
 $routes->post('/activos/setImage', 'Activo::SetImage');
 $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
+$routes->post('/activos/updateActivo', 'Activo::UpdateActivoFromDraft');
 
 /** AJAX - inventary **/
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
