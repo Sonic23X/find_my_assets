@@ -793,7 +793,7 @@ class Activo extends BaseController
 			if ( $activo != null && $activo[ $select ] != null )
 			{
 				$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ $select ] );
-				echo '<img src="'. $dataImage .'">';
+				echo '<img src="'. $dataImage .'" style="width: 25%">';
 			}
 			else
 				echo "Sin imagen";
@@ -827,7 +827,7 @@ class Activo extends BaseController
 			if ( $activo != null && $activo[ $select ] != null )
 			{
 				$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ $select ] );
-				echo '<img src="'. $dataImage .'">';
+				echo '<img src="'. $dataImage .'" style="width: 25%">';
 			}
 			else
 				echo "Sin imagen";
