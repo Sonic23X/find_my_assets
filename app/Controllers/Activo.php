@@ -522,6 +522,7 @@ class Activo extends BaseController
 
 	public function ExcelActivos( )
 	{
+
 		$builder = $this->db->table( 'activos' );
 		$builder->select( 'activos.Id, activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, 
 							usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area, activos.TS_Create, activos.TS_Update' );
@@ -539,7 +540,7 @@ class Activo extends BaseController
 		$sheet = $spreadsheet->getActiveSheet();
 
 		//iniciamos configuración inicial
-		$sheet->getColumnDimension('A')->setWidth(15);
+		$sheet->getColumnDimension('A')->setWidth(20);
 		$sheet->getColumnDimension('B')->setWidth(30);
 		$sheet->getColumnDimension('C')->setWidth(30);
 		$sheet->getColumnDimension('D')->setWidth(30);
@@ -556,8 +557,8 @@ class Activo extends BaseController
 		$sheet->getColumnDimension('O')->setWidth(50);
 
 		//iniciamos tabla 
-		$sheet->setCellValue( 'A1', 'Código QR' );
-		$sheet->setCellValue( 'B1', 'CTA. Definitiva' );
+		$sheet->setCellValue( 'A1', 'Número de activo' );
+		$sheet->setCellValue( 'B1', 'Tipo de activo' );
 		$sheet->setCellValue( 'C1', 'Nombre bien' );
 		$sheet->setCellValue( 'D1', 'Centro de costos' );
 		$sheet->setCellValue( 'E1', 'Nombre usuario asignado' );
@@ -576,7 +577,7 @@ class Activo extends BaseController
 		[
 			'font' => [
 				'bold' => true,
-				'color' => [ 'argb' => 'FFFF0000' ],
+				'color' => [ 'argb' => '00FFFFFF' ],
 			],
 			'alignment' => [
 				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -589,7 +590,7 @@ class Activo extends BaseController
 			],
 			'fill' => [
 				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-				'color' => [ 'argb' => '00FFFF00' ]
+				'color' => [ 'argb' => '00BFBFBF' ]
 			],
 		];
 		
@@ -614,8 +615,8 @@ class Activo extends BaseController
 			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
 			$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
 			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
-			$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lf/' . $activo->Id );
-			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lf/' . $activo->Id );
+			$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
+			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
 
 			$fila++;
 		}
@@ -637,9 +638,14 @@ class Activo extends BaseController
 		
 		$writer = new Xls($spreadsheet);
 
+		$dia = date('Y/m/d');
+		$hora = date('h:i');
+
+		$nombre = $dia . '_' . $hora . '_Activos.xls';
+
 		//response
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="activos.xls"');
+		header('Content-Disposition: attachment;filename="'. $nombre .'"');
 		header('Cache-Control: max-age=0');
 		$writer->save('php://output');
 	}
@@ -665,7 +671,7 @@ class Activo extends BaseController
 		$sheet = $spreadsheet->getActiveSheet();
 
 		//iniciamos configuración inicial
-		$sheet->getColumnDimension('A')->setWidth(15);
+		$sheet->getColumnDimension('A')->setWidth(20);
 		$sheet->getColumnDimension('B')->setWidth(30);
 		$sheet->getColumnDimension('C')->setWidth(30);
 		$sheet->getColumnDimension('D')->setWidth(30);
@@ -682,8 +688,8 @@ class Activo extends BaseController
 		$sheet->getColumnDimension('O')->setWidth(50);
 
 		//iniciamos tabla 
-		$sheet->setCellValue( 'A1', 'Código QR' );
-		$sheet->setCellValue( 'B1', 'CTA. Definitiva' );
+		$sheet->setCellValue( 'A1', 'Número de activo' );
+		$sheet->setCellValue( 'B1', 'Tipo de activo' );
 		$sheet->setCellValue( 'C1', 'Nombre bien' );
 		$sheet->setCellValue( 'D1', 'Centro de costos' );
 		$sheet->setCellValue( 'E1', 'Nombre usuario asignado' );
@@ -702,7 +708,7 @@ class Activo extends BaseController
 		[
 			'font' => [
 				'bold' => true,
-				'color' => [ 'argb' => 'FFFF0000' ],
+				'color' => [ 'argb' => '00FFFFFF' ],
 			],
 			'alignment' => [
 				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
@@ -715,7 +721,7 @@ class Activo extends BaseController
 			],
 			'fill' => [
 				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-				'color' => [ 'argb' => '00FFFF00' ]
+				'color' => [ 'argb' => '00BFBFBF' ]
 			],
 		];
 		
@@ -740,7 +746,7 @@ class Activo extends BaseController
 			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/fp/' . $activo->Id );
 			$sheet->setCellValue( 'N' . $fila, base_url() . '/draft/rp/' . $activo->Id );
 			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/rp/' . $activo->Id );
-			$sheet->setCellValue( 'O' . $fila, base_url() . '/draft/lf/' . $activo->Id );
+			$sheet->setCellValue( 'O' . $fila, base_url() . '/draft/lp/' . $activo->Id );
 			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/lp/' . $activo->Id );
 
 			$fila++;
@@ -763,9 +769,14 @@ class Activo extends BaseController
 		
 		$writer = new Xls($spreadsheet);
 
+		$dia = date('Y/m/d');
+		$hora = date('h:i');
+
+		$nombre = $dia . '_' . $hora . '_Draft.xls';
+
 		//response
 		header('Content-Type: application/vnd.ms-excel');
-		header('Content-Disposition: attachment;filename="draft.xls"');
+		header('Content-Disposition: attachment;filename="'. $nombre .'"');
 		header('Cache-Control: max-age=0');
 		$writer->save('php://output');
 	}
