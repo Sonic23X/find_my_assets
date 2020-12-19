@@ -34,6 +34,35 @@ class Inventary extends BaseController
     $this->db = \Config\Database::connect();
   }
 
+  public function Index( )
+  {
+    if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) )
+		{
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
+
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
+
+			//navbar
+			echo view( 'backoffice/common/navbar' );
+
+			//content - inventario
+			echo view( 'backoffice/sections/inventary' );
+
+			//Scripts y librerias
+			$footer = array( 'js' => 'inventario', 'dashboard' => false, 'carga' => false, 'inv' => true, 'bajas' => false );
+			echo view( 'backoffice/common/footer', $footer );
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+			return view( 'functions/redirect', $data );
+		}
+  }
+
   //método que funciona exclusivamente con AJAX - JQUERY
   function SearchItemList( )
   {

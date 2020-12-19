@@ -1,5 +1,5 @@
 
-            <div class="down d-none">
+            <div class="down">
 
               <div class="row text-center">
                 <div class="col-12 col-sm-12 col-md-12 text-center title-downs">

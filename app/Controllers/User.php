@@ -260,4 +260,26 @@ class User extends BaseController
             return view( 'errors/cli/error_404' );
     }
 
+    public function Macal()
+    {
+        $password = crypt( '12345678', '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
+		$emailEncrypt = md5( 'soporte@macal.cl' );
+
+        $insert =
+        [
+            'perfil' => 'user',
+            'nombre' => 'Bodega',
+            'apellidos' => 'TI',
+            'email' => 'soporte@macal.cl',
+            'password' => $password,
+            'suscripcion' => 0,
+            'verificacion' => 1,
+            'email_encriptado' => $emailEncrypt,
+            'patrocinador' => 'N/A',
+            'id_empresa' => 2,
+        ];
+
+        $this->userModel->insert( $insert );
+    }
+
 }
