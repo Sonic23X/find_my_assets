@@ -23,7 +23,7 @@ class Dashboard extends BaseController
 
 	function Index( )
 	{
-		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) )
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
 		{
 			//CSS, METAS y titulo
 			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
@@ -39,20 +39,8 @@ class Dashboard extends BaseController
 			//content - inicio
 			echo view( 'backoffice/sections/start' );
 
-			//content - scanner
-			echo view( 'backoffice/sections/scanner' );
-
-			//content - bajar
-			echo view( 'backoffice/sections/down' );
-
-			//content - mantener
-			echo view( 'backoffice/sections/keep' );
-
-			//content - Inventario
-			echo view( 'backoffice/sections/inventary' );
-
 			//Scripts y librerias
-			$footer = array( 'js' => 'dashboard' );
+			$footer = array( 'js' => 'dash', 'dashboard' => true, 'carga' => false, 'inv' => false, 'bajas' => false );
 			echo view( 'backoffice/common/footer', $footer );
 		}
 		else

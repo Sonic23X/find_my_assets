@@ -1,5 +1,5 @@
 
-            <div class="scanner d-none">
+            <div class="scanner">
 
               <div class="row mt-2">
                 <div class="col-12 col-sm-12 col-md-12 title-scanner">
