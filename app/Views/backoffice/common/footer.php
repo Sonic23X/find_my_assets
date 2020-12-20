@@ -5,25 +5,21 @@
       </div>
 
       <nav class="main-header nav bottom-navbar fixed-bottom">
-        <a href="#" id="home" class="nav-item-botom active">
+        <a href="<?= base_url('dashboard') ?>" class="nav-item-botom <?php if ( $dashboard ) { ?> active <?php } ?>">
           <i class="fas fa-home nav__icon"></i>
           <span class="nav__text">Inicio</span>
         </a>
-        <a href="#" id="scanner" class="nav-item-botom">
+        <a href="<?= base_url('alta') ?>" class="nav-item-botom <?php if ( $carga ) { ?> active <?php } ?>">
           <i class="fas fa-cloud-upload-alt nav__icon"></i>
           <span class="nav__text">Cargar</span>
         </a>
-        <a href="#" id="inventario" class="nav-item-botom">
+        <a href="<?= base_url('inventario') ?>" class="nav-item-botom <?php if ( $inv ) { ?> active <?php } ?>">
           <i class="fas fa-warehouse nav__icon"></i>
           <span class="nav__text">Inventario</span>
         </a>
-        <a href="#" id="down" class="nav-item-botom">
+        <a href="<?= base_url('bajas') ?>" class="nav-item-botom <?php if ( $bajas ) { ?> active <?php } ?>">
           <i class="fas fa-cloud-download-alt nav__icon"></i>
           <span class="nav__text">Bajar</span>
-        </a>
-        <a href="#" id="still" class="nav-item-botom d-none">
-          <i class="fas fa-clipboard-list nav__icon"></i>
-          <span class="nav__text">Mantener</span>
         </a>
       </nav>
 

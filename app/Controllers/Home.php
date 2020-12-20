@@ -95,7 +95,7 @@ class Home extends BaseController
 
 	public function Users( )
 	{
-		if ( $this->session->has( 'isLoggin' ) )
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) )
 		{
             //CSS, METAS y titulo
             $head = array( 'title' => 'Perfil | Find my assets', 'css' => 'dashboard' );
@@ -132,8 +132,9 @@ class Home extends BaseController
 		if ( $user != null)
 		{
 			$this->session->set( 'isLoggin', true );
-			$this->session->set( 'name', $user[ 'nombre' ] );
-			$this->session->set( 'empresa', $user[ 'id_empresa' ] );
+			$this->session->set( 'id', $user[ 'id_usuario' ] );
+            $this->session->set( 'name', $user[ 'nombre' ] );
+            $this->session->set( 'empresa', $user[ 'id_empresa' ] );
 			
 			//CSS, METAS y titulo
 			$head = array( 'title' => 'Carga | Find my assets', 'css' => 'dashboard' );
@@ -155,6 +156,35 @@ class Home extends BaseController
 		}
 		else
 			return view( 'errors/cli/error_404' );
+	}
+
+	public function OnlyScan( )
+	{
+		if ( $this->session->has( 'isLoggin' ) )
+		{
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Carga | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
+
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
+
+			//navbar
+			echo view( 'backoffice/test/navbar' );
+
+			//scanner
+			echo view( 'backoffice/test/scanner' );
+
+			//Scripts y librerias
+			$footer = array( 'js' => 'dashboard' );
+			echo view( 'backoffice/test/footer', $footer );
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+			return view( 'functions/redirect', $data );
+		}
 	}
 
 }

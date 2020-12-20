@@ -34,6 +34,35 @@ class Inventary extends BaseController
     $this->db = \Config\Database::connect();
   }
 
+  public function Index( )
+  {
+    if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
+		{
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
+
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
+
+			//navbar
+			echo view( 'backoffice/common/navbar' );
+
+			//content - inventario
+			echo view( 'backoffice/sections/inventary' );
+
+			//Scripts y librerias
+			$footer = array( 'js' => 'inventario', 'dashboard' => false, 'carga' => false, 'inv' => true, 'bajas' => false );
+			echo view( 'backoffice/common/footer', $footer );
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+			return view( 'functions/redirect', $data );
+		}
+  }
+
   //método que funciona exclusivamente con AJAX - JQUERY
   function SearchItemList( )
   {
@@ -691,11 +720,8 @@ class Inventary extends BaseController
     {
       try
       {
-        $tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
         $usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
-        $cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
-        $areas = $this->areaModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 
         $SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
         $builder = $this->db->query( $SQL );
@@ -704,6 +730,18 @@ class Inventary extends BaseController
         $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
         $builder = $this->db->query( $SQL );
         $sucursales = $builder->getResult( );
+
+        $SQL = "SELECT * FROM areas WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builder = $this->db->query( $SQL );
+        $areas = $builder->getResult( );
+
+        $SQL = "SELECT * FROM cc WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builder = $this->db->query( $SQL );
+        $cc = $builder->getResult( );
+
+        $SQL = "SELECT * FROM tipos WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builder = $this->db->query( $SQL );
+        $tipos = $builder->getResult( );
         
         if ( $tipos )
           $json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
@@ -932,7 +970,6 @@ class Inventary extends BaseController
     {
       try
       {
-        $sucursales = null;
         $builder = $this->db->table( 'activos' );
         $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
@@ -949,14 +986,7 @@ class Inventary extends BaseController
         }
         if ( $this->request->getVar( 'empresa' ) != null )
         {
-          $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->request->getVar( 'empresa' ))->findAll( );
           $builder->where( 'activos.ID_Company', $this->request->getVar( 'empresa' ) );
-        }
-        else
-        {
-          $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
-          $builderSucursales = $this->db->query( $SQL );
-          $sucursales = $builderSucursales->getResult( );
         }
         if ( $this->request->getVar( 'sucursal' ) != null )
         {
@@ -995,7 +1025,7 @@ class Inventary extends BaseController
           $num++;
         }
 
-        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num, 'sucursales' => $sucursales ) );
+        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num ) );
       }
       catch (\Exception $e)
       {
@@ -1080,5 +1110,32 @@ class Inventary extends BaseController
     else
       return view( 'errors/cli/error_404' );
   }
+
+  public function UpdateSucursal( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+      $sucursales = null;
+      $areas = null;
+      if ( $this->request->getVar( 'empresa' ) != null ) 
+      {
+        $sucursales = $this->sucursalModel->where( 'ID_Empresa', $this->request->getVar( 'empresa' ))->findAll( );
+			  $areas = $this->areaModel->where( 'id_empresa', $this->request->getVar( 'empresa' ))->findAll( );
+      }
+      else
+      {
+        $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builderSucursales = $this->db->query( $SQL );
+        $sucursales = $builderSucursales->getResult( );
+
+        $SQL = "SELECT * FROM areas WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $builderAreas = $this->db->query( $SQL );
+        $areas = $builderAreas->getResult( );
+      }
+			echo json_encode( array( 'status' => 200, 'sucursales' => $sucursales, 'areas' => $areas ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
 
 }

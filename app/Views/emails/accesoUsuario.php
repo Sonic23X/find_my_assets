@@ -6,6 +6,59 @@
 
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
 					integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+		<style>
+
+			a
+			{
+				text-decoration: none;
+				color: #fff !important;
+			}
+
+			.button
+			{
+				display: inline-block;
+				font-weight: 400;
+				color: #fff;
+				text-align: center;
+				vertical-align: middle;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				background: rgb( 255, 222, 89 );
+				border-color: rgb( 255, 222, 89 );
+				padding: .375rem .75rem;
+				font-size: 1rem;
+				line-height: 1.5;
+				border-radius: .25rem;
+				transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+				width: 50%;
+			}
+
+			.button:hover
+			{
+				background: rgb(230, 200, 79);
+				border-color: rgb(230, 200, 79);
+				color: #fff;
+				text-decoration: none;
+			}
+
+			.button:focus
+			{
+				background: rgb(230, 200, 79);
+				border-color: rgb(230, 200, 79);
+				border-color: rgb(230, 200, 79);
+				box-shadow:0 0 0 .2rem rgba(230, 200, 79,.5);
+			}
+
+			table, th, td 
+			{
+				border: 1px solid black;
+				border-collapse: collapse;
+			}
+
+			</style>
 	</head>
 	<body>
 		<div style="width:100%; background:#eee; position:relative; font-family:sans-serif; padding-bottom:40px">
@@ -15,12 +68,55 @@
 
 			<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
 				<center>
-					<h4 style="font-weight: 50; color:#999">Enlace para acceso a la aplicación</h4>
+					<h2 style="font-weight: 50; color:#999">TOMA DE INVENTARIO REMOTO</h2>
 					<hr style="border:1px solid #ccc; width:80%">
-					<h6 style="font-weight:100; color:#999; padding:0 20px">Pulse el siguiente botón para ir a la plataforma</h6>
+					<h6 style="font-weight:100; color:#999; padding:0 20px">Hola <b><?= $nombre ?></b>, desde este momento podrás iniciar la toma de tus activos asignados.</h6>
+					<?php
+						if( $activos == null )
+						{
+						?>
+							<h6 style="font-weight:100; color:#999; padding:0 20px">Aun no cuentas con activos asignados, puedes consultarlos desde aquí.</h6>		
+						<?php
+						}
+						else
+						{
+						?>
+							<h6 style="font-weight:100; color:#999; padding:0 20px">El detalle de lo que debes inventariar es:</h6>
+							<table style="text-align:center; color:#999;">
+								<thead>
+									<tr>
+										<th>No. de activo</th>
+										<th>Activo Asignado</th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php
+									foreach( $activos as $activo )
+									{
+										?>
+										<tr>
+											<td><?= $activo[ 'ID_Activo' ] ?></td>
+											<td><?= $activo[ 'Nom_Activo' ] ?></td>
+										</tr>
+										<?php
+									}
+								?>
+								</tbody>
+							</table>		
+						<?php
+						}
+					?>
+					<br>
 					<a href="<?= $urlUsuario ?>" target="_blank" class="button mt-3 mb-3 w-50">
-						acceder
+						Comenzar ahora
 					</a>
+					<p>
+						<h6 style="font-weight:100; color:#999; padding:0 20px">Si presentas algún problema o duda con este proceso comunícalo al administrador del sistema en tu compañía.</h6>
+					</p>
+					<hr style="border:1px solid #ccc; width:80%">
+					<p>
+						<span style="color:#999; font-size:8px;">Si este correo no es para ti solo ignóralo</span>
+					</p>
 				</center>
 			</div>
 		</div>

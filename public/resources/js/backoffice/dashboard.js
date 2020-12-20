@@ -1,9 +1,6 @@
 
 //variables globales
 var url = $('#url').val( );
-var lon;
-var lat;
-var points = null;
 var isNew = false;
 var activeMap;
 var actualStepScanner = 1;
@@ -59,156 +56,6 @@ let spanish =
     sSortDescending: ': Activar para ordenar la columna de manera descendente',
   },
 };
-
-/* --- Dashboard --- */
-function dashboardData( ) 
-{
-  $( '.table-1-valor-activos' ).html( '' );
-  $( '.table-2-activos-alta' ).html( '' );
-  $( '.table-3-activos-baja' ).html( '' );
-
-  $.ajax({
-    url: url + '/dashboard/data',
-    type: 'GET',
-    dataType: 'json',
-  })
-  .done( response =>
-  {
-    if ( response.status == 200 )
-    {
-      let tabla1 = response.montos;
-
-      if ( tabla1.length == 0 ) 
-      {
-        $( '.table-1-valor-activos' ).append( '<tr><td>Sin activos</td><td></td></tr>' );
-      } 
-      else 
-      {
-        tabla1.forEach( monto => 
-        {
-          let plantilla = ``;
-          if ( monto.monto == 0 ) 
-          {
-            plantilla = 
-            `
-              <tr>
-                <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success dashboardTooltips" data-toggle="tooltip" data-placement="top" title="Sin monto">$0MM</span></td>
-              </tr>
-            `;
-          }
-          else
-          {
-            plantilla = 
-            `
-              <tr>
-                <td>${ monto.tipo }</td>
-                <td><span class="badge bg-success dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( monto.monto ) ) }">$${ Number( ( monto.monto / 1000000 ).toFixed( 2 ) ) }MM</span></td>
-              </tr>
-            `;
-          }
-          
-          $( '.table-1-valor-activos' ).append( plantilla );
-        }); 
-      }
-
-      //grafica de dona - variables
-      var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
-      var donutData =
-      {
-        labels: response.graficaLabels,
-        datasets:
-        [
-          {
-            data: response.graficaValues,
-            backgroundColor:
-            [
-              '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'
-            ],
-          }
-        ]
-      };
-      var donutOptions =
-      {
-        maintainAspectRatio: false,
-        responsive: true,
-      };
-
-      //creación de la grafica
-      var donutChart = new Chart(donutChartCanvas,
-      {
-        type: 'doughnut',
-        data: donutData,
-        options: donutOptions
-      });
-
-      //tabla altas
-      let altas = response.altas;
-
-      if ( altas.length == 0 ) 
-      {
-        $( '.table-2-activos-alta' ).append( '<tr><td>Sin altas</td><td></td><td></td></tr>' );
-      } 
-      else 
-      {
-        altas.forEach( item => 
-        {
-          let plantilla = 
-          `
-            <tr>
-              <td>${ item.Nom_Activo }</td>
-              <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
-              <td>
-                <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
-              </td>
-            </tr>
-          `;
-  
-          $( '.table-2-activos-alta' ).append( plantilla );
-        });
-      }
-
-      //tabla bajas
-      let bajas = response.bajas;
-
-      if (bajas.length == 0) 
-      {
-        $( '.table-3-activos-baja' ).append( '<tr><td>Sin bajas</td><td></td></tr>' );
-      }
-      else
-      {
-        bajas.forEach( item => 
-        {
-          let plantilla = 
-          `
-            <tr>
-              <td>${ item.Nom_Activo }</td>
-              <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
-              <td>
-                <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
-              </td>
-            </tr>
-          `;
-  
-          $( '.table-3-activos-baja' ).append( plantilla );
-        });
-      }
-
-      //mapa
-      points = response.points;
-      navigator.geolocation.getCurrentPosition( setCoordenadasMapG );
-
-      //tooltips
-      $( '.dashboardTooltips' ).tooltip( );
-  
-
-    }
-  })
-  .fail( ( ) =>
-  {
-    imprimir( 'Ups..', 'Error al conectar con el servidor2', 'error' );
-  });
-}
 
 /* --- scanner --- */
 var wizzardActualView = '.scanner-start';
@@ -267,11 +114,11 @@ function imprimir ( titulo, mensaje, tipo )
 
 function getScannerFormData( )
 {
-  $( '#tipoActivo' ).html( );
-  $( '#asignacion' ).html( );
-  $( '#empresas' ).html( );
-  $( '#cCosto' ).html( );
-  $( '#area' ).html( );
+  $( '#tipoActivo' ).html( '' );
+  $( '#asignacion' ).html( '' );
+  $( '#empresas' ).html( '' );
+  $( '#cCosto' ).html( '' );
+  $( '#area' ).html( '' );
 
   $.ajax({
     url: url + '/activos/getFormData',
@@ -324,20 +171,6 @@ function getScannerFormData( )
 
       });
 
-      let sucursales = response.sucursales;
-
-      sucursales.forEach( ( sucursal , i ) =>
-      {
-
-        let typePlantilla =
-        `
-          <option value="${ sucursal.id }">${ sucursal.Desc }</option>
-        `;
-
-        $( '#sucursal' ).append( typePlantilla );
-
-      });
-
       let cc = response.cc;
 
       cc.forEach( ( ccUnico , i ) =>
@@ -352,8 +185,22 @@ function getScannerFormData( )
 
       });
 
-      let areas = response.areas;
+      let sucursales = response.sucursales;
       
+      sucursales.forEach( ( sucursal , i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+        `;
+
+        $( '#sucursal' ).append( typePlantilla );
+
+      });
+
+      let areas = response.areas;
+    
       areas.forEach( ( area , i ) =>
       {
 
@@ -371,46 +218,6 @@ function getScannerFormData( )
     {
       imprimir( 'Ups..', response.msg, 'error' );
     }
-  });
-}
-
-function setCoordenadasMapG( position )
-{
-  if ( points.length > 0 ) 
-  {
-    let coord = points[ 0 ].GPS.split( ',' );
-
-    lon = coord[ 1 ];
-    lat = coord[ 0 ];
-  }
-  else
-  {
-    lon = position.coords.longitude;
-    lat = position.coords.latitude;
-  }
-
-  var globalMap = L.map( 'globalMap' ).setView( [ lat, lon ], 16 );
-
-  L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-  {
-      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-      maxZoom: 18,
-      id: 'mapbox/streets-v11',
-      tileSize: 512,
-      zoomOffset: -1,
-      accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
-  }).addTo( globalMap );
-
-  points.forEach( point =>
-  {
-    let coordenadas = point.GPS.split( ',' );
-    
-    let latitud = coordenadas[ 0 ];
-    let longitud = coordenadas[ 1 ];
-
-    L.marker( [ latitud, longitud ] ).addTo( globalMap )
-     .bindPopup( point.Desc + '.\n' + point.Nom_Activo + '.\n A.:' + point.nombre)
-     .openPopup( );
   });
 }
 
@@ -1815,7 +1622,6 @@ function getInvFormData( )
   })
   .done( response =>
   {
-    console.log( response );
     if ( response.status == 200 )
     {
       let tipos = response.types;
@@ -2126,7 +1932,7 @@ function getDraftInfoNew( id )
     if ( response.status == 200 )
     {
       $( '.new-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
-      $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.new-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
       $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
       let activo = response.activo;
@@ -2379,6 +2185,10 @@ function viewProcessInfo( id, details = 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
       else
         $( '.modalProcessButton' ).addClass( 'd-none' );
+
+      $( '.process-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.process-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $( '.process-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
@@ -2683,25 +2493,6 @@ function inventaryFiltros( )
         `;
 
         $( '.table-inventary-actives' ).append( typePlantilla );
-
-        $( '#invFSucursal' ).html( '' );
-        $( '#invFSucursal' ).append( '<option value="">Todas</option>' );
-
-        if ( response.sucursales != null) 
-        {
-          response.sucursales.forEach( ( sucursal, i ) =>
-          {
-
-            let typePlantilla =
-            `
-              <option value="${ sucursal.id }">${ sucursal.Desc }</option>
-            `;
-
-            $( '#invFSucursal' ).append( typePlantilla );
-
-          });
-        }
-
       });
 
       if ( inventarioTable != null )
@@ -2909,24 +2700,6 @@ function downFiltros( )
       });
 
       $( '.down-count' ).html( response.number );
-
-      $( '#downSucursal' ).html( '' );
-      $( '#downSucursal' ).append( '<option value="">Todas</option>' );
-
-      if ( response.sucursales != null) 
-      {
-        response.sucursales.forEach( ( sucursal, i ) =>
-        {
-
-          let typePlantilla =
-          `
-            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
-          `;
-
-          $( '#downSucursal' ).append( typePlantilla );
-
-        });
-      }
     }
     else
     {
@@ -3248,414 +3021,7 @@ $(document).ready(function( )
 
   /* --- scanner - wizzard --- */
 
-  $( '#numActivoS2' ).keydown( e =>
-  {
-    if ( e.keyCode == 32 || e.keyCode == 192 )
-      return false;
-    else
-      return true;
-  });
-
-  //ready
-  $( '#without-scan' ).click( event =>
-  {
-
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-without-scan';
-
-    setInsMessage( wizzardActualView );
-
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
-
-    window.scroll(0, 0);
-  });
-
-  //ready
-  $( '#searchCode' ).click( event =>
-  {
-
-    let data =
-    {
-      codigo: $( '#numActivoS1' ).val( )
-    };
-
-    //buscamos el codigo en la BDD
-    $.ajax({
-      url: url + '/activos/search',
-      type: 'POST',
-      dataType: 'json',
-      data: data
-    })
-    .done( response =>
-    {
-
-      if (response.status == 200)
-      {
-        $( '#scanner-subtipo' ).html( response.tipo.Desc );
-        $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
-        $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
-        $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos );
-        $( '#vidaUtil' ).val( response.activo.Vida_Activo );
-        $( '#empresas' ).val( response.activo.ID_Company );
-        $( '#sucursal' ).val( response.activo.ID_Sucursal );
-        $( '#area' ).val( response.activo.ID_Area );
-        localStorage.setItem( 'codigo', response.activo.ID_Activo );
-        isNew = false;
-        actualStepScanner = 2;
-
-        if ( response.activo.ID_MetDepre != null )
-        {
-          switch ( response.activo.ID_MetDepre )
-          {
-            case '0':
-              $( '#scanner-vida-util' ).html( '( hr / km / un )' );
-              break;
-            case '1':
-              $( '#scanner-vida-util' ).html( '( meses )' );
-              break;
-            case '2':
-              $( '#scanner-vida-util' ).html( '( unidades )' );
-              break;
-            case '3':
-              $( '#scanner-vida-util' ).html( '( kilometros )' );
-              break;
-            case '4':
-              $( '#scanner-vida-util' ).html( '( horas )' );
-              break;
-          }
-        }
-
-        wizzardPreviewView = wizzardActualView;
-        wizzardActualView = '.scanner-status';
-
-        setInsMessage( wizzardActualView, true );
-
-        $( wizzardPreviewView ).addClass( 'd-none' );
-        $( wizzardActualView ).removeClass( 'd-none' );
-
-        window.scroll(0, 0);
-      }
-      else
-      {
-        Swal.fire({
-          icon: 'error',
-          title: 'Ups..',
-          text: response.msg,
-          allowOutsideClick: false,
-          showCancelButton: true,
-          confirmButtonColor: '#5cb85c',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Crear como nuevo',
-          cancelButtonText: 'Aceptar',
-        })
-        .then((result) => {
-          if (result.isConfirmed)
-          {
-            localStorage.setItem( 'codigo', $( '#numActivoS1' ).val( ) );
-            isNew = true;
-
-            wizzardPreviewView = wizzardActualView;
-            wizzardActualView = '.scanner-form';
-
-            setInsMessage( wizzardActualView );
-
-            $( wizzardPreviewView ).addClass( 'd-none' );
-            $( wizzardActualView ).removeClass( 'd-none' );
-
-            window.scroll(0, 0);
-          }
-        });
-      }
-    });
-  });
-
-  //ready
-  $( '#continueScan' ).click( event =>
-  {
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-geolocation';
-
-    setInsMessage( wizzardActualView );
-
-    navigator.geolocation.getCurrentPosition( setCoordenadasActiveMap );
-
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
-
-    window.scroll(0, 0);
-  });
-
-  //ready
-  $( '#new-scan' ).click( event =>
-  {
-
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-new';
-
-    setInsMessage( wizzardActualView );
-
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
-
-    window.scroll(0, 0);
-  });
-
-  //ready
-  $( '#update1' ).click( event =>
-  {
-    isNew = false;
-
-    //buscamos el activo en la bdd
-    let data =
-    {
-      codigo: localStorage.getItem( 'codigo' ),
-    };
-
-    //buscamos el codigo en la BDD
-    $.ajax({
-      url: url + '/activos/search',
-      type: 'POST',
-      dataType: 'json',
-      data: data
-    })
-    .done( response =>
-    {
-      if (response.status == 200)
-      {
-
-        //colocamos la información en el formulario
-        $( '#tipoActivo' ).val( response.activo.ID_Tipo );
-        $( '#name' ).val( response.activo.Nom_Activo );
-        $( '#cCosto' ).val( response.activo.ID_CC );
-        $( '#serie' ).val( response.activo.NSerie_Activo );
-        $( '#asignacion' ).val( response.activo.User_Inventario );
-        $( '#desc' ).val( response.activo.Des_Activo );
-
-        wizzardPreviewView = wizzardActualView;
-        wizzardActualView = '.scanner-form';
-
-        setInsMessage( wizzardActualView, true );
-
-        $( wizzardPreviewView ).addClass( 'd-none' );
-        $( wizzardActualView ).removeClass( 'd-none' );
-
-        window.scroll(0, 0);
-      }
-      else
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
-      }
-    });
-
-
-  });
-
-  //ready
-  $( '#update2' ).click( event =>
-  {
-    let codigo = $( '#numActivoS2' ).val( );
-
-    if ( codigo.length == 0 )
-    {
-      imprimir( 'Ups..', 'EL campo del código es obligatorio', 'error' );
-      return;
-    }
-
-    //validamos que el activo no exista con ese ID
-    $.ajax({
-      url: url + '/activos/validateNew',
-      type: 'POST',
-      dataType: 'json',
-      data: { codigo: codigo }
-    })
-    .done( response =>
-    {
-      if (response.status == 200)
-      {
-        localStorage.setItem( 'codigo', codigo );
-        isNew = true;
-        actualStepScanner = 2;
-
-        wizzardPreviewView = wizzardActualView;
-        wizzardActualView = '.scanner-form';
-
-        setInsMessage( wizzardActualView );
-
-        $( wizzardPreviewView ).addClass( 'd-none' );
-        $( wizzardActualView ).removeClass( 'd-none' );
-
-        window.scroll(0, 0);
-      }
-      else
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
-      }
-    });
-
-  });
-
-  //ready
-  $( '.active-form' ).submit( event =>
-  {
-    event.preventDefault( );
-
-    //validamos los campos
-    if ( $( '#name' ).val( ) == '' ||
-         $( '#asignacion' ).val( ) == '' ||
-         $( '#desc' ).val( ) == ''
-       )
-    {
-      imprimir( '¡Ups!', 'Todos los campos son obligatorios', 'error' );
-      return;
-    }
-
-    let data =
-    {
-      codigo: localStorage.getItem( 'codigo' ),
-      tipo: $( '#tipoActivo' ).val( ),
-      nombre: $( '#name' ).val( ),
-      centro_costo: $( '#cCosto' ).val( ),
-      no_serie: $( '#serie' ).val( ),
-      asignacion: $( '#asignacion' ).val( ),
-      descripcion: $( '#desc' ).val( )
-    };
-
-    //ajax here
-    let baseurl;
-
-    if ( isNew )
-      baseurl = url + '/activos/new';
-    else
-      baseurl = url + '/activos/updateInfo';
-
-    $.ajax({
-      url: baseurl,
-      type: 'POST',
-      dataType: 'json',
-      data: data
-    })
-    .done( response =>
-    {
-      if (response.status == 200)
-      {
-        wizzardPreviewView = wizzardActualView;
-        wizzardActualView = '.scanner-geolocation';
-
-        setInsMessage( wizzardActualView );
-
-        navigator.geolocation.getCurrentPosition( setCoordenadasActiveMap );
-
-        $( wizzardPreviewView ).addClass( 'd-none' );
-        $( wizzardActualView ).removeClass( 'd-none' );
-
-        window.scroll(0, 0);
-      }
-      else
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
-      }
-    });
-
-  });
-
-  $( '#sucursal' ).change(function(event)
-  {
-    //obtenemos las areas conforme el valor de la sucursal
-  });
-
-  //ready
-  $( '#nextGeo' ).click( event =>
-  {
-    event.preventDefault( );
-
-    let gps = `${ lat },${ lon }`;
-
-    //reunimos la informacion en un JSON
-    let data =
-    {
-      codigo: localStorage.getItem( 'codigo' ),
-      vida: $( '#vidaUtil' ).val( ),
-      empresa: $( '#empresas' ).val( ),
-      sucursal: $( '#sucursal' ).val( ),
-      area: $( '#area' ).val( ),
-      gps: gps,
-    };
-
-    //actualizamos el equipo
-    $.ajax({
-      url: url + '/activos/setGeo',
-      type: 'POST',
-      dataType: 'json',
-      data: data,
-    })
-    .done( response =>
-    {
-      if ( response.status == 200 )
-      {
-        let bool = setImageFront( );
-
-        if ( bool )
-        {
-          wizzardPreviewView = wizzardActualView;
-          wizzardActualView = '.scanner-photos';
-          actualStepScanner = 3;
-
-          setInsMessage( wizzardActualView );
-
-          $( wizzardPreviewView ).addClass( 'd-none' );
-          $( wizzardActualView ).removeClass( 'd-none' );
-
-          window.scroll(0, 0);
-        }
-      }
-      else
-      {
-        imprimir( 'Ups..', response.msg, 'error' );
-      }
-    });
-
-  });
-
-  //ready
-  $( '#scanFinish' ).click( event =>
-  {
-    event.preventDefault( );
-
-    if (isNew)
-      imprimir( '¡Hecho!', 'Activo cargado exitosamente', 'success' );
-    else
-      imprimir( '¡Hecho!', 'Activo actualizado exitosamente', 'success' );
-
-    //borramos todo el caché
-    isNew = false;
-    localStorage.removeItem( 'codigo' );
-    activeMap.off( );
-    activeMap.remove( );
-    $( '#tipoActivo' ).val( '' );
-    $( '#name' ).val( '' );
-    $( '#cCosto' ).val( '' );
-    $( '#serie' ).val( '' );
-    $( '#asignacion' ).val( '' );
-    $( '#desc' ).val( '' );
-    $( '#numActivoS1' ).val( '' );
-    $( '#numActivoS2' ).val( '' );
-
-    $( '#scanner-image-front' ).html( '<span>Sin imagen</span>' );
-    $( '#scanner-image-right' ).html( '<span>Sin imagen</span>' );
-    $( '#scanner-image-left' ).html( '<span>Sin imagen</span>' );
-
-    wizzardPreviewView = wizzardActualView;
-    wizzardActualView = '.scanner-start';
-    actualStepScanner = 1;
-
-    setInsMessage( wizzardActualView );
-
-    $( wizzardPreviewView ).addClass( 'd-none' );
-    $( wizzardActualView ).removeClass( 'd-none' );
-
-    window.scroll(0, 0);
-  });
+  
 
   /* --- inventario --- */
 
@@ -3760,6 +3126,7 @@ $(document).ready(function( )
       case '.inv-news-confirm':
         InvActualView = '.inv-news-home';
         $( '.inv-news-confirm' ).addClass( 'd-none' );
+        $( '.inv-buttons' ).removeClass( 'd-none' );
         $( InvActualView ).removeClass( 'd-none' );
         $( '#inv-instructions' ).html( 'Selecciona un activo y confirma su alta' );
         $( '.inv-back' ).addClass( 'd-none' );
@@ -3801,11 +3168,120 @@ $(document).ready(function( )
     }
   });
 
+  $( '#invFEmpresa' ).change( event =>
+  {
+    let data = 
+    {
+      empresa: $( '#invFEmpresa' ).val( ),
+    };
+
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/inventario/sucursales',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        $( '#invFSucursal' ).html( '' );
+        $( '#invFSucursal' ).append( '<option value="">Todas</option>' );
+        $( '#invFArea' ).html( '' );
+        $( '#invFArea' ).append( '<option value="">Todas</option>' );
+
+        response.sucursales.forEach( ( sucursal , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+          `;
+
+          $( '#invFSucursal' ).append( typePlantilla );
+
+        });
+
+        response.areas.forEach( ( area , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ area.id }">${ area.descripcion }</option>
+          `;
+
+          $( '#invFArea' ).append( typePlantilla );
+
+        });
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
+  });
+  
   /* --- Bajas --- */
 
   $( '#down-select' ).change( (event) =>
   {
     $( '.motivo-down-form' ).removeClass( 'd-none' );
+  });
+
+  $( '#downEmpresa' ).change( event =>
+  {
+    let data = 
+    {
+      empresa: $( '#downEmpresa' ).val( ),
+    };
+
+    //buscamos el codigo en la BDD
+    $.ajax({
+      url: url + '/inventario/sucursales',
+      type: 'POST',
+      dataType: 'json',
+      data: data
+    })
+    .done( response =>
+    {
+      if (response.status == 200)
+      {
+        $( '#downSucursal' ).html( '' );
+        $( '#downSucursal' ).append( '<option value="">Todas</option>' );
+        $( '#downArea' ).html( '' );
+        $( '#downArea' ).append( '<option value="">Todas</option>' );
+
+        response.sucursales.forEach( ( sucursal , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ sucursal.id }">${ sucursal.Desc }</option>
+          `;
+
+          $( '#downSucursal' ).append( typePlantilla );
+
+        });
+
+        response.areas.forEach( ( area , i ) =>
+        {
+
+          let typePlantilla =
+          `
+            <option value="${ area.id }">${ area.descripcion }</option>
+          `;
+
+          $( '#downArea' ).append( typePlantilla );
+
+        });
+      }
+      else
+      {
+        imprimir( 'Ups..', response.msg, 'error' );
+      }
+    });
+
   });
 
 });

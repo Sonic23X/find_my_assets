@@ -23,43 +23,31 @@ class Dashboard extends BaseController
 
 	function Index( )
 	{
-		if ( $this->session->has( 'isLoggin' ) )
-			{
-				//CSS, METAS y titulo
-				$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
-				echo view( 'backoffice/common/head', $head );
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
+		{
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
 
-				//sidebar
-				$sidebar = array( 'name' => $this->session->name );
-				echo view( 'backoffice/common/sidebar', $sidebar );
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
 
-				//navbar
-				echo view( 'backoffice/common/navbar' );
+			//navbar
+			echo view( 'backoffice/common/navbar' );
 
-				//content - inicio
-				echo view( 'backoffice/sections/start' );
+			//content - inicio
+			echo view( 'backoffice/sections/start' );
 
-				//content - scanner
-				echo view( 'backoffice/sections/scanner' );
-
-				//content - bajar
-				echo view( 'backoffice/sections/down' );
-
-				//content - mantener
-				echo view( 'backoffice/sections/keep' );
-
-				//content - Inventario
-				echo view( 'backoffice/sections/inventary' );
-
-				//Scripts y librerias
-				$footer = array( 'js' => 'dashboard' );
-				echo view( 'backoffice/common/footer', $footer );
-			}
-			else
-			{
-				$data = array( 'url' => base_url( '/ingreso' ) );
-				return view( 'functions/redirect', $data );
-			}
+			//Scripts y librerias
+			$footer = array( 'js' => 'dash', 'dashboard' => true, 'carga' => false, 'inv' => false, 'bajas' => false );
+			echo view( 'backoffice/common/footer', $footer );
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+			return view( 'functions/redirect', $data );
+		}
 	}
 
 	function getData( )
@@ -71,10 +59,12 @@ class Dashboard extends BaseController
 		$values = [ ];
 		foreach( $tipos as $tipo )
 		{
-			$activos = $this->activoModel->where( 'ID_Tipo', $tipo['id'] )->where( 'activos.TS_Delete', null )->select( 'Pre_Compra' )->findAll( );
+			$activos = $this->activoModel->where( 'ID_Tipo', $tipo['id'] )
+										 ->where( 'TS_Delete', null )
+										 ->select( 'Pre_Compra' )
+										 ->findAll( );
 			$monto = 0;
 			$num = 0;
-
 			foreach( $activos as $activo )
 			{
 				$monto = $monto + $activo[ 'Pre_Compra' ];
