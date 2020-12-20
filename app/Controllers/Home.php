@@ -177,7 +177,7 @@ class Home extends BaseController
 			echo view( 'backoffice/test/scanner' );
 
 			//Scripts y librerias
-			$footer = array( 'js' => 'dashboard' );
+			$footer = array( 'js' => 'scanner' );
 			echo view( 'backoffice/test/footer', $footer );
 		}
 		else
