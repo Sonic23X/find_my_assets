@@ -2,7 +2,12 @@
             <div class="scanner">
 
               <div class="row mt-2">
-                <div class="col-12 col-sm-12 col-md-12 title-scanner">
+                <div class="col-1 col-sm-1 col-md-1">
+                  <a href="#" class="scanner-back d-none">
+                    <i class="fas fa-arrow-left"></i>
+                  </a>
+                </div>
+                <div class="col-11 col-sm-11 col-md-11 title-scanner">
                   <span>Carga tu inventario en 3 simples pasos</span>
                 </div>
               </div>
