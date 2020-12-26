@@ -201,7 +201,7 @@ class Activo extends BaseController
 					'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
 					'ID_CC' => $this->request->getVar( 'centro_costo' ),
 					'User_Inventario' => $this->request->getVar( 'asignacion' ),
-					'TS_Create' => date( 'Y/n/j' ),
+					'TS_Create' => date( 'Y/n/j H:i:s' ),
 				];
 
 				if ( $this->draftModel->insert( $insert ) )
@@ -497,7 +497,10 @@ class Activo extends BaseController
 			{
 				array_push( $empresas, $empresa->id_empresa );
 			}
-
+			$draftBuilder = $this->db->table( 'draft' );
+			$draftBuilder->where( 'ID_Activo', $this->request->getVar( 'activo' ) );
+			$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ) ]);
+			
 			$draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
 									   ->whereIn( 'ID_Company', $empresas )
 									   ->select( $campos )
@@ -508,6 +511,7 @@ class Activo extends BaseController
 				$builder = $this->db->table( 'activos' );
 				$activoData =
 				[
+					'TS_Update' => date( 'Y/n/j H:i:s' ),
 					'Nom_Activo' => $draft[ 'Nom_Activo' ],
 					'BC_Activo' => $draft[ 'BC_Activo' ],
 					'ID_Company' => $draft[ 'ID_Company' ],
