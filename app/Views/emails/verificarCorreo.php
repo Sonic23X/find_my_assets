@@ -64,17 +64,17 @@
 			<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
 
 				<center>
-					<h3 style="font-weight:100; color:#999">VERIFIQUE SU DIRECCION DE EMAIL</h3>
+					<h3 style="font-weight:100;">VERIFIQUE SU DIRECCION DE EMAIL</h3>
 
 					<hr style="border:1px solid #ccc; width:80%">
 
-					<h4 style="font-weight:100; color:#999; padding:0 20px">Para comenzar a usar su cuenta, debe confirmar su email</h4>
+					<h4 style="font-weight:100; padding:0 20px">Para comenzar a usar su cuenta, debe confirmar su email</h4>
 
 					<a href="<?= base_url( '/confirmacion' ) ?>/<?= $llave ?>" target="_blank" class="button mt-3 mb-3 w-50">
 						Verifique su mail
 					</a>
 
-					<h6 style="font-weight:100; color:#999">Si no reconoce este email, puede ignorar este email y eliminarlo.</h6>
+					<h6 style="font-weight:100;">Si no reconoce este email, puede ignorar este email y eliminarlo.</h6>
 				</center>
 			</div>
 		</div>
