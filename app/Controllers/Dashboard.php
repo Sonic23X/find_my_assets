@@ -76,9 +76,15 @@ class Dashboard extends BaseController
 			array_push( $values, $num );
 		}
 
-		$bajas = $this->activoModel->where( 'ID_Company', $this->session->empresa )->where( 'TS_Delete !=', null )->select( 'TS_Delete, Nom_Activo, Pre_Compra' )->findAll( );
+		$bajas = $this->activoModel->where( 'ID_Company', $this->session->empresa )->where( 'TS_Delete !=', null )
+																				   ->select( 'TS_Delete, Nom_Activo, Pre_Compra' )
+																				   ->orderBy('TS_Create', 'desc')
+																				   ->findAll( 5 );
 
-		$altas = $this->activoModel->where( 'ID_Company', $this->session->empresa )->where( 'TS_Delete', null )->select( 'TS_Create, Nom_Activo, , Pre_Compra' )->findAll( );
+		$altas = $this->activoModel->where( 'ID_Company', $this->session->empresa )->where( 'TS_Delete', null )
+																				   ->select( 'TS_Create, Nom_Activo, , Pre_Compra' )
+																				   ->orderBy('TS_Create', 'desc')
+																				   ->findAll( 5 );
 
 		$builder = $this->db->table( 'activos' );
         $builder->select( 'activos.Nom_Activo, activos.GPS, tipos.Desc, usuarios.nombre' );

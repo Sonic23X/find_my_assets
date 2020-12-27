@@ -15,9 +15,9 @@
 
 			<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
 				<center>
-					<h4 style="font-weight: 50; color:#999">Email de contacto a través del formulario web</h4>
+					<h4 style="font-weight: 50; ">Email de contacto a través del formulario web</h4>
 					<hr style="border:1px solid #ccc; width:80%">
-					<h6 style="font-weight:100; color:#999; padding:0 20px">Detalles</h6>
+					<h6 style="font-weight:100; padding:0 20px">Detalles</h6>
 					<table class="table table-borderless text-center">
 					  <thead>
 					    <tr>
