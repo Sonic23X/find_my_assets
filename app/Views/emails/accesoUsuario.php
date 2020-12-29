@@ -69,19 +69,20 @@
 			<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
 				<center>
 					<h2 style="font-weight: 50;">TOMA DE INVENTARIO REMOTO</h2>
+					<h3 style="font-weight: 50;"><b><?= $empresa ?></b></h3>
 					<hr style="border:1px solid #ccc; width:80%">
-					<h6 style="font-weight:100; padding:0 20px">Hola <b><?= $nombre ?></b>, desde este momento podrás iniciar la toma de tus activos asignados.</h6>
+					<h4 style="font-weight:100; padding:0 20px">Hola <b><?= $nombre ?></b>, desde este momento podrás iniciar la toma de tus activos asignados.</h4>
 					<?php
 						if( $activos == null )
 						{
 						?>
-							<h6 style="font-weight:100; padding:0 20px">Aun no cuentas con activos asignados, puedes consultarlos desde aquí.</h6>		
+							<h4 style="font-weight:100; padding:0 20px">Aun no cuentas con activos asignados, puedes consultarlos desde aquí.</h4>
 						<?php
 						}
 						else
 						{
 						?>
-							<h6 style="font-weight:100; padding:0 20px">El detalle de lo que debes inventariar es:</h6>
+							<h4 style="font-weight:100; padding:0 20px">El detalle de lo que debes inventariar es:</h4>
 							<table style="text-align:center;">
 								<thead>
 									<tr>
