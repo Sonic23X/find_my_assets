@@ -17,7 +17,7 @@
 				<center>
 					<h4 style="font-weight: 50; ">Email de contacto a través del formulario web</h4>
 					<hr style="border:1px solid #ccc; width:80%">
-					<h6 style="font-weight:100; padding:0 20px">Detalles</h6>
+					<h4 style="font-weight:100; padding:0 20px">Detalles</h4>
 					<table class="table table-borderless text-center">
 					  <thead>
 					    <tr>

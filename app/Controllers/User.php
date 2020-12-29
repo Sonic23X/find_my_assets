@@ -11,6 +11,7 @@ class User extends BaseController
     protected $userModel;
     protected $email;
     protected $draftModel;
+    protected $empresaModel;
     protected $db;
 
     function __construct()
@@ -18,6 +19,7 @@ class User extends BaseController
         $this->session = \Config\Services::session( );
         $this->userModel = model( 'App\Models\UserModel' );
         $this->draftModel = model( 'App\Models\DraftModel' );
+        $this->empresaModel = model( 'App\Models\EmpresaModel' );
         $this->db = \Config\Database::connect( );
         $this->email = new PHPMailerLib( );
     }
@@ -162,6 +164,7 @@ class User extends BaseController
                     'urlUsuario' => base_url( '/carga' ) . '/' . $emailEncrypt,
                     'nombre' => $this->request->getVar( 'nombre' ) . ' ' . $this->request->getVar( 'apellidos' ),
                     'activos' => null,
+                    'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
                 ];
 
                 $content = View( 'emails/accesoUsuario', $viewData );
@@ -219,6 +222,7 @@ class User extends BaseController
                 'urlUsuario' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ],
                 'nombre' => $user[ 'nombre' ] . ' ' . $user[ 'apellidos' ],
                 'activos' =>  $this->draftModel->select( 'ID_Activo, Nom_Activo' )->where( 'User_Inventario', $this->request->getVar( 'id' ) )->findAll( ),
+                'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
             ];
 
             $content = View( 'emails/accesoUsuario', $viewData );
