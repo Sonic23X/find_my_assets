@@ -162,7 +162,7 @@ class User extends BaseController
                 $viewData =
                 [
                     'urlUsuario' => base_url( '/carga' ) . '/' . $emailEncrypt,
-                    'nombre' => $this->request->getVar( 'nombre' ) . ' ' . $this->request->getVar( 'apellidos' ),
+                    'nombre' => $this->request->getVar( 'nombre' ),
                     'activos' => null,
                     'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
                 ];
@@ -220,7 +220,7 @@ class User extends BaseController
             $viewData =
             [
                 'urlUsuario' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ],
-                'nombre' => $user[ 'nombre' ] . ' ' . $user[ 'apellidos' ],
+                'nombre' => $user[ 'nombre' ],
                 'activos' =>  $this->draftModel->select( 'ID_Activo, Nom_Activo' )->where( 'User_Inventario', $this->request->getVar( 'id' ) )->findAll( ),
                 'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
             ];
