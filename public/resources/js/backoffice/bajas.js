@@ -180,9 +180,10 @@ function down( )
     <thead>
       <tr>
         <th></th>
+        <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
         <th></th>
       </tr>
     </thead>
@@ -213,6 +214,9 @@ function down( )
           <tr>
             <td>
               <input type="checkbox" name="select_${ activo.id }" onClick="downCheckbox( this )" class="downCheck">
+            </td>
+            <td>
+              ${ activo.id_activo }
             </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewDownInfo( ${ activo.id } )">
@@ -451,6 +455,7 @@ function viewDownInfo( id )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $( '#downNoActivo' ).val( activo.ID_Activo );
       $( '#downTipoActivo' ).val( activo.ID_Tipo );
       $( '#downName' ).val( activo.Nom_Activo );
       $( '#downSerie' ).val( activo.NSerie_Activo );
@@ -460,6 +465,7 @@ function viewDownInfo( id )
       $( '#downSucursal' ).val( activo.ID_Sucursal );
       $( '#downArea' ).val( activo.ID_Area );
       $( '#downDesc' ).val( activo.Des_Activo );
+      $( '#downActualizacion' ).val( activo.TS_Update.split( ' ')[ 0 ] );
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,

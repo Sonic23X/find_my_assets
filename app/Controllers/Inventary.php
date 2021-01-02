@@ -71,7 +71,7 @@ class Inventary extends BaseController
       try
       {
         $builder = $this->db->table( 'draft' );
-        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
         $builder->where( 'draft.status', 'nuevo' );
@@ -89,14 +89,14 @@ class Inventary extends BaseController
         $num = 0;
         foreach ( $activos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Create );
+          $fecha = explode( ' ', $row->TS_Update );
 
           $json =
           [
             'id' => $row->Id,
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
-            'usuario' => $row->nombre . $row->apellidos,
+            'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
           ];
@@ -840,14 +840,14 @@ class Inventary extends BaseController
       try
       {
         $builder = $this->db->table( 'draft' );
-        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
         $builder->where( 'draft.TS_Delete', null );
         $builder->where( 'draft.ID_Company', $this->session->empresa );
         $activos = $builder->where( 'draft.status', 'editado' )->get( );
 
-        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'draft.Id, draft.Nom_Activo, draft.ID_Activo, draft.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
         $builder->where( 'draft.TS_Delete', null );
@@ -864,14 +864,14 @@ class Inventary extends BaseController
         $num = 0;
         foreach ( $activos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Create );
+          $fecha = explode( ' ', $row->TS_Update );
 
           $json =
           [
             'id' => $row->Id,
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
-            'usuario' => $row->nombre . $row->apellidos,
+            'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
           ];
@@ -884,14 +884,14 @@ class Inventary extends BaseController
         $num2 = 0;
         foreach ( $nuevos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Create );
+          $fecha = explode( ' ', $row->TS_Update );
 
           $json =
           [
             'id' => $row->Id,
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
-            'usuario' => $row->nombre . $row->apellidos,
+            'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
           ];
@@ -919,7 +919,7 @@ class Inventary extends BaseController
       try
       {
         $builder = $this->db->table( 'activos' );
-        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.ID_Company', $this->session->empresa );
@@ -936,14 +936,14 @@ class Inventary extends BaseController
         $num = 0;
         foreach ( $activos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Create );
+          $fecha = explode( ' ', $row->TS_Update );
 
           $json =
           [
             'id' => $row->Id,
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
-            'usuario' => $row->nombre . $row->apellidos,
+            'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
           ];

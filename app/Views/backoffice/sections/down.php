@@ -165,6 +165,13 @@
                       <form class="active-inventary-form">
 
                         <div class="form-group row">
+                          <label for="name" class="col-sm-4 col-form-label">Numero de activo</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control-plaintext" id="downNoActivo" placeholder="Numero de activo" disabled>
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
                           <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
                           <div class="col-sm-8">
                             <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="downTipoActivo" disabled>
@@ -241,6 +248,13 @@
                             <select class="form-control-plaintext" name="asignacion" id="downArea" disabled>
 
                             </select>
+                          </div>
+                        </div>
+
+                        <div class="form-group row">
+                          <label for="desc" class="col-sm-4 col-form-label">Ultima actualización</label>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control-plaintext" id="downActualizacion" disabled>
                           </div>
                         </div>
 

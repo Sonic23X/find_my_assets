@@ -58,7 +58,7 @@ class Down extends BaseController
       try
       {
         $builder = $this->db->table( 'activos' );
-        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.TS_Delete', null );
@@ -76,14 +76,14 @@ class Down extends BaseController
         $num = 0;
         foreach ( $activos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Create );
+          $fecha = explode( ' ', $row->TS_Update );
 
           $json =
           [
             'id' => $row->Id,
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
-            'usuario' => $row->nombre . $row->apellidos,
+            'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
           ];
@@ -111,7 +111,7 @@ class Down extends BaseController
       try
       {
         $builder = $this->db->table( 'activos' );
-        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.TS_Delete', null );
@@ -149,14 +149,14 @@ class Down extends BaseController
         $num = 0;
         foreach ( $activos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Create );
+          $fecha = explode( ' ', $row->TS_Update );
 
           $json =
           [
             'id' => $row->Id,
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
-            'usuario' => $row->nombre . $row->apellidos,
+            'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
           ];

@@ -955,9 +955,10 @@ function getNewItems( )
     <thead>
       <tr>
         <th scope="col"></th>
+        <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -988,6 +989,9 @@ function getNewItems( )
           <tr>
             <td class="align-middle">
               <input type="checkbox" name="select_${ activo.id }" onClick="downInvCheckbox( this )" class="newInvCheck">
+            </td>
+            <td class="align-middle">
+              ${ activo.id_activo }
             </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="getDraftInfoNew( ${ activo.id } )">
@@ -1132,6 +1136,7 @@ function getDraftInfoNew( id )
 
       localStorage.setItem( 'new-inventary', activo.ID_Activo );
 
+      $( '#newNoActivo' ).val( activo.ID_Activo );
       $( '#newTipoActivo' ).val( activo.ID_Tipo );
       $( '#newName' ).val( activo.Nom_Activo );
       $( '#newSerie' ).val( activo.NSerie_Activo );
@@ -1141,6 +1146,7 @@ function getDraftInfoNew( id )
       $( '#newSucursal' ).val( activo.ID_Sucursal );
       $( '#newArea' ).val( activo.ID_Area );
       $( '#newDesc' ).val( activo.Des_Activo );
+      $( '#newFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
 
       $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -1212,9 +1218,10 @@ function getProcessItems( )
   `
     <thead>
       <tr>
+        <th scioe="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -1227,9 +1234,10 @@ function getProcessItems( )
   `
     <thead>
       <tr>
+        <th scioe="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
       </tr>
     </thead>
     <tbody class="inventary-process-table2">
@@ -1259,6 +1267,9 @@ function getProcessItems( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id } )">
                 ${ activo.tipo }
@@ -1305,6 +1316,9 @@ function getProcessItems( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id }, 0 )">
                 ${ activo.tipo }
@@ -1364,6 +1378,7 @@ function viewProcessInfo( id, details = 1 )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $( '#iNoActivo' ).val( activo.ID_Activo );
       $( '#iTipoActivo' ).val( activo.ID_Tipo );
       $( '#iName' ).val( activo.Nom_Activo );
       $( '#iSerie' ).val( activo.NSerie_Activo );
@@ -1373,6 +1388,7 @@ function viewProcessInfo( id, details = 1 )
       $( '#iSucursal' ).val( activo.ID_Sucursal );
       $( '#iArea' ).val( activo.ID_Area );
       $( '#iDesc' ).val( activo.Des_Activo );
+      $( '#iFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
 
       if ( details == 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
@@ -1451,9 +1467,10 @@ function getInventaryItems( )
   `
     <thead>
       <tr>
+        <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
       </tr>
     </thead>
     <tbody class="table-inventary-actives">
@@ -1482,6 +1499,9 @@ function getInventaryItems( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
@@ -1546,6 +1566,7 @@ function viewInvInfo( id )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $( '#infoNoActivo' ).val( activo.ID_Activo );
       $( '#infoTipoActivo' ).val( activo.ID_Tipo );
       $( '#infoName' ).val( activo.Nom_Activo );
       $( '#infoSerie' ).val( activo.NSerie_Activo );
@@ -1555,6 +1576,7 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
+      $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
 
       $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
