@@ -364,6 +364,13 @@
                             <form class="active-inventary-form">
 
                               <div class="form-group row">
+                                <label for="name" class="col-sm-4 col-form-label">Numero de activo</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="newNoActivo" placeholder="Numero de activo" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
                                 <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="newTipoActivo" disabled>
@@ -439,6 +446,13 @@
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iArea" name="asignacion" id="newArea" disabled>
                                   </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="name" class="col-sm-4 col-form-label">Ultima Actualización</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="newFechaUpdate" disabled>
                                 </div>
                               </div>
 
@@ -794,6 +808,13 @@
                             <form class="active-inventary-form">
 
                               <div class="form-group row">
+                                <label for="name" class="col-sm-4 col-form-label">Numero de activo</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iNoActivo" placeholder="Numero de activo" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
                                 <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="iTipoActivo" disabled>
@@ -869,6 +890,13 @@
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iArea" name="asignacion" id="iArea" disabled>
                                   </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="name" class="col-sm-4 col-form-label">Ultima actualización</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iFechaUpdate" disabled>
                                 </div>
                               </div>
 
@@ -1040,6 +1068,13 @@
                             <form class="active-inventary-form">
 
                               <div class="form-group row">
+                                <label for="name" class="col-sm-4 col-form-label">Numero de activo</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoNoActivo" placeholder="Numero de activo" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
                                 <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="infoTipoActivo" disabled>
@@ -1116,6 +1151,13 @@
                                   <select class="form-control-plaintext iArea" name="asignacion" id="infoArea" disabled>
 
                                   </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="name" class="col-sm-4 col-form-label">Ultima actualización</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoFechaUpdate" disabled>
                                 </div>
                               </div>
 
