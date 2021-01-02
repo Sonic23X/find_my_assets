@@ -557,8 +557,9 @@ class Activo extends BaseController
 	{
 
 		$builder = $this->db->table( 'activos' );
-		$builder->select( 'activos.Id, activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, 
-							usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area, activos.TS_Create, activos.TS_Update' );
+		$builder->select( 'activos.Id, activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, activos.Ima_ActivoLeft,
+						   activos.Ima_ActivoRight, activos.Ima_ActivoFront, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, 
+						   areas.descripcion as area, activos.TS_Create, activos.TS_Update' );
 		$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
 		$builder->join( 'cc', 'cc.ID_CC = activos.ID_CC' );
 		$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
@@ -644,13 +645,32 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'J' . $fila, $activo->area );
 			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
 			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
-			$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
-			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
-			$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
-			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
-			$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
-			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
 
+			//imagenes
+			if ( $activo->Ima_ActivoFront != NULL) 
+			{
+				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
+				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
+			}
+			else
+				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
+
+			if ( $activo->Ima_ActivoRight != NULL) 
+			{
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
+			}
+			else
+				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
+
+			if ( $activo->Ima_ActivoLeft != NULL) 
+			{
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
+			}
+			else
+				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
+			
 			$fila++;
 		}
 
@@ -686,9 +706,9 @@ class Activo extends BaseController
 	public function ExcelDraft( )
 	{
 		$builder = $this->db->table( 'draft' );
-		$builder->select( 'draft.Id, draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, 
-							usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area,
-							draft.TS_Create, draft.TS_Update' );
+		$builder->select( 'draft.Id, draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, draft.Ima_ActivoLeft,
+						   draft.Ima_ActivoRight, draft.Ima_ActivoFront, usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, 
+						   areas.descripcion as area, draft.TS_Create, draft.TS_Update' );
 		$builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
 		$builder->join( 'cc', 'cc.ID_CC = draft.ID_CC' );
 		$builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
@@ -775,12 +795,30 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'J' . $fila, $activo->area );
 			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
 			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
-			$sheet->setCellValue( 'M' . $fila, base_url() . '/draft/fp/' . $activo->Id );
-			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/fp/' . $activo->Id );
-			$sheet->setCellValue( 'N' . $fila, base_url() . '/draft/rp/' . $activo->Id );
-			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/rp/' . $activo->Id );
-			$sheet->setCellValue( 'O' . $fila, base_url() . '/draft/lp/' . $activo->Id );
-			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/lp/' . $activo->Id );
+			
+			if ( $activo->Ima_ActivoFront != NULL) 
+			{
+				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
+				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
+			}
+			else
+				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
+
+			if ( $activo->Ima_ActivoRight != NULL) 
+			{
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
+			}
+			else
+				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
+
+			if ( $activo->Ima_ActivoLeft != NULL) 
+			{
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
+			}
+			else
+				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
 
 			$fila++;
 		}
