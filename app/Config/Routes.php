@@ -68,6 +68,12 @@ $routes->get('/inventario', 'Inventary::Index');
 /** Backoffice - Bajas **/
 $routes->get('/bajas', 'Down::Index');
 
+/** Backoffice - test **/
+$routes->get('/test/carga', 'Activo::LoadActivos');
+
+/** AJAX - test **/
+$routes->post('/test/readExcel', 'Activo::ReadExcel');
+
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
 
