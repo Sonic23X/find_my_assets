@@ -1015,16 +1015,18 @@ class Activo extends BaseController
 						array_push($errores, [ 'Activo '.$activo[0].': El usuario no está registrado en el sistema, se registrará el activo sin usuario.' ]);
 					}
 
-					$sucursal = $this->sucursalModel->where('Desc', $activo[5])->first();
+					$sucursal = $this->sucursalModel->like('Desc', $activo[5])->first();
 					if($sucursal == null)
 					{
 						array_push($errores, [ 'Activo '.$activo[0].': La sucursal no está registrada en el sistema.' ]);
+						return;
 					}
 
-					$area = $this->areaModel->where('descripcion', $activo[6])->first();
+					$area = $this->areaModel->like('descripcion', $activo[6])->first();
 					if($area == null)
 					{
 						array_push($errores, [ 'Activo '.$activo[0].': El area no está registrado en el sistema.' ]);
+						return;
 					}
 
 					$insert =

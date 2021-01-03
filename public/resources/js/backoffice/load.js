@@ -21,7 +21,7 @@ function changeFile( nodo )
         let respuesta = JSON.parse(response);
         if(respuesta.status == 200)
         {
-            if (respuesta.errores == []) {
+            if (respuesta.errores.length == 0) {
                 alert('Carga con exito');
             }
             else
