@@ -1015,19 +1015,37 @@ class Activo extends BaseController
 						array_push($errores, [ 'Activo '.$activo[0].': El usuario no está registrado en el sistema, se registrará el activo sin usuario.' ]);
 					}
 
-					$sucursal = $this->sucursalModel->where('Desc', $activo[5])->first();
+					$sucursal = $this->sucursalModel->like('Desc', $activo[5])->first();
 					if($sucursal == null)
 					{
 						array_push($errores, [ 'Activo '.$activo[0].': La sucursal no está registrada en el sistema.' ]);
+						return;
 					}
 
-					$area = $this->areaModel->where('descripcion', $activo[6])->first();
+					$area = $this->areaModel->like('descripcion', $activo[6])->first();
 					if($area == null)
 					{
 						array_push($errores, [ 'Activo '.$activo[0].': El area no está registrado en el sistema.' ]);
+						return;
 					}
 
-					$insert =
+					$draft =
+					[
+						'ID_Activo' => $activo[0],
+						'Nom_Activo' => $activo[2],
+						'ID_Company' => $this->session->empresa,
+						'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+						'Des_Activo' => '-',
+						'NSerie_Activo' => '-',
+						'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+						'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+						'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+						'ID_Area' => ($area == null) ? 0 : $area['id'],
+						'TS_Create' => date( 'Y/n/j H:i:s' ),
+						'status' => 'activado'
+					];
+
+					$activo =
 					[
 						'ID_Activo' => $activo[0],
 						'Nom_Activo' => $activo[2],
@@ -1042,8 +1060,8 @@ class Activo extends BaseController
 						'TS_Create' => date( 'Y/n/j H:i:s' ),
 					];
 
-					$this->draftModel->insert($insert);
-					$this->activoModel->insert($insert);
+					$this->draftModel->insert($draft);
+					$this->activoModel->insert($activo);
 				}
 			}
 			echo json_encode( array( 'status' => 200, 'errores' => $errores ) );

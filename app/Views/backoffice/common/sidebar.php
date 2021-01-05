@@ -29,6 +29,12 @@
                 </a>
               </li>
               <li class="nav-item d-none">
+                <a href="<?= base_url( '/test/carga' ) ?>" class="nav-link">
+                  <i class="nav-icon fas fa-cloud-upload-alt"></i>
+                  Carga de activos
+                </a>
+              </li>
+              <li class="nav-item d-none">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-wallet"></i>
                   Empresas y locaciones
