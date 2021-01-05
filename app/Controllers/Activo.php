@@ -804,7 +804,10 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
 			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
 			
-			if ( $activo->Ima_ActivoFront != NULL) 
+			$activo_imagenes = $this->draftModel->where('Id', $activo->Id)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+				
+			//imagenes
+			if ( $activo_imagenes['Ima_ActivoFront'] != NULL) 
 			{
 				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
 				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
@@ -812,7 +815,7 @@ class Activo extends BaseController
 			else
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
-			if ( $activo->Ima_ActivoRight != NULL) 
+			if ( $activo_imagenes['Ima_ActivoRight'] != NULL) 
 			{
 				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
 				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
@@ -820,7 +823,7 @@ class Activo extends BaseController
 			else
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
-			if ( $activo->Ima_ActivoLeft != NULL) 
+			if ( $activo_imagenes['Ima_ActivoLeft'] != NULL) 
 			{
 				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
 				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
