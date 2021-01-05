@@ -714,8 +714,8 @@ class Activo extends BaseController
 	public function ExcelDraft( )
 	{
 		$builder = $this->db->table( 'draft' );
-		$builder->select( 'draft.Id, draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, draft.Ima_ActivoLeft,
-						   draft.Ima_ActivoRight, draft.Ima_ActivoFront, usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, 
+		$builder->select( 'draft.Id, draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, 
+						   usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, 
 						   areas.descripcion as area, draft.TS_Create, draft.TS_Update' );
 		$builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
 		$builder->join( 'cc', 'cc.ID_CC = draft.ID_CC' );
