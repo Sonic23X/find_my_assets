@@ -28,7 +28,7 @@
                   Usuarios
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item d-none">
                 <a href="<?= base_url( '/test/carga' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-cloud-upload-alt"></i>
                   Carga de activos

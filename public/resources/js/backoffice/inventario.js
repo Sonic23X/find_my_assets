@@ -1146,7 +1146,10 @@ function getDraftInfoNew( id )
       $( '#newSucursal' ).val( activo.ID_Sucursal );
       $( '#newArea' ).val( activo.ID_Area );
       $( '#newDesc' ).val( activo.Des_Activo );
-      $( '#newFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
+      if (condition) 
+        $( '#newFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
+      else
+        $( '#newFechaUpdate' ).val( 'Sin actualización' );
 
       $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -1388,7 +1391,10 @@ function viewProcessInfo( id, details = 1 )
       $( '#iSucursal' ).val( activo.ID_Sucursal );
       $( '#iArea' ).val( activo.ID_Area );
       $( '#iDesc' ).val( activo.Des_Activo );
-      $( '#iFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
+      if (activo.TS_Update != null) 
+        $( '#iFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
+      else
+        $( '#iFechaUpdate' ).val( 'Sin actualización' );
 
       if ( details == 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
@@ -1576,7 +1582,10 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
-      $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
+      if (activo.TS_Update != null) 
+        $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
+      else
+        $( '#infoFechaUpdate' ).val('Sin actualización');
 
       $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -1625,7 +1634,7 @@ function viewInvInfo( id )
         processData: false,
       })
       .done( response =>
-      {
+      { 
         if ( response != '' )
         {
           $( '.info-image-right' ).html( response );
