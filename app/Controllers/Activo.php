@@ -1019,6 +1019,7 @@ class Activo extends BaseController
 
 			//sin usuario  =>  88
 			$errores = [];	
+			$subidos = 0;
 			foreach ( $rows as $activo ) 
 			{
 				//Validación de activos
@@ -1028,40 +1029,40 @@ class Activo extends BaseController
 				$sucursal = null;
 				$area = null;
 				if($this->activoModel->where('ID_Activo', $activo[0])->first())
-					array_push($errores, [ 'El activo ' . $activo[0] . ' ya está registrado en el sistema.' ]);
+				{}
 				else
 				{
 					$tipo = $this->tipoModel->where('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
 					if($tipo == null)
 					{
-						array_push($errores, [ 'Activo '.$activo[0].': El tipo de activo "' . $activo[0] . '" no está registrado en el sistema.' ]);
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El tipo de activo  no está registrado en el sistema.' ]);
 						return;
 					}
 
 					$cc = $this->ccModel->where('Subcuenta', $activo[3])->where('id_empresa', $this->session->empresa )->first();
 					if($cc == null)
 					{
-						array_push($errores, [ 'Activo '.$activo[0].': El centro de costos no está registrado en el sistema.' ]);
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El centro de costos no está registrado en el sistema.' ]);
 						return;
 					}
 
 					$user = $this->userModel->where('email', $activo[4])->first();
 					if($user == null)
 					{
-						array_push($errores, [ 'Activo '.$activo[0].': El usuario no está registrado en el sistema, se registrará el activo sin usuario.' ]);
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El usuario no está registrado en el sistema, se registrará el activo sin usuario.' ]);
 					}
 
 					$sucursal = $this->sucursalModel->like('Desc', $activo[5])->first();
 					if($sucursal == null)
 					{
-						array_push($errores, [ 'Activo '.$activo[0].': La sucursal no está registrada en el sistema.' ]);
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'La sucursal no está registrada en el sistema.' ]);
 						return;
 					}
 
 					$area = $this->areaModel->like('descripcion', $activo[6])->first();
 					if($area == null)
 					{
-						array_push($errores, [ 'Activo '.$activo[0].': El area no está registrado en el sistema.' ]);
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El área no está registrada en el sistema.' ]);
 						return;
 					}
 
@@ -1096,11 +1097,13 @@ class Activo extends BaseController
 						'TS_Create' => date( 'Y/n/j H:i:s' ),
 					];
 
-					$this->draftModel->insert($draft);
-					$this->activoModel->insert($activo);
+					//$this->draftModel->insert($draft);
+					//$this->activoModel->insert($activo);
+
+					$subidos++;
 				}
 			}
-			echo json_encode( array( 'status' => 200, 'errores' => $errores ) );
+			echo json_encode( array( 'status' => 200, 'errores' => $errores, 'subidos' => $subidos ) );
 
 		}
 		else

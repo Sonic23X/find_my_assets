@@ -23,7 +23,7 @@
               </li>
               <li class="nav-header">Activos</li>
               <li class="nav-item">
-                <a href="<?= base_url( '/test/carga' ) ?>" class="nav-link">
+                <a href="<?= base_url( '/carga' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-cloud-upload-alt"></i>
                   Carga de activos
                 </a>
