@@ -150,6 +150,7 @@ class User extends BaseController
 				'verificacion' => 1,
 				'email_encriptado' => $emailEncrypt,
                 'patrocinador' => 'N/A',
+                'envios' => 1,
                 'id_empresa' => $this->session->empresa,
 			];
 
@@ -233,7 +234,16 @@ class User extends BaseController
             if ( !$correo->send( ) )
                 echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
             else
+            {
+                $update =
+                [
+                    'envios' => intval($user['envios']) + 1,
+                ];
+
+                $this->userModel->update( $user['id_usuario'], $update );
+
                 echo json_encode( array( 'status' => 200, 'msg' => 'Verifique la bandeja de entrada del correo ingresado' ) );
+            }
         }
         else
             return view( 'errors/cli/error_404' );
