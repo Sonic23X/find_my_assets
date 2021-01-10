@@ -1097,8 +1097,8 @@ class Activo extends BaseController
 						'TS_Create' => date( 'Y/n/j H:i:s' ),
 					];
 
-					//$this->draftModel->insert($draft);
-					//$this->activoModel->insert($activo);
+					$this->draftModel->insert($draft);
+					$this->activoModel->insert($activo);
 
 					$subidos++;
 				}
