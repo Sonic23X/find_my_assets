@@ -270,11 +270,37 @@ class Activo extends BaseController
 
 				$update =
 				[
-					'GPS' => $this->request->getVar( 'gps' ),
 					'Vida_Activo' => $this->request->getVar( 'vida' ),
 					'ID_Company' => $this->request->getVar( 'empresa' ),
 					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
 					'ID_Area' => $this->request->getVar( 'area' ),
+				];
+
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+					echo json_encode( array( 'status' => 200 ) );
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
+
+			}
+			catch (\Exception $e)
+			{
+			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function UpdateCoordenadas( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
+				$update =
+				[
+					'GPS' => $this->request->getVar( 'gps' ),
 				];
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
