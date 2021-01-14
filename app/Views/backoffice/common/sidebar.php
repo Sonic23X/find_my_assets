@@ -21,17 +21,18 @@
                   Inicio
                 </a>
               </li>
+              <li class="nav-header d-none">Activos</li>
+              <li class="nav-item d-none">
+                <a href="<?= base_url( '/carga' ) ?>" class="nav-link">
+                  <i class="nav-icon fas fa-cloud-upload-alt"></i>
+                  Carga de activos
+                </a>
+              </li>
               <li class="nav-header">Mantenedores</li>
               <li class="nav-item">
                 <a href="<?= base_url( '/usuarios' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-user-plus"></i>
                   Usuarios
-                </a>
-              </li>
-              <li class="nav-item d-none">
-                <a href="<?= base_url( '/test/carga' ) ?>" class="nav-link">
-                  <i class="nav-icon fas fa-cloud-upload-alt"></i>
-                  Carga de activos
                 </a>
               </li>
               <li class="nav-item d-none">

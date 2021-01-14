@@ -69,7 +69,7 @@ $routes->get('/inventario', 'Inventary::Index');
 $routes->get('/bajas', 'Down::Index');
 
 /** Backoffice - test **/
-$routes->get('/test/carga', 'Activo::LoadActivos');
+$routes->get('/carga', 'Activo::LoadActivos');
 
 /** AJAX - test **/
 $routes->post('/test/readExcel', 'Activo::ReadExcel');
@@ -91,6 +91,7 @@ $routes->get('/activos/getImageRight/(:alphanum)', 'Activo::GetImageRight/$1');
 $routes->post('/activos/setImage', 'Activo::SetImage');
 $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 $routes->post('/activos/updateActivo', 'Activo::UpdateActivoFromDraft');
+$routes->post('/activos/coordenadas', 'Activo::UpdateCoordenadas');
 
 /** AJAX - inventary **/
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');

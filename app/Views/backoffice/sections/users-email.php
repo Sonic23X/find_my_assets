@@ -32,6 +32,7 @@
                                 <tr>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Emails enviados</th>
                                 </tr>
                             </thead>
                             <tbody class="table-users-items">

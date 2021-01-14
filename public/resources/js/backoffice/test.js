@@ -48,6 +48,7 @@ function getUserTableData(  )
       <tr>
           <th scope="col">Nombre</th>
           <th scope="col">Email</th>
+          <th scope="col">Emails enviados</th>
           <th>#</th>
       </tr>
     </thead>
@@ -83,6 +84,9 @@ function getUserTableData(  )
             <td class="align-middle">
               ${ usuario.email }
             </td>
+            <td class="align-middle">
+              ${ usuario.envios }
+            </td>
             <th>
               <div class="dropdown">
                 <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -110,7 +114,6 @@ function getUserTableData(  )
       tabla = $( '.table-users' ).DataTable(
       {
         bInfo: false,
-        searching: false,
         bLengthChange: false,
         pageLength: 10,
         language: spanish,
@@ -190,6 +193,8 @@ function sendEmail( id )
     if ( response.status == 200 )
     {
       imprimir( '¡Hecho!', response.msg, 'success' );
+
+      getUserTableData();
     }
     else
     {

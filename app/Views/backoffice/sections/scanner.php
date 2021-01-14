@@ -221,6 +221,14 @@
                     <div id="activeMap" style="height: 300px;"></div>
                   </div>
                 </div>
+                <div class="row mt-2 text-center">
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <span>¿Estas inventariando el activo?</span>
+                  </div>
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <button class="btn btn-block btn-primary" onClick="updateCoordenadas()">Actualizar Ubicación</button>
+                  </div>
+                </div>
 
                 <div class="row mt-3 p-2 instructions text-center">
                   <div class="col-12 col-sm-12 text-center">
