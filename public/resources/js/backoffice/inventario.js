@@ -1146,7 +1146,7 @@ function getDraftInfoNew( id )
       $( '#newSucursal' ).val( activo.ID_Sucursal );
       $( '#newArea' ).val( activo.ID_Area );
       $( '#newDesc' ).val( activo.Des_Activo );
-      if (condition) 
+      if (activo.TS_Update != null) 
         $( '#newFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
       else
         $( '#newFechaUpdate' ).val( 'Sin actualización' );
