@@ -1,15 +1,5 @@
 var url = $('#url').val( );
 
-function imprimir ( titulo, mensaje, tipo )
-{
-  Swal.fire({
-    icon: tipo,
-    title: titulo,
-    text: mensaje,
-    allowOutsideClick: false,
-  });
-}
-
 function changeFile( nodo ) 
 {
     $( '#excelFileName' ).html( nodo.files[0].name );

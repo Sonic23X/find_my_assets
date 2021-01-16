@@ -1042,9 +1042,12 @@
                           <table class="table table-hover table-inventary-actives-content">
                             <thead>
                               <tr>
+                                <th scope="col">Num.</th>
                                 <th scope="col">Activo</th>
                                 <th scope="col">Asignación</th>
-                                <th scope="col">Cargado</th>
+                                <th scope="col">Imagenes</th>
+                                <th scope="col">Ultima Act.</th>
+                                <th scope="col">Inv.</th>
                               </tr>
                             </thead>
                             <tbody class="table-inventary-actives">

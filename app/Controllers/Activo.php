@@ -300,6 +300,7 @@ class Activo extends BaseController
 			{
 				$update =
 				[
+					'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
 					'GPS' => $this->request->getVar( 'gps' ),
 				];
 
@@ -340,7 +341,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+				echo 'Error al conseguir la imagen';
 			}
 		}
 		else
@@ -369,7 +370,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+				echo 'Error al conseguir la imagen';
 			}
 		}
 		else
@@ -398,7 +399,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+				echo 'Error al conseguir la imagen';
 			}
 		}
 		else
@@ -416,25 +417,28 @@ class Activo extends BaseController
 
 				$photo = $this->request->getFile( 'file' );
 
-				$image = file_get_contents( $photo->getTempName( )  );
+				$image = file_get_contents( $photo->getTempName( ) );
 
 				switch ( $this->request->getVar( 'type' ) )
 				{
 					case 'front':
 						$update =
 						[
+							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
 							'Ima_ActivoFront' => $image,
 						];
 						break;
 					case 'right':
 						$update =
 						[
+							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
 							'Ima_ActivoRight' => $image,
 						];
 						break;
 					case 'left':
 						$update =
 						[
+							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
 							'Ima_ActivoLeft' => $image,
 						];
 						break;
@@ -1022,8 +1026,6 @@ class Activo extends BaseController
 				$sucursal = null;
 				$area = null;
 				if($this->activoModel->where('ID_Activo', $activo[0])->first())
-				{}
-				else
 				{
 					$tipo = $this->tipoModel->where('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
 					if($tipo == null)
