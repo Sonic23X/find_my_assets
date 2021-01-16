@@ -1017,6 +1017,7 @@ class Activo extends BaseController
 			//sin usuario  =>  88
 			$errores = [];	
 			$subidos = 0;
+			$activos_subidos = [];
 			foreach ( $rows as $activo ) 
 			{
 				//Validación de activos
@@ -1025,81 +1026,97 @@ class Activo extends BaseController
 				$user = null;
 				$sucursal = null;
 				$area = null;
-				if($this->activoModel->where('ID_Activo', $activo[0])->first())
+				$error = false;
+				
+				if($this->activoModel->where('ID_Activo', $activo[0])->first() == null)
 				{
-					$tipo = $this->tipoModel->where('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
+					$tipo = $this->tipoModel->like('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
 					if($tipo == null)
 					{
 						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El tipo de activo  no está registrado en el sistema.' ]);
-						return;
+						$error = true;
 					}
 
-					$cc = $this->ccModel->where('Subcuenta', $activo[3])->where('id_empresa', $this->session->empresa )->first();
+					$cc = $this->ccModel->like('Subcuenta', $activo[3])->where('id_empresa', $this->session->empresa )->first();
 					if($cc == null)
 					{
 						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El centro de costos no está registrado en el sistema.' ]);
-						return;
+						$error = true;
 					}
 
 					$user = $this->userModel->where('email', $activo[4])->first();
 					if($user == null)
 					{
-						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El usuario no está registrado en el sistema, se registrará el activo sin usuario.' ]);
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El usuario no está registrado en el sistema, se registró el activo sin usuario.' ]);
 					}
 
 					$sucursal = $this->sucursalModel->like('Desc', $activo[5])->first();
 					if($sucursal == null)
 					{
 						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'La sucursal no está registrada en el sistema.' ]);
-						return;
+						$error = true;
 					}
 
 					$area = $this->areaModel->like('descripcion', $activo[6])->first();
 					if($area == null)
 					{
 						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El área no está registrada en el sistema.' ]);
-						return;
+						$error = true;
 					}
 
-					$draft =
-					[
-						'ID_Activo' => $activo[0],
-						'Nom_Activo' => $activo[2],
-						'ID_Company' => $this->session->empresa,
-						'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-						'Des_Activo' => '-',
-						'NSerie_Activo' => '-',
-						'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
-						'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
-						'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
-						'ID_Area' => ($area == null) ? 0 : $area['id'],
-						'TS_Create' => date( 'Y/n/j H:i:s' ),
-						'status' => 'activado'
-					];
+					if (!$error) 
+					{
+						$draft =
+						[
+							'ID_Activo' => $activo[0],
+							'Nom_Activo' => $activo[2],
+							'ID_Company' => $this->session->empresa,
+							'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+							'Des_Activo' => '-',
+							'NSerie_Activo' => '-',
+							'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+							'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+							'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+							'ID_Area' => ($area == null) ? 0 : $area['id'],
+							'TS_Create' => date( 'Y/n/j H:i:s' ),
+							'status' => 'activado'
+						];
 
-					$activo =
-					[
-						'ID_Activo' => $activo[0],
-						'Nom_Activo' => $activo[2],
-						'ID_Company' => $this->session->empresa,
-						'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-						'Des_Activo' => '-',
-						'NSerie_Activo' => '-',
-						'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
-						'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
-						'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
-						'ID_Area' => ($area == null) ? 0 : $area['id'],
-						'TS_Create' => date( 'Y/n/j H:i:s' ),
-					];
+						$nuevo_activo =
+						[
+							'ID_Activo' => $activo[0],
+							'Nom_Activo' => $activo[2],
+							'ID_Company' => $this->session->empresa,
+							'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+							'Des_Activo' => '-',
+							'NSerie_Activo' => '-',
+							'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+							'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+							'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+							'ID_Area' => ($area == null) ? 0 : $area['id'],
+							'TS_Create' => date( 'Y/n/j H:i:s' ),
+						];
 
-					$this->draftModel->insert($draft);
-					$this->activoModel->insert($activo);
+						$this->draftModel->insert($draft);
+						$load_activo = $this->activoModel->insert($nuevo_activo);
 
-					$subidos++;
+						$subidos++;
+
+						$json =
+						[
+							'id' => $load_activo,
+							'tipo' => $tipo['Desc'],
+							'nombre' => $activo[2],
+							'usuario' => $user['nombre'] . ' ' . $user['apellidos'],
+							'fecha' => date( 'Y/n/j'),
+							'id_activo' => $activo[0],
+						];
+
+						array_push( $activos_subidos, $json );
+					}
 				}
 			}
-			echo json_encode( array( 'status' => 200, 'errores' => $errores, 'subidos' => $subidos ) );
-
+			echo json_encode( array( 'status' => 200, 'errores' => $errores, 'subidos' => $subidos, 'activos' => $activos_subidos ) );
 		}
 		else
 			return view( 'errors/cli/error_404' );

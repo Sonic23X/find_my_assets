@@ -1589,7 +1589,7 @@ function viewInvInfo( id )
   $( '.info-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
   $( '.info-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
-  $( 'textarea[ name="infoDesc" ]' ).val( 'asd' );
+  $( 'textarea[ name="infoDesc" ]' ).val( '' );
 
   $.ajax({
     url: url + `/inventario/getActivoInfo/${ id }`,
