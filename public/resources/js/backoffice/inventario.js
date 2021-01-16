@@ -36,6 +36,16 @@ let spanish =
   },
 };
 
+function imprimir ( titulo, mensaje, tipo )
+{
+  Swal.fire({
+    icon: tipo,
+    title: titulo,
+    text: mensaje,
+    allowOutsideClick: false,
+  });
+}
+
 function dataURLtoFile( dataurl, filename )
 {
 
@@ -1476,7 +1486,9 @@ function getInventaryItems( )
         <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
+        <th scope="col">Imagenes</th>
         <th scope="col">Ultima Act.</th>
+        <th scope="col">Inv.</th>
       </tr>
     </thead>
     <tbody class="table-inventary-actives">
@@ -1496,7 +1508,6 @@ function getInventaryItems( )
     if ( response.status == 200 )
     {
       let activos = response.activos;
-      let aNuevos = response.nuevos;
 
       $( '.table-inventary-actives' ).html( '' );
       activos.forEach( ( activo, i ) =>
@@ -1518,11 +1529,32 @@ function getInventaryItems( )
             <td class="align-middle">
               ${ activo.usuario }
             </td>
+            <td>
+              ${ activo.imagenes } de 3
+            </td>
             <td class="align-middle">
               ${ activo.fecha }
             </td>
-          </tr>
+            <td>
         `;
+          if (activo.inventario)
+          {
+            typePlantilla += 
+            `
+                  <span class="badge badge-success">OK</span>
+                </td>
+              </tr>
+            `;
+          }
+          else
+          {
+            typePlantilla += 
+            `
+                  <span class="badge badge-warning text-light">PEND</span>
+                </td>
+              </tr>
+            `;
+          }
 
         $( '.table-inventary-actives' ).append( typePlantilla );
 

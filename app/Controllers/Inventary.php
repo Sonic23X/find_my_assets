@@ -919,7 +919,7 @@ class Inventary extends BaseController
       try
       {
         $builder = $this->db->table( 'activos' );
-        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.Fec_Inventario, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.ID_Company', $this->session->empresa );
@@ -937,6 +937,16 @@ class Inventary extends BaseController
         foreach ( $activos->getResult( ) as $row )
         {
           $fecha = explode( ' ', $row->TS_Update );
+          $activo_imagenes = $this->activoModel->where('Id', $row->Id)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+          $imagenes = 0;
+          
+          //imagenes
+          if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+            $imagenes++;
+          if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+            $imagenes++;
+          if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+            $imagenes++;
 
           $json =
           [
@@ -946,6 +956,8 @@ class Inventary extends BaseController
             'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
+            'inventario' => ($row->Fec_Inventario != null) ? true : false,
+            'imagenes' => $imagenes
           ];
 
           array_push( $data, $json );

@@ -3,7 +3,16 @@ var url = $('#url').val( );
 var lon;
 var lat;
 
-/* --- Dashboard --- */
+function imprimir ( titulo, mensaje, tipo )
+{
+  Swal.fire({
+    icon: tipo,
+    title: titulo,
+    text: mensaje,
+    allowOutsideClick: false,
+  });
+}
+
 function dashboardData( ) 
 {
 $( '.table-1-valor-activos' ).html( '' );
