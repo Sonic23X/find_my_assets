@@ -582,177 +582,161 @@ class Activo extends BaseController
 
 	public function ExcelActivos( )
 	{
-		try 
-		{
-			$builder = $this->db->table( 'activos' );
-			$builder->select( 'activos.Id, activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, usuarios.email, 
-							   empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area, activos.TS_Create, activos.TS_Update' );
-			$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
-			$builder->join( 'cc', 'cc.ID_CC = activos.ID_CC' );
-			$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
-			$builder->join( 'empresas', 'empresas.id_empresa = activos.ID_Company' );
-			$builder->join( 'sucursales', 'sucursales.id = activos.ID_Sucursal' );
-			$builder->join( 'areas', 'areas.id = activos.ID_Area' );
-			$builder->where( 'activos.TS_Delete', null );
-			$builder->where( 'activos.ID_Company', $this->session->empresa );
-			$activos = $builder->get( )->getResult( );
+		$activos = $this->activoModel->where( 'ID_Company', $this->session->empresa )
+									->where( 'TS_Delete', null )
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update')
+									->findAll();
 
-			$spreadsheet = new Spreadsheet( );
-			$sheet = $spreadsheet->getActiveSheet();
+		$spreadsheet = new Spreadsheet( );
+		$sheet = $spreadsheet->getActiveSheet();
 
-			//iniciamos configuración inicial
-			$sheet->getColumnDimension('A')->setWidth(20);
-			$sheet->getColumnDimension('B')->setWidth(30);
-			$sheet->getColumnDimension('C')->setWidth(30);
-			$sheet->getColumnDimension('D')->setWidth(30);
-			$sheet->getColumnDimension('E')->setWidth(30);
-			$sheet->getColumnDimension('F')->setWidth(30);
-			$sheet->getColumnDimension('G')->setWidth(30);
-			$sheet->getColumnDimension('H')->setWidth(20);
-			$sheet->getColumnDimension('I')->setWidth(20);
-			$sheet->getColumnDimension('J')->setWidth(20);
-			$sheet->getColumnDimension('K')->setWidth(20);
-			$sheet->getColumnDimension('L')->setWidth(20);
-			$sheet->getColumnDimension('M')->setWidth(50);
-			$sheet->getColumnDimension('N')->setWidth(50);
-			$sheet->getColumnDimension('O')->setWidth(50);
+		//iniciamos configuración inicial
+		$sheet->getColumnDimension('A')->setWidth(20);
+		$sheet->getColumnDimension('B')->setWidth(30);
+		$sheet->getColumnDimension('C')->setWidth(30);
+		$sheet->getColumnDimension('D')->setWidth(30);
+		$sheet->getColumnDimension('E')->setWidth(30);
+		$sheet->getColumnDimension('F')->setWidth(30);
+		$sheet->getColumnDimension('G')->setWidth(30);
+		$sheet->getColumnDimension('H')->setWidth(20);
+		$sheet->getColumnDimension('I')->setWidth(20);
+		$sheet->getColumnDimension('J')->setWidth(20);
+		$sheet->getColumnDimension('K')->setWidth(20);
+		$sheet->getColumnDimension('L')->setWidth(20);
+		$sheet->getColumnDimension('M')->setWidth(50);
+		$sheet->getColumnDimension('N')->setWidth(50);
+		$sheet->getColumnDimension('O')->setWidth(50);
 
-			//iniciamos tabla 
-			$sheet->setCellValue( 'A1', 'Número de activo' );
-			$sheet->setCellValue( 'B1', 'Tipo de activo' );
-			$sheet->setCellValue( 'C1', 'Nombre bien' );
-			$sheet->setCellValue( 'D1', 'Centro de costos' );
-			$sheet->setCellValue( 'E1', 'Nombre usuario asignado' );
-			$sheet->setCellValue( 'F1', 'Apellido usuario asignado' );
-			$sheet->setCellValue( 'G1', 'Correo usuario asignado' );
-			$sheet->setCellValue( 'H1', 'Empresa' );
-			$sheet->setCellValue( 'I1', 'Sucursal' );
-			$sheet->setCellValue( 'J1', 'Área' );
-			$sheet->setCellValue( 'K1', 'Fecha de inventario' );
-			$sheet->setCellValue( 'L1', 'Ultima actualización' );
-			$sheet->setCellValue( 'M1', 'Foto Frontal' );
-			$sheet->setCellValue( 'N1', 'Foto Lat. Derecha' );
-			$sheet->setCellValue( 'O1', 'Foto Lat. Izquierda' );
+		//iniciamos tabla 
+		$sheet->setCellValue( 'A1', 'Número de activo' );
+		$sheet->setCellValue( 'B1', 'Tipo de activo' );
+		$sheet->setCellValue( 'C1', 'Nombre bien' );
+		$sheet->setCellValue( 'D1', 'Centro de costos' );
+		$sheet->setCellValue( 'E1', 'Nombre usuario asignado' );
+		$sheet->setCellValue( 'F1', 'Apellido usuario asignado' );
+		$sheet->setCellValue( 'G1', 'Correo usuario asignado' );
+		$sheet->setCellValue( 'H1', 'Empresa' );
+		$sheet->setCellValue( 'I1', 'Sucursal' );
+		$sheet->setCellValue( 'J1', 'Área' );
+		$sheet->setCellValue( 'K1', 'Fecha de inventario' );
+		$sheet->setCellValue( 'L1', 'Ultima actualización' );
+		$sheet->setCellValue( 'M1', 'Foto Frontal' );
+		$sheet->setCellValue( 'N1', 'Foto Lat. Derecha' );
+		$sheet->setCellValue( 'O1', 'Foto Lat. Izquierda' );
 
-			$styleHeadArray = 
-			[
-				'font' => [
-					'bold' => true,
-					'color' => [ 'argb' => '00FFFFFF' ],
+		$styleHeadArray = 
+		[
+			'font' => [
+				'bold' => true,
+				'color' => [ 'argb' => '00FFFFFF' ],
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
 				],
-				'alignment' => [
-					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-				],
-				'borders' => [
-					'allBorders' => [
-						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-						'color' => ['argb' => '00000000'],
-					],
-				],
-				'fill' => [
-					'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-					'color' => [ 'argb' => '00BFBFBF' ]
-				],
-			];
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				'color' => [ 'argb' => '00BFBFBF' ]
+			],
+		];
 			
-			$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
+		$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
 
-			$fila = 2;
-			foreach( $activos as $activo )
+		$fila = 2;
+		$empresa = $this->empresaModel->find($this->session->empresa);
+		foreach( $activos as $activo )
+		{
+			$area = $this->areaModel->find($activo['ID_Area']);
+			$sucursal = $this->sucursalModel->find($activo['ID_Sucursal']);
+			$usuario = $this->userModel->find($activo['User_Inventario']);
+			$cc = $this->ccModel->find($activo['ID_CC']);
+			$tipo = $this->tipoModel->find($activo['ID_Tipo']);
+
+			$sheet->setCellValue( 'A' . $fila, $activo['ID_Activo'] );
+			$sheet->setCellValue( 'B' . $fila, ( $tipo != null ) ? $tipo['Desc'] : 'Tipo no encontrado' );
+			$sheet->setCellValue( 'C' . $fila, $activo['Nom_Activo'] );
+			$sheet->setCellValue( 'D' . $fila, ( $cc != null ) ? $cc['Desc'] : 'Centro de costo no encontrado' );
+			$sheet->setCellValue( 'E' . $fila, $usuario['nombre'] );
+			$sheet->setCellValue( 'F' . $fila, $usuario['apellidos'] );
+			$sheet->setCellValue( 'G' . $fila, $usuario['email'] );
+			$sheet->setCellValue( 'H' . $fila, $empresa['nombre'] );
+			$sheet->setCellValue( 'I' . $fila, ( $sucursal != null ) ? $sucursal['Desc'] : 'Sin sucursal' );
+			$sheet->setCellValue( 'J' . $fila, ( $area != null ) ? $area['descripcion'] : 'Sin area' );
+			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
+			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
+			
+			$activo_imagenes = $this->activoModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+				
+			//imagenes
+			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
 			{
-				$sheet->setCellValue( 'A' . $fila, $activo->ID_Activo );
-				$sheet->setCellValue( 'B' . $fila, $activo->tipo );
-				$sheet->setCellValue( 'C' . $fila, $activo->Nom_Activo );
-				$sheet->setCellValue( 'D' . $fila, $activo->cc );
-				$sheet->setCellValue( 'E' . $fila, $activo->nombre );
-				$sheet->setCellValue( 'F' . $fila, $activo->apellidos );
-				$sheet->setCellValue( 'G' . $fila, $activo->email );
-				$sheet->setCellValue( 'H' . $fila, $activo->empresa );
-				$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
-				$sheet->setCellValue( 'J' . $fila, $activo->area );
-				$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
-				$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
-
-				$activo_imagenes = $this->activoModel->where('Id', $activo->Id)->select('activos.Ima_ActivoLeft, activos.Ima_ActivoRight, activos.Ima_ActivoFront')->first();
-				
-				//imagenes
-				if ( $activo_imagenes['Ima_ActivoFront'] != NULL) 
-				{
-					$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
-					$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
-				}
-				else
-					$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
-
-				if ( $activo_imagenes['Ima_ActivoRight'] != NULL) 
-				{
-					$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
-					$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
-				}
-				else
-					$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
-
-				if ( $activo_imagenes['Ima_ActivoLeft'] != NULL) 
-				{
-					$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
-					$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
-				}
-				else
-					$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
-				
-				$fila++;
+				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['Id'] );
+				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['Id'] );
 			}
+			else
+				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
-			$styleBodyArray = 
-			[
-				'alignment' => [
-					'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-				],
-				'borders' => [
-					'allBorders' => [
-						'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-						'color' => ['argb' => '00000000'],
-					],
-				],
-			];
-			
-			$sheet->getStyle('A2:O'.($fila - 1))->applyFromArray($styleBodyArray);
-			
-			$writer = new Xls($spreadsheet);
+			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+			{
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['Id'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['Id'] );
+			}
+			else
+				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
-			$dia = date('Y/m/d');
-			$hora = date('h:i');
+			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+			{
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['Id'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['Id'] );
+			}
+			else
+				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
 
-			$nombre = $dia . '_' . $hora . '_Activos.xls';
-
-			//response
-			header('Content-Type: application/vnd.ms-excel');
-			header('Content-Disposition: attachment;filename="'. $nombre .'"');
-			header('Cache-Control: max-age=0');
-			$writer->save('php://output');	
-		} 
-		catch (\Throwable $th) 
-		{
-			echo $th->getMessage();
+			$fila++;
 		}
+
+		$styleBodyArray = 
+		[
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
+				],
+			],
+		];
+		
+		$sheet->getStyle('A2:O'.($fila - 1))->applyFromArray($styleBodyArray);
+		
+		$writer = new Xls($spreadsheet);
+
+		$dia = date('Y/m/d');
+		$hora = date('h:i');
+
+		$nombre = $dia . '_' . $hora . '_Activos.xls';
+
+		//response
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="'. $nombre .'"');
+		header('Cache-Control: max-age=0');
+		$writer->save('php://output');	
+		
 	}
 
 	public function ExcelDraft( )
-	{
-		$builder = $this->db->table( 'draft' );
-		$builder->select( 'draft.Id, draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, 
-						   usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, 
-						   areas.descripcion as area, draft.TS_Create, draft.TS_Update' );
-		$builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
-		$builder->join( 'cc', 'cc.ID_CC = draft.ID_CC' );
-		$builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
-		$builder->join( 'empresas', 'empresas.id_empresa = draft.ID_Company' );
-		$builder->join( 'sucursales', 'sucursales.id = draft.ID_Sucursal' );
-		$builder->join( 'areas', 'areas.id = draft.ID_Area' );
-		$builder->where( 'draft.TS_Delete', null );
-		$builder->where( 'draft.status', 'nuevo' );
-        $builder->where( 'draft.ID_Company', $this->session->empresa );
-		$activos = $builder->get( )->getResult( );
+	{		
+		$activos = $this->draftModel->where( 'ID_Company', $this->session->empresa )
+									->where( 'status !=', 'activado' )
+									->where( 'status !=', 'conciliado' )
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update')
+									->findAll();
 
 		$spreadsheet = new Spreadsheet( );
 		$sheet = $spreadsheet->getActiveSheet();
@@ -815,44 +799,52 @@ class Activo extends BaseController
 		$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
 
 		$fila = 2;
+
+		$empresa = $this->empresaModel->find($this->session->empresa);
 		foreach( $activos as $activo )
 		{
-			$sheet->setCellValue( 'A' . $fila, $activo->ID_Activo );
-			$sheet->setCellValue( 'B' . $fila, $activo->tipo );
-			$sheet->setCellValue( 'C' . $fila, $activo->Nom_Activo );
-			$sheet->setCellValue( 'D' . $fila, $activo->cc );
-			$sheet->setCellValue( 'E' . $fila, $activo->nombre );
-			$sheet->setCellValue( 'F' . $fila, $activo->apellidos );
-			$sheet->setCellValue( 'G' . $fila, $activo->email );
-			$sheet->setCellValue( 'H' . $fila, $activo->empresa );
-			$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
-			$sheet->setCellValue( 'J' . $fila, $activo->area );
-			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
-			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
+			$area = $this->areaModel->find($activo['ID_Area']);
+			$sucursal = $this->sucursalModel->find($activo['ID_Sucursal']);
+			$usuario = $this->userModel->find($activo['User_Inventario']);
+			$cc = $this->ccModel->find($activo['ID_CC']);
+			$tipo = $this->tipoModel->find($activo['ID_Tipo']);
+
+			$sheet->setCellValue( 'A' . $fila, $activo['ID_Activo'] );
+			$sheet->setCellValue( 'B' . $fila, ( $tipo != null ) ? $tipo['Desc'] : 'Tipo no encontrado' );
+			$sheet->setCellValue( 'C' . $fila, $activo['Nom_Activo'] );
+			$sheet->setCellValue( 'D' . $fila, ( $cc != null ) ? $cc['Desc'] : 'Centro de costo no encontrado' );
+			$sheet->setCellValue( 'E' . $fila, $usuario['nombre'] );
+			$sheet->setCellValue( 'F' . $fila, $usuario['apellidos'] );
+			$sheet->setCellValue( 'G' . $fila, $usuario['email'] );
+			$sheet->setCellValue( 'H' . $fila, $empresa['nombre'] );
+			$sheet->setCellValue( 'I' . $fila, ( $sucursal != null ) ? $sucursal['Desc'] : 'Sin sucursal' );
+			$sheet->setCellValue( 'J' . $fila, ( $area != null ) ? $area['descripcion'] : 'Sin area' );
+			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
+			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
 			
-			$activo_imagenes = $this->draftModel->where('Id', $activo->Id)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+			$activo_imagenes = $this->draftModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
-			if ( $activo_imagenes['Ima_ActivoFront'] != NULL) 
+			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
 			{
-				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
-				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
+				$sheet->setCellValue( 'M' . $fila, base_url() . '/draft/fp/' . $activo['Id'] );
+				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/fp/' . $activo['Id'] );
 			}
 			else
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
-			if ( $activo_imagenes['Ima_ActivoRight'] != NULL) 
+			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
 			{
-				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
-				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/draft/rp/' . $activo['Id'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/rp/' . $activo['Id'] );
 			}
 			else
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
-			if ( $activo_imagenes['Ima_ActivoLeft'] != NULL) 
+			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
 			{
-				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
-				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/draft/lp/' . $activo['Id'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/lp/' . $activo['Id'] );
 			}
 			else
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
