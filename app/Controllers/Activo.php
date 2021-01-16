@@ -735,6 +735,7 @@ class Activo extends BaseController
 		$activos = $this->draftModel->where( 'ID_Company', $this->session->empresa )
 									->where( 'status !=', 'activado' )
 									->where( 'status !=', 'conciliado' )
+									->where( 'status !=', 'eliminado' )
 									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update')
 									->findAll();
 
