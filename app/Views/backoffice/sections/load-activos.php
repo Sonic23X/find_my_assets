@@ -112,13 +112,14 @@
                         </div>
                         <div class="card-body">
                             <div class="mt-3 table-responsive text-center">
-                                <table class="table table-sm table-hover up-ready-table">
+                                <table class="table table-hover up-ready-table">
                                     <thead>
-                                    <tr>
-                                        <th scope="col">Activo</th>
-                                        <th scope="col">Asignación</th>
-                                        <th scope="col">Cargado</th>
-                                    </tr>
+                                        <tr>
+                                            <th scope="col">No. Activo</th>
+                                            <th scope="col">Activo</th>
+                                            <th scope="col">Asignación</th>
+                                            <th scope="col">Cargado</th>
+                                        </tr>
                                     </thead>
                                     <tbody class="up-ready-table-content">
 
@@ -130,7 +131,7 @@
 
                     <div class="card collapsed-card">
                         <div class="card-header text-center card-background-color">
-                            <span>Activos con problemas</span>
+                            <span>Problemas encontrados</span>
                             <span class="badge badge-warning text-white up-problems">XX</span>
                             <div class="card-tools">
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: white">
@@ -144,7 +145,7 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Problematica</th>
-                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">No. Activo</th>
                                             <th scope="col">#</th>
                                         </tr>
                                     </thead>
@@ -152,6 +153,91 @@
 
                                     </tbody>
                                 </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModallLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="infoModalLabel">Detalles del activo</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="active-inventary-form">
+
+                                    <div class="form-group row">
+                                        <label for="name" class="col-sm-4 col-form-label">Numero de activo</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control-plaintext" id="infoNoActivo" placeholder="Numero de activo" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="tipoActivo" class="col-sm-4 col-form-label">Tipo de activo</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control-plaintext iTipoActivo" name="tipoActivo" id="infoTipoActivo" disabled>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="name" class="col-sm-4 col-form-label">Nombre</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control-plaintext" id="infoName" placeholder="Ej. Macbook PRO" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="cCosto" class="col-sm-4 col-form-label">Centro de costo</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control-plaintext iCC" name="cCosto" id="infocCosto" disabled>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="asignacion" class="col-sm-4 col-form-label">Asignado a</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control-plaintext iAsignacion" name="asignacion" id="infoAsignacion" disabled>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-12 text-center">
+                                            <span><b>Ubicación</b></span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control-plaintext iEmpresa" name="asignacion" id="infoEmpresa" disabled>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="asignacion" class="col-sm-4 col-form-label">Sucursal</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control-plaintext iSucursal" name="asignacion" id="infoSucursal" disabled>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label for="asignacion" class="col-sm-4 col-form-label">Área</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control-plaintext iArea" name="asignacion" id="infoArea" disabled>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
