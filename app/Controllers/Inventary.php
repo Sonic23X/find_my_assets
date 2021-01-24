@@ -937,7 +937,7 @@ class Inventary extends BaseController
         foreach ( $activos->getResult( ) as $row )
         {
           $fecha = explode( ' ', $row->TS_Update );
-          $activo_imagenes = $this->activoModel->where('Id', $row->Id)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+          $activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
           $imagenes = 0;
           
           //imagenes

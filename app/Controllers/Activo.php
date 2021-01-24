@@ -674,7 +674,7 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
 			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
 			
-			$activo_imagenes = $this->activoModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+			$activo_imagenes = $this->draftModel->where('ID_Activo', $activo['ID_Activo'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
 			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
@@ -740,6 +740,7 @@ class Activo extends BaseController
 									->where( 'status !=', 'activado' )
 									->where( 'status !=', 'conciliado' )
 									->where( 'status !=', 'eliminado' )
+									->where( 'TS_Delete', null )
 									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update')
 									->findAll();
 
@@ -832,24 +833,24 @@ class Activo extends BaseController
 			//imagenes
 			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
 			{
-				$sheet->setCellValue( 'M' . $fila, base_url() . '/draft/fp/' . $activo['Id'] );
-				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/fp/' . $activo['Id'] );
+				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['Id'] );
+				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['Id'] );
 			}
 			else
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
 			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
 			{
-				$sheet->setCellValue( 'N' . $fila, base_url() . '/draft/rp/' . $activo['Id'] );
-				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/rp/' . $activo['Id'] );
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['Id'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['Id'] );
 			}
 			else
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
 			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
 			{
-				$sheet->setCellValue( 'O' . $fila, base_url() . '/draft/lp/' . $activo['Id'] );
-				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/lp/' . $activo['Id'] );
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['Id'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['Id'] );
 			}
 			else
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
@@ -1028,7 +1029,7 @@ class Activo extends BaseController
 				$area = null;
 				$error = false;
 				
-				if($this->activoModel->where('ID_Activo', $activo[0])->first() == null)
+				if($this->draftModel->where('ID_Activo', $activo[0])->first() == null)
 				{
 					$tipo = $this->tipoModel->like('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
 					if($tipo == null)
@@ -1079,10 +1080,10 @@ class Activo extends BaseController
 							'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
 							'ID_Area' => ($area == null) ? 0 : $area['id'],
 							'TS_Create' => date( 'Y/n/j H:i:s' ),
-							'status' => 'activado'
+							'status' => 'nuevo'
 						];
 
-						$nuevo_activo =
+						/*$nuevo_activo =
 						[
 							'ID_Activo' => $activo[0],
 							'Nom_Activo' => $activo[2],
@@ -1095,10 +1096,10 @@ class Activo extends BaseController
 							'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
 							'ID_Area' => ($area == null) ? 0 : $area['id'],
 							'TS_Create' => date( 'Y/n/j H:i:s' ),
-						];
+						];*/
 
-						$this->draftModel->insert($draft);
-						$load_activo = $this->activoModel->insert($nuevo_activo);
+						$load_activo = $this->draftModel->insert($draft);
+						//$load_activo = $this->activoModel->insert($nuevo_activo);
 
 						$subidos++;
 
