@@ -21,6 +21,9 @@
     <!-- Leaflet -->
     <link rel="stylesheet" href="<?= base_url( ) ?>/resources/plugins/leaflet/leaflet.css">
     <script type="text/javascript" src="<?= base_url( ) ?>/resources/plugins/leaflet/leaflet.js"></script>
+    
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
 
     <!-- stepper -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">

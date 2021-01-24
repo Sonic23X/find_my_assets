@@ -226,7 +226,9 @@ function setCoordenadasActiveMap( position )
   lon = position.coords.longitude;
   lat = position.coords.latitude;
 
-  activeMap = L.map( 'activeMap' ).setView( [ lat, lon ], 16 );
+  activeMap = L.map( 'activeMap', ).setView( [ lat, lon ], 16 );
+
+  activeMap.addControl(new L.Control.Fullscreen());
 
   L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
   {
