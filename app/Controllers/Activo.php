@@ -5,6 +5,7 @@ namespace App\Controllers;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Activo extends BaseController
 {
@@ -730,7 +731,7 @@ class Activo extends BaseController
 		header('Content-Type: application/vnd.ms-excel');
 		header('Content-Disposition: attachment;filename="'. $nombre .'"');
 		header('Cache-Control: max-age=0');
-		$writer->save('php://output');	
+		$writer->save('php://output');
 		
 	}
 
@@ -1121,6 +1122,151 @@ class Activo extends BaseController
 		}
 		else
 			return view( 'errors/cli/error_404' );
+	}
+
+	public function DownloadExcelExample( )
+	{
+		$spreadsheet = new Spreadsheet();
+		$cargaSheet = $spreadsheet->getActiveSheet();
+
+		//iniciamos configuración inicial
+		$cargaSheet->getColumnDimension('A')->setWidth(20);
+		$cargaSheet->getColumnDimension('B')->setWidth(30);
+		$cargaSheet->getColumnDimension('C')->setWidth(30);
+		$cargaSheet->getColumnDimension('D')->setWidth(30);
+		$cargaSheet->getColumnDimension('E')->setWidth(30);
+		$cargaSheet->getColumnDimension('F')->setWidth(30);
+		$cargaSheet->getColumnDimension('G')->setWidth(30);
+
+		//iniciamos tabla 
+		$cargaSheet->setCellValue( 'A1', 'Número de activo' );
+		$cargaSheet->setCellValue( 'B1', 'Tipo de activo' );
+		$cargaSheet->setCellValue( 'C1', 'Nombre' );
+		$cargaSheet->setCellValue( 'D1', 'CC' );
+		$cargaSheet->setCellValue( 'E1', 'Email del usuario' );
+		$cargaSheet->setCellValue( 'F1', 'Sucursal' );
+		$cargaSheet->setCellValue( 'G1', 'Área' );
+
+		$tiposSheet = new Worksheet($spreadsheet, 'Tipos');
+		$spreadsheet->addSheet($tiposSheet, 1);
+
+		$tiposSheet->getColumnDimension('A')->setWidth(50);
+		$tiposSheet->setCellValue( 'A1', 'Tipos' );
+
+		$tipos = $this->tipoModel->where('ID_Empresa', $this->session->empresa)->findAll();
+		$contador = 2;
+		
+		foreach ($tipos as $tipo) 
+		{
+			$tiposSheet->setCellValue( 'A' . $contador, $tipo['Desc'] );
+			$contador++;
+		}
+
+		$ccSheet = new Worksheet($spreadsheet, 'Centro de costos');
+		$spreadsheet->addSheet($ccSheet, 2);
+
+		$ccSheet->getColumnDimension('A')->setWidth(50);
+		$ccSheet->setCellValue( 'A1', 'Centro de costo' );
+		$ccSheet->setCellValue( 'B1', 'Numero' );
+
+		$ccs = $this->ccModel->where('id_empresa', $this->session->empresa)->where('Subcuenta !=', null)->findAll();
+		$contador = 2;
+		
+		foreach ($ccs as $cc) 
+		{
+			$ccSheet->setCellValue( 'A' . $contador, $cc['Desc'] );
+			$ccSheet->setCellValue( 'B' . $contador, $cc['Subcuenta'] );
+			$contador++;
+		}
+
+		$userSheet = new Worksheet($spreadsheet, 'Usuarios');
+		$spreadsheet->addSheet($userSheet, 3);
+
+		$userSheet->getColumnDimension('A')->setWidth(40);
+		$userSheet->getColumnDimension('B')->setWidth(40);
+		$userSheet->getColumnDimension('C')->setWidth(40);
+		$userSheet->setCellValue( 'A1', 'Nombre' );
+		$userSheet->setCellValue( 'B1', 'Apellidos' );
+		$userSheet->setCellValue( 'C1', 'Correo' );
+
+		$SQL = "SELECT usuarios.nombre, usuarios.apellidos, usuarios.email FROM usuarios, user_empresa WHERE user_empresa.id_usuario = usuarios.id_usuario AND user_empresa.id_empresa = " . $this->session->empresa;
+		$builder = $this->db->query( $SQL );
+		$users = $builder->getResult( );
+		$contador = 2;
+		
+		foreach ($users as $user) 
+		{
+			$userSheet->setCellValue( 'A' . $contador, $user->nombre );
+			$userSheet->setCellValue( 'B' . $contador, $user->apellidos );
+			$userSheet->setCellValue( 'C' . $contador, $user->email );
+			$contador++;
+		}
+
+		$sucursalSheet = new Worksheet($spreadsheet, 'Sucursales');
+		$spreadsheet->addSheet($sucursalSheet, 4);
+
+		$sucursalSheet->getColumnDimension('A')->setWidth(40);
+		$sucursalSheet->setCellValue( 'A1', 'Nombre' );
+
+		$sucursales = $this->sucursalModel->where('ID_Empresa', $this->session->empresa)->findAll();
+		$contador = 2;
+
+		foreach ($sucursales as $sucursal) 
+		{
+			$sucursalSheet->setCellValue( 'A' . $contador, $sucursal['Desc'] );
+			$contador++;
+		}
+
+		$areaSheet = new Worksheet($spreadsheet, 'Areas');
+		$spreadsheet->addSheet($areaSheet, 5);
+
+		$areaSheet->getColumnDimension('A')->setWidth(40);
+		$areaSheet->setCellValue( 'A1', 'Nombre' );
+
+		$areas = $this->areaModel->where('id_empresa', $this->session->empresa)->findAll();
+		$contador = 2;
+
+		foreach ($areas as $area) 
+		{
+			$areaSheet->setCellValue( 'A' . $contador, $area['descripcion'] );
+			$contador++;
+		}
+
+		$styleHeadArray = 
+		[
+			'font' => [
+				'bold' => true,
+				'color' => [ 'argb' => '00FFFFFF' ],
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
+				],
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				'color' => [ 'argb' => '00BFBFBF' ]
+			],
+		];
+			
+		$cargaSheet->getStyle('A1:G1')->applyFromArray($styleHeadArray);
+		$tiposSheet->getStyle('A1:A1')->applyFromArray($styleHeadArray);
+		$ccSheet->getStyle('A1:B1')->applyFromArray($styleHeadArray);
+		$userSheet->getStyle('A1:C1')->applyFromArray($styleHeadArray);
+		$sucursalSheet->getStyle('A1:A1')->applyFromArray($styleHeadArray);
+		$areaSheet->getStyle('A1:A1')->applyFromArray($styleHeadArray);
+
+		$spreadsheet->setActiveSheetIndex(0);
+		$writer = new Xls($spreadsheet);
+
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="Carga.xls"');
+		header('Cache-Control: max-age=0');
+		$writer->save('php://output');
 	}
 
 }

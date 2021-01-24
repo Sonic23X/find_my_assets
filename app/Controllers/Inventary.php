@@ -1148,6 +1148,6 @@ class Inventary extends BaseController
 		}
 		else
 			return view( 'errors/cli/error_404' );
-	}
+  }
 
 }

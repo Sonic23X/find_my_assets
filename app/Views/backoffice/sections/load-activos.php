@@ -46,7 +46,7 @@
 
                     <div class="row mt-3 p-2 text-center">
                         <div class="col-12 col-sm-12">
-                            <button class="btn btn-success" onClick="download()">Descargar Aquí</button>
+                            <a class="btn btn-success" href="javascript:download()">Descargar Aquí</a>
                         </div>
                     </div>
 

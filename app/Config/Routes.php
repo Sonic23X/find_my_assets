@@ -68,11 +68,15 @@ $routes->get('/inventario', 'Inventary::Index');
 /** Backoffice - Bajas **/
 $routes->get('/bajas', 'Down::Index');
 
-/** Backoffice - test **/
+/** Backoffice - Carga excel **/
 $routes->get('/carga', 'Activo::LoadActivos');
 
-/** AJAX - test **/
-$routes->post('/test/readExcel', 'Activo::ReadExcel');
+/** Backoffice - Empresas **/
+$routes->get('/empresas', 'Company::Index');
+
+/** AJAX - Carga Excel **/
+$routes->get('/carga/ejemplo', 'Activo::DownloadExcelExample');
+$routes->post('/carga/readExcel', 'Activo::ReadExcel');
 
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
