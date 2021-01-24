@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xls as ReadXls;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Activo extends BaseController
@@ -961,7 +961,7 @@ class Activo extends BaseController
 		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
 		{
 			//CSS, METAS y titulo
-			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
+			$head = array( 'title' => 'Carga masiva | Find my assets', 'css' => 'dashboard' );
 			echo view( 'backoffice/common/head', $head );
 
 			//sidebar
@@ -992,7 +992,7 @@ class Activo extends BaseController
 			$file = $this->request->getFile('excel');
 			$cabezales = true;
 
-			$reader = new Xlsx();
+			$reader = new ReadXls();
 			$reader->setReadDataOnly( TRUE );
 
 			$spreadsheet = $reader->load($file)->getActiveSheet( );
@@ -1016,7 +1016,6 @@ class Activo extends BaseController
 				}
 			}
 
-			//sin usuario  =>  88
 			$errores = [];	
 			$subidos = 0;
 			$activos_subidos = [];
@@ -1029,7 +1028,7 @@ class Activo extends BaseController
 				$sucursal = null;
 				$area = null;
 				$error = false;
-				
+
 				if($this->draftModel->where('ID_Activo', $activo[0])->first() == null)
 				{
 					$tipo = $this->tipoModel->like('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
@@ -1076,6 +1075,7 @@ class Activo extends BaseController
 							'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
 							'Des_Activo' => '-',
 							'NSerie_Activo' => '-',
+							'GPS' => '-33.3351748,-70.714059',
 							'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
 							'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
 							'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
@@ -1116,6 +1116,10 @@ class Activo extends BaseController
 
 						array_push( $activos_subidos, $json );
 					}
+				}
+				else
+				{
+					array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El activo ya está registrado' ]);
 				}
 			}
 			echo json_encode( array( 'status' => 200, 'errores' => $errores, 'subidos' => $subidos, 'activos' => $activos_subidos ) );
