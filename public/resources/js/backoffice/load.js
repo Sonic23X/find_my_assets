@@ -42,7 +42,29 @@ function changeFile( nodo )
             $('.up-ready').html(respuesta.subidos);
             $('.up-problems').html(respuesta.errores.length);
 
-            $('.up-ready-table-content').html('');
+            if (activosTable != null)
+            {
+              activosTable.destroy();
+              let table = 
+              `
+                <table class="table table-hover up-ready-table">
+                  <thead>
+                      <tr>
+                          <th scope="col">No. Activo</th>
+                          <th scope="col">Activo</th>
+                          <th scope="col">Asignación</th>
+                          <th scope="col">Cargado</th>
+                      </tr>
+                  </thead>
+                  <tbody class="up-ready-table-content">
+
+                  </tbody>
+                </table>
+              `;
+              $('.up-ready-table-div').html(table);  
+            }
+
+            $('.up-problems-table-content').html('');
 
             respuesta.activos.forEach(element =>
             {
@@ -113,6 +135,10 @@ function changeFile( nodo )
     {
         imprimir('Ups..', 'Error al guardar los datos', 'error');
     });
+
+    nodo.value = "";
+    $('#excelFileName').html('Adjuntar plantilla aquí');
+
 }
 
 function navSteps(step) 
@@ -161,7 +187,7 @@ function viewInfo(id)
 {
     $.ajax(
     {
-        url: url + `/inventario/getActivoInfo/${ id }`,
+        url: url + `/inventario/getDraftInfo/${ id }`,
         type: 'GET',
         dataType: 'json',
     })

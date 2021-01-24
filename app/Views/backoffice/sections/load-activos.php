@@ -74,7 +74,7 @@
                         <div class="col-sm-6">
                             <div class="input-group mb-3">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="excelFile" onChange="changeFile(this)" accept=".xlsx">
+                                    <input type="file" class="custom-file-input" id="excelFile" onChange="changeFile(this)" accept=".xls">
                                     <label class="custom-file-label" for="excelFile" id="excelFileName">Adjuntar plantilla aquí</label>
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="mt-3 table-responsive text-center">
+                            <div class="mt-3 table-responsive text-center up-ready-table-div">
                                 <table class="table table-hover up-ready-table">
                                     <thead>
                                         <tr>
