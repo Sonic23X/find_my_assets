@@ -20,7 +20,7 @@ function changeFile( nodo )
 
     $.ajax(
     {
-        url: url + '/test/readExcel',
+        url: url + '/carga/readExcel',
         type: 'POST',
         cache: false,
         contentType: false,
@@ -145,7 +145,7 @@ function navSteps(step)
 
 function download() 
 {
-    window.open(url + '/Carga.xlsx');
+    window.location.href = url + '/carga/ejemplo';
 
     $('#instructions').html('Ingresa la plantilla de activos');
     $('.up-load').removeClass('d-none');
@@ -159,7 +159,6 @@ function download()
 
 function viewInfo(id) 
 {
-
     $.ajax(
     {
         url: url + `/inventario/getActivoInfo/${ id }`,
