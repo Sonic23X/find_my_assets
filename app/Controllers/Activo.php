@@ -1018,10 +1018,12 @@ class Activo extends BaseController
 
 			$errores = [];	
 			$subidos = 0;
+			$linea = 1;
 			$activos_subidos = [];
 			foreach ( $rows as $activo ) 
 			{
 				//Validación de activos
+				$linea++;
 				$tipo = null;
 				$cc = null;
 				$user = null;
@@ -1029,97 +1031,151 @@ class Activo extends BaseController
 				$area = null;
 				$error = false;
 
-				if($this->draftModel->where('ID_Activo', $activo[0])->first() == null)
+				if ($activo[0] == null) 
 				{
-					$tipo = $this->tipoModel->like('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
-					if($tipo == null)
-					{
-						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El tipo de activo  no está registrado en el sistema.' ]);
-						$error = true;
-					}
-
-					$cc = $this->ccModel->like('Subcuenta', $activo[3])->where('id_empresa', $this->session->empresa )->first();
-					if($cc == null)
-					{
-						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El centro de costos no está registrado en el sistema.' ]);
-						$error = true;
-					}
-
-					$user = $this->userModel->where('email', $activo[4])->first();
-					if($user == null)
-					{
-						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El usuario no está registrado en el sistema, se registró el activo sin usuario.' ]);
-					}
-
-					$sucursal = $this->sucursalModel->like('Desc', $activo[5])->first();
-					if($sucursal == null)
-					{
-						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'La sucursal no está registrada en el sistema.' ]);
-						$error = true;
-					}
-
-					$area = $this->areaModel->like('descripcion', $activo[6])->first();
-					if($area == null)
-					{
-						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El área no está registrada en el sistema.' ]);
-						$error = true;
-					}
-
-					if (!$error) 
-					{
-						$draft =
-						[
-							'ID_Activo' => $activo[0],
-							'Nom_Activo' => $activo[2],
-							'ID_Company' => $this->session->empresa,
-							'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-							'Des_Activo' => '-',
-							'NSerie_Activo' => '-',
-							'GPS' => '-33.3351748,-70.714059',
-							'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
-							'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
-							'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
-							'ID_Area' => ($area == null) ? 0 : $area['id'],
-							'TS_Create' => date( 'Y/n/j H:i:s' ),
-							'status' => 'nuevo'
-						];
-
-						/*$nuevo_activo =
-						[
-							'ID_Activo' => $activo[0],
-							'Nom_Activo' => $activo[2],
-							'ID_Company' => $this->session->empresa,
-							'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-							'Des_Activo' => '-',
-							'NSerie_Activo' => '-',
-							'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
-							'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
-							'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
-							'ID_Area' => ($area == null) ? 0 : $area['id'],
-							'TS_Create' => date( 'Y/n/j H:i:s' ),
-						];*/
-
-						$load_activo = $this->draftModel->insert($draft);
-						//$load_activo = $this->activoModel->insert($nuevo_activo);
-
-						$subidos++;
-
-						$json =
-						[
-							'id' => $load_activo,
-							'tipo' => $tipo['Desc'],
-							'nombre' => $activo[2],
-							'usuario' => $user['nombre'] . ' ' . $user['apellidos'],
-							'fecha' => date( 'Y/n/j'),
-							'id_activo' => $activo[0],
-						];
-
-						array_push( $activos_subidos, $json );
-					}
+					array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un id de activo' ]);
 				}
 				else
 				{
-					array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El activo ya está registrado' ]);
+					if($this->draftModel->where('ID_Activo', $activo[0])->first() == null)
+					{
+
+						if ($activo[1] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un tipo de activo' ]);
+							$error = true;
+						}
+						else
+						{
+							$tipo = $this->tipoModel->like('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
+							if($tipo == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El tipo de activo  no está registrado en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if ($activo[2] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un nombre de activo' ]);
+							$error = true;
+						}
+
+						if ($activo[3] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un centro de costos' ]);
+							$error = true;
+						}
+						else
+						{
+							$cc = $this->ccModel->like('Subcuenta', $activo[3])->where('id_empresa', $this->session->empresa )->first();
+							if($cc == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El centro de costos no está registrado en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if ($activo[4] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene el email del usuario' ]);
+							$error = true;
+						}
+						else
+						{
+							$user = $this->userModel->where('email', $activo[4])->first();
+							if($user == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El usuario no está registrado en el sistema, se registró el activo sin usuario.' ]);
+							}
+						}
+
+						if ($activo[5] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene la sucursal' ]);
+							$error = true;
+						}
+						else
+						{
+							$sucursal = $this->sucursalModel->like('Desc', $activo[5])->first();
+							if($sucursal == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'La sucursal no está registrada en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if ($activo[6] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene el area' ]);
+							$error = true;
+						}
+						else
+						{
+							$area = $this->areaModel->like('descripcion', $activo[6])->first();
+							if($area == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El área no está registrada en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if (!$error) 
+						{
+							$draft =
+							[
+								'ID_Activo' => $activo[0],
+								'Nom_Activo' => $activo[2],
+								'ID_Company' => $this->session->empresa,
+								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+								'Des_Activo' => '-',
+								'NSerie_Activo' => '-',
+								'GPS' => '-33.3351748,-70.714059',
+								'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+								'ID_Area' => ($area == null) ? 0 : $area['id'],
+								'TS_Create' => date( 'Y/n/j H:i:s' ),
+								'status' => 'nuevo'
+							];
+
+							/*$nuevo_activo =
+							[
+								'ID_Activo' => $activo[0],
+								'Nom_Activo' => $activo[2],
+								'ID_Company' => $this->session->empresa,
+								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+								'Des_Activo' => '-',
+								'NSerie_Activo' => '-',
+								'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+								'ID_Area' => ($area == null) ? 0 : $area['id'],
+								'TS_Create' => date( 'Y/n/j H:i:s' ),
+							];*/
+
+							$load_activo = $this->draftModel->insert($draft);
+							//$load_activo = $this->activoModel->insert($nuevo_activo);
+
+							$subidos++;
+
+							$json =
+							[
+								'id' => $load_activo,
+								'tipo' => $tipo['Desc'],
+								'nombre' => $activo[2],
+								'usuario' => $user['nombre'] . ' ' . $user['apellidos'],
+								'fecha' => date( 'Y/n/j'),
+								'id_activo' => $activo[0],
+							];
+
+							array_push( $activos_subidos, $json );
+						}
+					}
+					else
+					{
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El activo ya está registrado' ]);
+					}
 				}
 			}
 			echo json_encode( array( 'status' => 200, 'errores' => $errores, 'subidos' => $subidos, 'activos' => $activos_subidos ) );
