@@ -277,14 +277,14 @@ class User extends BaseController
     public function Macal()
     {
         $password = crypt( '12345678', '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
-		$emailEncrypt = md5( 'soporte@macal.cl' );
+		$emailEncrypt = md5( 'practica.contabilidad@macal.cl' );
 
         $insert =
         [
             'perfil' => 'user',
-            'nombre' => 'Bodega',
-            'apellidos' => 'TI',
-            'email' => 'soporte@macal.cl',
+            'nombre' => 'Guillermo',
+            'apellidos' => 'Bascur',
+            'email' => 'practica.contabilidad@macal.cl',
             'password' => $password,
             'suscripcion' => 0,
             'verificacion' => 1,

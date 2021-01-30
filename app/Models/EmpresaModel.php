@@ -13,7 +13,7 @@ class EmpresaModel extends Model
   protected $allowedFields =
   [
     'id_usuario', 'nombre', 'rfc', 'razonsocial', 'ciec_pass',
-    'key_file', 'cer_file', 'fea_pass', 'default'
+    'key_file', 'cer_file', 'fea_pass', 'default', 'photo', 'created_at'
   ];
 
 }

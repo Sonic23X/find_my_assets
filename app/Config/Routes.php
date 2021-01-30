@@ -140,6 +140,10 @@ $routes->post('/usuarios/delete', 'User::Delete');
 
 $routes->get('/carga/(:any)', 'Home::Url/$1');
 
+/** AJAX - Empresa **/
+$routes->post('/empresas/update', 'Company::UpdateCompany');
+$routes->post('/empresas/setLogo', 'Company::ChangeImage');
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing

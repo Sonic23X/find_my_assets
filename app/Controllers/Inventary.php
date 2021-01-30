@@ -916,8 +916,7 @@ class Inventary extends BaseController
   {
     if ( $this->request->isAJAX( ) )
     {
-      try
-      {
+      
         $builder = $this->db->table( 'activos' );
         $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.Fec_Inventario, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
@@ -934,6 +933,11 @@ class Inventary extends BaseController
 
         $data = [ ];
         $num = 0;
+
+        $SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
+        $builderPeriodo = $this->db->query( $SQL );
+        $periodo = $builderPeriodo->getResult( );
+
         foreach ( $activos->getResult( ) as $row )
         {
           $fecha = explode( ' ', $row->TS_Update );
@@ -948,6 +952,22 @@ class Inventary extends BaseController
           if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
             $imagenes++;
 
+          //Comparamos la fecha de periodo de inventario
+          $inventario = false;
+          if ($periodo != null) 
+          {
+            $fecha1 = explode('-', explode(' ', $row->Fec_Inventario)[0]);
+            $fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+            $fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+            $fecha1Unix = strtotime($fecha1[2]."-".$fecha1[1]."-".$fecha1[0]." 00:00:00");
+            $fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
+            $fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+            
+            if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+              $inventario = true;
+          }
+
           $json =
           [
             'id' => $row->Id,
@@ -956,7 +976,7 @@ class Inventary extends BaseController
             'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
-            'inventario' => ($row->Fec_Inventario != null) ? true : false,
+            'inventario' => $inventario,
             'imagenes' => $imagenes
           ];
 
@@ -965,11 +985,7 @@ class Inventary extends BaseController
         }
 
         echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num ) );
-      }
-      catch (\Exception $e)
-      {
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-      }
+      
     }
     else
       return view( 'errors/cli/error_404' );
@@ -1019,18 +1035,51 @@ class Inventary extends BaseController
 
         $data = [ ];
         $num = 0;
+        
+        $SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND 'status' = 1";
+        $builderPeriodo = $this->db->query( $SQL );
+        $periodo = $builderPeriodo->getResult( );
+
         foreach ( $activos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Create );
+          $fecha = explode( ' ', $row->TS_Update );
+          $activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+          $imagenes = 0;
+          
+          //imagenes
+          if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+            $imagenes++;
+          if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+            $imagenes++;
+          if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+            $imagenes++;
+
+          //Comparamos la fecha de periodo de inventario
+          $inventario = false;
+          if ($periodo != null) 
+          {
+            $fecha1 = explode('-', $row->Fec_Inventario);
+            $fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+            $fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+            $fecha1Unix = strtotime($fecha1[2]."-".$fecha1[1]."-".$fecha1[0]." 00:00:00");
+            $fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
+            $fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+            
+            if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+              $inventario = true;
+          }
 
           $json =
           [
             'id' => $row->Id,
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
-            'usuario' => $row->nombre . $row->apellidos,
+            'usuario' => $row->nombre . ' ' . $row->apellidos,
             'fecha' => $fecha[ 0 ],
             'id_activo' => $row->ID_Activo,
+            'inventario' => $inventario,
+            'imagenes' => $imagenes
           ];
 
           array_push( $data, $json );
