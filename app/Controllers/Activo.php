@@ -680,24 +680,24 @@ class Activo extends BaseController
 			//imagenes
 			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
 			{
-				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['Id'] );
-				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['Id'] );
+				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
 			}
 			else
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
 			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
 			{
-				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['Id'] );
-				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['Id'] );
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
 			}
 			else
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
 			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
 			{
-				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['Id'] );
-				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['Id'] );
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
 			}
 			else
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
@@ -906,7 +906,7 @@ class Activo extends BaseController
 					break;
 			}
 
-			$activo = $this->draftModel->where( 'Id', $id )->select( [ $select ] )->first( );
+			$activo = $this->draftModel->where( 'ID_Activo', $id )->select( [ $select ] )->first( );
 
 			if ( $activo != null && $activo[ $select ] != null )
 			{
