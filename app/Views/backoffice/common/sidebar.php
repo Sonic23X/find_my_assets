@@ -35,7 +35,7 @@
                   Usuarios
                 </a>
               </li>
-              <li class="nav-item d-none">
+              <li class="nav-item">
                 <a href="<?= base_url( '/empresas' ) ?>" class="nav-link">
                   <i class="nav-icon fas fa-hotel"></i>
                   Empresas y locaciones
