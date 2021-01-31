@@ -954,7 +954,7 @@ class Inventary extends BaseController
 
           //Comparamos la fecha de periodo de inventario
           $inventario = false;
-          if ($periodo != null) 
+          if ($periodo != null && $row->Fec_Inventario != null) 
           {
             $fecha1 = explode('-', explode(' ', $row->Fec_Inventario)[0]);
             $fechaInicio = explode('-', $periodo[0]->fecha_inicio);
