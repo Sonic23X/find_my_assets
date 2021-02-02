@@ -71,13 +71,12 @@ class Activo extends BaseController
 	{
 		if ( $this->request->isAJAX( ) )
 		{
-			try
-			{
+			
 				$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
 				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 				$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 
-				$SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+				$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
 				$builder = $this->db->query( $SQL );
 				$empresas = $builder->getResult( );
 
@@ -89,6 +88,7 @@ class Activo extends BaseController
 				$builder = $this->db->query( $SQL );
 				$areas = $builder->getResult( );
 
+				$json = null;
 				if ( $tipos )
 				$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
 												'empresas' => $empresas, 'sucursales' => $sucursales,
@@ -97,11 +97,7 @@ class Activo extends BaseController
 				$json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 
 				echo json_encode( $json );
-			}
-			catch (\Exception $e)
-			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-			}
+			
 		}
 		else
 		return view( 'errors/cli/error_404' );
