@@ -122,10 +122,96 @@
                                                         </div>
                                                         <div class="col-sm"></div>
                                                     </div>
+                                                    
+                                                    <div class="row mt-5">
+                                                        <div class="col-sm-12 text-center">
+                                                            <h4>Sucursales</h4>
+                                                        </div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-6 mt-3">
+                                                            <div class="table-responsive text-center">
+                                                                <table class="table w-100">
+                                                                    <thead class="thead-dark">
+                                                                        <tr>
+                                                                            <th>
+                                                                                Nombre
+                                                                            </th>
+                                                                            <th>
+                                                                                #
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <?php
+                                                                    foreach($sucursales[$count] as $sucursal)
+                                                                    {
+                                                                    ?>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <?= $sucursal['Desc'] ?>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a href="#" onClick="editSucursal(<?= $sucursal['id'] ?>, '<?= $sucursal['Desc'] ?>')"><i class="fas fa-edit"></i></a>
+                                                                                <a href="#" onClick="deleteSucursal(<?= $sucursal['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                    </tbody>
+                                                                </table>
+                                                                <button class="mt-3 btn btn-primary" onClick="newSucursal(<?= $company->id_empresa ?>)">Nueva sucursal</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3"></div>
+                                                    </div>
+
+                                                    <div class="row mt-5">
+                                                        <div class="col-sm-12 text-center">
+                                                            <h4>Areas</h4>
+                                                        </div>
+                                                        <div class="col-sm-3"></div>
+                                                        <div class="col-sm-6 mt-3">
+                                                            <div class="table-responsive text-center">
+                                                                <table class="table w-100">
+                                                                    <thead class="thead-dark">
+                                                                        <tr>
+                                                                            <th>
+                                                                                Nombre
+                                                                            </th>
+                                                                            <th>
+                                                                                #
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <?php
+                                                                    foreach($areas[$count] as $area)
+                                                                    {
+                                                                    ?>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <?= $area['descripcion'] ?>
+                                                                            </td>
+                                                                            <td>
+                                                                                <a href="#" onClick="editArea(<?= $area['id'] ?>, '<?= $area['descripcion'] ?>')"><i class="fas fa-edit"></i></a>
+                                                                                <a href="#" onClick="deleteArea(<?= $area['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                    </tbody>
+                                                                </table>
+                                                                <button class="mt-3 btn btn-primary" onClick="newArea(<?= $company->id_empresa ?>)">Nueva area</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-3"></div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                             <?php
-                                            $count++;
+                                            $count++;    
                                             }
                                         ?>
                                         </tbody>
@@ -137,5 +223,104 @@
                     <div class="col-sm-1 col-md-1"></div>
                 </div>
                 
+                <div class="modal fade" tabindex="-1" id="newSucursal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nueva sucursal</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="hidden" id="newSucursalIdEmpresa" />
+                                        <input type="text" class="form-control" placeholder="Nombre de la sucursal" id="newSucursalName" />
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button type="button" class="btn btn-secondary" id="closeNewSucursal">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" id="saveNewSucursal">Registrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal fade" tabindex="-1" id="editSucursal">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Actualizar sucursal</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="hidden" id="editSucursalId" />
+                                        <input type="text" class="form-control" placeholder="Nombre de la sucursal" id="editSucursalName" />
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button type="button" class="btn btn-secondary" id="closeEditSucursal">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" id="saveEditSucursal">Actualizar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" tabindex="-1" id="newArea">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nueva area</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="hidden" id="newAreaIdEmpresa" />
+                                        <input type="text" class="form-control" placeholder="Nombre del area" id="newAreaName" />
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button type="button" class="btn btn-secondary" id="closeNewArea">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" id="saveNewArea">Registrar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" tabindex="-1" id="editArea">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Actualizar area</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="hidden" id="editAreaId" />
+                                        <input type="text" class="form-control" placeholder="Nombre del area" id="editAreaName" />
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button type="button" class="btn btn-secondary" id="closeEditArea">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" id="saveEditArea">Actualizar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>

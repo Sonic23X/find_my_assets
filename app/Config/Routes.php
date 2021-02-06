@@ -144,6 +144,12 @@ $routes->get('/carga/(:any)', 'Home::Url/$1');
 $routes->post('/empresas/update', 'Company::UpdateCompany');
 $routes->post('/empresas/setLogo', 'Company::ChangeImage');
 $routes->post('/empresas/finishPeriod', 'Company::FinishPeriod');
+$routes->post('/empresas/newSucursal', 'Company::NewSucursal');
+$routes->post('/empresas/editSucursal', 'Company::EditSucursal');
+$routes->post('/empresas/deleteSucursal', 'Company::DeleteSucursal');
+$routes->post('/empresas/newArea', 'Company::NewArea');
+$routes->post('/empresas/editArea', 'Company::EditArea');
+$routes->post('/empresas/deleteArea', 'Company::DeleteArea');
 
 /**
  * --------------------------------------------------------------------

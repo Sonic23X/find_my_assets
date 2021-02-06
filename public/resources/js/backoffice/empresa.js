@@ -141,7 +141,219 @@ function finish(id)
   });
 }
 
+function newSucursal(id) 
+{
+  $('#newSucursalIdEmpresa').val(id);
+  $('#newSucursal').modal('show');
+}
+
+function editSucursal(id, name) 
+{
+  $('#editSucursalId').val(id);
+  $('#editSucursalName').val(name);
+  $('#editSucursal').modal('show');
+}
+
+function deleteSucursal(id) 
+{
+  let json = 
+  {
+    id: id,
+  };
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/empresas/deleteSucursal',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+      location.reload();
+    }
+    else
+      imprimir( 'Ups...', response.msg, 'error' );
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+  });
+}
+
+function newArea(id) 
+{
+  $('#newAreaIdEmpresa').val(id);
+  $('#newArea').modal('show');
+}
+
+function editArea(id, name) 
+{
+  $('#editAreaId').val(id);
+  $('#editAreaName').val(name);
+  $('#editArea').modal('show');
+}
+
+function deleteArea(id) 
+{
+  let json = 
+  {
+    id: id,
+  };
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/empresas/deleteArea',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+      location.reload();
+    }
+    else
+      imprimir( 'Ups...', response.msg, 'error' );
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+  });
+}
+
 $(document).ready(() =>
 {
-    
+    $('#saveNewSucursal').click(() => 
+    {
+      let json = 
+      {
+        id: $('#newSucursalIdEmpresa').val(),
+        nombre: $('#newSucursalName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/newSucursal',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          location.reload();
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveEditSucursal').click(() => 
+    {
+      let json = 
+      {
+        id: $('#editSucursalId').val(),
+        nombre: $('#editSucursalName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/editSucursal',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          location.reload();
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveNewArea').click(() => 
+    {
+      let json = 
+      {
+        id: $('#newAreaIdEmpresa').val(),
+        nombre: $('#newAreaName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/newArea',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          location.reload();
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveEditArea').click(() => 
+    {
+      let json = 
+      {
+        id: $('#editAreaId').val(),
+        nombre: $('#editAreaName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/editArea',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          location.reload();
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
 });
