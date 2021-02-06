@@ -118,6 +118,7 @@
                                                         <div class="col-sm"></div>
                                                         <div class="col-sm">
                                                             <button class="btn btn-primary btn-block" onClick="update(<?= $company->id_empresa ?>)">Actualizar</button>
+                                                            <button class="btn btn-danger btn-block mt-3" onClick="finish(<?= $company->id_empresa ?>)">Terminar ciclo</button>
                                                         </div>
                                                         <div class="col-sm"></div>
                                                     </div>

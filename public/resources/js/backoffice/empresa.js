@@ -109,6 +109,38 @@ function update(id)
   });
 }
 
+function finish(id) 
+{
+  let json = 
+  {
+    id: id,
+  };
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/empresas/finishPeriod',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+
+      $(`#form_date_i_${id}`).val('');
+      $(`#form_date_f_${id}`).val('');
+    }
+    else
+      imprimir( 'Ups...', response.msg, 'error' );
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+  });
+}
+
 $(document).ready(() =>
 {
     

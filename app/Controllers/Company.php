@@ -150,4 +150,29 @@ class Company extends BaseController
 		else
 			return view( 'errors/cli/error_404' );
 	}
+
+	public function FinishPeriod()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->request->getVar( 'id' ) . " AND status = 1";
+			$builder = $this->db->query( $SQL );
+			$periodo = $builder->getResult( );
+
+			if ($periodo != null)
+			{
+				$SQL = "UPDATE empresa_periodo SET status = 0 WHERE id = " . $periodo[0]->id;
+				$builder = $this->db->query( $SQL );
+
+				$SQL = "UPDATE usuarios, user_empresa SET usuarios.envios = 0 WHERE user_empresa.id_empresa = " . $periodo[0]->id  . " AND user_empresa.id_usuario = usuarios.id_usuario";
+				$builder = $this->db->query( $SQL );
+				
+				echo json_encode( array( 'status' => 200, 'msg' => '¡Periodo finalizado exitosamente!' ) );
+			}
+			else		
+				echo json_encode( array( 'status' => 400, 'msg' => '¡No existe un periodo activo!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
 }
