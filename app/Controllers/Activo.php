@@ -528,7 +528,11 @@ class Activo extends BaseController
 			}
 			$draftBuilder = $this->db->table( 'draft' );
 			$draftBuilder->where( 'ID_Activo', $this->request->getVar( 'activo' ) );
-			$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ) ]);
+
+			if ($this->request->getVar('inventariar') == 'true')
+				$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ), 'Fec_Inventario' => date( 'Y/n/j H:i:s' )]);
+			else			
+				$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ) ]);
 			
 			$draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
 									   ->whereIn( 'ID_Company', $empresas )
