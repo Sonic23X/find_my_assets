@@ -5,6 +5,7 @@ namespace App\Controllers;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xls as ReadXls;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Activo extends BaseController
@@ -1008,9 +1009,16 @@ class Activo extends BaseController
 		if ( $this->request->isAJAX( ) )
 		{
 			$file = $this->request->getFile('excel');
+			$nameFile = explode('.', $file->getName());
 			$cabezales = true;
 
-			$reader = new ReadXls();
+			$reader = null;
+
+			if ($nameFile[1] == 'xls') 
+				$reader = new ReadXls();				
+			else
+				$reader = new Xlsx();				
+
 			$reader->setReadDataOnly( TRUE );
 
 			$spreadsheet = $reader->load($file)->getActiveSheet( );
