@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
+use PhpOffice\PhpSpreadsheet\Reader\Xls as ReadXls;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Activo extends BaseController
 {
@@ -69,13 +72,12 @@ class Activo extends BaseController
 	{
 		if ( $this->request->isAJAX( ) )
 		{
-			try
-			{
+			
 				$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
 				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 				$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 
-				$SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+				$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
 				$builder = $this->db->query( $SQL );
 				$empresas = $builder->getResult( );
 
@@ -87,6 +89,7 @@ class Activo extends BaseController
 				$builder = $this->db->query( $SQL );
 				$areas = $builder->getResult( );
 
+				$json = null;
 				if ( $tipos )
 				$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
 												'empresas' => $empresas, 'sucursales' => $sucursales,
@@ -95,11 +98,7 @@ class Activo extends BaseController
 				$json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 
 				echo json_encode( $json );
-			}
-			catch (\Exception $e)
-			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-			}
+			
 		}
 		else
 		return view( 'errors/cli/error_404' );
@@ -269,11 +268,38 @@ class Activo extends BaseController
 
 				$update =
 				[
-					'GPS' => $this->request->getVar( 'gps' ),
 					'Vida_Activo' => $this->request->getVar( 'vida' ),
 					'ID_Company' => $this->request->getVar( 'empresa' ),
 					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
 					'ID_Area' => $this->request->getVar( 'area' ),
+				];
+
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+					echo json_encode( array( 'status' => 200 ) );
+				else
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
+
+			}
+			catch (\Exception $e)
+			{
+			echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+			}
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	//método que funciona exclusivamente con AJAX - JQUERY
+	function UpdateCoordenadas( )
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			try
+			{
+				$update =
+				[
+					'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
+					'GPS' => $this->request->getVar( 'gps' ),
 				];
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
@@ -313,7 +339,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+				echo 'Error al conseguir la imagen';
 			}
 		}
 		else
@@ -342,7 +368,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+				echo 'Error al conseguir la imagen';
 			}
 		}
 		else
@@ -371,7 +397,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+				echo 'Error al conseguir la imagen';
 			}
 		}
 		else
@@ -389,25 +415,28 @@ class Activo extends BaseController
 
 				$photo = $this->request->getFile( 'file' );
 
-				$image = file_get_contents( $photo->getTempName( )  );
+				$image = file_get_contents( $photo->getTempName( ) );
 
 				switch ( $this->request->getVar( 'type' ) )
 				{
 					case 'front':
 						$update =
 						[
+							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
 							'Ima_ActivoFront' => $image,
 						];
 						break;
 					case 'right':
 						$update =
 						[
+							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
 							'Ima_ActivoRight' => $image,
 						];
 						break;
 					case 'left':
 						$update =
 						[
+							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
 							'Ima_ActivoLeft' => $image,
 						];
 						break;
@@ -499,7 +528,11 @@ class Activo extends BaseController
 			}
 			$draftBuilder = $this->db->table( 'draft' );
 			$draftBuilder->where( 'ID_Activo', $this->request->getVar( 'activo' ) );
-			$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ) ]);
+
+			if ($this->request->getVar('inventariar') == 'true')
+				$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ), 'Fec_Inventario' => date( 'Y/n/j H:i:s' )]);
+			else			
+				$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ) ]);
 			
 			$draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
 									   ->whereIn( 'ID_Company', $empresas )
@@ -555,19 +588,14 @@ class Activo extends BaseController
 
 	public function ExcelActivos( )
 	{
+		$activos = $this->activoModel->where( 'ID_Company', $this->session->empresa )
+									->where( 'TS_Delete', null )
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, Fec_Inventario, ID_CC, ID_Tipo, TS_Create, TS_Update')
+									->findAll();
 
-		$builder = $this->db->table( 'activos' );
-		$builder->select( 'activos.Id, activos.ID_Activo, tipos.Desc as tipo, activos.Nom_Activo, cc.Desc as cc, usuarios.nombre, usuarios.apellidos, 
-							usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area, activos.TS_Create, activos.TS_Update' );
-		$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
-		$builder->join( 'cc', 'cc.ID_CC = activos.ID_CC' );
-		$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
-		$builder->join( 'empresas', 'empresas.id_empresa = activos.ID_Company' );
-		$builder->join( 'sucursales', 'sucursales.id = activos.ID_Sucursal' );
-		$builder->join( 'areas', 'areas.id = activos.ID_Area' );
-        $builder->where( 'activos.TS_Delete', null );
-        $builder->where( 'activos.ID_Company', $this->session->empresa );
-		$activos = $builder->get( )->getResult( );
+		$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
+		$builderPeriodo = $this->db->query( $SQL );
+		$periodo = $builderPeriodo->getResult( );
 
 		$spreadsheet = new Spreadsheet( );
 		$sheet = $spreadsheet->getActiveSheet();
@@ -585,9 +613,10 @@ class Activo extends BaseController
 		$sheet->getColumnDimension('J')->setWidth(20);
 		$sheet->getColumnDimension('K')->setWidth(20);
 		$sheet->getColumnDimension('L')->setWidth(20);
-		$sheet->getColumnDimension('M')->setWidth(50);
+		$sheet->getColumnDimension('M')->setWidth(20);
 		$sheet->getColumnDimension('N')->setWidth(50);
 		$sheet->getColumnDimension('O')->setWidth(50);
+		$sheet->getColumnDimension('P')->setWidth(50);
 
 		//iniciamos tabla 
 		$sheet->setCellValue( 'A1', 'Número de activo' );
@@ -602,9 +631,10 @@ class Activo extends BaseController
 		$sheet->setCellValue( 'J1', 'Área' );
 		$sheet->setCellValue( 'K1', 'Fecha de inventario' );
 		$sheet->setCellValue( 'L1', 'Ultima actualización' );
-		$sheet->setCellValue( 'M1', 'Foto Frontal' );
-		$sheet->setCellValue( 'N1', 'Foto Lat. Derecha' );
-		$sheet->setCellValue( 'O1', 'Foto Lat. Izquierda' );
+		$sheet->setCellValue( 'M1', 'Status inventario' );
+		$sheet->setCellValue( 'N1', 'Foto Frontal' );
+		$sheet->setCellValue( 'O1', 'Foto Lat. Derecha' );
+		$sheet->setCellValue( 'P1', 'Foto Lat. Izquierda' );
 
 		$styleHeadArray = 
 		[
@@ -626,30 +656,74 @@ class Activo extends BaseController
 				'color' => [ 'argb' => '00BFBFBF' ]
 			],
 		];
-		
-		$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
+			
+		$sheet->getStyle('A1:P1')->applyFromArray($styleHeadArray);
 
 		$fila = 2;
+		$empresa = $this->empresaModel->find($this->session->empresa);
 		foreach( $activos as $activo )
 		{
-			$sheet->setCellValue( 'A' . $fila, $activo->ID_Activo );
-			$sheet->setCellValue( 'B' . $fila, $activo->tipo );
-			$sheet->setCellValue( 'C' . $fila, $activo->Nom_Activo );
-			$sheet->setCellValue( 'D' . $fila, $activo->cc );
-			$sheet->setCellValue( 'E' . $fila, $activo->nombre );
-			$sheet->setCellValue( 'F' . $fila, $activo->apellidos );
-			$sheet->setCellValue( 'G' . $fila, $activo->email );
-			$sheet->setCellValue( 'H' . $fila, $activo->empresa );
-			$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
-			$sheet->setCellValue( 'J' . $fila, $activo->area );
-			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
-			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
-			$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo->Id );
-			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo->Id );
-			$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo->Id );
-			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo->Id );
-			$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo->Id );
-			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo->Id );
+			$area = $this->areaModel->find($activo['ID_Area']);
+			$sucursal = $this->sucursalModel->find($activo['ID_Sucursal']);
+			$usuario = $this->userModel->find($activo['User_Inventario']);
+			$cc = $this->ccModel->find($activo['ID_CC']);
+			$tipo = $this->tipoModel->find($activo['ID_Tipo']);
+
+			$inventario = false;
+			if ($periodo != null) 
+			{
+				$fecha1 = explode('-', explode(' ', $activo['Fec_Inventario'])[0]);
+				$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+				$fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+				$fecha1Unix = strtotime($fecha1[2]."-".$fecha1[1]."-".$fecha1[0]." 00:00:00");
+				$fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
+				$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+				
+				if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+				$inventario = true;
+			}
+
+			$sheet->setCellValue( 'A' . $fila, $activo['ID_Activo'] );
+			$sheet->setCellValue( 'B' . $fila, ( $tipo != null ) ? $tipo['Desc'] : 'Tipo no encontrado' );
+			$sheet->setCellValue( 'C' . $fila, $activo['Nom_Activo'] );
+			$sheet->setCellValue( 'D' . $fila, ( $cc != null ) ? $cc['Desc'] : 'Centro de costo no encontrado' );
+			$sheet->setCellValue( 'E' . $fila, $usuario['nombre'] );
+			$sheet->setCellValue( 'F' . $fila, $usuario['apellidos'] );
+			$sheet->setCellValue( 'G' . $fila, $usuario['email'] );
+			$sheet->setCellValue( 'H' . $fila, $empresa['nombre'] );
+			$sheet->setCellValue( 'I' . $fila, ( $sucursal != null ) ? $sucursal['Desc'] : 'Sin sucursal' );
+			$sheet->setCellValue( 'J' . $fila, ( $area != null ) ? $area['descripcion'] : 'Sin area' );
+			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
+			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
+			$sheet->setCellValue( 'M' . $fila, ($inventario == true) ? 'Inventariado' : 'Pendiente' );
+			
+			$activo_imagenes = $this->draftModel->where('ID_Activo', $activo['ID_Activo'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+				
+			//imagenes
+			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+			{
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
+			}
+			else
+				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
+
+			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+			{
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
+			}
+			else
+				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
+
+			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+			{
+				$sheet->setCellValue( 'P' . $fila, base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'P' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
+			}
+			else
+				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
 
 			$fila++;
 		}
@@ -667,7 +741,7 @@ class Activo extends BaseController
 			],
 		];
 		
-		$sheet->getStyle('A2:O'.($fila - 1))->applyFromArray($styleBodyArray);
+		$sheet->getStyle('A2:P'.($fila - 1))->applyFromArray($styleBodyArray);
 		
 		$writer = new Xls($spreadsheet);
 
@@ -681,24 +755,18 @@ class Activo extends BaseController
 		header('Content-Disposition: attachment;filename="'. $nombre .'"');
 		header('Cache-Control: max-age=0');
 		$writer->save('php://output');
+		
 	}
 
 	public function ExcelDraft( )
-	{
-		$builder = $this->db->table( 'draft' );
-		$builder->select( 'draft.Id, draft.ID_Activo, tipos.Desc as tipo, draft.Nom_Activo, cc.Desc as cc, usuarios.nombre, 
-							usuarios.apellidos, usuarios.email, empresas.nombre as empresa, sucursales.Desc as sucursal, areas.descripcion as area,
-							draft.TS_Create, draft.TS_Update' );
-		$builder->join( 'tipos', 'tipos.id = draft.ID_Tipo' );
-		$builder->join( 'cc', 'cc.ID_CC = draft.ID_CC' );
-		$builder->join( 'usuarios', 'usuarios.id_usuario = draft.User_Inventario' );
-		$builder->join( 'empresas', 'empresas.id_empresa = draft.ID_Company' );
-		$builder->join( 'sucursales', 'sucursales.id = draft.ID_Sucursal' );
-		$builder->join( 'areas', 'areas.id = draft.ID_Area' );
-		$builder->where( 'draft.TS_Delete', null );
-		$builder->where( 'draft.status', 'nuevo' );
-        $builder->where( 'draft.ID_Company', $this->session->empresa );
-		$activos = $builder->get( )->getResult( );
+	{		
+		$activos = $this->draftModel->where( 'ID_Company', $this->session->empresa )
+									->where( 'status !=', 'activado' )
+									->where( 'status !=', 'conciliado' )
+									->where( 'status !=', 'eliminado' )
+									->where( 'TS_Delete', null )
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update')
+									->findAll();
 
 		$spreadsheet = new Spreadsheet( );
 		$sheet = $spreadsheet->getActiveSheet();
@@ -761,26 +829,55 @@ class Activo extends BaseController
 		$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
 
 		$fila = 2;
+
+		$empresa = $this->empresaModel->find($this->session->empresa);
 		foreach( $activos as $activo )
 		{
-			$sheet->setCellValue( 'A' . $fila, $activo->ID_Activo );
-			$sheet->setCellValue( 'B' . $fila, $activo->tipo );
-			$sheet->setCellValue( 'C' . $fila, $activo->Nom_Activo );
-			$sheet->setCellValue( 'D' . $fila, $activo->cc );
-			$sheet->setCellValue( 'E' . $fila, $activo->nombre );
-			$sheet->setCellValue( 'F' . $fila, $activo->apellidos );
-			$sheet->setCellValue( 'G' . $fila, $activo->email );
-			$sheet->setCellValue( 'H' . $fila, $activo->empresa );
-			$sheet->setCellValue( 'I' . $fila, $activo->sucursal );
-			$sheet->setCellValue( 'J' . $fila, $activo->area );
-			$sheet->setCellValue( 'K' . $fila, $activo->TS_Create );
-			$sheet->setCellValue( 'L' . $fila, $activo->TS_Update );
-			$sheet->setCellValue( 'M' . $fila, base_url() . '/draft/fp/' . $activo->Id );
-			$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/fp/' . $activo->Id );
-			$sheet->setCellValue( 'N' . $fila, base_url() . '/draft/rp/' . $activo->Id );
-			$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/rp/' . $activo->Id );
-			$sheet->setCellValue( 'O' . $fila, base_url() . '/draft/lp/' . $activo->Id );
-			$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/draft/lp/' . $activo->Id );
+			$area = $this->areaModel->find($activo['ID_Area']);
+			$sucursal = $this->sucursalModel->find($activo['ID_Sucursal']);
+			$usuario = $this->userModel->find($activo['User_Inventario']);
+			$cc = $this->ccModel->find($activo['ID_CC']);
+			$tipo = $this->tipoModel->find($activo['ID_Tipo']);
+
+			$sheet->setCellValue( 'A' . $fila, $activo['ID_Activo'] );
+			$sheet->setCellValue( 'B' . $fila, ( $tipo != null ) ? $tipo['Desc'] : 'Tipo no encontrado' );
+			$sheet->setCellValue( 'C' . $fila, $activo['Nom_Activo'] );
+			$sheet->setCellValue( 'D' . $fila, ( $cc != null ) ? $cc['Desc'] : 'Centro de costo no encontrado' );
+			$sheet->setCellValue( 'E' . $fila, $usuario['nombre'] );
+			$sheet->setCellValue( 'F' . $fila, $usuario['apellidos'] );
+			$sheet->setCellValue( 'G' . $fila, $usuario['email'] );
+			$sheet->setCellValue( 'H' . $fila, $empresa['nombre'] );
+			$sheet->setCellValue( 'I' . $fila, ( $sucursal != null ) ? $sucursal['Desc'] : 'Sin sucursal' );
+			$sheet->setCellValue( 'J' . $fila, ( $area != null ) ? $area['descripcion'] : 'Sin area' );
+			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
+			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
+			
+			$activo_imagenes = $this->draftModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+				
+			//imagenes
+			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+			{
+				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['Id'] );
+				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['Id'] );
+			}
+			else
+				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
+
+			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+			{
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['Id'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['Id'] );
+			}
+			else
+				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
+
+			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+			{
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['Id'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['Id'] );
+			}
+			else
+				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
 
 			$fila++;
 		}
@@ -832,7 +929,7 @@ class Activo extends BaseController
 					break;
 			}
 
-			$activo = $this->draftModel->where( 'Id', $id )->select( [ $select ] )->first( );
+			$activo = $this->draftModel->where( 'ID_Activo', $id )->select( [ $select ] )->first( );
 
 			if ( $activo != null && $activo[ $select ] != null )
 			{
@@ -880,6 +977,386 @@ class Activo extends BaseController
 		{
 			echo "Sin imagen";
 		}
+	}
+
+	public function LoadActivos()
+	{
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
+		{
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Carga masiva | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
+
+			//sidebar
+			$sidebar = array( 'name' => $this->session->name );
+			echo view( 'backoffice/common/sidebar', $sidebar );
+
+			//navbar
+			echo view( 'backoffice/common/navbar' );
+
+			//content - scanner
+			echo view( 'backoffice/sections/load-activos' );
+
+			//Scripts y librerias
+			$footer = array( 'js' => 'load');
+			echo view( 'backoffice/common/footer2', $footer );
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+			return view( 'functions/redirect', $data );
+		}
+	}
+
+	public function ReadExcel()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$file = $this->request->getFile('excel');
+			$nameFile = explode('.', $file->getName());
+			$cabezales = true;
+
+			$reader = null;
+
+			if ($nameFile[1] == 'xls') 
+				$reader = new ReadXls();				
+			else
+				$reader = new Xlsx();				
+
+			$reader->setReadDataOnly( TRUE );
+
+			$spreadsheet = $reader->load($file)->getActiveSheet( );
+
+			$rows = [ ];
+			foreach ( $spreadsheet->getRowIterator( ) as $row )
+			{
+				if ($cabezales) 
+					$cabezales = false;
+				else
+				{
+					$cellIterator = $row->getCellIterator( );
+					$cells = [ ];
+					
+					foreach ( $cellIterator as $cell ) 
+					{
+						$cells[ ] = $cell->getValue( ); 
+					}
+					
+					$rows[ ] = $cells;
+				}
+			}
+
+			$errores = [];	
+			$subidos = 0;
+			$linea = 1;
+			$activos_subidos = [];
+			foreach ( $rows as $activo ) 
+			{
+				//Validación de activos
+				$linea++;
+				$tipo = null;
+				$cc = null;
+				$user = null;
+				$sucursal = null;
+				$area = null;
+				$error = false;
+
+				if ($activo[0] == null) 
+				{
+					array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un id de activo' ]);
+				}
+				else
+				{
+					if($this->draftModel->where('ID_Activo', $activo[0])->first() == null)
+					{
+
+						if ($activo[1] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un tipo de activo' ]);
+							$error = true;
+						}
+						else
+						{
+							$tipo = $this->tipoModel->like('Desc', $activo[1])->where('ID_Empresa', $this->session->empresa )->first();
+							if($tipo == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El tipo de activo  no está registrado en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if ($activo[2] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un nombre de activo' ]);
+							$error = true;
+						}
+
+						if ($activo[3] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene un centro de costos' ]);
+							$error = true;
+						}
+						else
+						{
+							$cc = $this->ccModel->like('Subcuenta', $activo[3])->where('id_empresa', $this->session->empresa )->first();
+							if($cc == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El centro de costos no está registrado en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if ($activo[4] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene el email del usuario' ]);
+							$error = true;
+						}
+						else
+						{
+							$user = $this->userModel->where('email', $activo[4])->first();
+							if($user == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El usuario no está registrado en el sistema, se registró el activo sin usuario.' ]);
+							}
+						}
+
+						if ($activo[5] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene la sucursal' ]);
+							$error = true;
+						}
+						else
+						{
+							$sucursal = $this->sucursalModel->like('Desc', $activo[5])->first();
+							if($sucursal == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'La sucursal no está registrada en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if ($activo[6] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene el area' ]);
+							$error = true;
+						}
+						else
+						{
+							$area = $this->areaModel->like('descripcion', $activo[6])->first();
+							if($area == null)
+							{
+								array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El área no está registrada en el sistema.' ]);
+								$error = true;
+							}
+						}
+
+						if (!$error) 
+						{
+							$draft =
+							[
+								'ID_Activo' => $activo[0],
+								'Nom_Activo' => $activo[2],
+								'ID_Company' => $this->session->empresa,
+								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+								'Des_Activo' => '-',
+								'NSerie_Activo' => '-',
+								'GPS' => '-33.3351748,-70.714059',
+								'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+								'ID_Area' => ($area == null) ? 0 : $area['id'],
+								'TS_Create' => date( 'Y/n/j H:i:s' ),
+								'status' => 'nuevo'
+							];
+
+							/*$nuevo_activo =
+							[
+								'ID_Activo' => $activo[0],
+								'Nom_Activo' => $activo[2],
+								'ID_Company' => $this->session->empresa,
+								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+								'Des_Activo' => '-',
+								'NSerie_Activo' => '-',
+								'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+								'ID_Area' => ($area == null) ? 0 : $area['id'],
+								'TS_Create' => date( 'Y/n/j H:i:s' ),
+							];*/
+
+							$load_activo = $this->draftModel->insert($draft);
+							//$load_activo = $this->activoModel->insert($nuevo_activo);
+
+							$subidos++;
+
+							$json =
+							[
+								'id' => $load_activo,
+								'tipo' => $tipo['Desc'],
+								'nombre' => $activo[2],
+								'usuario' => $user['nombre'] . ' ' . $user['apellidos'],
+								'fecha' => date( 'Y/n/j'),
+								'id_activo' => $activo[0],
+							];
+
+							array_push( $activos_subidos, $json );
+						}
+					}
+					else
+					{
+						array_push($errores, [ 'activo' => $activo[0], 'problema' => 'El activo ya está registrado' ]);
+					}
+				}
+			}
+			echo json_encode( array( 'status' => 200, 'errores' => $errores, 'subidos' => $subidos, 'activos' => $activos_subidos ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function DownloadExcelExample( )
+	{
+		$spreadsheet = new Spreadsheet();
+		$cargaSheet = $spreadsheet->getActiveSheet();
+
+		//iniciamos configuración inicial
+		$cargaSheet->getColumnDimension('A')->setWidth(20);
+		$cargaSheet->getColumnDimension('B')->setWidth(30);
+		$cargaSheet->getColumnDimension('C')->setWidth(30);
+		$cargaSheet->getColumnDimension('D')->setWidth(30);
+		$cargaSheet->getColumnDimension('E')->setWidth(30);
+		$cargaSheet->getColumnDimension('F')->setWidth(30);
+		$cargaSheet->getColumnDimension('G')->setWidth(30);
+
+		//iniciamos tabla 
+		$cargaSheet->setCellValue( 'A1', 'Número de activo' );
+		$cargaSheet->setCellValue( 'B1', 'Tipo de activo' );
+		$cargaSheet->setCellValue( 'C1', 'Nombre' );
+		$cargaSheet->setCellValue( 'D1', 'CC' );
+		$cargaSheet->setCellValue( 'E1', 'Email del usuario' );
+		$cargaSheet->setCellValue( 'F1', 'Sucursal' );
+		$cargaSheet->setCellValue( 'G1', 'Área' );
+
+		$tiposSheet = new Worksheet($spreadsheet, 'Tipos');
+		$spreadsheet->addSheet($tiposSheet, 1);
+
+		$tiposSheet->getColumnDimension('A')->setWidth(50);
+		$tiposSheet->setCellValue( 'A1', 'Tipos' );
+
+		$tipos = $this->tipoModel->where('ID_Empresa', $this->session->empresa)->findAll();
+		$contador = 2;
+		
+		foreach ($tipos as $tipo) 
+		{
+			$tiposSheet->setCellValue( 'A' . $contador, $tipo['Desc'] );
+			$contador++;
+		}
+
+		$ccSheet = new Worksheet($spreadsheet, 'Centro de costos');
+		$spreadsheet->addSheet($ccSheet, 2);
+
+		$ccSheet->getColumnDimension('A')->setWidth(50);
+		$ccSheet->setCellValue( 'A1', 'Centro de costo' );
+		$ccSheet->setCellValue( 'B1', 'Numero' );
+
+		$ccs = $this->ccModel->where('id_empresa', $this->session->empresa)->where('Subcuenta !=', null)->findAll();
+		$contador = 2;
+		
+		foreach ($ccs as $cc) 
+		{
+			$ccSheet->setCellValue( 'A' . $contador, $cc['Desc'] );
+			$ccSheet->setCellValue( 'B' . $contador, $cc['Subcuenta'] );
+			$contador++;
+		}
+
+		$userSheet = new Worksheet($spreadsheet, 'Usuarios');
+		$spreadsheet->addSheet($userSheet, 3);
+
+		$userSheet->getColumnDimension('A')->setWidth(40);
+		$userSheet->getColumnDimension('B')->setWidth(40);
+		$userSheet->getColumnDimension('C')->setWidth(40);
+		$userSheet->setCellValue( 'A1', 'Nombre' );
+		$userSheet->setCellValue( 'B1', 'Apellidos' );
+		$userSheet->setCellValue( 'C1', 'Correo' );
+
+		$SQL = "SELECT usuarios.nombre, usuarios.apellidos, usuarios.email FROM usuarios, user_empresa WHERE user_empresa.id_usuario = usuarios.id_usuario AND user_empresa.id_empresa = " . $this->session->empresa;
+		$builder = $this->db->query( $SQL );
+		$users = $builder->getResult( );
+		$contador = 2;
+		
+		foreach ($users as $user) 
+		{
+			$userSheet->setCellValue( 'A' . $contador, $user->nombre );
+			$userSheet->setCellValue( 'B' . $contador, $user->apellidos );
+			$userSheet->setCellValue( 'C' . $contador, $user->email );
+			$contador++;
+		}
+
+		$sucursalSheet = new Worksheet($spreadsheet, 'Sucursales');
+		$spreadsheet->addSheet($sucursalSheet, 4);
+
+		$sucursalSheet->getColumnDimension('A')->setWidth(40);
+		$sucursalSheet->setCellValue( 'A1', 'Nombre' );
+
+		$sucursales = $this->sucursalModel->where('ID_Empresa', $this->session->empresa)->findAll();
+		$contador = 2;
+
+		foreach ($sucursales as $sucursal) 
+		{
+			$sucursalSheet->setCellValue( 'A' . $contador, $sucursal['Desc'] );
+			$contador++;
+		}
+
+		$areaSheet = new Worksheet($spreadsheet, 'Areas');
+		$spreadsheet->addSheet($areaSheet, 5);
+
+		$areaSheet->getColumnDimension('A')->setWidth(40);
+		$areaSheet->setCellValue( 'A1', 'Nombre' );
+
+		$areas = $this->areaModel->where('id_empresa', $this->session->empresa)->findAll();
+		$contador = 2;
+
+		foreach ($areas as $area) 
+		{
+			$areaSheet->setCellValue( 'A' . $contador, $area['descripcion'] );
+			$contador++;
+		}
+
+		$styleHeadArray = 
+		[
+			'font' => [
+				'bold' => true,
+				'color' => [ 'argb' => '00FFFFFF' ],
+			],
+			'alignment' => [
+				'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+			],
+			'borders' => [
+				'allBorders' => [
+					'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+					'color' => ['argb' => '00000000'],
+				],
+			],
+			'fill' => [
+				'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				'color' => [ 'argb' => '00BFBFBF' ]
+			],
+		];
+			
+		$cargaSheet->getStyle('A1:G1')->applyFromArray($styleHeadArray);
+		$tiposSheet->getStyle('A1:A1')->applyFromArray($styleHeadArray);
+		$ccSheet->getStyle('A1:B1')->applyFromArray($styleHeadArray);
+		$userSheet->getStyle('A1:C1')->applyFromArray($styleHeadArray);
+		$sucursalSheet->getStyle('A1:A1')->applyFromArray($styleHeadArray);
+		$areaSheet->getStyle('A1:A1')->applyFromArray($styleHeadArray);
+
+		$spreadsheet->setActiveSheetIndex(0);
+		$writer = new Xls($spreadsheet);
+
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="Carga.xls"');
+		header('Cache-Control: max-age=0');
+		$writer->save('php://output');
 	}
 
 }

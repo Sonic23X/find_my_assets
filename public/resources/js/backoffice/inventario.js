@@ -36,6 +36,16 @@ let spanish =
   },
 };
 
+function imprimir ( titulo, mensaje, tipo )
+{
+  Swal.fire({
+    icon: tipo,
+    title: titulo,
+    text: mensaje,
+    allowOutsideClick: false,
+  });
+}
+
 function dataURLtoFile( dataurl, filename )
 {
 
@@ -955,9 +965,10 @@ function getNewItems( )
     <thead>
       <tr>
         <th scope="col"></th>
+        <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -988,6 +999,9 @@ function getNewItems( )
           <tr>
             <td class="align-middle">
               <input type="checkbox" name="select_${ activo.id }" onClick="downInvCheckbox( this )" class="newInvCheck">
+            </td>
+            <td class="align-middle">
+              ${ activo.id_activo }
             </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="getDraftInfoNew( ${ activo.id } )">
@@ -1132,6 +1146,7 @@ function getDraftInfoNew( id )
 
       localStorage.setItem( 'new-inventary', activo.ID_Activo );
 
+      $( '#newNoActivo' ).val( activo.ID_Activo );
       $( '#newTipoActivo' ).val( activo.ID_Tipo );
       $( '#newName' ).val( activo.Nom_Activo );
       $( '#newSerie' ).val( activo.NSerie_Activo );
@@ -1141,6 +1156,10 @@ function getDraftInfoNew( id )
       $( '#newSucursal' ).val( activo.ID_Sucursal );
       $( '#newArea' ).val( activo.ID_Area );
       $( '#newDesc' ).val( activo.Des_Activo );
+      if (activo.TS_Update != null) 
+        $( '#newFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
+      else
+        $( '#newFechaUpdate' ).val( 'Sin actualización' );
 
       $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -1212,9 +1231,10 @@ function getProcessItems( )
   `
     <thead>
       <tr>
+        <th scioe="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
         <th scope="col"></th>
       </tr>
     </thead>
@@ -1227,9 +1247,10 @@ function getProcessItems( )
   `
     <thead>
       <tr>
+        <th scioe="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Ultima Act.</th>
       </tr>
     </thead>
     <tbody class="inventary-process-table2">
@@ -1259,6 +1280,9 @@ function getProcessItems( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id } )">
                 ${ activo.tipo }
@@ -1305,6 +1329,9 @@ function getProcessItems( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id }, 0 )">
                 ${ activo.tipo }
@@ -1364,6 +1391,7 @@ function viewProcessInfo( id, details = 1 )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $( '#iNoActivo' ).val( activo.ID_Activo );
       $( '#iTipoActivo' ).val( activo.ID_Tipo );
       $( '#iName' ).val( activo.Nom_Activo );
       $( '#iSerie' ).val( activo.NSerie_Activo );
@@ -1373,6 +1401,10 @@ function viewProcessInfo( id, details = 1 )
       $( '#iSucursal' ).val( activo.ID_Sucursal );
       $( '#iArea' ).val( activo.ID_Area );
       $( '#iDesc' ).val( activo.Des_Activo );
+      if (activo.TS_Update != null) 
+        $( '#iFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
+      else
+        $( '#iFechaUpdate' ).val( 'Sin actualización' );
 
       if ( details == 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
@@ -1451,9 +1483,12 @@ function getInventaryItems( )
   `
     <thead>
       <tr>
+        <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Imagenes</th>
+        <th scope="col">Ultima Act.</th>
+        <th scope="col">Inv.</th>
       </tr>
     </thead>
     <tbody class="table-inventary-actives">
@@ -1473,7 +1508,6 @@ function getInventaryItems( )
     if ( response.status == 200 )
     {
       let activos = response.activos;
-      let aNuevos = response.nuevos;
 
       $( '.table-inventary-actives' ).html( '' );
       activos.forEach( ( activo, i ) =>
@@ -1482,6 +1516,9 @@ function getInventaryItems( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
@@ -1492,11 +1529,32 @@ function getInventaryItems( )
             <td class="align-middle">
               ${ activo.usuario }
             </td>
+            <td>
+              ${ activo.imagenes } de 3
+            </td>
             <td class="align-middle">
               ${ activo.fecha }
             </td>
-          </tr>
+            <td>
         `;
+          if (activo.inventario)
+          {
+            typePlantilla += 
+            `
+                  <span class="badge badge-success">OK</span>
+                </td>
+              </tr>
+            `;
+          }
+          else
+          {
+            typePlantilla += 
+            `
+                  <span class="badge badge-warning text-light">PEND</span>
+                </td>
+              </tr>
+            `;
+          }
 
         $( '.table-inventary-actives' ).append( typePlantilla );
 
@@ -1531,7 +1589,7 @@ function viewInvInfo( id )
   $( '.info-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
   $( '.info-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
 
-  $( 'textarea[ name="infoDesc" ]' ).val( 'asd' );
+  $( 'textarea[ name="infoDesc" ]' ).val( '' );
 
   $.ajax({
     url: url + `/inventario/getActivoInfo/${ id }`,
@@ -1546,6 +1604,7 @@ function viewInvInfo( id )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $( '#infoNoActivo' ).val( activo.ID_Activo );
       $( '#infoTipoActivo' ).val( activo.ID_Tipo );
       $( '#infoName' ).val( activo.Nom_Activo );
       $( '#infoSerie' ).val( activo.NSerie_Activo );
@@ -1555,6 +1614,10 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
+      if (activo.TS_Update != null) 
+        $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
+      else
+        $( '#infoFechaUpdate' ).val('Sin actualización');
 
       $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
@@ -1603,7 +1666,7 @@ function viewInvInfo( id )
         processData: false,
       })
       .done( response =>
-      {
+      { 
         if ( response != '' )
         {
           $( '.info-image-right' ).html( response );

@@ -68,6 +68,16 @@ $routes->get('/inventario', 'Inventary::Index');
 /** Backoffice - Bajas **/
 $routes->get('/bajas', 'Down::Index');
 
+/** Backoffice - Carga excel **/
+$routes->get('/carga', 'Activo::LoadActivos');
+
+/** Backoffice - Empresas **/
+$routes->get('/empresas', 'Company::Index');
+
+/** AJAX - Carga Excel **/
+$routes->get('/carga/ejemplo', 'Activo::DownloadExcelExample');
+$routes->post('/carga/readExcel', 'Activo::ReadExcel');
+
 /** AJAX - Inicio **/
 $routes->get('/dashboard/data', 'Dashboard::getData');
 
@@ -85,6 +95,7 @@ $routes->get('/activos/getImageRight/(:alphanum)', 'Activo::GetImageRight/$1');
 $routes->post('/activos/setImage', 'Activo::SetImage');
 $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 $routes->post('/activos/updateActivo', 'Activo::UpdateActivoFromDraft');
+$routes->post('/activos/coordenadas', 'Activo::UpdateCoordenadas');
 
 /** AJAX - inventary **/
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
@@ -109,9 +120,9 @@ $routes->post('/inventario/setGarantia', 'Inventary::setGarantia');
 $routes->post('/inventario/deleteNews', 'Inventary::deleteNews');
 
 $routes->get('/excel/activos', 'Activo::ExcelActivos');
-$routes->get('/activos/photos/(:alphanum)/(:num)', 'Activo::ActivoImage/$1/$2');
+//$routes->get('/activos/photos/(:alphanum)/(:num)', 'Activo::ActivoImage/$1/$2');
 $routes->get('/excel/draft', 'Activo::ExcelDraft');
-$routes->get('/draft/(:alphanum)/(:num)', 'Activo::DraftImage/$1/$2');
+$routes->get('/activos/photos/(:alphanum)/(:num)', 'Activo::DraftImage/$1/$2');
 
 /** AJAX - downs **/
 $routes->get('/bajas/getItems', 'Down::SearchList');
@@ -128,6 +139,17 @@ $routes->post('/usuarios/actualizar', 'User::Update');
 $routes->post('/usuarios/delete', 'User::Delete');
 
 $routes->get('/carga/(:any)', 'Home::Url/$1');
+
+/** AJAX - Empresa **/
+$routes->post('/empresas/update', 'Company::UpdateCompany');
+$routes->post('/empresas/setLogo', 'Company::ChangeImage');
+$routes->post('/empresas/finishPeriod', 'Company::FinishPeriod');
+$routes->post('/empresas/newSucursal', 'Company::NewSucursal');
+$routes->post('/empresas/editSucursal', 'Company::EditSucursal');
+$routes->post('/empresas/deleteSucursal', 'Company::DeleteSucursal');
+$routes->post('/empresas/newArea', 'Company::NewArea');
+$routes->post('/empresas/editArea', 'Company::EditArea');
+$routes->post('/empresas/deleteArea', 'Company::DeleteArea');
 
 /**
  * --------------------------------------------------------------------

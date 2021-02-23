@@ -4,6 +4,10 @@ var isNew = false;
 var activeMap;
 var actualStepScanner = 1;
 var actualStepInv = 1;
+var lon = 0;
+var lat = 0;
+var imageChange = false;
+var gpsChange = false;
 
 function dataURLtoFile( dataurl, filename )
 {
@@ -215,10 +219,14 @@ function getScannerFormData( )
 
 function setCoordenadasActiveMap( position )
 {
-  lon = position.coords.longitude;
-  lat = position.coords.latitude;
-
+  if (lon == 0 && lat == 0) 
+  {
+    lon = position.coords.longitude;
+    lat = position.coords.latitude; 
+  }
   activeMap = L.map( 'activeMap' ).setView( [ lat, lon ], 16 );
+
+  activeMap.addControl(new L.Control.Fullscreen());
 
   L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
   {
@@ -233,6 +241,51 @@ function setCoordenadasActiveMap( position )
   L.marker( [ lat, lon ] ).addTo( activeMap )
    .bindPopup( 'Ubicación del activo actualmente' )
    .openPopup( );
+}
+
+function setCoordenadasActiveMapAjax( position )
+{
+  
+  lon = position.coords.longitude;
+  lat = position.coords.latitude; 
+  
+  activeMap = L.map( 'activeMap' ).setView( [ lat, lon ], 16 );
+
+  activeMap.addControl(new L.Control.Fullscreen());
+
+  L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+  {
+      attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      tileSize: 512,
+      zoomOffset: -1,
+      accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
+  }).addTo( activeMap );
+
+  L.marker( [ lat, lon ] ).addTo( activeMap )
+   .bindPopup( 'Ubicación del activo actualmente' )
+   .openPopup( );
+
+   let gps = `${ lat },${ lon }`;
+
+   $.ajax({
+     url: url + '/activos/coordenadas',
+     type: 'POST',
+     dataType: 'json',
+     data: { gps: gps, codigo: localStorage.getItem( 'codigo' ), },
+   })
+   .done( response =>
+   {
+     if (response.status == 200)
+     {
+       imprimir('¡Hecho!', 'Ubicación geográfica del activo actualizada', 'success');
+     }
+     else
+     {
+       imprimir( 'Ups..', response.msg, 'error' );
+     }
+   });
 }
 
 function scanQR( node )
@@ -760,6 +813,8 @@ function putImage( node, type )
       `;
 
       $( `#scanner-image-${ type }` ).html( plantilla );
+
+      imageChange = true;
     }
     else
     {
@@ -845,6 +900,17 @@ function viewImageRight( )
   let img = URL.createObjectURL( file );
 
   window.open( img , '_blank' );
+}
+
+function updateCoordenadas( )
+{
+  lon = 0;
+  lat = 0;
+  activeMap.off( );
+  activeMap.remove( );
+  gpsChange = true;
+
+  navigator.geolocation.getCurrentPosition( setCoordenadasActiveMapAjax );
 }
 
 $(document).ready(function( )
@@ -934,9 +1000,11 @@ $(document).ready(function( )
         $( '#empresas' ).val( response.activo.ID_Company );
         $( '#sucursal' ).val( response.activo.ID_Sucursal );
         $( '#area' ).val( response.activo.ID_Area );
-        localStorage.setItem( 'codigo', response.activo.ID_Activo );
+        lon = response.activo.GPS.split(',')[1];
+        lat = response.activo.GPS.split(',')[0];
         isNew = false;
         actualStepScanner = 2;
+        localStorage.setItem( 'codigo', $( '#numActivoS1' ).val( ) );
 
         if ( response.activo.ID_MetDepre != null )
         {
@@ -986,9 +1054,8 @@ $(document).ready(function( )
         .then((result) => {
           if (result.isConfirmed)
           {
-            localStorage.setItem( 'codigo', $( '#numActivoS1' ).val( ) );
             isNew = true;
-
+            localStorage.setItem( 'codigo', $( '#numActivoS1' ).val( ) );
             wizzardPreviewView = wizzardActualView;
             wizzardActualView = '.scanner-form';
 
@@ -1251,8 +1318,6 @@ $(document).ready(function( )
   {
     event.preventDefault( );
 
-    let gps = `${ lat },${ lon }`;
-
     //reunimos la informacion en un JSON
     let data =
     {
@@ -1261,7 +1326,6 @@ $(document).ready(function( )
       empresa: $( '#empresas' ).val( ),
       sucursal: $( '#sucursal' ).val( ),
       area: $( '#area' ).val( ),
-      gps: gps,
     };
 
     //actualizamos el equipo
@@ -1309,10 +1373,16 @@ $(document).ready(function( )
     else
       imprimir( '¡Hecho!', 'Activo actualizado exitosamente', 'success' );
 
+    let dateUpdate = false;
+
+    if (imageChange && gpsChange)
+      dateUpdate = true;    
+
     //ajax de comprobación
     let data = 
     {
       activo: localStorage.getItem( 'codigo' ),
+      inventariar: dateUpdate,
     };
 
     //buscamos el codigo en la BDD
@@ -1346,6 +1416,10 @@ $(document).ready(function( )
     $( '#scanner-image-right' ).html( '<span>Sin imagen</span>' );
     $( '#scanner-image-left' ).html( '<span>Sin imagen</span>' );
     $('.scanner-back').addClass('d-none');
+    lon = 0;
+    lat = 0;
+    imageChange = false;
+    gpsChange = false;
 
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-start';

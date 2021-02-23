@@ -68,21 +68,22 @@
 
 			<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
 				<center>
-					<h2 style="font-weight: 50; color:#999">TOMA DE INVENTARIO REMOTO</h2>
+					<h2 style="font-weight: 50;">TOMA DE INVENTARIO REMOTO</h2>
+					<h3 style="font-weight: 50;"><b><?= $empresa ?></b></h3>
 					<hr style="border:1px solid #ccc; width:80%">
-					<h6 style="font-weight:100; color:#999; padding:0 20px">Hola <b><?= $nombre ?></b>, desde este momento podrás iniciar la toma de tus activos asignados.</h6>
+					<h4 style="font-weight:100; padding:0 20px">Hola <b><?= $nombre ?></b>, desde este momento podrás iniciar la toma de tus activos asignados.</h4>
 					<?php
 						if( $activos == null )
 						{
 						?>
-							<h6 style="font-weight:100; color:#999; padding:0 20px">Aun no cuentas con activos asignados, puedes consultarlos desde aquí.</h6>		
+							<h4 style="font-weight:100; padding:0 20px">Aun no cuentas con activos asignados, puedes consultarlos desde aquí.</h4>
 						<?php
 						}
 						else
 						{
 						?>
-							<h6 style="font-weight:100; color:#999; padding:0 20px">El detalle de lo que debes inventariar es:</h6>
-							<table style="text-align:center; color:#999;">
+							<h4 style="font-weight:100; padding:0 20px">El detalle de lo que debes inventariar es:</h4>
+							<table style="text-align:center;">
 								<thead>
 									<tr>
 										<th>No. de activo</th>
@@ -111,11 +112,11 @@
 						Comenzar ahora
 					</a>
 					<p>
-						<h6 style="font-weight:100; color:#999; padding:0 20px">Si presentas algún problema o duda con este proceso comunícalo al administrador del sistema en tu compañía.</h6>
+						<h6 style="font-weight:100; padding:0 20px">Si presentas algún problema o duda con este proceso comunícalo al administrador del sistema en tu compañía.</h6>
 					</p>
 					<hr style="border:1px solid #ccc; width:80%">
 					<p>
-						<span style="color:#999; font-size:8px;">Si este correo no es para ti solo ignóralo</span>
+						<span style="font-size:8px;">Si este correo no es para ti solo ignóralo</span>
 					</p>
 				</center>
 			</div>

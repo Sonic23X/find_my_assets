@@ -21,6 +21,13 @@
                   Inicio
                 </a>
               </li>
+              <li class="nav-header">Activos</li>
+              <li class="nav-item">
+                <a href="<?= base_url( '/carga' ) ?>" class="nav-link">
+                  <i class="nav-icon fas fa-cloud-upload-alt"></i>
+                  Carga de activos
+                </a>
+              </li>
               <li class="nav-header">Mantenedores</li>
               <li class="nav-item">
                 <a href="<?= base_url( '/usuarios' ) ?>" class="nav-link">
@@ -28,9 +35,9 @@
                   Usuarios
                 </a>
               </li>
-              <li class="nav-item d-none">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-wallet"></i>
+              <li class="nav-item">
+                <a href="<?= base_url( '/empresas' ) ?>" class="nav-link">
+                  <i class="nav-icon fas fa-hotel"></i>
                   Empresas y locaciones
                 </a>
               </li>

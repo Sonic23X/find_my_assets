@@ -1,6 +1,25 @@
 
             <div class="home">
 
+              <!-- Map -->
+              <div class="row">
+                <div class="col">
+                  <div class="card card-warning">
+                    <div class="card-header">
+                      <h3 class="card-title text-white">Ubicación de activos</h3>
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div id="globalMap" style="height: 700px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Box info -->
               <div class="row">
                 <div class="col-12 col-sm-6 col-md-3">
@@ -88,25 +107,6 @@
                   </div>
                 </div>
 
-              </div>
-
-              <!-- Map -->
-              <div class="row">
-                <div class="col">
-                  <div class="card card-warning">
-                    <div class="card-header">
-                      <h3 class="card-title text-white">Ubicación de activos</h3>
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                          <i class="fas fa-minus"></i>
-                        </button>
-                      </div>
-                    </div>
-                    <div class="card-body">
-                      <div id="globalMap" style="height: 335px;"></div>
-                    </div>
-                  </div>
-                </div>
               </div>
 
             </div>

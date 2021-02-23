@@ -3,7 +3,16 @@ var url = $('#url').val( );
 var lon;
 var lat;
 
-/* --- Dashboard --- */
+function imprimir ( titulo, mensaje, tipo )
+{
+  Swal.fire({
+    icon: tipo,
+    title: titulo,
+    text: mensaje,
+    allowOutsideClick: false,
+  });
+}
+
 function dashboardData( ) 
 {
 $( '.table-1-valor-activos' ).html( '' );
@@ -170,6 +179,8 @@ function setCoordenadasMapG( position )
   }
 
   var globalMap = L.map( 'globalMap' ).setView( [ lat, lon ], 16 );
+
+  globalMap.addControl(new L.Control.Fullscreen());
 
   L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
   {

@@ -11,6 +11,7 @@ class User extends BaseController
     protected $userModel;
     protected $email;
     protected $draftModel;
+    protected $empresaModel;
     protected $db;
 
     function __construct()
@@ -18,6 +19,7 @@ class User extends BaseController
         $this->session = \Config\Services::session( );
         $this->userModel = model( 'App\Models\UserModel' );
         $this->draftModel = model( 'App\Models\DraftModel' );
+        $this->empresaModel = model( 'App\Models\EmpresaModel' );
         $this->db = \Config\Database::connect( );
         $this->email = new PHPMailerLib( );
     }
@@ -148,6 +150,7 @@ class User extends BaseController
 				'verificacion' => 1,
 				'email_encriptado' => $emailEncrypt,
                 'patrocinador' => 'N/A',
+                'envios' => 1,
                 'id_empresa' => $this->session->empresa,
 			];
 
@@ -160,8 +163,9 @@ class User extends BaseController
                 $viewData =
                 [
                     'urlUsuario' => base_url( '/carga' ) . '/' . $emailEncrypt,
-                    'nombre' => $this->request->getVar( 'nombre' ) . ' ' . $this->request->getVar( 'apellidos' ),
+                    'nombre' => $this->request->getVar( 'nombre' ),
                     'activos' => null,
+                    'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
                 ];
 
                 $content = View( 'emails/accesoUsuario', $viewData );
@@ -217,8 +221,9 @@ class User extends BaseController
             $viewData =
             [
                 'urlUsuario' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ],
-                'nombre' => $user[ 'nombre' ] . ' ' . $user[ 'apellidos' ],
+                'nombre' => $user[ 'nombre' ],
                 'activos' =>  $this->draftModel->select( 'ID_Activo, Nom_Activo' )->where( 'User_Inventario', $this->request->getVar( 'id' ) )->findAll( ),
+                'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
             ];
 
             $content = View( 'emails/accesoUsuario', $viewData );
@@ -229,7 +234,16 @@ class User extends BaseController
             if ( !$correo->send( ) )
                 echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
             else
+            {
+                $update =
+                [
+                    'envios' => intval($user['envios']) + 1,
+                ];
+
+                $this->userModel->update( $user['id_usuario'], $update );
+
                 echo json_encode( array( 'status' => 200, 'msg' => 'Verifique la bandeja de entrada del correo ingresado' ) );
+            }
         }
         else
             return view( 'errors/cli/error_404' );
@@ -263,14 +277,14 @@ class User extends BaseController
     public function Macal()
     {
         $password = crypt( '12345678', '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
-		$emailEncrypt = md5( 'soporte@macal.cl' );
+		$emailEncrypt = md5( 'practica.contabilidad@macal.cl' );
 
         $insert =
         [
             'perfil' => 'user',
-            'nombre' => 'Bodega',
-            'apellidos' => 'TI',
-            'email' => 'soporte@macal.cl',
+            'nombre' => 'Guillermo',
+            'apellidos' => 'Bascur',
+            'email' => 'practica.contabilidad@macal.cl',
             'password' => $password,
             'suscripcion' => 0,
             'verificacion' => 1,

@@ -62,17 +62,17 @@
 
 			<div style="position:relative; margin:auto; width:600px; background:white; padding:20px">
 				<center>
-					<h3 style="font-weight:100; color:#999">SOLICITUD DE NUEVA CONTRASEÑA</h3>
+					<h3 style="font-weight:100;">SOLICITUD DE NUEVA CONTRASEÑA</h3>
 					<hr style="border:1px solid #ccc; width:80%">
-					<h4><span style="font-weight:100; color:#999; padding:0 20px"> Su nueva contraseña: </span><b> <?= $password ?> </b></h4>
+					<h4><span style="font-weight:100; padding:0 20px"> Su nueva contraseña: </span><b> <?= $password ?> </b></h4>
 
 					<a href="<?= base_url( '/ingreso' ) ?>" target="_blank" class="button mt-3 mb-3 w-50">
 						Haz click aquí
 					</a>
 
-					<h5 style="font-weight:100; color:#999; padding:0 20px">Ingrese nuevamente al sitio con esta contraseña y recuerde cambiarla en el panel de perfil de usuario</h5>
+					<h5 style="font-weight:100; padding:0 20px">Ingrese nuevamente al sitio con esta contraseña y recuerde cambiarla en el panel de perfil de usuario</h5>
 					<hr style="border:1px solid #ccc; width:80%">
-					<h6 style="font-weight:100; color:#999">Si no se inscribió en esta cuenta, puede ignorar este correo electrónico y la cuenta se eliminará.</h6>
+					<h6 style="font-weight:100;">Si no se inscribió en esta cuenta, puede ignorar este correo electrónico y la cuenta se eliminará.</h6>
 				</center>
 			</div>
 		</div>

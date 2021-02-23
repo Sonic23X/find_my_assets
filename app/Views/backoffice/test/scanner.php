@@ -2,7 +2,12 @@
             <div class="scanner">
 
               <div class="row mt-2">
-                <div class="col-12 col-sm-12 col-md-12 title-scanner">
+                <div class="col-1 col-sm-1 col-md-1">
+                  <a href="#" class="scanner-back d-none">
+                    <i class="fas fa-arrow-left"></i>
+                  </a>
+                </div>
+                <div class="col-11 col-sm-11 col-md-11 title-scanner">
                   <span>Carga tu inventario en 3 simples pasos</span>
                 </div>
               </div>
@@ -136,7 +141,7 @@
                   <div class="form-group row">
                     <label for="name" class="col-sm-2 col-form-label">Nombre</label>
                     <div class="col-sm-10">
-                      <input type="text" class="form-control" id="name" placeholder="Ej. Mackbook PRO">
+                      <input type="text" class="form-control" id="name" placeholder="Ej. Macbook PRO">
                     </div>
                   </div>
 
@@ -144,10 +149,6 @@
                     <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
                     <div class="col-sm-10">
                       <select class="custom-select" name="cCosto" id="cCosto">
-                        <option value="1">Administración</option>
-                        <option value="2">Producción</option>
-                        <option value="3">Marketing</option>
-                        <option value="4">Comercial</option>
                       </select>
                     </div>
                   </div>
@@ -220,6 +221,14 @@
                     <div id="activeMap" style="height: 300px;"></div>
                   </div>
                 </div>
+                <div class="row mt-2 text-center">
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <span>¿Estas inventariando el activo?</span>
+                  </div>
+                  <div class="col-lg-6 col-sm-6 col-md-6">
+                    <button class="btn btn-block btn-primary" onClick="updateCoordenadas()">Actualizar Ubicación</button>
+                  </div>
+                </div>
 
                 <div class="row mt-3 p-2 instructions text-center">
                   <div class="col-12 col-sm-12 text-center">
@@ -264,9 +273,6 @@
                       <label class="col-sm-2 col-form-label">Área</label>
                       <div class="col-sm-6">
                         <select class="custom-select" name="area" id="area">
-                          <option value="1">Sector tecnólogico</option>
-                          <option value="2">Sala de gerencia</option>
-                          <option value="3">Galpón</option>
                         </select>
                       </div>
                     </div>
