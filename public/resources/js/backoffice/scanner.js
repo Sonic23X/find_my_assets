@@ -6,6 +6,8 @@ var actualStepScanner = 1;
 var actualStepInv = 1;
 var lon = 0;
 var lat = 0;
+var imageChange = false;
+var gpsChange = false;
 
 function dataURLtoFile( dataurl, filename )
 {
@@ -811,6 +813,8 @@ function putImage( node, type )
       `;
 
       $( `#scanner-image-${ type }` ).html( plantilla );
+
+      imageChange = true;
     }
     else
     {
@@ -904,6 +908,7 @@ function updateCoordenadas( )
   lat = 0;
   activeMap.off( );
   activeMap.remove( );
+  gpsChange = true;
 
   navigator.geolocation.getCurrentPosition( setCoordenadasActiveMapAjax );
 }
@@ -1368,10 +1373,16 @@ $(document).ready(function( )
     else
       imprimir( '¡Hecho!', 'Activo actualizado exitosamente', 'success' );
 
+    let dateUpdate = false;
+
+    if (imageChange && gpsChange)
+      dateUpdate = true;    
+
     //ajax de comprobación
     let data = 
     {
       activo: localStorage.getItem( 'codigo' ),
+      inventariar: dateUpdate,
     };
 
     //buscamos el codigo en la BDD
@@ -1407,6 +1418,8 @@ $(document).ready(function( )
     $('.scanner-back').addClass('d-none');
     lon = 0;
     lat = 0;
+    imageChange = false;
+    gpsChange = false;
 
     wizzardPreviewView = wizzardActualView;
     wizzardActualView = '.scanner-start';

@@ -723,7 +723,7 @@ class Inventary extends BaseController
         $usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
 
-        $SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+        $SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
         $builder = $this->db->query( $SQL );
         $empresas = $builder->getResult( );
 
@@ -954,7 +954,7 @@ class Inventary extends BaseController
 
           //Comparamos la fecha de periodo de inventario
           $inventario = false;
-          if ($periodo != null) 
+          if ($periodo != null && $row->Fec_Inventario != null) 
           {
             $fecha1 = explode('-', explode(' ', $row->Fec_Inventario)[0]);
             $fechaInicio = explode('-', $periodo[0]->fecha_inicio);

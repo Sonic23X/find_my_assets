@@ -5,6 +5,7 @@ namespace App\Controllers;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xls as ReadXls;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class Activo extends BaseController
@@ -71,13 +72,12 @@ class Activo extends BaseController
 	{
 		if ( $this->request->isAJAX( ) )
 		{
-			try
-			{
+			
 				$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
 				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 				$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 
-				$SQL = "SELECT empresas.* FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+				$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
 				$builder = $this->db->query( $SQL );
 				$empresas = $builder->getResult( );
 
@@ -89,6 +89,7 @@ class Activo extends BaseController
 				$builder = $this->db->query( $SQL );
 				$areas = $builder->getResult( );
 
+				$json = null;
 				if ( $tipos )
 				$json = array( 'status' => 200, 'types' => $tipos, 'users' => $usuarios,
 												'empresas' => $empresas, 'sucursales' => $sucursales,
@@ -97,11 +98,7 @@ class Activo extends BaseController
 				$json = array( 'status' => 401, 'msg' => 'No se pudo obtener la informacion del servidor' );
 
 				echo json_encode( $json );
-			}
-			catch (\Exception $e)
-			{
-				echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
-			}
+			
 		}
 		else
 		return view( 'errors/cli/error_404' );
@@ -531,7 +528,11 @@ class Activo extends BaseController
 			}
 			$draftBuilder = $this->db->table( 'draft' );
 			$draftBuilder->where( 'ID_Activo', $this->request->getVar( 'activo' ) );
-			$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ) ]);
+
+			if ($this->request->getVar('inventariar') == 'true')
+				$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ), 'Fec_Inventario' => date( 'Y/n/j H:i:s' )]);
+			else			
+				$draftBuilder->update([ 'TS_Update' => date( 'Y/n/j H:i:s' ) ]);
 			
 			$draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )
 									   ->whereIn( 'ID_Company', $empresas )
@@ -589,8 +590,12 @@ class Activo extends BaseController
 	{
 		$activos = $this->activoModel->where( 'ID_Company', $this->session->empresa )
 									->where( 'TS_Delete', null )
-									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update')
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, Fec_Inventario, ID_CC, ID_Tipo, TS_Create, TS_Update')
 									->findAll();
+
+		$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
+		$builderPeriodo = $this->db->query( $SQL );
+		$periodo = $builderPeriodo->getResult( );
 
 		$spreadsheet = new Spreadsheet( );
 		$sheet = $spreadsheet->getActiveSheet();
@@ -608,9 +613,10 @@ class Activo extends BaseController
 		$sheet->getColumnDimension('J')->setWidth(20);
 		$sheet->getColumnDimension('K')->setWidth(20);
 		$sheet->getColumnDimension('L')->setWidth(20);
-		$sheet->getColumnDimension('M')->setWidth(50);
+		$sheet->getColumnDimension('M')->setWidth(20);
 		$sheet->getColumnDimension('N')->setWidth(50);
 		$sheet->getColumnDimension('O')->setWidth(50);
+		$sheet->getColumnDimension('P')->setWidth(50);
 
 		//iniciamos tabla 
 		$sheet->setCellValue( 'A1', 'Número de activo' );
@@ -625,9 +631,10 @@ class Activo extends BaseController
 		$sheet->setCellValue( 'J1', 'Área' );
 		$sheet->setCellValue( 'K1', 'Fecha de inventario' );
 		$sheet->setCellValue( 'L1', 'Ultima actualización' );
-		$sheet->setCellValue( 'M1', 'Foto Frontal' );
-		$sheet->setCellValue( 'N1', 'Foto Lat. Derecha' );
-		$sheet->setCellValue( 'O1', 'Foto Lat. Izquierda' );
+		$sheet->setCellValue( 'M1', 'Status inventario' );
+		$sheet->setCellValue( 'N1', 'Foto Frontal' );
+		$sheet->setCellValue( 'O1', 'Foto Lat. Derecha' );
+		$sheet->setCellValue( 'P1', 'Foto Lat. Izquierda' );
 
 		$styleHeadArray = 
 		[
@@ -650,7 +657,7 @@ class Activo extends BaseController
 			],
 		];
 			
-		$sheet->getStyle('A1:O1')->applyFromArray($styleHeadArray);
+		$sheet->getStyle('A1:P1')->applyFromArray($styleHeadArray);
 
 		$fila = 2;
 		$empresa = $this->empresaModel->find($this->session->empresa);
@@ -661,6 +668,21 @@ class Activo extends BaseController
 			$usuario = $this->userModel->find($activo['User_Inventario']);
 			$cc = $this->ccModel->find($activo['ID_CC']);
 			$tipo = $this->tipoModel->find($activo['ID_Tipo']);
+
+			$inventario = false;
+			if ($periodo != null) 
+			{
+				$fecha1 = explode('-', explode(' ', $activo['Fec_Inventario'])[0]);
+				$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+				$fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+				$fecha1Unix = strtotime($fecha1[2]."-".$fecha1[1]."-".$fecha1[0]." 00:00:00");
+				$fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
+				$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+				
+				if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+				$inventario = true;
+			}
 
 			$sheet->setCellValue( 'A' . $fila, $activo['ID_Activo'] );
 			$sheet->setCellValue( 'B' . $fila, ( $tipo != null ) ? $tipo['Desc'] : 'Tipo no encontrado' );
@@ -674,30 +696,31 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'J' . $fila, ( $area != null ) ? $area['descripcion'] : 'Sin area' );
 			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
 			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
+			$sheet->setCellValue( 'M' . $fila, ($inventario == true) ? 'Inventariado' : 'Pendiente' );
 			
 			$activo_imagenes = $this->draftModel->where('ID_Activo', $activo['ID_Activo'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
 			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
 			{
-				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
-				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
 			}
 			else
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
 			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
 			{
-				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
-				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
 			}
 			else
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
 			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
 			{
-				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
-				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
+				$sheet->setCellValue( 'P' . $fila, base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
+				$sheet->getCell( 'P' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
 			}
 			else
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
@@ -718,7 +741,7 @@ class Activo extends BaseController
 			],
 		];
 		
-		$sheet->getStyle('A2:O'.($fila - 1))->applyFromArray($styleBodyArray);
+		$sheet->getStyle('A2:P'.($fila - 1))->applyFromArray($styleBodyArray);
 		
 		$writer = new Xls($spreadsheet);
 
@@ -990,9 +1013,16 @@ class Activo extends BaseController
 		if ( $this->request->isAJAX( ) )
 		{
 			$file = $this->request->getFile('excel');
+			$nameFile = explode('.', $file->getName());
 			$cabezales = true;
 
-			$reader = new ReadXls();
+			$reader = null;
+
+			if ($nameFile[1] == 'xls') 
+				$reader = new ReadXls();				
+			else
+				$reader = new Xlsx();				
+
 			$reader->setReadDataOnly( TRUE );
 
 			$spreadsheet = $reader->load($file)->getActiveSheet( );

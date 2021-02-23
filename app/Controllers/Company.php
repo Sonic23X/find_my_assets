@@ -17,6 +17,8 @@ class Company extends BaseController
     	$this->session = \Config\Services::session( );
 		$this->userModel = model( 'App\Models\UserModel' );
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
+		$this->sucursalModel = model( 'App\Models\SucursalModel' );
+		$this->areaModel = model( 'App\Models\AreaModel' );
 		$this->db = \Config\Database::connect();
 	}
 
@@ -43,7 +45,8 @@ class Company extends BaseController
 
 			$usuarios = [];
 			$periodo_activo = [];
-
+			$sucursales = [];
+			$areas = [];
 
 			foreach ($empresas as $empresa) 
 			{
@@ -56,6 +59,12 @@ class Company extends BaseController
 				$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $empresa->id_empresa . " AND status = 1";
 				$builder = $this->db->query( $SQL );
 				$periodo = $builder->getResult();
+
+				$sucursal = $this->sucursalModel->where('ID_Empresa', $empresa->id_empresa)->select('id, Desc')->findAll();
+				$area = $this->areaModel->where('id_empresa', $empresa->id_empresa)->select('id, descripcion')->findAll();
+
+				array_push($sucursales, $sucursal);
+				array_push($areas, $area);
 
 				if ($periodo != null) 
 				{
@@ -72,6 +81,8 @@ class Company extends BaseController
 				'companies' => $empresas,
 				'users' => $usuarios,
 				'fechas' => $periodo_activo,
+				'sucursales' => $sucursales,
+				'areas' => $areas,
 			];
 			echo view( 'backoffice/sections/companies', $data );
 
@@ -146,6 +157,123 @@ class Company extends BaseController
 			}
 
 			echo json_encode( array( 'status' => 200, 'msg' => '¡Cambios guardados con exito!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function FinishPeriod()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->request->getVar( 'id' ) . " AND status = 1";
+			$builder = $this->db->query( $SQL );
+			$periodo = $builder->getResult( );
+
+			if ($periodo != null)
+			{
+				$SQL = "UPDATE empresa_periodo SET status = 0 WHERE id = " . $periodo[0]->id;
+				$builder = $this->db->query( $SQL );
+
+				$SQL = "UPDATE usuarios, user_empresa SET usuarios.envios = 0 WHERE user_empresa.id_empresa = " . $periodo[0]->id  . " AND user_empresa.id_usuario = usuarios.id_usuario";
+				$builder = $this->db->query( $SQL );
+				
+				echo json_encode( array( 'status' => 200, 'msg' => '¡Periodo finalizado exitosamente!' ) );
+			}
+			else		
+				echo json_encode( array( 'status' => 400, 'msg' => '¡No existe un periodo activo!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function NewSucursal()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$data =
+			[
+				'ID_Empresa' => $this->request->getVar( 'id' ),
+				'Desc' => $this->request->getVar( 'nombre' ),
+			];
+
+			$this->sucursalModel->insert($data);
+			$sucursal = $this->sucursalModel->where('ID_Empresa', $this->request->getVar( 'id' ))->select('id, Desc')->findAll();
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Sucursal registrada!', 'sucursal' => $sucursal ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function EditSucursal()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "UPDATE sucursales SET sucursales.Desc = '". $this->request->getVar( 'nombre' ) ."' WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Sucursal actualizada!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function DeleteSucursal()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "DELETE FROM sucursales WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+			
+			$sucursal = $this->sucursalModel->where('ID_Empresa', $this->request->getVar( 'id' ))->select('id, Desc')->findAll();
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Sucursal eliminada!', 'sucursal' => $sucursal ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function NewArea()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$data =
+			[
+				'id_empresa' => $this->request->getVar( 'id' ),
+				'descripcion' => $this->request->getVar( 'nombre' ),
+			];
+
+			$this->areaModel->insert($data);
+			$area = $this->areaModel->where('id_empresa', $this->request->getVar( 'id' ))->select('id, descripcion')->findAll();
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Sucursal registrada!', 'area' => $area ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function EditArea()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "UPDATE areas SET areas.descripcion = '". $this->request->getVar( 'nombre' ) ."' WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Area actualizada!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function DeleteArea()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "DELETE FROM areas WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Area eliminada!' ) );
 		}
 		else
 			return view( 'errors/cli/error_404' );

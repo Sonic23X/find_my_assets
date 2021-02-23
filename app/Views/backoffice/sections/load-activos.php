@@ -74,7 +74,7 @@
                         <div class="col-sm-6">
                             <div class="input-group mb-3">
                                 <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="excelFile" onChange="changeFile(this)" accept=".xls">
+                                    <input type="file" class="custom-file-input" id="excelFile" onChange="changeFile(this)" accept=".xls,.xlsx">
                                     <label class="custom-file-label" for="excelFile" id="excelFileName">Adjuntar plantilla aquí</label>
                                 </div>
                             </div>
