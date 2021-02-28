@@ -64,6 +64,22 @@
                   </div>
                 </div>
 
+                <div class="col-12 col-sm-6 col-md-3">
+                  <div class="card card-warning">
+                    <div class="card-header">
+                      <h3 class="card-title text-white">Proceso de inventario</h3>
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                  </div>
+                </div>
+
                 <!-- fix for small devices only -->
                 <div class="clearfix hidden-md-up"></div>
 

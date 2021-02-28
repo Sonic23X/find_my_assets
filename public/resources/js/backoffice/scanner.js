@@ -1376,7 +1376,7 @@ $(document).ready(function( )
     let dateUpdate = false;
 
     if (imageChange && gpsChange)
-      dateUpdate = true;    
+      dateUpdate = true;
 
     //ajax de comprobación
     let data = 

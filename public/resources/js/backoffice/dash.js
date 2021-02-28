@@ -94,6 +94,55 @@ $.ajax({
         options: donutOptions
     });
 
+    var areaChartData = {
+        labels  : ['Total'],
+        datasets: [
+          {
+            label               : 'Activos inventariados',
+            data                : [response.inventariados],
+            backgroundColor:
+            [
+                '#f56954', 
+            ],
+          }
+        ]
+      }
+
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = $.extend(true, {}, areaChartData);
+
+    var barChartOptions = 
+    {
+        responsive : true,
+        scales: {
+			yAxes: [{
+				display: true,
+				scaleLabel: {
+					show: true
+				},
+				gridLines:{
+					color:"#ecedef"
+				},
+				ticks: {
+					beginAtZero:true,
+					stepSize: 1.3,
+					fontColor:"#8f9092",
+					callback:function(value) { 
+					    var x = ["0", `${response.activos}`];
+							return x[value | 0];
+					}
+				}
+			}]
+					
+        },
+    };
+
+    var barChart = new Chart(barChartCanvas, {
+      type: 'bar',
+      data: barChartData,
+      options: barChartOptions
+    });
+
     //tabla altas
     let altas = response.altas;
 
