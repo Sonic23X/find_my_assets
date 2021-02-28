@@ -216,7 +216,94 @@ function deleteArea(id)
     if ( response.status == 200 )
     {
       imprimir( '¡Hecho!', response.msg, 'success' );
-      location.reload();
+      console.log(response);
+    }
+    else
+      imprimir( 'Ups...', response.msg, 'error' );
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+  });
+}
+
+function newTipo(id) 
+{
+  $('#newTipoIdEmpresa').val(id);
+  $('#newTipo').modal('show');
+}
+
+function editTipo(id, name) 
+{
+  $('#editTipoId').val(id);
+  $('#editTipoName').val(name);
+  $('#editTipo').modal('show');
+}
+
+function deleteTipo(id) 
+{
+  let json = 
+  {
+    id: id,
+  };
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/empresas/deleteTipo',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+      console.log(response);
+    }
+    else
+      imprimir( 'Ups...', response.msg, 'error' );
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+  });
+}
+
+function newCC(id) 
+{
+  $('#newCCIdEmpresa').val(id);
+  $('#newCC').modal('show');
+}
+
+function editCC(id, name, codigo) 
+{
+  $('#editCCId').val(id);
+  $('#editCCName').val(name);
+  $('#editCCCode').val(codigo);
+  $('#editCC').modal('show');
+}
+
+function deleteCC(id) 
+{
+  let json = 
+  {
+    id: id,
+  };
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/empresas/deleteCC',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+      console.log(response);
     }
     else
       imprimir( 'Ups...', response.msg, 'error' );
@@ -313,7 +400,7 @@ $(document).ready(() =>
         if ( response.status == 200 )
         {
           imprimir( '¡Hecho!', response.msg, 'success' );
-          location.reload();
+          
         }
         else
           imprimir( 'Ups...', response.msg, 'error' );
@@ -336,6 +423,136 @@ $(document).ready(() =>
       //subir a servidor
       $.ajax({
         url: url + '/empresas/editArea',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          location.reload();
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveNewTipo').click(() => 
+    {
+      let json = 
+      {
+        id: $('#newTipoIdEmpresa').val(),
+        nombre: $('#newTipoName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/newTipo',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveEditTipo').click(() => 
+    {
+      let json = 
+      {
+        id: $('#editTipoId').val(),
+        nombre: $('#editTipoName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/editTipo',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          location.reload();
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveNewCC').click(() => 
+    {
+      let json = 
+      {
+        id: $('#newCCIdEmpresa').val(),
+        nombre: $('#newCCName').val(),
+        codigo: $('#newCCId').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/newCC',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveEditCC').click(() => 
+    {
+      let json = 
+      {
+        id: $('#editCCId').val(),
+        nombre: $('#editCCName').val(),
+        codigo: $('#editCCCode').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/editCC',
         type: 'POST',
         dataType: 'json',
         data: json,

@@ -10,6 +10,7 @@ class Company extends BaseController
 	protected $sucursalModel;
 	protected $ccModel;
 	protected $areaModel;
+	protected $tipoModel;
 	protected $db;
 
 	function __construct()
@@ -19,6 +20,8 @@ class Company extends BaseController
 		$this->empresaModel = model( 'App\Models\EmpresaModel' );
 		$this->sucursalModel = model( 'App\Models\SucursalModel' );
 		$this->areaModel = model( 'App\Models\AreaModel' );
+		$this->tipoModel = model( 'App\Models\TipoModel' );
+		$this->ccModel = model( 'App\Models\CCModel' );
 		$this->db = \Config\Database::connect();
 	}
 
@@ -47,6 +50,8 @@ class Company extends BaseController
 			$periodo_activo = [];
 			$sucursales = [];
 			$areas = [];
+			$tipos = [];
+			$ccs = [];
 
 			foreach ($empresas as $empresa) 
 			{
@@ -62,9 +67,13 @@ class Company extends BaseController
 
 				$sucursal = $this->sucursalModel->where('ID_Empresa', $empresa->id_empresa)->select('id, Desc')->findAll();
 				$area = $this->areaModel->where('id_empresa', $empresa->id_empresa)->select('id, descripcion')->findAll();
+				$tipo = $this->tipoModel->where('ID_Empresa', $empresa->id_empresa)->select('id, Desc')->findAll();
+				$cc = $this->ccModel->where('id_empresa', $empresa->id_empresa)->select('id, Desc, Subcuenta')->findAll();
 
 				array_push($sucursales, $sucursal);
 				array_push($areas, $area);
+				array_push($tipos, $tipo);
+				array_push($ccs, $cc);
 
 				if ($periodo != null) 
 				{
@@ -83,6 +92,8 @@ class Company extends BaseController
 				'fechas' => $periodo_activo,
 				'sucursales' => $sucursales,
 				'areas' => $areas,
+				'tipos' => $tipos,
+				'ccs' => $ccs,
 			];
 			echo view( 'backoffice/sections/companies', $data );
 
@@ -247,7 +258,7 @@ class Company extends BaseController
 			$this->areaModel->insert($data);
 			$area = $this->areaModel->where('id_empresa', $this->request->getVar( 'id' ))->select('id, descripcion')->findAll();
 
-			echo json_encode( array( 'status' => 200, 'msg' => '¡Sucursal registrada!', 'area' => $area ) );
+			echo json_encode( array( 'status' => 200, 'msg' => 'Area registrada!', 'area' => $area ) );
 		}
 		else
 			return view( 'errors/cli/error_404' );
@@ -274,6 +285,97 @@ class Company extends BaseController
 			$builder = $this->db->query( $SQL );
 
 			echo json_encode( array( 'status' => 200, 'msg' => '¡Area eliminada!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function NewTipo()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$data =
+			[
+				'ID_Empresa' => $this->request->getVar( 'id' ),
+				'Desc' => $this->request->getVar( 'nombre' ),
+			];
+
+			$this->tipoModel->insert($data);
+			$area = $this->tipoModel->where('ID_Empresa', $this->request->getVar( 'id' ))->select('id, Desc')->findAll();
+
+			echo json_encode( array( 'status' => 200, 'msg' => 'Tipo de activo registrado!', 'tipos' => $area ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function EditTipo()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "UPDATE tipos SET tipos.Desc = '". $this->request->getVar( 'nombre' ) ."' WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Tipo de activo actualizado!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function DeleteTipo()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "DELETE FROM tipos WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Tipo de activo eliminado!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function NewCC()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$data =
+			[
+				'Desc' => $this->request->getVar( 'nombre' ),
+				'Subcuenta' => $this->request->getVar( 'codigo' ),
+				'id_empresa' => $this->request->getVar( 'id' ),
+			];
+
+			$this->ccModel->insert($data);
+			$cc = $this->ccModel->where('id_empresa', $this->request->getVar( 'id' ))->select('id, Desc, Subcuenta')->findAll();
+
+			echo json_encode( array( 'status' => 200, 'msg' => 'Centro de costos registrado!', 'ccs' => $cc ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function EditCC()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "UPDATE cc SET cc.Desc = '". $this->request->getVar( 'nombre' ) ."', cc.Subcuenta = '".$this->request->getVar( 'codigo' )."' WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Centro de costos actualizado!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function DeleteCC()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$SQL = "DELETE FROM cc WHERE id = " . $this->request->getVar( 'id' );
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Centro eliminado!' ) );
 		}
 		else
 			return view( 'errors/cli/error_404' );
