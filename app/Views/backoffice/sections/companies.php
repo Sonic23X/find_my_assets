@@ -46,6 +46,9 @@
                                                     Fecha de creación
                                                 </th>
                                                 <th>
+                                                    Predeterminada
+                                                </th>
+                                                <th>
                                                     #
                                                 </th>
                                             </tr>
@@ -65,6 +68,15 @@
                                                 </td>
                                                 <td id="td_<?= $company->id_empresa ?>">
                                                     <?= $company->created_at ?>
+                                                </td>
+                                                <td>
+                                                    <?php
+                                                    if ( $company->id_empresa == $default ) 
+                                                        echo '<i class="fas fa-star" style="color: #ffde59;" onClick="changeEmpresa('.$company->id_empresa.')"></i>';
+                                                    else    
+                                                        echo '<i class="fas fa-star" style="color: #000;" onClick="changeEmpresa('.$company->id_empresa.')"></i>';
+                                                        
+                                                    ?>
                                                 </td>
                                                 <td>
                                                     <a class="btn btn-primary" data-toggle="collapse"

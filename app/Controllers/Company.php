@@ -94,6 +94,7 @@ class Company extends BaseController
 				'areas' => $areas,
 				'tipos' => $tipos,
 				'ccs' => $ccs,
+				'default' => $this->session->empresa
 			];
 			echo view( 'backoffice/sections/companies', $data );
 
@@ -132,6 +133,25 @@ class Company extends BaseController
 			$builder = $this->db->query( $SQL );
 
 			echo json_encode( array( 'status' => 200, 'msg' => '¡Empresa registrada!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
+
+	public function ChangeCompany()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$data =
+			[
+				'id_empresa' => $this->request->getVar( 'id' ),
+			];
+
+			$this->userModel->where( 'id_usuario', $this->session->id )->set( $data )->update( );
+
+			$this->session->set( 'empresa', $this->request->getVar( 'id' ) );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Configuracion actualizada!' ) );
 		}
 		else
 			return view( 'errors/cli/error_404' );

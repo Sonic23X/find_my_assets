@@ -142,6 +142,7 @@ $routes->get('/carga/(:any)', 'Home::Url/$1');
 
 /** AJAX - Empresa **/
 $routes->post('/empresas/newCompany', 'Company::NewCompany');
+$routes->post('/empresas/changeCompany', 'Company::ChangeCompany');
 $routes->post('/empresas/update', 'Company::UpdateCompany');
 $routes->post('/empresas/setLogo', 'Company::ChangeImage');
 $routes->post('/empresas/finishPeriod', 'Company::FinishPeriod');
