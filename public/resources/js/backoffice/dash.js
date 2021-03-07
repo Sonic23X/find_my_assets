@@ -108,39 +108,28 @@ $.ajax({
         ]
       }
 
-    var barChartCanvas = $('#barChart').get(0).getContext('2d')
-    var barChartData = $.extend(true, {}, areaChartData);
-
-    var barChartOptions = 
+    var donut2ChartCanvas = $('#barChart').get(0).getContext('2d')
+    var donut2Data =
     {
-        responsive : true,
-        scales: {
-			yAxes: [{
-				display: true,
-				scaleLabel: {
-					show: true
-				},
-				gridLines:{
-					color:"#ecedef"
-				},
-				ticks: {
-					beginAtZero:true,
-					stepSize: 1.3,
-					fontColor:"#8f9092",
-					callback:function(value) { 
-					    var x = ["0", `${response.activos}`];
-							return x[value | 0];
-					}
-				}
-			}]
-					
-        },
+        labels: [ 'Activos inventariados', 'Activos faltantes'],
+        datasets:
+        [
+        {
+            data: [ response.inventariados, response.activos],
+            backgroundColor:
+            [
+                '#3c8dbc', '#d2d6de',
+            ],
+        }
+        ]
     };
 
-    var barChart = new Chart(barChartCanvas, {
-      type: 'bar',
-      data: barChartData,
-      options: barChartOptions
+    //creación de la grafica
+    var donut2Chart = new Chart(donut2ChartCanvas,
+    {
+        type: 'doughnut',
+        data: donut2Data,
+        options: donutOptions
     });
 
     //tabla altas

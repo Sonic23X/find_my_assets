@@ -105,10 +105,10 @@ class Dashboard extends BaseController
 				$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
 				
 				if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
-				$inv++;
+					$inv++;
 			}
-
-			$activosTotales++;
+			else
+				$activosTotales++;
 		}
 		
 

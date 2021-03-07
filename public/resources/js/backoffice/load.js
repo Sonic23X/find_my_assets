@@ -104,11 +104,6 @@ function changeFile( nodo )
                         <td class="align-middle">
                             ${ element.activo }
                         </td>
-                        <td class="align-middle">
-                            <a href="#">
-                                <i class="fas fa-search"></i>
-                            </a>
-                        </td>
                     </tr>
                 `;
 

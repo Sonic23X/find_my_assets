@@ -141,13 +141,13 @@
                                                                             </th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
+                                                                    <tbody id="table_<?= $company->id_empresa ?>_sucursal">
                                                                     <?php
                                                                     foreach($sucursales[$count] as $sucursal)
                                                                     {
                                                                     ?>
-                                                                        <tr>
-                                                                            <td>
+                                                                        <tr id="sucursal_<?= $sucursal['id'] ?>">
+                                                                            <td id="sucursal_name_<?= $sucursal['id'] ?>">
                                                                                 <?= $sucursal['Desc'] ?>
                                                                             </td>
                                                                             <td>
@@ -184,13 +184,13 @@
                                                                             </th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
+                                                                    <tbody id="table_<?= $company->id_empresa ?>_area">
                                                                     <?php
                                                                     foreach($areas[$count] as $area)
                                                                     {
                                                                     ?>
-                                                                        <tr>
-                                                                            <td>
+                                                                        <tr id="area_<?= $area['id'] ?>">
+                                                                            <td id="area_name_<?= $area['id'] ?>">
                                                                                 <?= $area['descripcion'] ?>
                                                                             </td>
                                                                             <td>
@@ -227,13 +227,13 @@
                                                                             </th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
+                                                                    <tbody id="table_<?= $company->id_empresa ?>_tipo">
                                                                     <?php
                                                                     foreach($tipos[$count] as $tipo)
                                                                     {
                                                                     ?>
-                                                                        <tr>
-                                                                            <td>
+                                                                        <tr id="tipo_<?= $tipo['id'] ?>">
+                                                                            <td id="tipo_name_<?= $tipo['id'] ?>">
                                                                                 <?= $tipo['Desc'] ?>
                                                                             </td>
                                                                             <td>
@@ -273,16 +273,16 @@
                                                                             </th>
                                                                         </tr>
                                                                     </thead>
-                                                                    <tbody>
+                                                                    <tbody id="table_<?= $company->id_empresa ?>_cc">
                                                                     <?php
                                                                     foreach($ccs[$count] as $cc)
                                                                     {
                                                                     ?>
-                                                                        <tr>
-                                                                            <td>
+                                                                        <tr id="cc_<?= $cc['id'] ?>">
+                                                                            <td id="cc_subcuenta_<?= $cc['id'] ?>">
                                                                                 <?= $cc['Subcuenta'] ?>
                                                                             </td>
-                                                                            <td>
+                                                                            <td id="cc_name_<?= $cc['id'] ?>">
                                                                                 <?= $cc['Desc'] ?>
                                                                             </td>
                                                                             <td>
