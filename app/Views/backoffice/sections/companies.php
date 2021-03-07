@@ -16,8 +16,15 @@
                 <!-- fix for small devices only -->
                 <div class="clearfix hidden-md-up"></div>
 
-                <div class="mt-2 mb-2">
-                    <span class="font-weight-bold" style="font-size: 20px">Mis empresas</span>
+                <div class="row mt-2 mb-2">
+                    <div class="col-md-6">
+                        <span class="font-weight-bold" style="font-size: 20px">Mis empresas</span>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#newCompany">
+                            Nueva empresa
+                        </button>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -43,7 +50,7 @@
                                                 </th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="empresas_table">
                                         <?php
                                             $count = 0;
                                             foreach($companies as $company)
@@ -510,6 +517,30 @@
                                     <div class="btn-group w-100" role="group">
                                         <button type="button" class="btn btn-secondary" id="closeEditCC">Cancelar</button>
                                         <button type="button" class="btn btn-primary" id="saveEditCC">Actualizar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" tabindex="-1" id="newCompany">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Nueva empresa</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Nombre de la empresa" id="companyNewName" />
+                                    </div>
+                                    <div class="btn-group w-100" role="group">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                        <button type="button" class="btn btn-primary" id="saveCompany">Crear</button>
                                     </div>
                                 </form>
                             </div>

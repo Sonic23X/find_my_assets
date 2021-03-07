@@ -107,6 +107,35 @@ class Company extends BaseController
 			return view( 'functions/redirect', $data );
 		}
 	}
+
+	public function NewCompany()
+	{
+		if ( $this->request->isAJAX( ) )
+		{
+			$data =
+			[
+				'id_usuario' => $this->session->id,
+				'nombre' => $this->request->getVar( 'nombre' ),
+				'rfc' => '',
+				'razonsocial' => '',
+				'ciec_pass' => '',
+				'key_file' => '',
+				'cer_file' => '',
+				'fea_pass' => '',
+				'default' => 1,
+				'created_at' => date( 'Y/n/j' ),
+			];
+
+			$idEmpresa = $this->empresaModel->insert($data);
+
+			$SQL = "INSERT INTO user_empresa(id_empresa, id_usuario) VALUES (". $idEmpresa .", ". $this->session->id .")";
+			$builder = $this->db->query( $SQL );
+
+			echo json_encode( array( 'status' => 200, 'msg' => '¡Empresa registrada!' ) );
+		}
+		else
+			return view( 'errors/cli/error_404' );
+	}
 	
 	function ChangeImage()
 	{
