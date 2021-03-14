@@ -110,12 +110,12 @@ $.ajax({
 
     var donut2ChartCanvas = $('#barChart').get(0).getContext('2d');
     let total_activos = parseInt(response.inventariados) + parseInt(response.activos);
-    let porcentaje_inv = (parseInt(response.inventariados) / total_activos) * 100;
-    console.log(porcentaje_inv);
+    let porcentaje_inv = Math.round((parseInt(response.inventariados) / total_activos) * 100);
+    let porcentaje_sin = Math.round((parseInt(response.activos) / total_activos) * 100);
 
     var donut2Data =
     {
-        labels: [ `Activos inventariados: ${porcentaje_inv}%`, 'Activos faltantes'],
+        labels: [ `Activos inventariados: ${porcentaje_inv}%`, `Activos faltantes: ${porcentaje_sin}%`],
         datasets:
         [
         {
