@@ -76,6 +76,10 @@
                     </div>
                     <div class="card-body">
                       <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                      <br>
+                      <p>
+                        <span id="periodoInventario"></span>
+                      </p>
                     </div>
                   </div>
                 </div>

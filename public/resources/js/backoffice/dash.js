@@ -132,6 +132,8 @@ $.ajax({
         options: donutOptions
     });
 
+    $('#periodoInventario').html(response.periodo);
+
     //tabla altas
     let altas = response.altas;
 

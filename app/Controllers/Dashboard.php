@@ -107,8 +107,6 @@ class Dashboard extends BaseController
 				$statusPeriodo = 'El periodo de inventario finalizó hace ' . $diff->days . ' días';
 			else
 				$statusPeriodo = 'Quedan ' . $diff->days . ' días del periodo de inventario';
-
-			echo $statusPeriodo;
 		}
 
 		foreach ($activosTotal as $row) 
@@ -150,7 +148,19 @@ class Dashboard extends BaseController
         $builder->where( 'activos.TS_Delete', null );
         $points = $builder->get( )->getResult( );
 
-		//echo json_encode( array( 'status' => 200, 'montos' => $table1, 'graficaLabels' => $labels, 'graficaValues' => $values, 'bajas' => $bajas, 'altas' => $altas, 'points' => $points, 'inventariados' => $inv, 'activos' => $activosTotales ) );
+		echo json_encode( 
+		[
+			'status' => 200, 
+			'montos' => $table1, 
+			'graficaLabels' => $labels, 
+			'graficaValues' => $values, 
+			'bajas' => $bajas, 
+			'altas' => $altas, 
+			'points' => $points, 
+			'inventariados' => $inv, 
+			'activos' => $activosTotales, 
+			'periodo' => $statusPeriodo,
+		]);
 	}
 
 }
