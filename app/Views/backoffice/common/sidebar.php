@@ -15,7 +15,7 @@
                 <?php
                   foreach($empresas as $empresa)
                   {
-                    echo "<option value='".$empresa['id']."'>".$empresa['nombre']."</option>";
+                    echo "<option value='".$empresa['id_empresa']."'>".$empresa['nombre']."</option>";
                   }
                 ?>
                 </select>
