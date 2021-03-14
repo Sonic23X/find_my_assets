@@ -15,7 +15,10 @@
                 <?php
                   foreach($empresas as $empresa)
                   {
-                    echo "<option value='".$empresa->id_empresa."'>".$empresa->nombre."</option>";
+                    if($empresa->id_empresa == $actual)
+                      echo "<option value='".$empresa->id_empresa."' selected>".$empresa->nombre."</option>";
+                    else
+                      echo "<option value='".$empresa->id_empresa."'>".$empresa->nombre."</option>";
                   }
                 ?>
                 </select>

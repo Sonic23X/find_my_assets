@@ -36,7 +36,7 @@ class User extends BaseController
 			$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
 			$builder = $this->db->query( $SQL );
 			$empresas = $builder->getResult( );
-			$sidebar = array( 'name' => $this->session->name, 'empresas' => $empresas );
+			$sidebar = array( 'name' => $this->session->name, 'empresas' => $empresas, 'actual' => $this->session->empresa);
 			echo view( 'backoffice/common/sidebar', $sidebar );
 
             //navbar
