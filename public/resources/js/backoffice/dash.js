@@ -110,7 +110,7 @@ $.ajax({
 
     var donut2ChartCanvas = $('#barChart').get(0).getContext('2d');
     let total_activos = parseInt(response.inventariados) + parseInt(response.activos);
-    let porcentaje_inv = (parseInt(response.inventariado) / total_activos);
+    let porcentaje_inv = (parseInt(response.inventariados) / total_activos) * 100;
     console.log(porcentaje_inv);
 
     var donut2Data =
