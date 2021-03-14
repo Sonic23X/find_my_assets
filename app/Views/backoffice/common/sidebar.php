@@ -12,7 +12,12 @@
                 <a href="<?= base_url( '/perfil' ) ?>" class="d-block">Hola, <?= $name ?></a>
                 <br>
                 <select id="combo-empresas" class="custom-select">
-                  <option>Empresa 1</option>
+                <?php
+                  foreach($empresas as $empresa)
+                  {
+                    echo "<option value='".$empresa['id']."'>".$empresa['nombre']."</option>";
+                  }
+                ?>
                 </select>
               </div>
             </div>

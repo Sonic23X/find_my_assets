@@ -254,4 +254,8 @@ $(document).ready(function( )
 
   dashboardData( );
 
+  $('#combo-empresas').change( event => {
+    alert(value);
+  });
+
 });

@@ -604,4 +604,8 @@ $(document).ready(function( )
 
     });
 
-});
+    $('#combo-empresas').change( event => {
+      alert(value);
+    });
+
+}); 

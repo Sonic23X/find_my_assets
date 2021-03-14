@@ -33,8 +33,11 @@ class User extends BaseController
             echo view( 'backoffice/common/head', $head );
 
             //sidebar
-            $sidebar = array( 'name' => $this->session->name );
-            echo view( 'backoffice/common/sidebar', $sidebar );
+			$SQL = "SELECT empresas.id, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+			$builder = $this->db->query( $SQL );
+			$empresas = $builder->getResult( );
+			$sidebar = array( 'name' => $this->session->name, 'empresas' => $empresas );
+			echo view( 'backoffice/common/sidebar', $sidebar );
 
             //navbar
             echo view( 'backoffice/common/navbar' );
