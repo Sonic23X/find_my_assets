@@ -106,7 +106,7 @@ class Dashboard extends BaseController
 			if($fecha_actual > $fechaFinUnix)
 				$statusPeriodo = 'El periodo de inventario finalizó hace ' . $diff->days . ' días';
 			else
-				$statusPeriodo = 'Quedan <b>' . $diff->days . '</b> días del periodo de inventario';
+				$statusPeriodo = 'Quedan <b>' . $diff->days . ' días</b> del periodo de inventario';
 		}
 
 		foreach ($activosTotal as $row) 
