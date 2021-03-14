@@ -91,13 +91,24 @@ class Dashboard extends BaseController
 		$activosTotales = 0;
 		$inv = 0;
 
+		$statusPeriodo = 'Sin periodo actual';
 		if ($periodo != null)
 		{
+			$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+			$fechaFin = explode('-', $periodo[0]->fecha_fin);
+
 			$date1 = new \DateTime('NOW');
 			$date2 = new \DateTime($periodo[0]->fecha_fin);
 			$diff = $date1->diff($date2);
 
-			echo 'Faltan ' . $diff->days . ' días para finalizar el periodo actual';
+			$fecha_actual = strtotime(date("d-m-Y"));
+			$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+			if($fecha_actual > $fechaFinUnix)
+				$statusPeriodo = 'El periodo de inventario finalizó hace ' . $diff->days . ' días';
+			else
+				$statusPeriodo = 'Quedan ' . $diff->days . ' días del periodo de inventario';
+
+			echo $statusPeriodo;
 		}
 
 		foreach ($activosTotal as $row) 
