@@ -91,6 +91,14 @@ class Dashboard extends BaseController
 		$activosTotales = 0;
 		$inv = 0;
 
+		if ($periodo != null)
+		{
+			$date1 = new DateTime($periodo[0]->fecha_inicio);
+			$date2 = new DateTime($periodo[0]->fecha_fin);
+
+			print_r($date1);
+		}
+
 		foreach ($activosTotal as $row) 
 		{
 			$inventario = false;
@@ -130,7 +138,7 @@ class Dashboard extends BaseController
         $builder->where( 'activos.TS_Delete', null );
         $points = $builder->get( )->getResult( );
 
-		echo json_encode( array( 'status' => 200, 'montos' => $table1, 'graficaLabels' => $labels, 'graficaValues' => $values, 'bajas' => $bajas, 'altas' => $altas, 'points' => $points, 'inventariados' => $inv, 'activos' => $activosTotales ) );
+		//echo json_encode( array( 'status' => 200, 'montos' => $table1, 'graficaLabels' => $labels, 'graficaValues' => $values, 'bajas' => $bajas, 'altas' => $altas, 'points' => $points, 'inventariados' => $inv, 'activos' => $activosTotales ) );
 	}
 
 }
