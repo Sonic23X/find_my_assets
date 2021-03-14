@@ -93,7 +93,7 @@ class Dashboard extends BaseController
 
 		if ($periodo != null)
 		{
-			$date1 = new \DateTime($periodo[0]->fecha_inicio);
+			$date1 = new \DateTime('NOW');
 			$date2 = new \DateTime($periodo[0]->fecha_fin);
 			$diff = $date2->diff($date1);
 
