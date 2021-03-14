@@ -34,7 +34,7 @@ class Company extends BaseController
 			echo view( 'backoffice/common/head', $head );
 
 			//sidebar
-			$SQL = "SELECT empresas.id, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+			$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
 			$builder = $this->db->query( $SQL );
 			$empresas = $builder->getResult( );
 			$sidebar = array( 'name' => $this->session->name, 'empresas' => $empresas );
