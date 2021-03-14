@@ -93,8 +93,8 @@ class Dashboard extends BaseController
 
 		if ($periodo != null)
 		{
-			$date1 = new DateTime($periodo[0]->fecha_inicio);
-			$date2 = new DateTime($periodo[0]->fecha_fin);
+			$date1 = new \DateTime($periodo[0]->fecha_inicio);
+			$date2 = new \DateTime($periodo[0]->fecha_fin);
 
 			print_r($date1);
 		}
