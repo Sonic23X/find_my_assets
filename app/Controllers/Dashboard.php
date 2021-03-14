@@ -95,7 +95,7 @@ class Dashboard extends BaseController
 		{
 			$date1 = new \DateTime($periodo[0]->fecha_inicio);
 			$date2 = new \DateTime($periodo[0]->fecha_fin);
-			$diff = $date1->diff($date2);
+			$diff = $date2->diff($date1);
 
 			echo 'Faltan ' . $diff->days . ' días para finalizar el periodo actual';
 		}
