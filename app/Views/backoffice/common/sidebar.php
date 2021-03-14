@@ -10,6 +10,10 @@
               <br>
               <div class="info mt-2">
                 <a href="<?= base_url( '/perfil' ) ?>" class="d-block">Hola, <?= $name ?></a>
+                <br>
+                <select id="combo-empresas" class="custom-select">
+                  <option>Empresa 1</option>
+                </select>
               </div>
             </div>
           </div>
