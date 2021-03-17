@@ -132,7 +132,98 @@ class Company extends BaseController
 			$idEmpresa = $this->empresaModel->insert($data);
 
 			$SQL = "INSERT INTO user_empresa(id_empresa, id_usuario) VALUES (". $idEmpresa .", ". $this->session->id .")";
-			$builder = $this->db->query( $SQL );
+			$this->db->query( $SQL );
+
+			$dataCC =
+			[
+				[
+					'Desc' => 'AUTOS',
+					'Subcuenta' => 100,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'PROPIEDADES',
+					'Subcuenta' => 103,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'LEGAL',
+					'Subcuenta' => 104,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'ADMIN Y FINANZAS',
+					'Subcuenta' => 105,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'RRHH',
+					'Subcuenta' => 106,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'TI',
+					'Subcuenta' => 107,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'MARKETING',
+					'Subcuenta' => 108,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'NUEVOS NEGOCIOS',
+					'Subcuenta' => 109,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'OPERACIONES Y PROCESOS',
+					'Subcuenta' => 113,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'OEXPERIENCIA CLIENTES',
+					'Subcuenta' => 114,
+					'id_empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'CENTRO COSTO POR DISTRIBUIR',
+					'Subcuenta' => 199,
+					'id_empresa' => $idEmpresa,
+				],
+			];
+
+			$this->ccModel->insertBatch($dataCC);
+			
+			$dataTipo =
+			[
+				[
+					'Desc' => 'EQUIPOS COMPUTACIONALES',
+					'ID_Empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'MUEBLES Y UTILES',
+					'ID_Empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'HERRAMIENTAS',
+					'ID_Empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'VEHÍCULOS EN LEASING',
+					'ID_Empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'SOFTWARE',
+					'ID_Empresa' => $idEmpresa,
+				],
+				[
+					'Desc' => 'CONSTRUCCIONES',
+					'ID_Empresa' => $idEmpresa,
+				],
+			];
+
+			$this->tipoModel->insertBatch($dataTipo);
 
 			echo json_encode( array( 'status' => 200, 'msg' => '¡Empresa registrada!' ) );
 		}
