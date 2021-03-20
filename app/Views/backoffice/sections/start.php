@@ -64,6 +64,7 @@
                   </div>
                 </div>
 
+                <!--
                 <div class="col-12 col-sm-6 col-md-3">
                   <div class="card card-warning">
                     <div class="card-header">
@@ -83,7 +84,7 @@
                     </div>
                   </div>
                 </div>
-
+                -->
                 <!-- fix for small devices only -->
                 <div class="clearfix hidden-md-up"></div>
 
