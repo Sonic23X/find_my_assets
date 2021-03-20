@@ -94,6 +94,50 @@ $.ajax({
         options: donutOptions
     });
 
+    var areaChartData = {
+        labels  : ['Total'],
+        datasets: [
+          {
+            label               : 'Activos inventariados',
+            data                : [response.inventariados],
+            backgroundColor:
+            [
+                '#f56954', 
+            ],
+          }
+        ]
+      }
+
+    var donut2ChartCanvas = $('#barChart').get(0).getContext('2d');
+    let total_activos = parseInt(response.inventariados) + parseInt(response.activos);
+    let porcentaje_inv = Math.round((parseInt(response.inventariados) / total_activos) * 100);
+    let porcentaje_sin = Math.round((parseInt(response.activos) / total_activos) * 100);
+
+    var donut2Data =
+    {
+        labels: [ `Activos inventariados: ${porcentaje_inv}%`, `Activos faltantes: ${porcentaje_sin}%`],
+        datasets:
+        [
+        {
+            data: [ response.inventariados, response.activos],
+            backgroundColor:
+            [
+                '#3c8dbc', '#d2d6de',
+            ],
+        }
+        ]
+    };
+
+    //creación de la grafica
+    var donut2Chart = new Chart(donut2ChartCanvas,
+    {
+        type: 'doughnut',
+        data: donut2Data,
+        options: donutOptions
+    });
+
+    $('#periodoInventario').html(response.periodo);
+
     //tabla altas
     let altas = response.altas;
 
@@ -208,6 +252,44 @@ function setCoordenadasMapG( position )
 $(document).ready(function( )
 {
 
-  dashboardData( );
+    dashboardData( );
+
+    $('#combo-empresas').change( event => 
+    {
+        let json = 
+        {
+            id: $('#combo-empresas').val(),
+        };
+
+        //subir a servidor
+        $.ajax({
+            url: url + '/empresas/changeCompany',
+            type: 'POST',
+            dataType: 'json',
+            data: json,
+        })
+        .done( response =>
+        {
+        if ( response.status == 200 )
+        {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Hecho!',
+                text: response.msg,
+                allowOutsideClick: false,
+            })
+            .then((result) => {
+                if (result.isConfirmed) 
+                    location.reload();
+            });
+        }
+        else
+            imprimir( 'Ups...', response.msg, 'error' );
+        })
+        .fail( ( ) =>
+        {
+            imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+        });
+    });
 
 });

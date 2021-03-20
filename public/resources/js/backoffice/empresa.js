@@ -173,7 +173,7 @@ function deleteSucursal(id)
     if ( response.status == 200 )
     {
       imprimir( '¡Hecho!', response.msg, 'success' );
-      location.reload();
+      $(`#sucursal_${id}`).html('');
     }
     else
       imprimir( 'Ups...', response.msg, 'error' );
@@ -216,7 +216,7 @@ function deleteArea(id)
     if ( response.status == 200 )
     {
       imprimir( '¡Hecho!', response.msg, 'success' );
-      location.reload();
+      $(`#area_${id}`).html('');
     }
     else
       imprimir( 'Ups...', response.msg, 'error' );
@@ -227,8 +227,172 @@ function deleteArea(id)
   });
 }
 
+function newTipo(id) 
+{
+  $('#newTipoIdEmpresa').val(id);
+  $('#newTipo').modal('show');
+}
+
+function editTipo(id, name) 
+{
+  $('#editTipoId').val(id);
+  $('#editTipoName').val(name);
+  $('#editTipo').modal('show');
+}
+
+function deleteTipo(id) 
+{
+  let json = 
+  {
+    id: id,
+  };
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/empresas/deleteTipo',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+      $(`#tipo_${id}`).html('');
+    }
+    else
+      imprimir( 'Ups...', response.msg, 'error' );
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+  });
+}
+
+function newCC(id) 
+{
+  $('#newCCIdEmpresa').val(id);
+  $('#newCC').modal('show');
+}
+
+function editCC(id, name, codigo) 
+{
+  $('#editCCId').val(id);
+  $('#editCCName').val(name);
+  $('#editCCCode').val(codigo);
+  $('#editCC').modal('show');
+}
+
+function deleteCC(id) 
+{
+  let json = 
+  {
+    id: id,
+  };
+
+  //subir a servidor
+  $.ajax({
+    url: url + '/empresas/deleteCC',
+    type: 'POST',
+    dataType: 'json',
+    data: json,
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {
+      imprimir( '¡Hecho!', response.msg, 'success' );
+      $(`#cc_${id}`).html('');
+    }
+    else
+      imprimir( 'Ups...', response.msg, 'error' );
+  })
+  .fail( ( ) =>
+  {
+    imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+  });
+}
+
+function changeEmpresa(id) 
+{
+    let json = 
+    {
+      id: id
+    };
+
+    //subir a servidor
+    $.ajax({
+      url: url + '/empresas/changeCompany',
+      type: 'POST',
+      dataType: 'json',
+      data: json,
+    })
+    .done( response =>
+    {
+      if ( response.status == 200 )
+      {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Hecho!',
+          text: response.msg,
+          allowOutsideClick: false,
+        })
+        .then((result) => {
+          if (result.isConfirmed) 
+            location.reload();
+        });
+      }
+      else
+        imprimir( 'Ups...', response.msg, 'error' );
+    })
+    .fail( ( ) =>
+    {
+      imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+    });
+}
+
 $(document).ready(() =>
 {
+    $('#saveCompany').click(() => 
+    {
+      let json = 
+      {
+        nombre: $('#companyNewName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/newCompany',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Hecho!',
+            text: response.msg,
+            allowOutsideClick: false,
+          })
+          .then((result) => {
+            if (result.isConfirmed) 
+              location.reload();
+          });
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
     $('#saveNewSucursal').click(() => 
     {
       let json = 
@@ -249,7 +413,27 @@ $(document).ready(() =>
         if ( response.status == 200 )
         {
           imprimir( '¡Hecho!', response.msg, 'success' );
-          location.reload();
+          $(`#table_${$('#newSucursalIdEmpresa').val()}_sucursal`).html('');
+          
+          response.sucursal.forEach(element => 
+          {
+            let plantilla = 
+            `
+            <tr id="sucursal_${element.id}">
+              <td id="sucursal_name_${element.id}">
+                  ${element.Desc}
+              </td>
+              <td>
+                  <a href="#" onClick="editSucursal(${element.id}, '${element.Desc}')"><i class="fas fa-edit"></i></a>
+                  <a href="#" onClick="deleteSucursal(${element.id})"><i class="fas fa-times text-danger"></i></a>
+              </td>
+            </tr>
+            `;
+            
+            $(`#table_${$('#newSucursalIdEmpresa').val()}_sucursal`).append(plantilla);
+          });
+
+          $('#newSucursal').modal('hide');
         }
         else
           imprimir( 'Ups...', response.msg, 'error' );
@@ -281,7 +465,8 @@ $(document).ready(() =>
         if ( response.status == 200 )
         {
           imprimir( '¡Hecho!', response.msg, 'success' );
-          location.reload();
+          $(`#sucursal_name_${$('#editSucursalId').val()}`).html($('#editSucursalName').val());
+          $('#editSucursal').modal('hide');
         }
         else
           imprimir( 'Ups...', response.msg, 'error' );
@@ -313,7 +498,28 @@ $(document).ready(() =>
         if ( response.status == 200 )
         {
           imprimir( '¡Hecho!', response.msg, 'success' );
-          location.reload();
+          
+          $(`#table_${$('#newAreaIdEmpresa').val()}_area`).html('');
+          
+          response.area.forEach(element => 
+          {
+            let plantilla = 
+            `
+            <tr id="area_${element.id}">
+              <td id="area_name_${element.id}">
+                  ${element.descripcion}
+              </td>
+              <td>
+                  <a href="#" onClick="editArea(${element.id}, '${element.descripcion}')"><i class="fas fa-edit"></i></a>
+                  <a href="#" onClick="deleteArea(${element.id})"><i class="fas fa-times text-danger"></i></a>
+              </td>
+            </tr>
+            `;
+            
+            $(`#table_${$('#newAreaIdEmpresa').val()}_area`).append(plantilla);
+          });
+
+          $('#newArea').modal('hide');
         }
         else
           imprimir( 'Ups...', response.msg, 'error' );
@@ -345,7 +551,8 @@ $(document).ready(() =>
         if ( response.status == 200 )
         {
           imprimir( '¡Hecho!', response.msg, 'success' );
-          location.reload();
+          $(`#area_name_${$('#editAreaId').val()}`).html($('#editAreaName').val());
+          $('#editArea').modal('hide');
         }
         else
           imprimir( 'Ups...', response.msg, 'error' );
@@ -355,5 +562,221 @@ $(document).ready(() =>
         imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
       });
       
+    });
+
+    $('#saveNewTipo').click(() => 
+    {
+      let json = 
+      {
+        id: $('#newTipoIdEmpresa').val(),
+        nombre: $('#newTipoName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/newTipo',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          
+          $(`#table_${$('#newTipoIdEmpresa').val()}_tipo`).html('');
+          
+          response.tipos.forEach(element => 
+          {
+            let plantilla = 
+            `
+            <tr id="tipo_${element.id}">
+              <td id="tipo_name_${element.id}">
+                  ${element.Desc}
+              </td>
+              <td>
+                  <a href="#" onClick="editTipo(${element.id}, '${element.Desc}')"><i class="fas fa-edit"></i></a>
+                  <a href="#" onClick="deleteTipo(${element.id})"><i class="fas fa-times text-danger"></i></a>
+              </td>
+            </tr>
+            `;
+            
+            $(`#table_${$('#newTipoIdEmpresa').val()}_tipo`).append(plantilla);
+          });
+
+          $('#newTipo').modal('hide');
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveEditTipo').click(() => 
+    {
+      let json = 
+      {
+        id: $('#editTipoId').val(),
+        nombre: $('#editTipoName').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/editTipo',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          $(`#tipo_name_${$('#editTipoId').val()}`).html($('#editTipoName').val());
+          $('#editTipo').modal('hide');
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveNewCC').click(() => 
+    {
+      let json = 
+      {
+        id: $('#newCCIdEmpresa').val(),
+        nombre: $('#newCCName').val(),
+        codigo: $('#newCCId').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/newCC',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          
+          $(`#table_${$('#newCCIdEmpresa').val()}_cc`).html('');
+          
+          response.ccs.forEach(element => 
+          {
+            let plantilla = 
+            `
+            <tr id="cc_${element.id}">
+              <td id="cc_subcuenta_${element.id}">
+                  ${element.Subcuenta}
+              </td>
+              <td id="cc_name_${element.id}">
+                  ${element.Desc}
+              </td>
+              <td>
+                  <a href="#" onClick="editCC(${element.id}, '${element.Desc}')"><i class="fas fa-edit"></i></a>
+                  <a href="#" onClick="deleteCC(${element.id})"><i class="fas fa-times text-danger"></i></a>
+              </td>
+            </tr>
+            `;
+            
+            $(`#table_${$('#newCCIdEmpresa').val()}_cc`).append(plantilla);
+          });
+
+          $('#newCC').modal('hide');
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#saveEditCC').click(() => 
+    {
+      let json = 
+      {
+        id: $('#editCCId').val(),
+        nombre: $('#editCCName').val(),
+        codigo: $('#editCCCode').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/editCC',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          imprimir( '¡Hecho!', response.msg, 'success' );
+          $(`#cc_name_${$('#editCCId').val()}`).html($('#editCCName').val());
+          $(`#cc_subcuenta_${$('#editCCId').val()}`).html($('#editCCCode').val());
+          $('#editCC').modal('hide');
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
+      
+    });
+
+    $('#combo-empresas').change( event => 
+    {
+      let json = 
+      {
+        id: $('#combo-empresas').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/changeCompany',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Hecho!',
+            text: response.msg,
+            allowOutsideClick: false,
+          })
+          .then((result) => {
+            if (result.isConfirmed) 
+              location.reload();
+          });
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
     });
 });

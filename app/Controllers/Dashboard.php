@@ -30,7 +30,10 @@ class Dashboard extends BaseController
 			echo view( 'backoffice/common/head', $head );
 
 			//sidebar
-			$sidebar = array( 'name' => $this->session->name );
+			$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+			$builder = $this->db->query( $SQL );
+			$empresas = $builder->getResult( );
+			$sidebar = array( 'name' => $this->session->name, 'empresas' => $empresas, 'actual' => $this->session->empresa);
 			echo view( 'backoffice/common/sidebar', $sidebar );
 
 			//navbar
@@ -76,6 +79,60 @@ class Dashboard extends BaseController
 			array_push( $values, $num );
 		}
 
+		$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
+        $builderPeriodo = $this->db->query( $SQL );
+        $periodo = $builderPeriodo->getResult( );
+
+		$builder = $this->db->table( 'activos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.Fec_Inventario, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
+        $builder->where( 'activos.TS_Delete', null );
+        $activosTotal = $builder->get()->getResult();
+
+		$activosTotales = 0;
+		$inv = 0;
+
+		$statusPeriodo = 'Sin periodo actual';
+		if ($periodo != null)
+		{
+			$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+			$fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+			$date1 = new \DateTime('NOW');
+			$date2 = new \DateTime($periodo[0]->fecha_fin);
+			$diff = $date1->diff($date2);
+
+			$fecha_actual = strtotime(date("d-m-Y"));
+			$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+			if($fecha_actual > $fechaFinUnix)
+				$statusPeriodo = 'El periodo de inventario finalizó hace ' . $diff->days . ' días';
+			else
+				$statusPeriodo = 'Quedan <b>' . $diff->days . ' días</b> del periodo de inventario';
+		}
+
+		foreach ($activosTotal as $row) 
+		{
+			$inventario = false;
+			if ($periodo != null && $row->Fec_Inventario != null) 
+			{
+				$fecha1 = explode('-', explode(' ', $row->Fec_Inventario)[0]);
+				$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+				$fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+				$fecha1Unix = strtotime($fecha1[2]."-".$fecha1[1]."-".$fecha1[0]." 00:00:00");
+				$fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
+				$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+				
+				if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+					$inv++;
+			}
+			else
+				$activosTotales++;
+		}
+		
+
 		$bajas = $this->activoModel->where( 'ID_Company', $this->session->empresa )->where( 'TS_Delete !=', null )
 																				   ->select( 'TS_Delete, Nom_Activo, Pre_Compra' )
 																				   ->orderBy('TS_Create', 'desc')
@@ -94,7 +151,19 @@ class Dashboard extends BaseController
         $builder->where( 'activos.TS_Delete', null );
         $points = $builder->get( )->getResult( );
 
-		echo json_encode( array( 'status' => 200, 'montos' => $table1, 'graficaLabels' => $labels, 'graficaValues' => $values, 'bajas' => $bajas, 'altas' => $altas, 'points' => $points ) );
+		echo json_encode( 
+		[
+			'status' => 200, 
+			'montos' => $table1, 
+			'graficaLabels' => $labels, 
+			'graficaValues' => $values, 
+			'bajas' => $bajas, 
+			'altas' => $altas, 
+			'points' => $points, 
+			'inventariados' => $inv, 
+			'activos' => $activosTotales, 
+			'periodo' => $statusPeriodo,
+		]);
 	}
 
 }

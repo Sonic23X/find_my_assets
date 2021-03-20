@@ -10,6 +10,18 @@
               <br>
               <div class="info mt-2">
                 <a href="<?= base_url( '/perfil' ) ?>" class="d-block">Hola, <?= $name ?></a>
+                <br>
+                <select id="combo-empresas" class="custom-select">
+                <?php
+                  foreach($empresas as $empresa)
+                  {
+                    if($empresa->id_empresa == $actual)
+                      echo "<option value='".$empresa->id_empresa."' selected>".$empresa->nombre."</option>";
+                    else
+                      echo "<option value='".$empresa->id_empresa."'>".$empresa->nombre."</option>";
+                  }
+                ?>
+                </select>
               </div>
             </div>
           </div>

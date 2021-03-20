@@ -33,8 +33,11 @@ class User extends BaseController
             echo view( 'backoffice/common/head', $head );
 
             //sidebar
-            $sidebar = array( 'name' => $this->session->name );
-            echo view( 'backoffice/common/sidebar', $sidebar );
+			$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
+			$builder = $this->db->query( $SQL );
+			$empresas = $builder->getResult( );
+			$sidebar = array( 'name' => $this->session->name, 'empresas' => $empresas, 'actual' => $this->session->empresa);
+			echo view( 'backoffice/common/sidebar', $sidebar );
 
             //navbar
             echo view( 'backoffice/common/navbar' );
@@ -277,14 +280,14 @@ class User extends BaseController
     public function Macal()
     {
         $password = crypt( '12345678', '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
-		$emailEncrypt = md5( 'practica.contabilidad@macal.cl' );
+		$emailEncrypt = md5( 'pcisternas@macal.cl' );
 
         $insert =
         [
             'perfil' => 'user',
-            'nombre' => 'Guillermo',
-            'apellidos' => 'Bascur',
-            'email' => 'practica.contabilidad@macal.cl',
+            'nombre' => 'Patricio',
+            'apellidos' => 'Cisternas',
+            'email' => 'pcisternas@macal.cl',
             'password' => $password,
             'suscripcion' => 0,
             'verificacion' => 1,

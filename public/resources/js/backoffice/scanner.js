@@ -1376,7 +1376,7 @@ $(document).ready(function( )
     let dateUpdate = false;
 
     if (imageChange && gpsChange)
-      dateUpdate = true;    
+      dateUpdate = true;
 
     //ajax de comprobación
     let data = 
@@ -1535,6 +1535,44 @@ $(document).ready(function( )
         break;
     }
 
+  });
+
+  $('#combo-empresas').change( event => 
+  {
+    let json = 
+    {
+      id: $('#combo-empresas').val(),
+    };
+
+    //subir a servidor
+    $.ajax({
+      url: url + '/empresas/changeCompany',
+      type: 'POST',
+      dataType: 'json',
+      data: json,
+    })
+    .done( response =>
+    {
+      if ( response.status == 200 )
+      {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Hecho!',
+          text: response.msg,
+          allowOutsideClick: false,
+        })
+        .then((result) => {
+          if (result.isConfirmed) 
+            location.reload();
+        });
+      }
+      else
+        imprimir( 'Ups...', response.msg, 'error' );
+    })
+    .fail( ( ) =>
+    {
+      imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+    });
   });
 
 });

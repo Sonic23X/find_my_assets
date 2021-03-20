@@ -101,7 +101,7 @@ $routes->post('/activos/coordenadas', 'Activo::UpdateCoordenadas');
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
 $routes->get('/inventario/getItems', 'Inventary::SearchItemList');
 $routes->get('/inventario/getDraftInfo/(:num)', 'Inventary::SearchItemInfo/$1');
-$routes->get('/inventario/getDraftDetails/(:num)', 'Inventary::SearcItemDetails/$1');
+$routes->get('/inventario/getDraftDetails/(:any)', 'Inventary::SearcItemDetails/$1');
 $routes->get('/inventario/getDraftBuyDetails/(:num)', 'Inventary::SearcItemBuyDetails/$1');
 $routes->post('/inventario/saveDraftBuyDetails', 'Inventary::SaveDraftBuyDetails');
 $routes->post('/inventario/draftToActivo', 'Inventary::draftToActivo');
@@ -141,6 +141,8 @@ $routes->post('/usuarios/delete', 'User::Delete');
 $routes->get('/carga/(:any)', 'Home::Url/$1');
 
 /** AJAX - Empresa **/
+$routes->post('/empresas/newCompany', 'Company::NewCompany');
+$routes->post('/empresas/changeCompany', 'Company::ChangeCompany');
 $routes->post('/empresas/update', 'Company::UpdateCompany');
 $routes->post('/empresas/setLogo', 'Company::ChangeImage');
 $routes->post('/empresas/finishPeriod', 'Company::FinishPeriod');
@@ -150,6 +152,12 @@ $routes->post('/empresas/deleteSucursal', 'Company::DeleteSucursal');
 $routes->post('/empresas/newArea', 'Company::NewArea');
 $routes->post('/empresas/editArea', 'Company::EditArea');
 $routes->post('/empresas/deleteArea', 'Company::DeleteArea');
+$routes->post('/empresas/newTipo', 'Company::NewTipo');
+$routes->post('/empresas/editTipo', 'Company::EditTipo');
+$routes->post('/empresas/deleteTipo', 'Company::DeleteTipo');
+$routes->post('/empresas/newCC', 'Company::NewCC');
+$routes->post('/empresas/editCC', 'Company::EditCC');
+$routes->post('/empresas/deleteCC', 'Company::DeleteCC');
 
 /**
  * --------------------------------------------------------------------

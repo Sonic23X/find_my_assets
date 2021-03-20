@@ -1017,7 +1017,7 @@ function getNewItems( )
               ${ activo.fecha }
             </td>
             <td class="align-middle">
-              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew( ${ activo.id_activo } )">
+              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="InfoNew( '${ activo.id_activo }' )">
                 <i class="fas fa-angle-right"></i>
               </button>
             </td>
@@ -1970,5 +1970,43 @@ $(document).ready(function( )
                 imprimir( 'Ups..', response.msg, 'error' );
             }
         });
+    });
+
+    $('#combo-empresas').change( event => 
+    {
+      let json = 
+      {
+        id: $('#combo-empresas').val(),
+      };
+
+      //subir a servidor
+      $.ajax({
+        url: url + '/empresas/changeCompany',
+        type: 'POST',
+        dataType: 'json',
+        data: json,
+      })
+      .done( response =>
+      {
+        if ( response.status == 200 )
+        {
+          Swal.fire({
+            icon: 'success',
+            title: '¡Hecho!',
+            text: response.msg,
+            allowOutsideClick: false,
+          })
+          .then((result) => {
+            if (result.isConfirmed) 
+              location.reload();
+          });
+        }
+        else
+          imprimir( 'Ups...', response.msg, 'error' );
+      })
+      .fail( ( ) =>
+      {
+        imprimir( 'Ups...', 'Error al conectar con el servidor, intente más tarde', 'error' );
+      });
     });
 });

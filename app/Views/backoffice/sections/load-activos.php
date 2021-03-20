@@ -146,7 +146,6 @@
                                         <tr>
                                             <th scope="col">Problematica</th>
                                             <th scope="col">No. Activo</th>
-                                            <th scope="col">#</th>
                                         </tr>
                                     </thead>
                                     <tbody class="up-problems-table-content">
