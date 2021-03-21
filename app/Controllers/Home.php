@@ -11,6 +11,7 @@ class Home extends BaseController
 	protected $email;
 	protected $userModel;
 	protected $encrypter;
+	protected $db;
 
 	function __construct()
 	{
@@ -22,6 +23,7 @@ class Home extends BaseController
 		$this->email = new PHPMailerLib( );
 		$this->encrypter = \Config\Services::encrypter( $config );
 		$this->userModel = model( 'App\Models\UserModel' );
+		$this->db = \Config\Database::connect();
 	}
 
 	//función que regresa la landing page
