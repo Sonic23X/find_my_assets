@@ -94,7 +94,7 @@ class Dashboard extends BaseController
 		$activosTotales = 0;
 		$inv = 0;
 
-		$statusPeriodo = 'Sin periodo actual';
+		$statusPeriodo = 'Sin periodo de inventario en curso';
 		if ($periodo != null)
 		{
 			$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
@@ -107,7 +107,7 @@ class Dashboard extends BaseController
 			$fecha_actual = strtotime(date("d-m-Y"));
 			$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
 			if($fecha_actual > $fechaFinUnix)
-				$statusPeriodo = 'El periodo de inventario finalizó hace ' . $diff->days . ' días';
+				$statusPeriodo = 'El periodo de inventario finalizó hace <b>' . $diff->days . ' días</b>';
 			else
 				$statusPeriodo = 'Quedan <b>' . $diff->days . ' días</b> del periodo de inventario';
 		}

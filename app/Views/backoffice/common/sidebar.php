@@ -8,8 +8,12 @@
                 <img src="./images/backoffice/profile.png" class="img-circle elevation-2" alt="User Image">
               </div>
               <br>
-              <div class="info mt-2">
+              <div class="mt-2 mr-5">
                 <a href="<?= base_url( '/perfil' ) ?>" class="d-block">Hola, <?= $name ?></a>
+                <br>
+                <span style="color: #C2C7D0;">Estas trabajando</span>
+                <br>
+                <span style="color: #C2C7D0;">en la empresa:</span>
                 <br>
                 <select id="combo-empresas" class="custom-select">
                 <?php
