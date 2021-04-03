@@ -240,17 +240,17 @@ function mapFilter()
     .done( response =>
     {
         response.points.forEach( point =>
-            {
-              let coordenadas = point.GPS.split( ',' );
+        {
+            let coordenadas = point.GPS.split( ',' );
               
-              let latitud = coordenadas[ 0 ];
-              let longitud = coordenadas[ 1 ];
+            let latitud = coordenadas[ 0 ];
+            let longitud = coordenadas[ 1 ];
           
-              let marker = L.marker( [ latitud, longitud ] )
-                              .bindPopup( point.Desc + '.\n' + point.Nom_Activo + '.\n A.:' + point.nombre)
-                              .openPopup( );
+            let marker = L.marker( [ latitud, longitud ] )
+                            .bindPopup( point.Desc + '.\n' + point.Nom_Activo + '.\n A.:' + point.nombre)
+                            .openPopup( );
           
-              markersLayer.addLayer(marker);
+            markersLayer.addLayer(marker);
           
          });
           

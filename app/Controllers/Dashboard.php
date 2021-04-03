@@ -181,6 +181,7 @@ class Dashboard extends BaseController
 			$builder->where( 'activos.ID_Company', $this->session->empresa );
 			$builder->where( 'activos.TS_Delete', null );
 			
+			
 			if ( $this->request->getVar( 'tipo' ) != null && $this->request->getVar( 'tipo' ) != '0' )
 			{
 				$builder->where( 'activos.ID_Tipo', $this->request->getVar( 'tipo' ) );
@@ -195,8 +196,9 @@ class Dashboard extends BaseController
 			}
 
 			$cantidad = $this->request->getVar( 'cantidad' ) != null ? $this->request->getVar( 'cantidad' ) : 10;
-
-			$points = $builder->get( $cantidad )->getResult( );
+			
+			$builder->limit($cantidad);
+			$points = $builder->get( )->getResult( );
 
 			echo json_encode( 
 			[
