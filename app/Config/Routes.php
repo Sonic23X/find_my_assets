@@ -100,19 +100,19 @@ $routes->post('/activos/coordenadas', 'Activo::UpdateCoordenadas');
 /** AJAX - inventary **/
 $routes->get('/inventario/getFormData', 'Inventary::GetDataForm');
 $routes->get('/inventario/getItems', 'Inventary::SearchItemList');
-$routes->get('/inventario/getDraftInfo/(:num)', 'Inventary::SearchItemInfo/$1');
+$routes->get('/inventario/getDraftInfo/(:any)', 'Inventary::SearchItemInfo/$1');
 $routes->get('/inventario/getDraftDetails/(:any)', 'Inventary::SearcItemDetails/$1');
-$routes->get('/inventario/getDraftBuyDetails/(:num)', 'Inventary::SearcItemBuyDetails/$1');
+$routes->get('/inventario/getDraftBuyDetails/(:any)', 'Inventary::SearcItemBuyDetails/$1');
 $routes->post('/inventario/saveDraftBuyDetails', 'Inventary::SaveDraftBuyDetails');
 $routes->post('/inventario/draftToActivo', 'Inventary::draftToActivo');
 $routes->post('/inventario/draftDelete', 'Inventary::draftDelete');
-$routes->get('/inventario/concilar/(:num)', 'Inventary::SearchItemsConciliar/$1');
+$routes->get('/inventario/concilar/(:any)', 'Inventary::SearchItemsConciliar/$1');
 $routes->post('/inventario/concilarActivo', 'Inventary::SearchDataConciliar');
 $routes->post('/inventario/concilarActivoConfirm', 'Inventary::SearchDataConciliarConfirm');
 $routes->post('/inventario/conciliarFinish', 'Inventary::Conciliar');
 $routes->get('/inventario/getProcessItems', 'Inventary::ProcessList');
 $routes->get('/inventario/getInventaryItems', 'Inventary::SearchInventaryList');
-$routes->get('/inventario/getActivoInfo/(:num)', 'Inventary::SearchActiveInfo/$1');
+$routes->get('/inventario/getActivoInfo/(:any)', 'Inventary::SearchActiveInfo/$1');
 $routes->post('/inventario/getInventaryItemsFilter', 'Inventary::SearchInventaryListFilter');
 $routes->post('/inventario/sucursales', 'Inventary::UpdateSucursal');
 $routes->post('/inventario/setFactura', 'Inventary::setFactura');
@@ -158,6 +158,9 @@ $routes->post('/empresas/deleteTipo', 'Company::DeleteTipo');
 $routes->post('/empresas/newCC', 'Company::NewCC');
 $routes->post('/empresas/editCC', 'Company::EditCC');
 $routes->post('/empresas/deleteCC', 'Company::DeleteCC');
+
+/** AJAX - Dashboard **/
+$routes->post('/dashboard/map', 'Dashboard::getActivosMap');
 
 /**
  * --------------------------------------------------------------------

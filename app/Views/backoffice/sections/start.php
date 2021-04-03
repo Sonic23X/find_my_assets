@@ -14,7 +14,34 @@
                       </div>
                     </div>
                     <div class="card-body">
-                      <div id="globalMap" style="height: 700px;"></div>
+                      <div class="form-row">
+                        <div class="form-group col-md">
+                          <label for="tiposActivo">Tipos de activo</label>
+                          <select class="custom-select" id="tiposActivo" onchange="mapFilter()">
+                            <option value="0">Sin seleccion</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md">
+                          <label for="ccActivos">Centro de costo</label>
+                          <select class="custom-select" id="ccActivos" onchange="mapFilter()">
+                            <option value="0">Sin seleccion</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md">
+                          <label for="numActivos">Cantidad</label>
+                          <select class="custom-select" id="numActivos" onchange="mapFilter()">
+                            <option value="10">10</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md">
+                          <label for="nameActivo">Nombre del activo</label>
+                          <input type="text" class="form-control" id="nameActivo" placeholder="Nombre" onkeyup="mapFilter()">
+                        </div>
+                      </div>
+                      <div id="globalMap" class="mt-2" style="height: 700px;"></div>
                     </div>
                   </div>
                 </div>

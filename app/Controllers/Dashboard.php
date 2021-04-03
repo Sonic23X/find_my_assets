@@ -11,6 +11,7 @@ class Dashboard extends BaseController
 	protected $session;
 	protected $tipoModel;
 	protected $activoModel;
+	protected $ccModel;
 	protected $db;
 
 	function __construct()
@@ -18,6 +19,7 @@ class Dashboard extends BaseController
 		$this->session = \Config\Services::session( );
 		$this->tipoModel = model( 'App\Models\TipoModel' );
 		$this->activoModel = model( 'App\Models\ActivoModel' );
+		$this->ccModel = model( 'App\Models\CCModel' );
 		$this->db = \Config\Database::connect();
 	}
 
@@ -163,7 +165,46 @@ class Dashboard extends BaseController
 			'inventariados' => $inv, 
 			'activos' => $activosTotales, 
 			'periodo' => $statusPeriodo,
+			'tipos' => $this->tipoModel->where('ID_Empresa', $this->session->empresa)->findAll(),
+			'cc' => $this->ccModel->where('id_empresa', $this->session->empresa)->findAll(),
 		]);
 	}
 
+	function getActivosMap()
+	{
+		if ( $this->request->isAJAX( ) )
+        {	
+			$builder = $this->db->table( 'activos' );
+			$builder->select( 'activos.Nom_Activo, activos.GPS, tipos.Desc, usuarios.nombre' );
+			$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+			$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+			$builder->where( 'activos.ID_Company', $this->session->empresa );
+			$builder->where( 'activos.TS_Delete', null );
+			
+			if ( $this->request->getVar( 'tipo' ) != null && $this->request->getVar( 'tipo' ) != '0' )
+			{
+				$builder->where( 'activos.ID_Tipo', $this->request->getVar( 'tipo' ) );
+			}
+			if ( $this->request->getVar( 'cc' ) != null && $this->request->getVar( 'cc' ) != '0' )
+			{
+				$builder->where( 'activos.ID_CC', $this->request->getVar( 'cc' ) );
+			}
+			if ( $this->request->getVar( 'busqueda' ) != null && $this->request->getVar( 'busqueda' ) != '' )
+			{
+				$builder->like( 'activos.Nom_Activo', $this->request->getVar( 'busqueda' ) );
+			}
+
+			$cantidad = $this->request->getVar( 'cantidad' ) != null ? $this->request->getVar( 'cantidad' ) : 10;
+
+			$points = $builder->get( $cantidad )->getResult( );
+
+			echo json_encode( 
+			[
+				'status' => 200,
+				'points' => $points, 
+			]);
+        }
+        else
+            return view( 'errors/cli/error_404' );
+	}
 }
