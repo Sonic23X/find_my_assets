@@ -151,7 +151,7 @@ class Dashboard extends BaseController
 		$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
 		$builder->where( 'activos.ID_Company', $this->session->empresa );
         $builder->where( 'activos.TS_Delete', null );
-        $points = $builder->get( )->getResult( );
+        $points = $builder->get( 10 )->getResult( );
 
 		echo json_encode( 
 		[
