@@ -257,8 +257,7 @@ function mapFilter()
         markersLayer.addTo(globalMap);
     })
     .fail( ( XMLHttpRequest, textStatus, errorThrown ) =>
-    {  
-        
+    { 
         imprimir( 'Ups..', 'Error al conectar con el servidor', 'error' );
     });
 }
