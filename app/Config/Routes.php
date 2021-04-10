@@ -161,6 +161,7 @@ $routes->post('/empresas/deleteCC', 'Company::DeleteCC');
 
 /** AJAX - Dashboard **/
 $routes->post('/dashboard/map', 'Dashboard::getActivosMap');
+$routes->post('/dashboard/filter', 'Dashboard::getDataFilter');
 
 /**
  * --------------------------------------------------------------------

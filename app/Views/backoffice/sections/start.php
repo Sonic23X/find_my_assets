@@ -1,6 +1,40 @@
 
             <div class="home">
 
+              <!-- Filters-->
+
+              <div class="row">
+                <div class="col">
+                  <div class="card card-warning">
+                    <div class="card-header">
+                      <h3 class="card-title text-white">Filtros Globales</h3>
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <div class="form-row">
+                        <div class="form-group col-md">
+                          <label for="tiposActivo">Tipos de activo</label>
+                          <select class="custom-select" id="tiposActivo" onchange="dashFilter()">
+                            <option value="0">Sin seleccion</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md">
+                          <label for="ccActivos">Centro de costo</label>
+                          <select class="custom-select" id="ccActivos" onchange="dashFilter()">
+                            <option value="0">Sin seleccion</option>
+                          </select>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <!-- Map -->
               <div class="row">
                 <div class="col">
@@ -15,18 +49,6 @@
                     </div>
                     <div class="card-body">
                       <div class="form-row">
-                        <div class="form-group col-md">
-                          <label for="tiposActivo">Tipos de activo</label>
-                          <select class="custom-select" id="tiposActivo" onchange="mapFilter()">
-                            <option value="0">Sin seleccion</option>
-                          </select>
-                        </div>
-                        <div class="form-group col-md">
-                          <label for="ccActivos">Centro de costo</label>
-                          <select class="custom-select" id="ccActivos" onchange="mapFilter()">
-                            <option value="0">Sin seleccion</option>
-                          </select>
-                        </div>
                         <div class="form-group col-md">
                           <label for="numActivos">Cantidad</label>
                           <select class="custom-select" id="numActivos" onchange="mapFilter()">

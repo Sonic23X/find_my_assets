@@ -4,6 +4,8 @@ var lon;
 var lat;
 var globalMap;
 var markersLayer = new L.LayerGroup();
+var donutChart;
+var donut2Chart;
 
 function imprimir ( titulo, mensaje, tipo )
 {
@@ -100,7 +102,7 @@ function dashboardData( )
             };
 
             //creación de la grafica
-            var donutChart = new Chart(donutChartCanvas,
+            donutChart = new Chart(donutChartCanvas,
             {
                 type: 'doughnut',
                 data: donutData,
@@ -142,7 +144,7 @@ function dashboardData( )
             };
 
             //creación de la grafica
-            var donut2Chart = new Chart(donut2ChartCanvas,
+            donut2Chart = new Chart(donut2ChartCanvas,
             {
                 type: 'doughnut',
                 data: donut2Data,
@@ -239,6 +241,238 @@ function mapFilter()
     })
     .done( response =>
     {
+        response.points.forEach( point =>
+        {
+            let coordenadas = point.GPS.split( ',' );
+              
+            let latitud = coordenadas[ 0 ];
+            let longitud = coordenadas[ 1 ];
+          
+            let marker = L.marker( [ latitud, longitud ] )
+                            .bindPopup( point.Desc + '.\n' + point.Nom_Activo + '.\n A.:' + point.nombre)
+                            .openPopup( );
+          
+            markersLayer.addLayer(marker);
+          
+         });
+          
+        markersLayer.addTo(globalMap);
+    })
+    .fail( ( XMLHttpRequest, textStatus, errorThrown ) =>
+    { 
+        imprimir( 'Ups..', 'Error al conectar con el servidor', 'error' );
+    });
+}
+
+function dashFilter() 
+{
+    let data =
+    {
+        tipo: $('#tiposActivo').val(),
+        cc: $('#ccActivos').val(),
+    };
+
+    markersLayer.clearLayers();
+    donut2Chart.destroy();
+    donutChart.destroy();
+
+    $.ajax({
+        url: url + '/dashboard/filter',
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+    })
+    .done( response =>
+    {
+        
+        //grafica de dona - variables
+        var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+        var donutData =
+        {
+            labels: response.graficaLabels,
+            datasets:
+            [
+                {
+                    data: response.graficaValues,
+                    backgroundColor:
+                    [
+                        '#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de', '#ffffff',
+                    ],
+                }
+            ]
+        };
+        var donutOptions =
+        {
+            maintainAspectRatio: false,
+            responsive: true,
+        };
+
+        //creación de la grafica
+        donutChart = new Chart(donutChartCanvas,
+        {
+            type: 'doughnut',
+            data: donutData,
+            options: donutOptions
+        });
+
+        var areaChartData = {
+            labels  : ['Total'],
+            datasets: 
+            [
+                {
+                    label               : 'Activos inventariados',
+                    data                : [response.inventariados],
+                    backgroundColor:
+                    [
+                        '#f56954', 
+                    ],
+                }
+            ]
+        }
+
+        var donut2ChartCanvas = $('#barChart').get(0).getContext('2d');
+        let total_activos = parseInt(response.inventariados) + parseInt(response.activos);
+        let porcentaje_inv = Math.round((parseInt(response.inventariados) / total_activos) * 100);
+        let porcentaje_sin = Math.round((parseInt(response.activos) / total_activos) * 100);
+
+        porcentaje_inv = (isNaN(porcentaje_inv)) ? '0' : porcentaje_inv;
+        porcentaje_sin = (isNaN(porcentaje_sin)) ? '0' : porcentaje_sin;
+
+        var donut2Data;
+        if (response.inventariados == 0 && response.activos == 0) 
+        {
+            donut2Data =
+            {
+                labels: [ `Activos inventariados: ${porcentaje_inv}%`, `Activos faltantes: ${porcentaje_sin}%`],
+                datasets:
+                [
+                    {
+                        data: [ 0, 100 ],
+                        backgroundColor:
+                        [
+                            '#3c8dbc', '#d2d6de',
+                        ],
+                    }
+                ]
+            };
+        }
+        else if ( response.inventariados != 0 && response.activos == 0 )
+        {
+            donut2Data =
+            {
+                labels: [ `Activos inventariados: ${porcentaje_inv}%`, `Activos faltantes: ${porcentaje_sin}%`],
+                datasets:
+                [
+                    {
+                        data: [ response.inventariados, 0 ],
+                        backgroundColor:
+                        [
+                            '#3c8dbc', '#d2d6de',
+                        ],
+                    }
+                ]
+            };
+        }
+        else if ( response.inventariados == 0 && response.activos != 0 )
+        {
+            donut2Data =
+            {
+                labels: [ `Activos inventariados: ${porcentaje_inv}%`, `Activos faltantes: ${porcentaje_sin}%`],
+                datasets:
+                [
+                    {
+                        data: [ 0, response.activos ],
+                        backgroundColor:
+                        [
+                            '#3c8dbc', '#d2d6de',
+                        ],
+                    }
+                ]
+            };
+        }
+        else
+        {
+            donut2Data =
+            {
+                labels: [ `Activos inventariados: ${porcentaje_inv}%`, `Activos faltantes: ${porcentaje_sin}%`],
+                datasets:
+                [
+                    {
+                        data: [ response.inventariados, response.activos ],
+                        backgroundColor:
+                        [
+                            '#3c8dbc', '#d2d6de',
+                        ],
+                    }
+                ]
+            };
+        }
+
+        //creación de la grafica
+        donut2Chart = new Chart(donut2ChartCanvas,
+        {
+            type: 'doughnut',
+            data: donut2Data,
+            options: donutOptions
+        });
+
+        $('#periodoInventario').html(response.periodo);
+
+        //tabla altas
+        let altas = response.altas;
+        $( '.table-2-activos-alta' ).html( '' );
+
+        if ( altas.length == 0 ) 
+        {
+            $( '.table-2-activos-alta' ).append( '<tr><td>Sin altas</td><td></td><td></td></tr>' );
+        } 
+        else 
+        {
+            
+            altas.forEach( item => 
+            {
+            let plantilla = 
+            `
+                <tr>
+                <td>${ item.Nom_Activo }</td>
+                <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+                <td>
+                    <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
+                </td>
+                </tr>
+            `;
+
+            $( '.table-2-activos-alta' ).append( plantilla );
+            });
+        }
+
+        //tabla bajas
+        let bajas = response.bajas;
+        $( '.table-3-activos-baja' ).html( '' );
+
+        if (bajas.length == 0) 
+        {
+            $( '.table-3-activos-baja' ).append( '<tr><td>Sin bajas</td><td></td></tr>' );
+        }
+        else
+        {
+            bajas.forEach( item => 
+            {
+            let plantilla = 
+            `
+                <tr>
+                <td>${ item.Nom_Activo }</td>
+                <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+                <td>
+                    <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
+                </td>
+                </tr>
+            `;
+
+            $( '.table-3-activos-baja' ).append( plantilla );
+            });
+        }
+
         response.points.forEach( point =>
         {
             let coordenadas = point.GPS.split( ',' );

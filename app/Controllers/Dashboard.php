@@ -170,7 +170,7 @@ class Dashboard extends BaseController
 		]);
 	}
 
-	function getActivosMap()
+	function getActivosMap( )
 	{
 		if ( $this->request->isAJAX( ) )
         {	
@@ -180,7 +180,6 @@ class Dashboard extends BaseController
 			$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
 			$builder->where( 'activos.ID_Company', $this->session->empresa );
 			$builder->where( 'activos.TS_Delete', null );
-			
 			
 			if ( $this->request->getVar( 'tipo' ) != null && $this->request->getVar( 'tipo' ) != '0' )
 			{
@@ -207,6 +206,157 @@ class Dashboard extends BaseController
 			]);
         }
         else
+            return view( 'errors/cli/error_404' );
+	}
+
+	function getDataFilter( )
+	{
+		if ( $this->request->isAJAX( ) )
+        {
+			$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
+		
+			$labels = [ ];
+			$values = [ ];
+			foreach( $tipos as $tipo )
+			{
+				$builder = $this->db->table( 'activos' );
+				$builder->select( 'Pre_Compra' );
+				$builder->where( 'activos.ID_Company', $this->session->empresa );
+				$builder->where( 'activos.ID_Tipo', $tipo['id'] );
+				if ($this->request->getVar('cc') != '' && $this->request->getVar('cc') != '0') 
+					$builder->where( 'activos.ID_CC', $this->request->getVar('cc'));
+				$builder->where( 'activos.TS_Delete', null );
+				$activos = $builder->get()->getResult();
+
+				$monto = 0;
+				$num = 0;
+				foreach( $activos as $activo )
+				{
+					$monto = $monto + $activo->Pre_Compra;
+					$num++;
+				}
+
+				array_push( $labels, $tipo[ 'Desc' ] );
+				array_push( $values, $num );
+			}
+
+			$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
+			$builderPeriodo = $this->db->query( $SQL );
+			$periodo = $builderPeriodo->getResult( );
+
+			$builder = $this->db->table( 'activos' );
+			$builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.Fec_Inventario, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+			$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+			$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+
+			if ($this->request->getVar('cc') != '' && $this->request->getVar('cc') != '0') 
+				$builder->where( 'activos.ID_CC', $this->request->getVar('cc'));
+
+			if ($this->request->getVar('tipo') != '' && $this->request->getVar('tipo') != '0') 
+				$builder->where( 'activos.ID_Tipo', $this->request->getVar('tipo'));
+
+			$builder->where( 'activos.ID_Company', $this->session->empresa );
+			$builder->where( 'activos.TS_Delete', null );
+			$activosTotal = $builder->get()->getResult();
+
+			$activosTotales = 0;
+			$inv = 0;
+
+			$statusPeriodo = 'Sin periodo de inventario en curso';
+			if ($periodo != null)
+			{
+				$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+				$fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+				$date1 = new \DateTime('NOW');
+				$date2 = new \DateTime($periodo[0]->fecha_fin);
+				$diff = $date1->diff($date2);
+
+				$fecha_actual = strtotime(date("d-m-Y"));
+				$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+				if($fecha_actual > $fechaFinUnix)
+					$statusPeriodo = 'El periodo de inventario finalizó hace <b>' . $diff->days . ' días</b>';
+				else
+					$statusPeriodo = 'Quedan <b>' . $diff->days . ' días</b> del periodo de inventario';
+			}
+
+			foreach ($activosTotal as $row) 
+			{
+				$inventario = false;
+				if ($periodo != null && $row->Fec_Inventario != null) 
+				{
+					$fecha1 = explode('-', explode(' ', $row->Fec_Inventario)[0]);
+					$fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+					$fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+					$fecha1Unix = strtotime($fecha1[2]."-".$fecha1[1]."-".$fecha1[0]." 00:00:00");
+					$fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
+					$fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+					
+					if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+						$inv++;
+				}
+				else
+					$activosTotales++;
+			}
+
+			$builder = $this->db->table( 'activos' );
+			$builder->select( 'TS_Delete, Nom_Activo, Pre_Compra' );
+			$builder->orderBy('TS_Create', 'desc');
+			
+			if ($this->request->getVar('cc') != '' && $this->request->getVar('cc') != '0') 
+				$builder->where( 'activos.ID_CC', $this->request->getVar('cc'));
+
+			if ($this->request->getVar('tipo') != '' && $this->request->getVar('tipo') != '0') 
+				$builder->where( 'activos.ID_Tipo', $this->request->getVar('tipo'));
+
+			$builder->where( 'activos.ID_Company', $this->session->empresa );
+			$builder->where( 'activos.TS_Delete !=', null );
+			$bajas = $builder->get( 5 )->getResult( );
+
+			$builder = $this->db->table( 'activos' );
+			$builder->select( 'TS_Create, Nom_Activo, , Pre_Compra' );
+			$builder->orderBy('TS_Create', 'desc');
+			
+			if ($this->request->getVar('cc') != '' && $this->request->getVar('cc') != '0') 
+				$builder->where( 'activos.ID_CC', $this->request->getVar('cc'));
+
+			if ($this->request->getVar('tipo') != '' && $this->request->getVar('tipo') != '0') 
+				$builder->where( 'activos.ID_Tipo', $this->request->getVar('tipo'));
+
+			$builder->where( 'activos.ID_Company', $this->session->empresa );
+			$builder->where( 'activos.TS_Delete', null );
+			$altas = $builder->get( 5 )->getResult( );
+			
+			$builder = $this->db->table( 'activos' );
+			$builder->select( 'activos.Nom_Activo, activos.GPS, tipos.Desc, usuarios.nombre' );
+			$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+			$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+			
+			if ($this->request->getVar('cc') != '' && $this->request->getVar('cc') != '0') 
+				$builder->where( 'activos.ID_CC', $this->request->getVar('cc'));
+
+			if ($this->request->getVar('tipo') != '' && $this->request->getVar('tipo') != '0') 
+				$builder->where( 'activos.ID_Tipo', $this->request->getVar('tipo'));
+
+			$builder->where( 'activos.ID_Company', $this->session->empresa );
+			$builder->where( 'activos.TS_Delete', null );
+			$points = $builder->get( 10 )->getResult( );
+
+			echo json_encode( 
+			[
+				'bajas' => $bajas, 
+				'altas' => $altas, 
+				'status' => 200,
+				'points' => $points, 
+				'graficaLabels' => $labels, 
+				'graficaValues' => $values, 
+				'inventariados' => $inv, 
+				'activos' => $activosTotales, 
+				'periodo' => $statusPeriodo,
+			]);
+		}
+		else
             return view( 'errors/cli/error_404' );
 	}
 }
