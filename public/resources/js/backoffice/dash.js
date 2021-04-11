@@ -194,7 +194,7 @@ function dashboardData( )
                 `
                     <tr>
                     <td>${ item.Nom_Activo }</td>
-                    <td>${ item.TS_Create.split( ' ' )[ 0 ]  }</td>
+                    <td>${ item.TS_Delete.split( ' ' )[ 0 ]  }</td>
                     <td>
                         <span class="dashboardTooltips" data-toggle="tooltip" data-placement="top" title="$${ Number( ( parseInt( item.Pre_Compra ) ) ) }">$${ Number( ( parseInt( item.Pre_Compra ) / 1000000 ).toFixed( 2 ) ) }MM</span>
                     </td>
