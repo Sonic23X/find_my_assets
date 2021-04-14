@@ -46,6 +46,7 @@ class Auth extends BaseController
       try
       {
         $user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )
+                                ->where( 'deleted_at', null )
                                 ->first( );
         if ( $user )
         {
@@ -79,7 +80,7 @@ class Auth extends BaseController
 
         $user = $this->userModel->where( 'email', $this->session->email )
                                 ->first( );
-
+        
         $postPassword = crypt( $this->request->getVar( 'password' ), '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
 
         if ( $postPassword == $user[ 'password' ] )
@@ -93,7 +94,7 @@ class Auth extends BaseController
             $this->session->set( 'empresa', $user[ 'id_empresa' ] );
             $this->session->set( 'tipo', $user[ 'perfil' ] );
 
-            if ( $this->session->tipo == 'admin' )
+            if ( $this->session->tipo == 'admin' || $this->session->tipo == 'superadmin' )
               $json = array( 'status' => 200, 'url' => base_url( '/dashboard' ) );
             else
               $json = array( 'status' => 200, 'url' => base_url( '/escaneo' ) );

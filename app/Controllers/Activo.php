@@ -40,7 +40,7 @@ class Activo extends BaseController
 	  
 	public function Index( )
 	{
-		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && ( $this->session->tipo == 'admin' || $this->session->tipo == 'superadmin'))
 		{
 			//CSS, METAS y titulo
 			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
@@ -984,7 +984,7 @@ class Activo extends BaseController
 
 	public function LoadActivos()
 	{
-		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && ( $this->session->tipo == 'admin' || $this->session->tipo == 'superadmin'))
 		{
 			//CSS, METAS y titulo
 			$head = array( 'title' => 'Carga masiva | Find my assets', 'css' => 'dashboard' );
