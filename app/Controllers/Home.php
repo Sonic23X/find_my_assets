@@ -170,10 +170,6 @@ class Home extends BaseController
 			$head = array( 'title' => 'Carga | Find my assets', 'css' => 'dashboard' );
 			echo view( 'backoffice/common/head', $head );
 
-			//sidebar
-			$sidebar = array( 'name' => $this->session->name );
-			echo view( 'backoffice/common/sidebar', $sidebar );
-
 			//navbar
 			echo view( 'backoffice/test/navbar' );
 

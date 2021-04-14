@@ -95,7 +95,10 @@ class User extends BaseController
         {
             try
             {
-                $usuarios = $this->userModel->where( 'deleted_at', null )->where( 'id_empresa', $this->session->empresa )->findAll( );
+                $usuarios = $this->userModel->where( 'deleted_at', null )
+                                            ->where( 'id_empresa', $this->session->empresa )
+                                            ->where( 'perfil !=', 'superadmin' )
+                                            ->findAll( );
 
                 echo json_encode( array( 'status' => 200, 'data' => $usuarios ) );
             }

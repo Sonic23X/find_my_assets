@@ -27,7 +27,7 @@ class Company extends BaseController
 
     function Index()
     {
-        if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && $this->session->tipo == 'admin')
+        if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && ($this->session->tipo == 'admin' || $this->session->tipo == 'superadmin'))
 		{
 			//CSS, METAS y titulo
 			$head = array( 'title' => 'Empresas | Find my assets', 'css' => 'dashboard' );
