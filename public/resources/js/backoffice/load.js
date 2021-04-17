@@ -18,6 +18,9 @@ function changeFile( nodo )
     let formData = new FormData();
     formData.append( 'excel', nodo.files[0] );
 
+    $('.up-content').addClass('d-none');
+    $('.up-loading').removeClass('d-none');
+
     $.ajax(
     {
         url: url + '/carga/readExcel',
@@ -121,6 +124,9 @@ function changeFile( nodo )
                 'responsive': true,
                 'bInfo' : false,
             });
+
+            $('.up-loading').addClass('d-none');
+            $('.up-content').removeClass('d-none');
         }
         else
             imprimir('Ups..', 'A ocurrido un error desconocido', 'error');

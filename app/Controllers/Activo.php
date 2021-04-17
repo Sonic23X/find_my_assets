@@ -1073,7 +1073,7 @@ class Activo extends BaseController
 				}
 				else
 				{
-					if($this->draftModel->where('ID_Activo', $activo[0])->first() == null)
+					if($this->draftModel->where('ID_Activo', $activo[0])->where('ID_Company', $this->session->empresa)->first() == null)
 					{
 
 						if ($activo[1] == null) 
@@ -1156,6 +1156,12 @@ class Activo extends BaseController
 							}
 						}
 
+						if ($activo[7] == null) 
+						{
+							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene una descripción de activo' ]);
+							$error = true;
+						}
+
 						if (!$error) 
 						{
 							$draft =
@@ -1164,10 +1170,10 @@ class Activo extends BaseController
 								'Nom_Activo' => $activo[2],
 								'ID_Company' => $this->session->empresa,
 								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-								'Des_Activo' => '-',
+								'Des_Activo' => $activo[7],
 								'NSerie_Activo' => '-',
 								'GPS' => '-33.3351748,-70.714059',
-								'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+								'ID_CC' => ($cc == null) ? 0 : $cc['id'],
 								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
 								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
 								'ID_Area' => ($area == null) ? 0 : $area['id'],
@@ -1183,7 +1189,7 @@ class Activo extends BaseController
 								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
 								'Des_Activo' => '-',
 								'NSerie_Activo' => '-',
-								'ID_CC' => ($cc == null) ? 0 : $tipo['id'],
+								'ID_CC' => ($cc == null) ? 0 : $cc['id'],
 								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
 								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
 								'ID_Area' => ($area == null) ? 0 : $area['id'],
@@ -1233,6 +1239,7 @@ class Activo extends BaseController
 		$cargaSheet->getColumnDimension('E')->setWidth(30);
 		$cargaSheet->getColumnDimension('F')->setWidth(30);
 		$cargaSheet->getColumnDimension('G')->setWidth(30);
+		$cargaSheet->getColumnDimension('H')->setWidth(30);
 
 		//iniciamos tabla 
 		$cargaSheet->setCellValue( 'A1', 'Número de activo' );
@@ -1242,6 +1249,7 @@ class Activo extends BaseController
 		$cargaSheet->setCellValue( 'E1', 'Email del usuario' );
 		$cargaSheet->setCellValue( 'F1', 'Sucursal' );
 		$cargaSheet->setCellValue( 'G1', 'Área' );
+		$cargaSheet->setCellValue( 'H1', 'Descripción' );
 
 		$tiposSheet = new Worksheet($spreadsheet, 'Tipos');
 		$spreadsheet->addSheet($tiposSheet, 1);
@@ -1349,7 +1357,7 @@ class Activo extends BaseController
 			],
 		];
 			
-		$cargaSheet->getStyle('A1:G1')->applyFromArray($styleHeadArray);
+		$cargaSheet->getStyle('A1:H1')->applyFromArray($styleHeadArray);
 		$tiposSheet->getStyle('A1:A1')->applyFromArray($styleHeadArray);
 		$ccSheet->getStyle('A1:B1')->applyFromArray($styleHeadArray);
 		$userSheet->getStyle('A1:C1')->applyFromArray($styleHeadArray);

@@ -149,6 +149,8 @@ function newSucursal(id)
 
 function editSucursal(id, name) 
 {
+  
+
   $('#editSucursalId').val(id);
   $('#editSucursalName').val(name);
   $('#editSucursal').modal('show');

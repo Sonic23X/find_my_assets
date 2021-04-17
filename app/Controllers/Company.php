@@ -488,6 +488,13 @@ class Company extends BaseController
 				'id_empresa' => $this->request->getVar( 'id' ),
 			];
 
+			$exists = $this->ccModel->where('Subcuenta', $this->request->getVar( 'codigo' ))->where('id_empresa', $this->request->getVar( 'id' ))->first();
+			if ($exists != null) 
+			{
+				echo json_encode( array( 'status' => 400, 'msg' => '¡El centro de costos ya existe!') );
+				return;
+			}
+
 			$this->ccModel->insert($data);
 			$cc = $this->ccModel->where('id_empresa', $this->request->getVar( 'id' ))->select('id, Desc, Subcuenta')->findAll();
 

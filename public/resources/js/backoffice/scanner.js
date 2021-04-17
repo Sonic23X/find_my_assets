@@ -995,7 +995,10 @@ $(document).ready(function( )
         $( '#scanner-subtipo' ).html( response.tipo.Desc );
         $( '#scanner-nombre' ).html( response.activo.Nom_Activo );
         $( '#scanner-serie' ).html( response.activo.NSerie_Activo );
-        $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos );
+        if (response.user != null)
+          $( '#scanner-asignacion' ).html( response.user.nombre + ' ' + response.user.apellidos ); 
+        else 
+          $( '#scanner-asignacion' ).html( 'Sin usuario' ); 
         $( '#vidaUtil' ).val( response.activo.Vida_Activo );
         $( '#empresas' ).val( response.activo.ID_Company );
         $( '#sucursal' ).val( response.activo.ID_Sucursal );

@@ -170,8 +170,8 @@
                                                                                 <?= $sucursal['Desc'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <a href="#" onClick="editSucursal(<?= $sucursal['id'] ?>, '<?= $sucursal['Desc'] ?>')"><i class="fas fa-edit"></i></a>
-                                                                                <a href="#" onClick="deleteSucursal(<?= $sucursal['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
+                                                                                <a href="" onClick="editSucursal(<?= $sucursal['id'] ?>, '<?= $sucursal['Desc'] ?>')"><i class="fas fa-edit"></i></a>
+                                                                                <a href="" onClick="deleteSucursal(<?= $sucursal['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                     <?php
@@ -213,8 +213,8 @@
                                                                                 <?= $area['descripcion'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <a href="#" onClick="editArea(<?= $area['id'] ?>, '<?= $area['descripcion'] ?>')"><i class="fas fa-edit"></i></a>
-                                                                                <a href="#" onClick="deleteArea(<?= $area['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
+                                                                                <a href="" onClick="editArea(<?= $area['id'] ?>, '<?= $area['descripcion'] ?>')"><i class="fas fa-edit"></i></a>
+                                                                                <a href="" onClick="deleteArea(<?= $area['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                     <?php
@@ -256,8 +256,8 @@
                                                                                 <?= $tipo['Desc'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <a href="#" onClick="editTipo(<?= $tipo['id'] ?>, '<?= $tipo['Desc'] ?>')"><i class="fas fa-edit"></i></a>
-                                                                                <a href="#" onClick="deleteTipo(<?= $tipo['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
+                                                                                <a href="" onClick="editTipo(<?= $tipo['id'] ?>, '<?= $tipo['Desc'] ?>', this)"><i class="fas fa-edit"></i></a>
+                                                                                <a href="" onClick="deleteTipo(<?= $tipo['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                     <?php
@@ -305,8 +305,8 @@
                                                                                 <?= $cc['Desc'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <a href="#" onClick="editCC(<?= $cc['id'] ?>, '<?= $cc['Desc'] ?>', '<?= $cc['Subcuenta'] ?>')"><i class="fas fa-edit"></i></a>
-                                                                                <a href="#" onClick="deleteCC(<?= $cc['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
+                                                                                <a href="" onClick="editCC(<?= $cc['id'] ?>, '<?= $cc['Desc'] ?>', '<?= $cc['Subcuenta'] ?>')"><i class="fas fa-edit"></i></a>
+                                                                                <a href="" onClick="deleteCC(<?= $cc['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                     <?php
