@@ -83,6 +83,17 @@
                                     </div>
                                 </div>
 
+                                <div class="row mb-2">
+                                    <div class="col-sm">
+                                        <div class="form-check ml-3">
+                                            <input class="form-check-input" type="checkbox" value="" id="emailCheck">
+                                            <label class="form-check-label" for="emailCheck">
+                                                ¿Enviar email?
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="justify-content-center">
                                     <div class="btn-group w-100">
                                         <input type="button" class="btn btn-dark" value="Cancelar" />

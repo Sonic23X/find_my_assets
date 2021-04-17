@@ -148,47 +148,75 @@ class User extends BaseController
 			$password = crypt( $this->request->getVar( 'password' ), '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
 			$emailEncrypt = md5( $this->request->getVar( 'email' ) );
 
-			$insert =
-			[
-				'perfil' => 'user',
-				'nombre' => $this->request->getVar( 'nombre' ),
-				'apellidos' => $this->request->getVar( 'apellidos' ),
-				'email' => $this->request->getVar( 'email' ),
-				'password' => $password,
-				'suscripcion' => 0,
-				'verificacion' => 1,
-				'email_encriptado' => $emailEncrypt,
-                'patrocinador' => 'N/A',
-                'envios' => 1,
-                'id_empresa' => $this->session->empresa,
-			];
+            $insert = null;
 
-			if ( $this->userModel->insert( $insert ) )
+            if ($this->request->getVar( 'sendMail' ) == 'true') 
             {
-                $user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )->first( );
-                $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
-                $builder = $this->db->query( $SQL );
-
-                $viewData =
+                $insert =
                 [
-                    'urlUsuario' => base_url( '/carga' ) . '/' . $emailEncrypt,
+                    'perfil' => 'user',
                     'nombre' => $this->request->getVar( 'nombre' ),
-                    'activos' => null,
-                    'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
+                    'apellidos' => $this->request->getVar( 'apellidos' ),
+                    'email' => $this->request->getVar( 'email' ),
+                    'password' => $password,
+                    'suscripcion' => 0,
+                    'verificacion' => 1,
+                    'email_encriptado' => $emailEncrypt,
+                    'patrocinador' => 'N/A',
+                    'envios' => 1,
+                    'id_empresa' => $this->session->empresa,
                 ];
 
-                $content = View( 'emails/accesoUsuario', $viewData );
+                if ( $this->userModel->insert( $insert ) )
+                {
+                    $user = $this->userModel->where( 'email', $this->request->getVar( 'email' ) )->first( );
+                    $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
+                    $builder = $this->db->query( $SQL );
 
-                //cargamos la configuración del email
-                $correo = $this->email->preparEmail( $this->request->getVar( 'email' ), 'Enlace de acceso', $content );
+                    $viewData =
+                    [
+                        'urlUsuario' => base_url( '/carga' ) . '/' . $emailEncrypt,
+                        'nombre' => $this->request->getVar( 'nombre' ),
+                        'activos' => null,
+                        'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
+                    ];
 
-                if ( !$correo->send( ) )
-                    echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
+                    $content = View( 'emails/accesoUsuario', $viewData );
+
+                    //cargamos la configuración del email
+                    $correo = $this->email->preparEmail( $this->request->getVar( 'email' ), 'Enlace de acceso', $content );
+
+                    if ( !$correo->send( ) )
+                        echo json_encode( array( 'status' => 400, 'msg' => $correo->ErrorInfo ) );
+                    else
+                        echo json_encode( array( 'status' => 200, 'msg' => 'Verifique la bandeja de entrada del correo ingresado' ) );
+                }
                 else
-                    echo json_encode( array( 'status' => 200, 'msg' => 'Verifique la bandeja de entrada del correo ingresado' ) );
+                    echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrarse, intente más tarde' ) );
             }
             else
-                echo json_encode( array( 'status' => 400, 'msg' => 'Error al registrarse, intente más tarde' ) );
+            {
+                $insert =
+                [
+                    'perfil' => 'user',
+                    'nombre' => $this->request->getVar( 'nombre' ),
+                    'apellidos' => $this->request->getVar( 'apellidos' ),
+                    'email' => $this->request->getVar( 'email' ),
+                    'password' => $password,
+                    'suscripcion' => 0,
+                    'verificacion' => 1,
+                    'email_encriptado' => $emailEncrypt,
+                    'patrocinador' => 'N/A',
+                    'envios' => 0,
+                    'id_empresa' => $this->session->empresa,
+                ];
+
+                $this->userModel->insert( $insert );
+                
+                echo json_encode( array( 'status' => 200, 'msg' => '¡Usuario creado con exito!' ) );
+            }
+
+			
         }
         else
             return view( 'errors/cli/error_404' );

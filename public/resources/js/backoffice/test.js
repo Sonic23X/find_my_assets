@@ -218,6 +218,7 @@ $( document ).ready( ( ) =>
           apellidos: $( '#apellidos' ).val( ),
           email: $( '#email' ).val( ),
           password: $( '#password' ).val( ),
+          sendMail: $('#emailCheck').is(":checked"),
       };
 
       $.ajax(
@@ -248,7 +249,7 @@ $( document ).ready( ( ) =>
           imprimir( 'Error', response.msg, 'error' );
         }
       });
-
+      
     });
 
     $( '#actualizar' ).submit( event => 

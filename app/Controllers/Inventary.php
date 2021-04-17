@@ -338,7 +338,7 @@ class Inventary extends BaseController
     {
       try
       {
-        $activo = $this->draftModel->where( 'ID_Activo', $id )->first( );
+        $activo = $this->draftModel->where( 'ID_Activo', $id )->where('ID_Company', $this->session->empresa)->first( );
         $similarData = null;
         $serie = true;
 
@@ -537,8 +537,8 @@ class Inventary extends BaseController
       try
       {
 
-        $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->first( );
-        $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'conciliado' ] )->update( );
+        $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->where('ID_Company', $this->session->empresa)->first( );
+        $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'actual' ) )->where('ID_Company', $this->session->empresa)->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'conciliado' ] )->update( );
 
         $activo = $this->activoModel->where( 'Id', $this->request->getVar( 'old' ) )->select( 'NSerie_Activo' )->first( );
 
@@ -616,7 +616,7 @@ class Inventary extends BaseController
           'status' => 'editado',
         ];
 
-        if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+        if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->where('ID_Company', $this->session->empresa)->set( $update )->update( ) )
           echo json_encode( array( 'status' => 200 ) );
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
@@ -637,9 +637,9 @@ class Inventary extends BaseController
     {
       try
       {
-        $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->first( );
+        $draft = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->where('ID_Company', $this->session->empresa)->first( );
 
-        $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'activado' ] )->update( );
+        $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->where('ID_Company', $this->session->empresa)->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'activado' ] )->update( );
 
         $activoData =
         [
@@ -702,7 +702,7 @@ class Inventary extends BaseController
     {
       try
       {
-        if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'eliminado' ] )->update( ) )
+        if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->where('ID_Company', $this->session->empresa)->set( [ 'TS_Delete' => date( 'Y/n/j' ), 'status' => 'eliminado' ] )->update( ) )
           echo json_encode( array( 'status' => 200 ) );
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
@@ -783,7 +783,7 @@ class Inventary extends BaseController
           'Img_FacCompra' => $dataFile,
         ];
 
-				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->where('ID_Company', $this->session->empresa)->set( $update )->update( ) )
         {
           echo json_encode( array( 'status' => 200, 'msg' => '¡Factura cargada con exito!' ) );
         }
@@ -818,7 +818,7 @@ class Inventary extends BaseController
           'Img_Garantia' => $dataFile,
         ];
 
-				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->set( $update )->update( ) )
+				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'activo' ) )->where('ID_Company', $this->session->empresa)->set( $update )->update( ) )
         {
           echo json_encode( array( 'status' => 200, 'msg' => '¡Garantia cargada con exito!' ) );
         }
