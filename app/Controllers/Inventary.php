@@ -1284,7 +1284,7 @@ class Inventary extends BaseController
 
             array_push( $data, $json );
             $num++;
-            echo $num++;
+            echo $num;
           } 
           catch (\Throwable $th) 
           {
