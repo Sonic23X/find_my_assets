@@ -946,20 +946,16 @@ class Inventary extends BaseController
           try 
           {
             $fecha = explode( ' ', $row->TS_Update );
-            $activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->where('ID_Company', $this->session->empresa)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+            //$activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->where('ID_Company', $this->session->empresa)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
             $imagenes = 0;
-
-            echo "asd";
             
-            //imagenes
+            /*/imagenes
             if ( $activo_imagenes['Ima_ActivoFront'] != null) 
               $imagenes++;
             if ( $activo_imagenes['Ima_ActivoRight'] != null) 
               $imagenes++;
             if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
-              $imagenes++;
-
-            echo "asd2";
+              $imagenes++;*/
 
             //Comparamos la fecha de periodo de inventario
             $inventario = false;
@@ -1212,6 +1208,92 @@ class Inventary extends BaseController
 		}
 		else
 			return view( 'errors/cli/error_404' );
+  }
+
+  //método que funciona exclusivamente con AJAX - JQUERY
+  function MacalInvDetails( )
+  {
+        $builder = $this->db->table( 'activos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.Fec_Inventario, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
+        $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
+        $builder->where( 'activos.TS_Delete', null );
+        $activos = $builder->get( );
+
+				if ( $activos == null )
+				{
+					echo json_encode( array( 'status' => 400, 'msg' => 'Activo no encontrado' ) );
+					return;
+				}
+
+        $data = [ ];
+        $num = 0;
+
+        $SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
+        $builderPeriodo = $this->db->query( $SQL );
+        $periodo = $builderPeriodo->getResult( );
+
+        foreach ( $activos->getResult( ) as $row )
+        {
+          try 
+          {
+            $fecha = explode( ' ', $row->TS_Update );
+            $activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->where('ID_Company', $this->session->empresa)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+            $imagenes = 0;
+
+            echo "asd";
+            
+            //imagenes
+            if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+              $imagenes++;
+            if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+              $imagenes++;
+            if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+              $imagenes++;
+
+            echo "asd2";
+
+            //Comparamos la fecha de periodo de inventario
+            $inventario = false;
+            if ($periodo != null && $row->Fec_Inventario != null) 
+            {
+              $fecha1 = explode('-', explode(' ', $row->Fec_Inventario)[0]);
+              $fechaInicio = explode('-', $periodo[0]->fecha_inicio);
+              $fechaFin = explode('-', $periodo[0]->fecha_fin);
+
+              $fecha1Unix = strtotime($fecha1[2]."-".$fecha1[1]."-".$fecha1[0]." 00:00:00");
+              $fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
+              $fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
+              
+              if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+                $inventario = true;
+            }
+
+            $json =
+            [
+              'id' => $row->Id,
+              'tipo' => $row->Desc,
+              'nombre' => $row->Nom_Activo,
+              'usuario' => $row->nombre . ' ' . $row->apellidos,
+              'fecha' => $fecha[ 0 ],
+              'id_activo' => $row->ID_Activo,
+              'inventario' => $inventario,
+              'imagenes' => $imagenes
+            ];
+
+            array_push( $data, $json );
+            $num++;
+            echo $num++;
+          } 
+          catch (\Throwable $th) 
+          {
+            echo json_encode( array( 'status' => 400, 'msg' => $th->getMessage( ) ) );
+          }
+        }
+
+        echo json_encode( array( 'status' => 200, 'activos' => $data, 'number' => $num ) );
+      
   }
 
 }

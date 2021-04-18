@@ -163,6 +163,9 @@ $routes->post('/empresas/deleteCC', 'Company::DeleteCC');
 $routes->post('/dashboard/map', 'Dashboard::getActivosMap');
 $routes->post('/dashboard/filter', 'Dashboard::getDataFilter');
 
+//details
+$routes->get('/macal/inv', 'Inventary::MacalInvDetails');
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing
