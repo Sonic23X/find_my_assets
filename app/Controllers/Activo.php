@@ -1156,12 +1156,6 @@ class Activo extends BaseController
 							}
 						}
 
-						if ($activo[7] == null) 
-						{
-							array_push($errores, [ 'activo' => 'Linea ' . $linea, 'problema' => 'La linea no contiene una descripción de activo' ]);
-							$error = true;
-						}
-
 						if (!$error) 
 						{
 							$draft =
@@ -1170,7 +1164,7 @@ class Activo extends BaseController
 								'Nom_Activo' => $activo[2],
 								'ID_Company' => $this->session->empresa,
 								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-								'Des_Activo' => $activo[7],
+								'Des_Activo' => ($activo[7] != null) ? $activo[7] : '-',
 								'NSerie_Activo' => '-',
 								'GPS' => '-33.3351748,-70.714059',
 								'ID_CC' => ($cc == null) ? 0 : $cc['id'],
