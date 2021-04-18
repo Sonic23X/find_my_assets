@@ -23,7 +23,7 @@ class Auth extends BaseController
 
     if ( $this->session->has( 'isLoggin' ) )
     {
-      if( $this->session->has( 'tipo' ) && $this->session->tipo == 'admin' )
+      if( $this->session->has( 'tipo' ) && ( $this->session->tipo == 'admin' || $this->session->tipo == 'superadmin' ) )
       {
         $data = array( 'url' => base_url( '/dashboard' ) );
         return view( 'functions/redirect', $data );
