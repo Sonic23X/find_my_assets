@@ -239,7 +239,7 @@ class Activo extends BaseController
 					'Des_Activo' => $this->request->getVar( 'descripcion' ),
 					'NSerie_Activo' => $this->request->getVar( 'no_serie' ),
 					'ID_CC' => $this->request->getVar( 'centro_costo' ),
-					'User_Inventario' => $this->request->getVar( 'asignacion' ),
+					'User_Inventario' => ($this->request->getVar( 'asignacion' ) != '0') ? $this->request->getVar( 'asignacion' ) : '88',
 				];
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
