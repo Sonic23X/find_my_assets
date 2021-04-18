@@ -944,16 +944,16 @@ class Inventary extends BaseController
         foreach ( $activos->getResult( ) as $row )
         {
           $fecha = explode( ' ', $row->TS_Update );
-          //$activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+          $activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->where('ID_Company', $this->session->empresa)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
           $imagenes = 0;
           
-          /*/imagenes
+          //imagenes
           if ( $activo_imagenes['Ima_ActivoFront'] != null) 
             $imagenes++;
           if ( $activo_imagenes['Ima_ActivoRight'] != null) 
             $imagenes++;
           if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
-            $imagenes++;*/
+            $imagenes++;
 
           //Comparamos la fecha de periodo de inventario
           $inventario = false;
