@@ -704,28 +704,28 @@ class Activo extends BaseController
 			$activo_imagenes = $this->draftModel->where('ID_Activo', $activo['ID_Activo'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
-			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+			/*if ( $activo_imagenes['Ima_ActivoFront'] != null) 
 			{
 				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
 				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
 			}
-			else
+			else*/
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
-			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+			/*if ( $activo_imagenes['Ima_ActivoRight'] != null) 
 			{
 				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
 				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
 			}
-			else
+			else*/
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
-			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+			/*if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
 			{
 				$sheet->setCellValue( 'P' . $fila, base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
 				$sheet->getCell( 'P' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
 			}
-			else
+			else*/
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
 
 			$fila++;
@@ -858,28 +858,28 @@ class Activo extends BaseController
 			$activo_imagenes = $this->draftModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
-			if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+			/*if ( $activo_imagenes['Ima_ActivoFront'] != null) 
 			{
 				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['Id'] );
 				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['Id'] );
 			}
-			else
+			else*/
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
-			if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+			/*if ( $activo_imagenes['Ima_ActivoRight'] != null) 
 			{
 				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['Id'] );
 				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['Id'] );
 			}
-			else
+			else*/
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
-			if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+			/*if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
 			{
 				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['Id'] );
 				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['Id'] );
 			}
-			else
+			else*/
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
 
 			$fila++;
