@@ -701,7 +701,7 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
 			$sheet->setCellValue( 'M' . $fila, ($inventario == true) ? 'Inventariado' : 'Pendiente' );
 			
-			$activo_imagenes = $this->draftModel->where('ID_Activo', $activo['ID_Activo'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+			//$activo_imagenes = $this->draftModel->where('ID_Activo', $activo['ID_Activo'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
 			/*if ( $activo_imagenes['Ima_ActivoFront'] != null) 
@@ -855,7 +855,7 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
 			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
 			
-			$activo_imagenes = $this->draftModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
+			//$activo_imagenes = $this->draftModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
 			/*if ( $activo_imagenes['Ima_ActivoFront'] != null) 
