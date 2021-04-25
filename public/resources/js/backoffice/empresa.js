@@ -149,11 +149,8 @@ function newSucursal(id)
 
 function editSucursal(id, name) 
 {
-  
-
   $('#editSucursalId').val(id);
   $('#editSucursalName').val(name);
-  $('#editSucursal').modal('show');
 }
 
 function deleteSucursal(id) 
@@ -196,7 +193,6 @@ function editArea(id, name)
 {
   $('#editAreaId').val(id);
   $('#editAreaName').val(name);
-  $('#editArea').modal('show');
 }
 
 function deleteArea(id) 
@@ -239,7 +235,6 @@ function editTipo(id, name)
 {
   $('#editTipoId').val(id);
   $('#editTipoName').val(name);
-  $('#editTipo').modal('show');
 }
 
 function deleteTipo(id) 
@@ -283,7 +278,6 @@ function editCC(id, name, codigo)
   $('#editCCId').val(id);
   $('#editCCName').val(name);
   $('#editCCCode').val(codigo);
-  $('#editCC').modal('show');
 }
 
 function deleteCC(id) 
