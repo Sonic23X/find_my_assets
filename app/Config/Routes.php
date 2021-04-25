@@ -138,6 +138,10 @@ $routes->post('/usuarios/usuario', 'User::GetOneUser');
 $routes->post('/usuarios/actualizar', 'User::Update');
 $routes->post('/usuarios/delete', 'User::Delete');
 
+$routes->get('/usuarios/carga', 'User::InitialExcel');
+$routes->get('/usuarios/ejemplo', 'User::DownloadExcelExample');
+$routes->post('/usuarios/carga', 'User::ReadExcel');
+
 $routes->get('/carga/(:any)', 'Home::Url/$1');
 
 /** AJAX - Empresa **/
