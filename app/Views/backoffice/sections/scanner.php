@@ -179,7 +179,7 @@
                   <div class="form-group row mb-5">
                     <div class="col-3 col-sm-3"></div>
                     <div class="col-6 col-sm-6">
-                      <button type="submit" class="btn btn-success btn-block">Continuar</button>
+                      <button type="submit" class="btn btn-success btn-block" id="submit-button-form">Continuar</button>
                     </div>
                     <div class="col-3 col-sm-3"></div>
                   </div>

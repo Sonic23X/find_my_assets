@@ -1226,6 +1226,9 @@ $(document).ready(function( )
       descripcion: $( '#desc' ).val( )
     };
 
+    $('#submit-button-form').html('<i class="fas fa-circle-notch fa-spin"></i> Cargando');
+    $('#submit-button-form').prop('disabled', true);
+
     //ajax here
     let baseurl;
 
@@ -1255,6 +1258,9 @@ $(document).ready(function( )
         $( wizzardActualView ).removeClass( 'd-none' );
 
         window.scroll(0, 0);
+
+        $('#submit-button-form').html('Continuar');
+        $('#submit-button-form').prop('disabled', false);
       }
       else
       {
