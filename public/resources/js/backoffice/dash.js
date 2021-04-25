@@ -489,6 +489,8 @@ function dashFilter()
          });
           
         markersLayer.addTo(globalMap);
+
+        $('#numActivos').val(10);
     })
     .fail( ( XMLHttpRequest, textStatus, errorThrown ) =>
     { 

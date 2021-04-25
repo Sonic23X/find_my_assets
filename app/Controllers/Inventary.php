@@ -371,7 +371,7 @@ class Inventary extends BaseController
 
         $builder = $this->db->table( 'activos' );
 
-        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.ID_Sucursal, activos.ID_Area, activos.User_Inventario,
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.ID_Company, activos.ID_Sucursal, activos.ID_Area, activos.User_Inventario,
                           activos.ID_CC, activos.Fec_Compra, activos.Fec_Expira, activos.NSerie_Activo, activos.status,
                           activos.ID_Tipo, activos.ID_MetDepre, activos.Vida_Activo, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
@@ -446,7 +446,8 @@ class Inventary extends BaseController
 
           if ( $row->status != 'eliminado' && $porcentaje > 50 )
           {
-            array_push( $data, $json );
+            if ( $row->ID_Company == $this->session->empresa ) 
+              array_push( $data, $json );
           }
         }
 

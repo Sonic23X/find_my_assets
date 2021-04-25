@@ -305,8 +305,8 @@
                                                                                 <?= $cc['Desc'] ?>
                                                                             </td>
                                                                             <td>
-                                                                                <a href="" onClick="editCC(<?= $cc['id'] ?>, '<?= $cc['Desc'] ?>', '<?= $cc['Subcuenta'] ?>')"><i class="fas fa-edit"></i></a>
-                                                                                <a href="" onClick="deleteCC(<?= $cc['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
+                                                                                <a onClick="editCC(<?= $cc['id'] ?>, '<?= $cc['Desc'] ?>', '<?= $cc['Subcuenta'] ?>')"><i class="fas fa-edit"></i></a>
+                                                                                <a onClick="deleteCC(<?= $cc['id'] ?>)"><i class="fas fa-times text-danger"></i></a>
                                                                             </td>
                                                                         </tr>
                                                                     <?php

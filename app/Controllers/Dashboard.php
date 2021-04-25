@@ -150,6 +150,7 @@ class Dashboard extends BaseController
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
 		$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
 		$builder->where( 'activos.ID_Company', $this->session->empresa );
+		$builder->where( 'activos.Fec_Inventario !=', null );
         $builder->where( 'activos.TS_Delete', null );
         $points = $builder->get( 10 )->getResult( );
 
@@ -178,6 +179,7 @@ class Dashboard extends BaseController
 			$builder->select( 'activos.Nom_Activo, activos.GPS, tipos.Desc, usuarios.nombre' );
 			$builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
 			$builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
+			$builder->where( 'activos.Fec_Inventario !=', null );
 			$builder->where( 'activos.ID_Company', $this->session->empresa );
 			$builder->where( 'activos.TS_Delete', null );
 			
@@ -196,7 +198,8 @@ class Dashboard extends BaseController
 
 			$cantidad = $this->request->getVar( 'cantidad' ) != null ? $this->request->getVar( 'cantidad' ) : 10;
 			
-			$builder->limit($cantidad);
+			if ( $cantidad != '' ) 
+				$builder->limit($cantidad);
 			$points = $builder->get( )->getResult( );
 
 			echo json_encode( 
@@ -338,9 +341,11 @@ class Dashboard extends BaseController
 
 			if ($this->request->getVar('tipo') != '' && $this->request->getVar('tipo') != '0') 
 				$builder->where( 'activos.ID_Tipo', $this->request->getVar('tipo'));
-
+			
+			$builder->where( 'activos.Fec_Inventario !=', null );
 			$builder->where( 'activos.ID_Company', $this->session->empresa );
 			$builder->where( 'activos.TS_Delete', null );
+
 			$points = $builder->get( 10 )->getResult( );
 
 			echo json_encode( 
