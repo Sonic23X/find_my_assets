@@ -443,6 +443,12 @@
                                   <span><b>Ubicación</b></span>
                                 </div>
                               </div>
+                              
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <div id="newActiveMap" style="height: 300px;"></div>
+                                </div>
+                              </div>
 
                               <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
@@ -889,6 +895,12 @@
                               </div>
 
                               <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <div id="iActiveMap" style="height: 300px;"></div>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iEmpresa" name="asignacion" id="iEmpresa" disabled>
@@ -1169,6 +1181,12 @@
                               <div class="row">
                                 <div class="col-12 text-center">
                                   <span><b>Ubicación</b></span>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <div id="infoActiveMap" style="height: 300px;"></div>
                                 </div>
                               </div>
 
