@@ -77,8 +77,12 @@ class Activo extends BaseController
 		{
 			
 				$tipos = $this->tipoModel->where( 'ID_Empresa', $this->session->empresa )->findAll( );
-				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
 				$cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+				$usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )
+											->where('perfil !=', 'superadmin')
+											->where('deleted_at', null)
+											->orderBy('nombre', 'ASC')
+											->findAll( );
 
 				$SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
 				$builder = $this->db->query( $SQL );
@@ -415,12 +419,17 @@ class Activo extends BaseController
 			try
 			{
 				$update = [ ];
+				$filename = $this->session->empresa.'/activos/'.$this->request->getVar( 'activo' ).'/' . $this->request->getVar( 'type' ).'.jpg';
+				if (file_exists($filename))
+				{
+					unlink($filename);
+				}
 
-				$photo = $this->request->getFile( 'file' );
+				$photo = $this->request->getFile( 'file' )->store($this->session->empresa.'/activos/'.$this->request->getVar( 'activo' ).'/', $this->request->getVar( 'type' ).'.jpg');
 
-				$image = file_get_contents( $photo->getTempName( ) );
-
-				switch ( $this->request->getVar( 'type' ) )
+				print_r($photo);
+				
+				/*switch ( $this->request->getVar( 'type' ) )
 				{
 					case 'front':
 						$update =
@@ -450,7 +459,9 @@ class Activo extends BaseController
 					echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
 				}
 				else
-					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );*/
+
+				echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
 
 			}
 			catch (\Exception $e)
