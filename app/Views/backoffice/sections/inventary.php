@@ -417,6 +417,27 @@
                                 </div>
                               </div>
 
+                              <div class="form-group row">
+                                <label for="iVidaUtil" class="col-sm-4 col-form-label">Vida util</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iVidaUtil" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iPrecio" class="col-sm-4 col-form-label">Precio compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iPrecio" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iFechaCompra" class="col-sm-4 col-form-label">Fecha compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iFechaCompra" disabled>
+                                </div>
+                              </div>
+
                               <div class="row">
                                 <div class="col-12 text-center">
                                   <span><b>Ubicación</b></span>
@@ -1121,6 +1142,27 @@
                                   <select class="form-control-plaintext iAsignacion" name="asignacion" id="infoAsignacion" disabled>
 
                                   </select>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iVidaUtil" class="col-sm-4 col-form-label">Vida util</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoVidaUtil" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iPrecio" class="col-sm-4 col-form-label">Precio compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoPrecio" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iFechaCompra" class="col-sm-4 col-form-label">Fecha compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoFechaCompra" disabled>
                                 </div>
                               </div>
 
