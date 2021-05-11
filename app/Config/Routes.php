@@ -120,7 +120,7 @@ $routes->post('/inventario/setGarantia', 'Inventary::setGarantia');
 $routes->post('/inventario/deleteNews', 'Inventary::deleteNews');
 
 $routes->get('/excel/activos', 'Activo::ExcelActivos');
-//$routes->get('/activos/photos/(:alphanum)/(:num)', 'Activo::ActivoImage/$1/$2');
+$routes->get('/activo/photos/(:alphanum)/(:num)', 'Activo::ActivoImage/$1/$2');
 $routes->get('/excel/draft', 'Activo::ExcelDraft');
 $routes->get('/activos/photos/(:alphanum)/(:num)', 'Activo::DraftImage/$1/$2');
 

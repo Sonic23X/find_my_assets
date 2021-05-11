@@ -36,6 +36,8 @@ class Activo extends BaseController
 		$this->ccModel = model( 'App\Models\CCModel' );
 		$this->areaModel = model( 'App\Models\AreaModel' );
 		$this->db = \Config\Database::connect();
+
+		helper('filesystem');
 	}
 	  
 	public function Index( )
@@ -337,7 +339,9 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoFront' ] != null )
 				{
-					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoFront' ] );
+					$file = WRITEPATH . 'uploads\\' . $activo[ 'Ima_ActivoFront' ];
+					$data = file_get_contents($file);
+					$dataImage = 'data:image/png;base64,' . base64_encode($data);
 
 					$imgFront = '<img id="front-image" class="img-fluid" style="height: 100px; width: 100px;" src="'. $dataImage .'" onclick="viewImageFront( )">';
 				}
@@ -366,7 +370,9 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoRight' ] != null )
 				{
-					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoRight' ] );
+					$file = WRITEPATH . 'uploads\\' . $activo[ 'Ima_ActivoRight' ];
+					$data = file_get_contents($file);
+					$dataImage = 'data:image/png;base64,' . base64_encode($data);
 
 					$imgRight = '<img id="right-image" class="img-fluid" style="height: 100px; width: 100px;" src="'. $dataImage .'" onclick="viewImageRight( )">';
 				}
@@ -395,7 +401,9 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoLeft' ] != null )
 				{
-					$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ 'Ima_ActivoLeft' ] );
+					$file = WRITEPATH . 'uploads\\' . $activo[ 'Ima_ActivoLeft' ];
+					$data = file_get_contents($file);
+					$dataImage = 'data:image/png;base64,' . base64_encode($data);
 
 					$imgLeft = '<img id="left-image" class="img-fluid" style="height: 100px; width: 100px;" src="'. $dataImage .'" onclick="viewImageLeft( )">';
 				}
@@ -420,36 +428,32 @@ class Activo extends BaseController
 			{
 				$update = [ ];
 				$filename = $this->session->empresa.'/activos/'.$this->request->getVar( 'activo' ).'/' . $this->request->getVar( 'type' ).'.jpg';
-				if (file_exists($filename))
-				{
-					unlink($filename);
-				}
+				if (file_exists(WRITEPATH.'uploads/' . $filename))
+					unlink(WRITEPATH . 'uploads/' . $filename);
 
 				$photo = $this->request->getFile( 'file' )->store($this->session->empresa.'/activos/'.$this->request->getVar( 'activo' ).'/', $this->request->getVar( 'type' ).'.jpg');
-
-				print_r($photo);
 				
-				/*switch ( $this->request->getVar( 'type' ) )
+				switch ( $this->request->getVar( 'type' ) )
 				{
 					case 'front':
 						$update =
 						[
 							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
-							'Ima_ActivoFront' => $image,
+							'Ima_ActivoFront' => $photo,
 						];
 						break;
 					case 'right':
 						$update =
 						[
 							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
-							'Ima_ActivoRight' => $image,
+							'Ima_ActivoRight' => $photo,
 						];
 						break;
 					case 'left':
 						$update =
 						[
 							'Fec_Inventario' => date( 'Y/n/j H:i:s' ),
-							'Ima_ActivoLeft' => $image,
+							'Ima_ActivoLeft' => $photo,
 						];
 						break;
 				}
@@ -459,10 +463,7 @@ class Activo extends BaseController
 					echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
 				}
 				else
-					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );*/
-
-				echo json_encode( array( 'status' => 200, 'msg' => '¡Imagen actualizada!' ) );
-
+					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar la imagen del activo. Intente más tarde' ) );
 			}
 			catch (\Exception $e)
 			{
@@ -604,7 +605,7 @@ class Activo extends BaseController
 	{
 		$activos = $this->activoModel->where( 'ID_Company', $this->session->empresa )
 									->where( 'TS_Delete', null )
-									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, Fec_Inventario, ID_CC, ID_Tipo, TS_Create, TS_Update')
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, Fec_Inventario, ID_CC, ID_Tipo, TS_Create, TS_Update, Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')
 									->findAll();
 
 		$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
@@ -711,33 +712,31 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
 			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
 			$sheet->setCellValue( 'M' . $fila, ($inventario == true) ? 'Inventariado' : 'Pendiente' );
-			
-			//$activo_imagenes = $this->draftModel->where('ID_Activo', $activo['ID_Activo'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
 				
 			//imagenes
-			/*if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+			if ( $activo['Ima_ActivoFront'] != null) 
 			{
-				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
-				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['ID_Activo'] );
+				$sheet->setCellValue( 'N' . $fila, base_url() . '/activo/photos/fp/' . $activo['Id'] );
+				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activo/photos/fp/' . $activo['Id'] );
 			}
-			else*/
-				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
-
-			/*if ( $activo_imagenes['Ima_ActivoRight'] != null) 
-			{
-				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
-				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['ID_Activo'] );
-			}
-			else*/
+			else
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
-			/*if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+			if ( $activo['Ima_ActivoRight'] != null) 
 			{
-				$sheet->setCellValue( 'P' . $fila, base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
-				$sheet->getCell( 'P' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['ID_Activo'] );
+				$sheet->setCellValue( 'O' . $fila, base_url() . '/activo/photos/rp/' . $activo['Id'] );
+				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activo/photos/rp/' . $activo['Id'] );
 			}
-			else*/
+			else
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
+
+			if ( $activo['Ima_ActivoLeft'] != null) 
+			{
+				$sheet->setCellValue( 'P' . $fila, base_url() . '/activo/photos/lp/' . $activo['Id'] );
+				$sheet->getCell( 'P' . $fila)->getHyperlink()->setUrl( base_url() . '/activo/photos/lp/' . $activo['Id'] );
+			}
+			else
+				$sheet->setCellValue( 'P' . $fila, 'Sin imagen' );
 
 			$fila++;
 		}
@@ -779,7 +778,7 @@ class Activo extends BaseController
 									->where( 'status !=', 'conciliado' )
 									->where( 'status !=', 'eliminado' )
 									->where( 'TS_Delete', null )
-									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update')
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update, Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')
 									->findAll();
 
 		$spreadsheet = new Spreadsheet( );
@@ -865,32 +864,30 @@ class Activo extends BaseController
 			$sheet->setCellValue( 'J' . $fila, ( $area != null ) ? $area['descripcion'] : 'Sin area' );
 			$sheet->setCellValue( 'K' . $fila, $activo['TS_Create'] );
 			$sheet->setCellValue( 'L' . $fila, $activo['TS_Update'] );
-			
-			//$activo_imagenes = $this->draftModel->where('Id', $activo['Id'])->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
-				
+							
 			//imagenes
-			/*if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+			if ( $activo['Ima_ActivoFront'] != null) 
 			{
 				$sheet->setCellValue( 'M' . $fila, base_url() . '/activos/photos/fp/' . $activo['Id'] );
 				$sheet->getCell( 'M' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/fp/' . $activo['Id'] );
 			}
-			else*/
+			else
 				$sheet->setCellValue( 'M' . $fila, 'Sin imagen' );
 
-			/*if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+			if ( $activo['Ima_ActivoRight'] != null) 
 			{
 				$sheet->setCellValue( 'N' . $fila, base_url() . '/activos/photos/rp/' . $activo['Id'] );
 				$sheet->getCell( 'N' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/rp/' . $activo['Id'] );
 			}
-			else*/
+			else
 				$sheet->setCellValue( 'N' . $fila, 'Sin imagen' );
 
-			/*if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+			if ( $activo['Ima_ActivoLeft'] != null) 
 			{
 				$sheet->setCellValue( 'O' . $fila, base_url() . '/activos/photos/lp/' . $activo['Id'] );
 				$sheet->getCell( 'O' . $fila)->getHyperlink()->setUrl( base_url() . '/activos/photos/lp/' . $activo['Id'] );
 			}
-			else*/
+			else
 				$sheet->setCellValue( 'O' . $fila, 'Sin imagen' );
 
 			$fila++;
@@ -943,12 +940,18 @@ class Activo extends BaseController
 					break;
 			}
 
-			$activo = $this->draftModel->where( 'ID_Activo', $id )->select( [ $select ] )->first( );
+			$activo = $this->draftModel->where( 'Id', $id )->select( [ $select ] )->first( );
 
 			if ( $activo != null && $activo[ $select ] != null )
 			{
-				$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ $select ] );
-				echo '<img src="'. $dataImage .'" style="width: 25%">';
+				$file = WRITEPATH . 'uploads\\' . $activo[ $select ];
+				$fp = fopen($file, 'rb');
+
+				header("Content-Type: image/png");
+				header("Content-Length: " . filesize($file));
+
+				fpassthru($fp);
+				exit;
 			}
 			else
 				echo "Sin imagen";
@@ -981,8 +984,14 @@ class Activo extends BaseController
 
 			if ( $activo != null && $activo[ $select ] != null )
 			{
-				$dataImage = 'data:image/jpeg;base64,'. base64_encode( $activo[ $select ] );
-				echo '<img src="'. $dataImage .'" style="width: 25%">';
+				$file = WRITEPATH . 'uploads\\' . $activo[ $select ];
+				$fp = fopen($file, 'rb');
+
+				header("Content-Type: image/png");
+				header("Content-Length: " . filesize($file));
+
+				fpassthru($fp);
+				exit;
 			}
 			else
 				echo "Sin imagen";

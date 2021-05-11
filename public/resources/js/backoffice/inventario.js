@@ -1864,6 +1864,33 @@ function inventaryFiltros( )
   });
 }
 
+function viewImageFront( )
+{
+  let dataImage = $( '#front-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
+}
+
+function viewImageLeft( )
+{
+  let dataImage = $( '#left-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
+}
+
+function viewImageRight( )
+{
+  let dataImage = $( '#right-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
+}
+
 $(document).ready(function( )
 {
     $( '#fechadecompra' ).attr( 'max', new Date().toISOString().split("T")[0] );
