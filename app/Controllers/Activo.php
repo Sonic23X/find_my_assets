@@ -1387,4 +1387,50 @@ class Activo extends BaseController
 		$writer->save('php://output');
 	}
 
+	public function ReponseActivos( )
+	{
+		$drafts = $this->draftModel->findAll();
+
+		foreach( $drafts as $draft )
+		{
+			if($draft['TS_Delete'] != null && $draft['status'] != 'nuevo')
+			{
+				
+				$validateActivo = $this->activoModel->where('ID_Activo', $draft['ID_Activo'])->findAll();
+
+				if ($validateActivo == null) 
+				{
+					$activoData =
+					[
+						'ID_Activo' => $draft[ 'ID_Activo' ],
+						'Nom_Activo' => $draft[ 'Nom_Activo' ],
+						'BC_Activo' => $draft[ 'BC_Activo' ],
+						'ID_Company' => $draft[ 'ID_Company' ],
+						'ID_Sucursal' => $draft[ 'ID_Sucursal' ],
+						'ID_Area' => $draft[ 'ID_Area' ],
+						'ID_CC' => $draft[ 'ID_CC' ],
+						'ID_Asignado' => $draft[ 'ID_Asignado' ],
+						'ID_Proceso' => $draft[ 'ID_Proceso' ],
+						'ID_Status' => $draft[ 'ID_Status' ],
+						'NSerie_Activo' => $draft[ 'NSerie_Activo' ],
+						'ID_Tipo' => $draft[ 'ID_Tipo' ],
+						'Des_Activo' => $draft[ 'Des_Activo' ],
+						'Vida_Activo' => $draft[ 'Vida_Activo' ],
+						'GPS' => $draft[ 'GPS' ],
+						'Fec_Inventario' => $draft[ 'Fec_Inventario' ],
+						'User_Inventario' => $draft[ 'User_Inventario' ],
+						'Comentarios' => $draft[ 'Comentarios' ],
+						'Ima_ActivoFront' => $draft[ 'Ima_ActivoFront' ],
+						'Ima_ActivoRight' => $draft[ 'Ima_ActivoRight' ],
+						'Ima_ActivoLeft' => $draft[ 'Ima_ActivoLeft' ],
+						'TS_Create' => $draft[ 'TS_Create' ],
+						'TS_Update' => $draft[ 'TS_Update' ],
+					];
+
+					$this->activoModel->insert($activoData);
+				}
+			}
+		}
+	}
+
 }
