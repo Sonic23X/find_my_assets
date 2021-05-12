@@ -1393,7 +1393,7 @@ class Activo extends BaseController
 
 		foreach( $drafts as $draft )
 		{
-			if($draft['TS_Delete'] != null && $draft['status'] != 'nuevo')
+			if($draft['status'] != 'nuevo')
 			{
 				
 				$validateActivo = $this->activoModel->where('ID_Activo', $draft['ID_Activo'])->findAll();
