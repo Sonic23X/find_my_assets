@@ -350,7 +350,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo $e->getMessage();
+				echo 'Error al conseguir la imagen';
 			}
 		}
 		else
@@ -370,7 +370,7 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoRight' ] != null )
 				{
-					$file = WRITEPATH . 'uploads\\' . $activo[ 'Ima_ActivoRight' ];
+					$file = WRITEPATH . 'uploads/' . $activo[ 'Ima_ActivoRight' ];
 					$data = file_get_contents($file);
 					$dataImage = 'data:image/png;base64,' . base64_encode($data);
 
@@ -401,7 +401,7 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoLeft' ] != null )
 				{
-					$file = WRITEPATH . 'uploads\\' . $activo[ 'Ima_ActivoLeft' ];
+					$file = WRITEPATH . 'uploads/' . $activo[ 'Ima_ActivoLeft' ];
 					$data = file_get_contents($file);
 					$dataImage = 'data:image/png;base64,' . base64_encode($data);
 
