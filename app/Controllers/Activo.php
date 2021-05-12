@@ -339,7 +339,7 @@ class Activo extends BaseController
 
 				if ( $activo[ 'Ima_ActivoFront' ] != null )
 				{
-					$file = WRITEPATH . 'uploads\\' . $activo[ 'Ima_ActivoFront' ];
+					$file = WRITEPATH . 'uploads/' . $activo[ 'Ima_ActivoFront' ];
 					$data = file_get_contents($file);
 					$dataImage = 'data:image/png;base64,' . base64_encode($data);
 
