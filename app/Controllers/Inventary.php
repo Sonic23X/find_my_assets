@@ -673,7 +673,6 @@ class Inventary extends BaseController
           'Ima_ActivoLeft' => $draft[ 'Ima_ActivoLeft' ],
           'Ima_ActivoRight' => $draft[ 'Ima_ActivoRight' ],
           'Ima_ActivoFront' => $draft[ 'Ima_ActivoFront' ],
-          'Ima_ActivoBack' => $draft[ 'Ima_ActivoBack' ],
           'User_Create' => $draft[ 'User_Create' ],
           'User_Update' => $draft[ 'User_Update' ],
           'User_Delete' => $draft[ 'User_Delete' ],
@@ -682,7 +681,7 @@ class Inventary extends BaseController
           'TS_Delete' => $draft[ 'TS_Delete' ],
         ];
 
-        if ( $this->activoModel->insert( $activoData ) )
+        if ( $this->activoModel->insert( $activoData ) ) 
           echo json_encode( array( 'status' => 200 ) );
         else
           echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );

@@ -8,6 +8,10 @@ var inventarioTable = null;
 var InvActualView = '.inv-news-home';
 var InvPreviewView = '';
 
+var newActiveMap = null;
+var processActiveMap = null;
+var infoActiveMap = null;
+
 let spanish =
 {
   sProcessing: 'Procesando...',
@@ -1163,6 +1167,34 @@ function getDraftInfoNew( id )
 
       $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
+      if( newActiveMap != null )
+      {
+        newActiveMap.off( );
+        newActiveMap.remove( );
+      }
+
+      if (activo.GPS != null) 
+      {
+        let gps = activo.GPS.split(',');
+  
+        newActiveMap = L.map( 'newActiveMap' ).setView( [ gps[0], gps[1] ], 16 );
+  
+        newActiveMap.addControl(new L.Control.Fullscreen());
+  
+        L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+        {
+            attribution: '',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
+        }).addTo( newActiveMap );
+  
+        L.marker( [ gps[0], gps[1] ] ).addTo( newActiveMap )
+        .openPopup( );  
+      }
+
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
         type: 'GET',
@@ -1406,6 +1438,34 @@ function viewProcessInfo( id, details = 1 )
       else
         $( '#iFechaUpdate' ).val( 'Sin actualización' );
 
+      if( processActiveMap != null )
+      {
+        processActiveMap.off( );
+        processActiveMap.remove( );
+      }
+
+      if (activo.GPS != null) 
+      {
+        let gps = activo.GPS.split(',');
+  
+        processActiveMap = L.map( 'iActiveMap' ).setView( [ gps[0], gps[1] ], 16 );
+  
+        processActiveMap.addControl(new L.Control.Fullscreen());
+    
+        L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+          {
+              attribution: '',
+              maxZoom: 18,
+              id: 'mapbox/streets-v11',
+              tileSize: 512,
+              zoomOffset: -1,
+              accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
+          }).addTo( processActiveMap );
+    
+        L.marker( [ gps[0], gps[1] ] ).addTo( processActiveMap )
+          .openPopup( ); 
+      } 
+
       if ( details == 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
       else
@@ -1614,12 +1674,43 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
+      $( '#infoVidaUtil' ).val( (activo.Vida_Activo != null) ? 'N/A' : activo.Vida_Activo );
+      $( '#infoPrecio' ).val( (activo.Pre_Compra != null) ? 'N/A' : activo.Pre_Compra );
+      $( '#infoFechaCompra' ).val( (activo.Fec_Compra != null) ? 'N/A' : activo.Fec_Compra );
       if (activo.TS_Update != null) 
         $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
       else
         $( '#infoFechaUpdate' ).val('Sin actualización');
 
       $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
+
+      if( infoActiveMap != null )
+      {
+        infoActiveMap.off( );
+        infoActiveMap.remove( );
+      }
+
+      if (activo.GPS != null) 
+      {
+        let gps = activo.GPS.split(',');
+  
+        infoActiveMap = L.map( 'infoActiveMap' ).setView( [ gps[0], gps[1] ], 16 );
+  
+        infoActiveMap.addControl(new L.Control.Fullscreen());
+  
+        L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
+        {
+            attribution: '',
+            maxZoom: 18,
+            id: 'mapbox/streets-v11',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
+        }).addTo( infoActiveMap );
+  
+        L.marker( [ gps[0], gps[1] ] ).addTo( infoActiveMap )
+        .openPopup( );       
+      }
 
       $.ajax({
         url: url + `/activos/getImageFront/${ activo.ID_Activo }`,
@@ -1771,6 +1862,33 @@ function inventaryFiltros( )
       imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
     }
   });
+}
+
+function viewImageFront( )
+{
+  let dataImage = $( '#front-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
+}
+
+function viewImageLeft( )
+{
+  let dataImage = $( '#left-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
+}
+
+function viewImageRight( )
+{
+  let dataImage = $( '#right-image' ).attr( 'src' );
+  let file = dataURLtoFile( dataImage, 'front.jpg' );
+  let img = URL.createObjectURL( file );
+
+  window.open( img , '_blank' );
 }
 
 $(document).ready(function( )

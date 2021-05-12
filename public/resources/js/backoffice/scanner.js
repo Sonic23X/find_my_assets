@@ -919,6 +919,8 @@ $(document).ready(function( )
   //formularios
   getScannerFormData( );
 
+  $('#asignacion').select2({ theme: 'bootstrap4', });
+
   $( '#numActivoS2' ).keydown( e =>
     {
       if ( e.keyCode == 32 || e.keyCode == 192 )

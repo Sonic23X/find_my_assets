@@ -417,9 +417,36 @@
                                 </div>
                               </div>
 
+                              <div class="form-group row">
+                                <label for="iVidaUtil" class="col-sm-4 col-form-label">Vida util</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iVidaUtil" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iPrecio" class="col-sm-4 col-form-label">Precio compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iPrecio" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iFechaCompra" class="col-sm-4 col-form-label">Fecha compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iFechaCompra" disabled>
+                                </div>
+                              </div>
+
                               <div class="row">
                                 <div class="col-12 text-center">
                                   <span><b>Ubicación</b></span>
+                                </div>
+                              </div>
+                              
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <div id="newActiveMap" style="height: 300px;"></div>
                                 </div>
                               </div>
 
@@ -868,6 +895,12 @@
                               </div>
 
                               <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <div id="iActiveMap" style="height: 300px;"></div>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
                                 <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
                                 <div class="col-sm-8">
                                   <select class="form-control-plaintext iEmpresa" name="asignacion" id="iEmpresa" disabled>
@@ -1124,9 +1157,36 @@
                                 </div>
                               </div>
 
+                              <div class="form-group row">
+                                <label for="iVidaUtil" class="col-sm-4 col-form-label">Vida util</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoVidaUtil" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iPrecio" class="col-sm-4 col-form-label">Precio compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoPrecio" disabled>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <label for="iFechaCompra" class="col-sm-4 col-form-label">Fecha compra</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="infoFechaCompra" disabled>
+                                </div>
+                              </div>
+
                               <div class="row">
                                 <div class="col-12 text-center">
                                   <span><b>Ubicación</b></span>
+                                </div>
+                              </div>
+
+                              <div class="form-group row">
+                                <div class="col-sm-12">
+                                  <div id="infoActiveMap" style="height: 300px;"></div>
                                 </div>
                               </div>
 
