@@ -195,11 +195,10 @@ class Dashboard extends BaseController
 			{
 				$builder->like( 'activos.Nom_Activo', $this->request->getVar( 'busqueda' ) );
 			}
-
-			$cantidad = $this->request->getVar( 'cantidad' ) != '' ? $this->request->getVar( 'cantidad' ) : 10;
 			
-			if ( $cantidad != '' ) 
-				$builder->limit($cantidad);
+			if ( $this->request->getVar( 'cantidad' ) != '' )
+				$builder->limit($this->request->getVar( 'cantidad' ));
+			
 			$points = $builder->get( )->getResult( );
 
 			echo json_encode( 
