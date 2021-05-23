@@ -440,6 +440,7 @@ class User extends BaseController
 			$subidos = 0;
 			$linea = 1;
 			$usuarios_subidos = [];
+            $user = null;
 			foreach ( $rows as $usuario ) 
 			{
 				//Validación de usuarios
@@ -463,7 +464,7 @@ class User extends BaseController
                 }
                 else
                 {
-                    $user = $this->userModel->where('email', $usuario[2])->first();
+                    $user = $this->userModel->where('email', $usuario[2])->where('id_empresa', $this->session->empresa)->first();
                     if($user != null)
                     {
                         array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'El usuario ya está registrado en el sistema.' ]);
@@ -483,22 +484,8 @@ class User extends BaseController
 
                     if ($this->request->getVar( 'sendEmail' ) == 'true') 
                     {
-                        $insert =
-                        [
-                            'perfil' => 'user',
-                            'nombre' => $usuario[0],
-                            'apellidos' => $usuario[1],
-                            'email' => $usuario[2],
-                            'password' => $password,
-                            'suscripcion' => 0,
-                            'verificacion' => 1,
-                            'email_encriptado' => $emailEncrypt,
-                            'patrocinador' => 'N/A',
-                            'envios' => 0,
-                            'id_empresa' => $this->session->empresa,
-                        ];
 
-                        if ( $this->userModel->insert( $insert ) )
+                        if ($user != null) 
                         {
                             $user = $this->userModel->where( 'email', $usuario[2] )->where('id_empresa', $this->session->empresa)->first( );
                             $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
@@ -520,26 +507,68 @@ class User extends BaseController
                             $correo->send( );
                         }
                         else
-                            array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'No pudo crearse el usuario, intente más tarde' ]);
+                        {
+                            $insert =
+                            [
+                                'perfil' => 'user',
+                                'nombre' => $usuario[0],
+                                'apellidos' => $usuario[1],
+                                'email' => $usuario[2],
+                                'password' => $password,
+                                'suscripcion' => 0,
+                                'verificacion' => 1,
+                                'email_encriptado' => $emailEncrypt,
+                                'patrocinador' => 'N/A',
+                                'envios' => 0,
+                                'id_empresa' => $this->session->empresa,
+                            ];
+
+                            if ( $this->userModel->insert( $insert ) )
+                            {
+                                $user = $this->userModel->where( 'email', $usuario[2] )->where('id_empresa', $this->session->empresa)->first( );
+                                $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
+                                $builder = $this->db->query( $SQL );  
+                                
+                                $viewData =
+                                [
+                                    'urlUsuario' => base_url( '/carga' ) . '/' . $emailEncrypt,
+                                    'nombre' => $usuario[0],
+                                    'activos' => null,
+                                    'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
+                                ];
+
+                                $content = View( 'emails/accesoUsuario', $viewData );
+
+                                //cargamos la configuración del email
+                                $correo = $this->email->preparEmail( $usuario[2], 'Enlace de acceso', $content );
+
+                                $correo->send( );
+                            }
+                            else
+                                array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'No pudo crearse el usuario, intente más tarde' ]);
+                        }
                     }
                     else
                     {
-                        $insert =
-                        [
-                            'perfil' => 'user',
-                            'nombre' => $usuario[0],
-                            'apellidos' => $usuario[1],
-                            'email' => $usuario[2],
-                            'password' => $password,
-                            'suscripcion' => 0,
-                            'verificacion' => 1,
-                            'email_encriptado' => $emailEncrypt,
-                            'patrocinador' => 'N/A',
-                            'envios' => 0,
-                            'id_empresa' => $this->session->empresa,
-                        ];
+                        if ($user != null) 
+                        {
+                            $insert =
+                            [
+                                'perfil' => 'user',
+                                'nombre' => $usuario[0],
+                                'apellidos' => $usuario[1],
+                                'email' => $usuario[2],
+                                'password' => $password,
+                                'suscripcion' => 0,
+                                'verificacion' => 1,
+                                'email_encriptado' => $emailEncrypt,
+                                'patrocinador' => 'N/A',
+                                'envios' => 0,
+                                'id_empresa' => $this->session->empresa,
+                            ];
 
-                        $this->userModel->insert( $insert );
+                            $this->userModel->insert( $insert );   
+                        }
 
                         $user = $this->userModel->where( 'email', $usuario[2] )->first( );
                         $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
@@ -557,6 +586,7 @@ class User extends BaseController
 
                     array_push( $usuarios_subidos, $json );
                 }
+                $user = null;
 			}
 			echo json_encode( array( 'status' => 200, 'errores' => $errores, 'subidos' => $subidos, 'usuarios' => $usuarios_subidos ) );
 		}

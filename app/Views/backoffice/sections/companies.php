@@ -517,8 +517,8 @@
                                 <form>
                                     <div class="form-group">
                                         <input type="hidden" id="newCCIdEmpresa" />
-                                        <input type="text" class="form-control" placeholder="Nombre del area" id="newCCName" />
                                         <input type="text" class="form-control mt-2" placeholder="Identificador" id="newCCId" />
+                                        <input type="text" class="form-control" placeholder="Nombre del area" id="newCCName" />
                                     </div>
                                     <div class="btn-group w-100" role="group">
                                         <button type="button" class="btn btn-secondary" id="closeNewCC">Cancelar</button>
@@ -543,8 +543,8 @@
                                 <form>
                                     <div class="form-group">
                                         <input type="hidden" id="editCCId" />
-                                        <input type="text" class="form-control" placeholder="Nombre del area" id="editCCName" />
                                         <input type="text" class="form-control mt-2" placeholder="Identificador" id="editCCCode" />
+                                        <input type="text" class="form-control" placeholder="Nombre del area" id="editCCName" />
                                     </div>
                                     <div class="btn-group w-100" role="group">
                                         <button type="button" class="btn btn-secondary" id="closeEditCC">Cancelar</button>

@@ -1212,6 +1212,10 @@ function getDraftInfoNew( id )
         {
           $( '.new-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.new-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $.ajax({
@@ -1230,6 +1234,10 @@ function getDraftInfoNew( id )
         {
           $( '.new-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.new-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $.ajax({
@@ -1249,6 +1257,10 @@ function getDraftInfoNew( id )
         {
           $( '.new-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.new-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $( '#newInvModal' ).modal( 'show' );
@@ -1492,6 +1504,10 @@ function viewProcessInfo( id, details = 1 )
         {
           $( '.process-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.process-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $.ajax({
@@ -1510,6 +1526,10 @@ function viewProcessInfo( id, details = 1 )
         {
           $( '.process-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.process-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $.ajax({
@@ -1529,6 +1549,10 @@ function viewProcessInfo( id, details = 1 )
         {
           $( '.process-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.process-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $( '#updateModal' ).modal( 'show' );
@@ -1729,6 +1753,10 @@ function viewInvInfo( id )
         {
           $( '.info-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.info-image-front' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $.ajax({
@@ -1747,6 +1775,10 @@ function viewInvInfo( id )
         {
           $( '.info-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.info-image-left' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $.ajax({
@@ -1766,6 +1798,10 @@ function viewInvInfo( id )
         {
           $( '.info-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
         }
+      })
+      .fail(() => 
+      {
+        $( '.info-image-right' ).html( '<i class="fas fa-5x fa-image"></i>' );
       });
 
       $( '#infoModal' ).modal( 'show' );
