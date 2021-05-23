@@ -950,11 +950,11 @@ class Inventary extends BaseController
             $imagenes = 0;
             
             //imagenes
-            if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+            if ( $activo_imagenes['Ima_ActivoFront'] != '') 
               $imagenes++;
-            if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+            if ( $activo_imagenes['Ima_ActivoRight'] != '') 
               $imagenes++;
-            if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+            if ( $activo_imagenes['Ima_ActivoLeft'] != '') 
               $imagenes++;
 
             //Comparamos la fecha de periodo de inventario
@@ -1057,11 +1057,11 @@ class Inventary extends BaseController
           $imagenes = 0;
           
           //imagenes
-          if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+          if ( $activo_imagenes['Ima_ActivoFront'] != '') 
             $imagenes++;
-          if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+          if ( $activo_imagenes['Ima_ActivoRight'] != '') 
             $imagenes++;
-          if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+          if ( $activo_imagenes['Ima_ActivoLeft'] != '') 
             $imagenes++;
 
           //Comparamos la fecha de periodo de inventario
@@ -1242,11 +1242,11 @@ class Inventary extends BaseController
             $imagenes = 0;
             
             //imagenes
-            if ( $activo_imagenes['Ima_ActivoFront'] != null) 
+            if ( $activo_imagenes['Ima_ActivoFront'] != '') 
               $imagenes++;
-            if ( $activo_imagenes['Ima_ActivoRight'] != null) 
+            if ( $activo_imagenes['Ima_ActivoRight'] != '') 
               $imagenes++;
-            if ( $activo_imagenes['Ima_ActivoLeft'] != null) 
+            if ( $activo_imagenes['Ima_ActivoLeft'] != '') 
               $imagenes++;
 
             //Comparamos la fecha de periodo de inventario
