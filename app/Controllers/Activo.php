@@ -1186,7 +1186,7 @@ class Activo extends BaseController
 								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
 								'Des_Activo' => ($activo[7] != null) ? $activo[7] : '-',
 								'NSerie_Activo' => '-',
-								'GPS' => '',
+								'GPS' => $this->request->getVar('gps'),
 								'ID_CC' => ($cc == null) ? 0 : $cc['id'],
 								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
 								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],

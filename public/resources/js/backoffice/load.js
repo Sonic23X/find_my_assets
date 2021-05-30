@@ -1,5 +1,6 @@
 var url = $('#url').val( );
 let activosTable = null;
+var formData = null;
 
 function imprimir ( titulo, mensaje, tipo )
 {
@@ -11,131 +12,139 @@ function imprimir ( titulo, mensaje, tipo )
   });
 }
 
+function doAjax( position ) 
+{
+  let crd = position.coords;
+  formData.append( 'gps', `${ crd.latitude },${ crd.longitude }` );
+
+  $.ajax(
+  {
+      url: url + '/carga/readExcel',
+      type: 'POST',
+      cache: false,
+      contentType: false,
+      processData: false,
+      data: formData,
+  })
+  .done( response =>
+  {
+      let respuesta = JSON.parse(response);
+      
+      if(respuesta.status == 200)
+      {
+          $('#instructions').html('Resultado de la carga');
+
+          $('.up-start').addClass('d-none');
+          $('.up-load').addClass('d-none');
+          $('.up-result').removeClass('d-none');
+
+          $('.up-ready').html(respuesta.subidos);
+          $('.up-problems').html(respuesta.errores.length);
+
+          if (activosTable != null)
+          {
+            activosTable.destroy();
+            let table = 
+            `
+              <table class="table table-hover up-ready-table">
+                <thead>
+                    <tr>
+                        <th scope="col">No. Activo</th>
+                        <th scope="col">Activo</th>
+                        <th scope="col">Asignación</th>
+                        <th scope="col">Cargado</th>
+                    </tr>
+                </thead>
+                <tbody class="up-ready-table-content">
+
+                </tbody>
+              </table>
+            `;
+            $('.up-ready-table-div').html(table);  
+          }
+
+          $('.up-problems-table-content').html('');
+
+          respuesta.activos.forEach(element =>
+          {
+              let plantilla =
+              `
+                  <tr>
+                      <td class="align-middle">
+                          ${ element.id_activo }                            
+                      </td>
+                      <td class="align-middle">
+                          <a class="text-dark text-decoration-none" onClick="viewInfo( ${ element.id } )">
+                              ${ element.tipo }
+                              <br>
+                              ${ element.nombre }
+                          </a>                         
+                      </td>
+                      <td class="align-middle">
+                          ${ element.usuario }
+                      </td>
+                      <td class="align-middle">
+                          ${ element.fecha }
+                      </td>
+                  </tr>
+              `;
+
+              $('.up-ready-table-content').append(plantilla);
+          });
+
+          respuesta.errores.forEach(element => 
+          {
+              let plantilla =
+              `
+                  <tr>
+                      <td>
+                          ${ element.problema }                            
+                      </td>
+                      <td class="align-middle">
+                          ${ element.activo }
+                      </td>
+                  </tr>
+              `;
+
+              $('.up-problems-table-content').append(plantilla);
+          });
+
+          if (activosTable != null)
+              activosTable.destroy();
+
+          activosTable = $('.up-ready-table').DataTable(
+          {
+              'ordering': false,
+              'responsive': true,
+              'lengthChange': false,
+              'responsive': true,
+              'bInfo' : false,
+          });
+
+          $('.up-loading').addClass('d-none');
+          $('.up-content').removeClass('d-none');
+      }
+      else
+          imprimir('Ups..', 'A ocurrido un error desconocido', 'error');
+      
+  })
+  .fail( ( ) =>
+  {
+      imprimir('Ups..', 'Error al guardar los datos', 'error');
+  });
+}
+
 function changeFile( nodo ) 
 {
     $( '#excelFileName' ).html( nodo.files[0].name );
 
-    let formData = new FormData();
+    formData = new FormData();
     formData.append( 'excel', nodo.files[0] );
 
     $('.up-content').addClass('d-none');
     $('.up-loading').removeClass('d-none');
 
-    $.ajax(
-    {
-        url: url + '/carga/readExcel',
-        type: 'POST',
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: formData,
-    })
-    .done( response =>
-    {
-        let respuesta = JSON.parse(response);
-        
-        if(respuesta.status == 200)
-        {
-            $('#instructions').html('Resultado de la carga');
-
-            $('.up-start').addClass('d-none');
-            $('.up-load').addClass('d-none');
-            $('.up-result').removeClass('d-none');
-
-            $('.up-ready').html(respuesta.subidos);
-            $('.up-problems').html(respuesta.errores.length);
-
-            if (activosTable != null)
-            {
-              activosTable.destroy();
-              let table = 
-              `
-                <table class="table table-hover up-ready-table">
-                  <thead>
-                      <tr>
-                          <th scope="col">No. Activo</th>
-                          <th scope="col">Activo</th>
-                          <th scope="col">Asignación</th>
-                          <th scope="col">Cargado</th>
-                      </tr>
-                  </thead>
-                  <tbody class="up-ready-table-content">
-
-                  </tbody>
-                </table>
-              `;
-              $('.up-ready-table-div').html(table);  
-            }
-
-            $('.up-problems-table-content').html('');
-
-            respuesta.activos.forEach(element =>
-            {
-                let plantilla =
-                `
-                    <tr>
-                        <td class="align-middle">
-                            ${ element.id_activo }                            
-                        </td>
-                        <td class="align-middle">
-                            <a class="text-dark text-decoration-none" onClick="viewInfo( ${ element.id } )">
-                                ${ element.tipo }
-                                <br>
-                                ${ element.nombre }
-                            </a>                         
-                        </td>
-                        <td class="align-middle">
-                            ${ element.usuario }
-                        </td>
-                        <td class="align-middle">
-                            ${ element.fecha }
-                        </td>
-                    </tr>
-                `;
-
-                $('.up-ready-table-content').append(plantilla);
-            });
-
-            respuesta.errores.forEach(element => 
-            {
-                let plantilla =
-                `
-                    <tr>
-                        <td>
-                            ${ element.problema }                            
-                        </td>
-                        <td class="align-middle">
-                            ${ element.activo }
-                        </td>
-                    </tr>
-                `;
-
-                $('.up-problems-table-content').append(plantilla);
-            });
-
-            if (activosTable != null)
-                activosTable.destroy();
-
-            activosTable = $('.up-ready-table').DataTable(
-            {
-                'ordering': false,
-                'responsive': true,
-                'lengthChange': false,
-                'responsive': true,
-                'bInfo' : false,
-            });
-
-            $('.up-loading').addClass('d-none');
-            $('.up-content').removeClass('d-none');
-        }
-        else
-            imprimir('Ups..', 'A ocurrido un error desconocido', 'error');
-        
-    })
-    .fail( ( ) =>
-    {
-        imprimir('Ups..', 'Error al guardar los datos', 'error');
-    });
+    navigator.geolocation.getCurrentPosition( doAjax );
 
     nodo.value = "";
     $('#excelFileName').html('Adjuntar plantilla aquí');
