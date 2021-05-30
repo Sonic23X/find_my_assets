@@ -350,7 +350,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo 'Error al conseguir la imagen';
+				echo $e->getMessage();
 			}
 		}
 		else
@@ -381,7 +381,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo 'Error al conseguir la imagen';
+				echo $e->getMessage();
 			}
 		}
 		else
@@ -412,7 +412,7 @@ class Activo extends BaseController
 			}
 			catch (\Exception $e)
 			{
-				echo 'Error al conseguir la imagen';
+				echo $e->getMessage();
 			}
 		}
 		else
