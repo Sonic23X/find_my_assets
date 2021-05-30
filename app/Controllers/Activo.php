@@ -337,7 +337,7 @@ class Activo extends BaseController
 
 				$imgFront = null;
 
-				if ( $activo[ 'Ima_ActivoFront' ] != null )
+				if ( $activo[ 'Ima_ActivoFront' ] != null && !empty($activo[ 'Ima_ActivoFront' ]) )
 				{
 					$file = WRITEPATH . 'uploads/' . $activo[ 'Ima_ActivoFront' ];
 					$data = file_get_contents($file);
@@ -368,7 +368,7 @@ class Activo extends BaseController
 
 				$imgRight = null;
 
-				if ( $activo[ 'Ima_ActivoRight' ] != null )
+				if ( $activo[ 'Ima_ActivoRight' ] != null && !empty($activo[ 'Ima_ActivoRight' ]) )
 				{
 					$file = WRITEPATH . 'uploads/' . $activo[ 'Ima_ActivoRight' ];
 					$data = file_get_contents($file);
@@ -399,7 +399,7 @@ class Activo extends BaseController
 
 				$imgLeft = null;
 
-				if ( $activo[ 'Ima_ActivoLeft' ] != null )
+				if ( $activo[ 'Ima_ActivoLeft' ] != null && !empty($activo[ 'Ima_ActivoLeft' ]) )
 				{
 					$file = WRITEPATH . 'uploads/' . $activo[ 'Ima_ActivoLeft' ];
 					$data = file_get_contents($file);
