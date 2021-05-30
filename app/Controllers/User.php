@@ -401,12 +401,31 @@ class User extends BaseController
 		$cargaSheet->getColumnDimension('B')->setWidth(50);
 		$cargaSheet->getColumnDimension('C')->setWidth(50);
 		$cargaSheet->getColumnDimension('D')->setWidth(50);
+        $cargaSheet->getColumnDimension('E')->setWidth(50);
 
 		//iniciamos tabla 
 		$cargaSheet->setCellValue( 'A1', 'Nombre' );
 		$cargaSheet->setCellValue( 'B1', 'Apellidos' );
 		$cargaSheet->setCellValue( 'C1', 'Correo electrónico' );
 		$cargaSheet->setCellValue( 'D1', 'Contraseña' );
+        $cargaSheet->setCellValue( 'E1', 'Centro de costo' );
+
+        $ccSheet = new Worksheet($spreadsheet, 'Centro de costos');
+		$spreadsheet->addSheet($ccSheet, 2);
+
+		$ccSheet->getColumnDimension('A')->setWidth(50);
+		$ccSheet->setCellValue( 'A1', 'Centro de costo' );
+		$ccSheet->setCellValue( 'B1', 'Numero' );
+
+		$ccs = $this->ccModel->where('id_empresa', $this->session->empresa)->where('Subcuenta !=', null)->findAll();
+		$contador = 2;
+		
+		foreach ($ccs as $cc) 
+		{
+			$ccSheet->setCellValue( 'A' . $contador, $cc['Desc'] );
+			$ccSheet->setCellValue( 'B' . $contador, $cc['Subcuenta'] );
+			$contador++;
+		}
 
 		$styleHeadArray = 
 		[
@@ -429,8 +448,8 @@ class User extends BaseController
 			],
 		];
 			
-		$cargaSheet->getStyle('A1:D1')->applyFromArray($styleHeadArray);
-		
+		$cargaSheet->getStyle('A1:E1')->applyFromArray($styleHeadArray);
+		$ccSheet->getStyle('A1:B1')->applyFromArray($styleHeadArray);
 
 		$spreadsheet->setActiveSheetIndex(0);
 		$writer = new Xls($spreadsheet);
@@ -484,6 +503,7 @@ class User extends BaseController
 			$linea = 1;
 			$usuarios_subidos = [];
             $user = null;
+            $cc = null;
 			foreach ( $rows as $usuario ) 
 			{
 				//Validación de usuarios
@@ -517,14 +537,30 @@ class User extends BaseController
                 }
                 if ($usuario[3] == null) 
                 {
-                    array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'La linea no contiene la contraseña del usuario' ]);
+                    array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'La linea no contiene la contraseña del usuario.' ]);
                     $error = true;
+                }
+                if ($usuario[4] == null) 
+                {
+                    array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'La linea no contiene el código del centro de costos.' ]);
+                    $error = true;
+                }
+                else
+                {
+                    $cc = $this->ccModel->where('Subcuenta', $usuario[4])->where('id_empresa', $this->session->empresa)->first();
+
+                    if($cc == null)
+                    {
+                        array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'El código del centro de costos no existe.' ]);
+                        $error = true;
+                    }
                 }
 				
                 if (!$error) 
                 {
                     $password = crypt( $usuario[3], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
 			        $emailEncrypt = md5( $usuario[2] );
+                    $cc = $this->ccModel->where('Subcuenta', $usuario[4])->where('id_empresa', $this->session->empresa)->first();
 
                     if ($this->request->getVar( 'sendEmail' ) == 'true') 
                     {
@@ -571,6 +607,7 @@ class User extends BaseController
                                 'patrocinador' => 'N/A',
                                 'envios' => 0,
                                 'id_empresa' => $this->session->empresa,
+                                'id_cc' => $cc['id'],
                             ];
 
                             if ( $this->userModel->insert( $insert ) )
@@ -615,6 +652,7 @@ class User extends BaseController
                                 'patrocinador' => 'N/A',
                                 'envios' => 0,
                                 'id_empresa' => $this->session->empresa,
+                                'id_cc' => $cc['id'],
                             ];
 
                             $this->userModel->insert( $insert );
