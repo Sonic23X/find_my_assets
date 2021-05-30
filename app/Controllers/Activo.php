@@ -1186,7 +1186,7 @@ class Activo extends BaseController
 								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
 								'Des_Activo' => ($activo[7] != null) ? $activo[7] : '-',
 								'NSerie_Activo' => '-',
-								'GPS' => '',
+								'GPS' => $this->request->getVar('gps'),
 								'ID_CC' => ($cc == null) ? 0 : $cc['id'],
 								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
 								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
@@ -1307,7 +1307,7 @@ class Activo extends BaseController
 		$userSheet->setCellValue( 'B1', 'Apellidos' );
 		$userSheet->setCellValue( 'C1', 'Correo' );
 
-		$SQL = "SELECT usuarios.nombre, usuarios.apellidos, usuarios.email FROM usuarios, user_empresa WHERE user_empresa.id_usuario = usuarios.id_usuario AND user_empresa.id_empresa = " . $this->session->empresa;
+		$SQL = "SELECT usuarios.nombre, usuarios.apellidos, usuarios.email FROM usuarios, user_empresa WHERE user_empresa.id_usuario = usuarios.id_usuario AND usuarios.perfil <> 'superadmin' AND usuarios.deleted_at IS NULL AND user_empresa.id_empresa = " . $this->session->empresa;
 		$builder = $this->db->query( $SQL );
 		$users = $builder->getResult( );
 		$contador = 2;

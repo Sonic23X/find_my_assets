@@ -465,7 +465,8 @@ class User extends BaseController
                 else
                 {
                     $user = $this->userModel->where('email', $usuario[2])->where('id_empresa', $this->session->empresa)->first();
-                    if($user != null)
+
+                    if($user != null && ($user['deleted_at'] == '' && $user['deleted_at'] == null))
                     {
                         array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'El usuario ya está registrado en el sistema.' ]);
                         $error = true;
@@ -487,6 +488,12 @@ class User extends BaseController
 
                         if ($user != null) 
                         {
+                            if ($user['deleted_at'] != '' || $user['deleted_at'] != null)
+                            {
+                                $SQL = "UPDATE usuarios SET deleted_at=NULL WHERE id_usuario = ". $user['id_usuario'];
+                                $this->db->query( $SQL );  
+                            }
+
                             $user = $this->userModel->where( 'email', $usuario[2] )->where('id_empresa', $this->session->empresa)->first( );
                             $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
                             $builder = $this->db->query( $SQL );  
@@ -550,7 +557,7 @@ class User extends BaseController
                     }
                     else
                     {
-                        if ($user != null) 
+                        if ($user == null) 
                         {
                             $insert =
                             [
@@ -567,7 +574,13 @@ class User extends BaseController
                                 'id_empresa' => $this->session->empresa,
                             ];
 
-                            $this->userModel->insert( $insert );   
+                            $this->userModel->insert( $insert );
+                        }
+                        
+                        if ($user['deleted_at'] != '' || $user['deleted_at'] != null)
+                        {
+                            $SQL = "UPDATE usuarios SET deleted_at=NULL WHERE id_usuario = ". $user['id_usuario'];
+                            $this->db->query( $SQL );  
                         }
 
                         $user = $this->userModel->where( 'email', $usuario[2] )->first( );
@@ -593,27 +606,5 @@ class User extends BaseController
 		else
 			return view( 'errors/cli/error_404' );
 	}
-
-    public function Macal()
-    {
-        $password = crypt( '12345678', '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
-		$emailEncrypt = md5( 'pcisternas@macal.cl' );
-
-        $insert =
-        [
-            'perfil' => 'user',
-            'nombre' => 'Patricio',
-            'apellidos' => 'Cisternas',
-            'email' => 'pcisternas@macal.cl',
-            'password' => $password,
-            'suscripcion' => 0,
-            'verificacion' => 1,
-            'email_encriptado' => $emailEncrypt,
-            'patrocinador' => 'N/A',
-            'id_empresa' => 2,
-        ];
-
-        $this->userModel->insert( $insert );
-    }
 
 }
