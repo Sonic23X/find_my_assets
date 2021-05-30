@@ -81,6 +81,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-sm">
+                                        <select id="ccUserNew" class="custom-select">
+
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="row mb-2">
@@ -130,6 +135,11 @@
                                 <div class="row mt-3 mb-3">
                                     <div class="col-sm">
                                         <input type="email" class="form-control" placeholder="Correo Electrónico" id="eEmail" required>
+                                    </div>
+                                    <div class="col-sm">
+                                        <select id="ccUserEdit" class="custom-select">
+                                            
+                                        </select>
                                     </div>
                                 </div>
 

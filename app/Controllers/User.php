@@ -17,6 +17,7 @@ class User extends BaseController
     protected $email;
     protected $draftModel;
     protected $empresaModel;
+    protected $ccModel;
     protected $db;
 
     function __construct()
@@ -25,6 +26,7 @@ class User extends BaseController
         $this->userModel = model( 'App\Models\UserModel' );
         $this->draftModel = model( 'App\Models\DraftModel' );
         $this->empresaModel = model( 'App\Models\EmpresaModel' );
+        $this->ccModel = model( 'App\Models\CCModel' );
         $this->db = \Config\Database::connect( );
         $this->email = new PHPMailerLib( );
     }
@@ -92,6 +94,44 @@ class User extends BaseController
 			$data = array( 'url' => base_url( '/ingreso' ) );
             return view( 'functions/redirect', $data );
     	}
+    }
+
+    public function GetCCs()
+    {
+        if ( $this->request->isAJAX( ) )
+        {
+            try
+            {
+                $cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+
+                echo json_encode( array( 'status' => 200, 'data' => $cc ) );
+            }
+            catch (\Exception $e)
+            {
+                echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+            }
+        }
+        else
+            return view( 'errors/cli/error_404' );
+    }
+
+    public function GetMyCC()
+    {
+        if ( $this->request->isAJAX( ) )
+        {
+            try
+            {
+                $cc = $this->userModel->where( 'id_usuario', $this->request->getVar('id') )->first( );
+
+                echo json_encode( array( 'status' => 200, 'data' => $cc ) );
+            }
+            catch (\Exception $e)
+            {
+                echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+            }
+        }
+        else
+            return view( 'errors/cli/error_404' );
     }
 
     public function getUserData(  )
@@ -169,6 +209,7 @@ class User extends BaseController
                     'email_encriptado' => $emailEncrypt,
                     'patrocinador' => 'N/A',
                     'envios' => 1,
+                    'id_cc' => $this->request->getVar( 'cc' ),
                     'id_empresa' => $this->session->empresa,
                 ];
 
@@ -213,6 +254,7 @@ class User extends BaseController
                     'email_encriptado' => $emailEncrypt,
                     'patrocinador' => 'N/A',
                     'envios' => 0,
+                    'id_cc' => $this->request->getVar( 'cc' ),
                     'id_empresa' => $this->session->empresa,
                 ];
 
@@ -238,6 +280,7 @@ class User extends BaseController
                     'nombre' => $this->request->getVar( 'nombre' ),
                     'apellidos' => $this->request->getVar( 'apellidos' ),
                     'email' => $this->request->getVar( 'email' ),
+                    'id_cc' => $this->request->getVar( 'cc' ),
                 ];
 
                 if ( $this->userModel->update( $this->request->getVar( 'id' ), $update ) )

@@ -131,12 +131,14 @@ $routes->post('/bajas/down', 'Down::activosDelete');
 
 /**  Usuarios **/
 $routes->get('/usuarios', 'User::Users');
+$routes->get('/usuarios/ccs', 'User::GetCCs');
 $routes->get('/usuarios/data', 'User::getUserData');
 $routes->post('/usuarios/generateurl', 'User::GenerateUrl');
 $routes->post('/usuarios/sendEmail', 'User::SendEmail');
 $routes->post('/usuarios/usuario', 'User::GetOneUser');
 $routes->post('/usuarios/actualizar', 'User::Update');
 $routes->post('/usuarios/delete', 'User::Delete');
+$routes->post('/usuarios/getcc', 'User::GetMyCC');
 
 $routes->get('/usuarios/carga', 'User::InitialExcel');
 $routes->get('/usuarios/ejemplo', 'User::DownloadExcelExample');
