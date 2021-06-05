@@ -15,6 +15,7 @@ class User extends BaseController
     protected $session;
     protected $userModel;
     protected $email;
+    protected $activoModel;
     protected $draftModel;
     protected $empresaModel;
     protected $ccModel;
@@ -24,6 +25,7 @@ class User extends BaseController
     {
         $this->session = \Config\Services::session( );
         $this->userModel = model( 'App\Models\UserModel' );
+        $this->activoModel = model( 'App\Models\ActivoModel' );
         $this->draftModel = model( 'App\Models\DraftModel' );
         $this->empresaModel = model( 'App\Models\EmpresaModel' );
         $this->ccModel = model( 'App\Models\CCModel' );
@@ -145,7 +147,34 @@ class User extends BaseController
                                             ->where( 'perfil !=', 'superadmin' )
                                             ->findAll( );
 
-                echo json_encode( array( 'status' => 200, 'data' => $usuarios ) );
+                $data = [];
+                foreach($usuarios as $usuario)
+                {
+                    $cc = null;
+                    if (!empty($usuario['id_cc'])) 
+                    {
+                        $ccP = $this->ccModel->where('id', $usuario['id_cc'])->first();
+                        $cc = $ccP['Subcuenta'] . ' - ' . $ccP['Desc'];
+                    }
+                    else
+                    {
+                        $cc = 'N/A';
+                    }
+                    
+                    $json =
+                    [
+                        'id_usuario' => $usuario['id_usuario'],
+                        'nombre' => $usuario['nombre'],
+                        'apellidos' => $usuario['apellidos'],
+                        'email' => $usuario['email'],
+                        'envios' => $usuario['envios'],
+                        'cc' => $cc,
+                    ];  
+
+                    array_push($data, $json);
+                }
+
+                echo json_encode( array( 'status' => 200, 'data' => $data ) );
             }
             catch (\Exception $e)
             {
@@ -284,7 +313,34 @@ class User extends BaseController
                 ];
 
                 if ( $this->userModel->update( $this->request->getVar( 'id' ), $update ) )
+                {
+                    //Change CC of activos
+                    $activos = $this->activoModel->where('User_Inventario', $this->request->getVar( 'id' ))->findAll();
+                    
+                    foreach($activos as $activo)
+                    {
+                        $data = 
+                        [
+                            'ID_CC' => $this->request->getVar( 'cc' )
+                        ];
+
+                        $this->activoModel->update( $activo['Id'], $data );
+                    }
+
+                    $drafts = $this->draftModel->where('User_Inventario', $this->request->getVar( 'id' ))->findAll();
+
+                    foreach($drafts as $draft)
+                    {
+                        $data = 
+                        [
+                            'ID_CC' => $this->request->getVar( 'cc' )
+                        ];
+
+                        $this->draftModel->update( $draft['Id'], $data );
+                    }
+
                     echo json_encode( array( 'status' => 200, 'msg' => 'Actualización completada' ) );
+                }
                 else
                     echo json_encode( array( 'status' => 400, 'msg' => 'No se pudo actualizar al usuario' ) );
             }
@@ -656,18 +712,23 @@ class User extends BaseController
                             ];
 
                             $this->userModel->insert( $insert );
-                        }
-                        
-                        if ($user['deleted_at'] != '' || $user['deleted_at'] != null)
-                        {
-                            $SQL = "UPDATE usuarios SET deleted_at=NULL WHERE id_usuario = ". $user['id_usuario'];
-                            $this->db->query( $SQL );  
-                        }
 
-                        $user = $this->userModel->where( 'email', $usuario[2] )->first( );
-                        $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
-                        $builder = $this->db->query( $SQL );
-                        
+                            $user = $this->userModel->where( 'email', $usuario[2] )->first( );
+                            $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
+                            $builder = $this->db->query( $SQL );
+                        }
+                        else
+                        {
+                            if ($user['deleted_at'] != '' || $user['deleted_at'] != null)
+                            {
+                                $SQL = "UPDATE usuarios SET deleted_at=NULL WHERE id_usuario = ". $user['id_usuario'];
+                                $this->db->query( $SQL );  
+                            }
+
+                            $user = $this->userModel->where( 'email', $usuario[2] )->first( );
+                            $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
+                            $builder = $this->db->query( $SQL );
+                        }                        
                     }
 
                     $subidos++;

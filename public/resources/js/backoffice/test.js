@@ -48,6 +48,7 @@ function getUserTableData(  )
       <tr>
           <th scope="col">Nombre</th>
           <th scope="col">Email</th>
+          <th scope="col">Centro de costo</th>
           <th scope="col">Emails enviados</th>
           <th>#</th>
       </tr>
@@ -83,6 +84,9 @@ function getUserTableData(  )
             </td>
             <td class="align-middle">
               ${ usuario.email }
+            </td>
+            <td>
+              ${usuario.cc}
             </td>
             <td class="align-middle">
               ${ usuario.envios }

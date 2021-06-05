@@ -445,8 +445,8 @@
                               </div>
                               
                               <div class="form-group row">
-                                <div class="col-sm-12">
-                                  <div id="newActiveMap" style="height: 300px;"></div>
+                                <div class="col-sm-12 text-center" id="newMap">
+                                  
                                 </div>
                               </div>
 
@@ -895,8 +895,8 @@
                               </div>
 
                               <div class="form-group row">
-                                <div class="col-sm-12">
-                                  <div id="iActiveMap" style="height: 300px;"></div>
+                                <div class="col-sm-12 text-center" id="iMapProcess">
+                                  
                                 </div>
                               </div>
 
@@ -1185,8 +1185,8 @@
                               </div>
 
                               <div class="form-group row">
-                                <div class="col-sm-12">
-                                  <div id="infoActiveMap" style="height: 300px;"></div>
+                                <div class="col-sm-12 text-center" id="invMap">
+                                  
                                 </div>
                               </div>
 

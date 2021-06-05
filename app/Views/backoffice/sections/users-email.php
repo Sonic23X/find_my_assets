@@ -32,6 +32,7 @@
                                 <tr>
                                     <th scope="col">Nombre</th>
                                     <th scope="col">Email</th>
+                                    <th scope="col">Centro de costo</th>
                                     <th scope="col">Emails enviados</th>
                                 </tr>
                             </thead>
