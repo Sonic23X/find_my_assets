@@ -1142,6 +1142,7 @@ function getDraftInfoNew( id )
       $( '.new-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
       $( '.new-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
       $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $('#newMap').html('');
 
       let activo = response.activo;
 
@@ -1170,7 +1171,7 @@ function getDraftInfoNew( id )
         
         let enlace =
         `
-          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}">Ver mapa</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}" target="_blank">Ver mapa</a>
         `;
 
         $('#newMap').append(enlace);
@@ -1427,6 +1428,7 @@ function viewProcessInfo( id, details = 1 )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $('#iMapProcess').html('');
       $( '#iNoActivo' ).val( activo.ID_Activo );
       $( '#iTipoActivo' ).val( activo.ID_Tipo );
       $( '#iName' ).val( activo.Nom_Activo );
@@ -1454,7 +1456,7 @@ function viewProcessInfo( id, details = 1 )
         
         let enlace =
         `
-          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}">Ver mapa</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}" target="_blank">Ver mapa</a>
         `;
 
         $('#iMapProcess').append(enlace);
@@ -1681,6 +1683,7 @@ function viewInvInfo( id )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $('#invMap').html('');
       $( '#infoNoActivo' ).val( activo.ID_Activo );
       $( '#infoTipoActivo' ).val( activo.ID_Tipo );
       $( '#infoName' ).val( activo.Nom_Activo );
@@ -1707,7 +1710,7 @@ function viewInvInfo( id )
         
         let enlace =
         `
-          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}">Ver mapa</a>
+          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}" target="_blank">Ver mapa</a>
         `;
 
         $('#invMap').append(enlace);
