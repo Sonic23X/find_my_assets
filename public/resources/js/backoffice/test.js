@@ -48,6 +48,7 @@ function getUserTableData(  )
       <tr>
           <th scope="col">Nombre</th>
           <th scope="col">Email</th>
+          <th scope="col">Centro de costo</th>
           <th scope="col">Emails enviados</th>
           <th>#</th>
       </tr>
@@ -83,6 +84,9 @@ function getUserTableData(  )
             </td>
             <td class="align-middle">
               ${ usuario.email }
+            </td>
+            <td>
+              ${usuario.cc}
             </td>
             <td class="align-middle">
               ${ usuario.envios }
@@ -126,6 +130,37 @@ function getUserTableData(  )
   });
 }
 
+function getCCs() 
+{
+  $.ajax({
+    url: url + '/usuarios/ccs',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    if ( response.status == 200 )
+    {     
+      response.data.forEach( ( cc, i ) =>
+      {
+
+        let typePlantilla =
+        `
+          <option value="${cc.id}">${cc.Subcuenta} - ${cc.Desc}</option>
+        `;
+
+        $( '#ccUserNew' ).append( typePlantilla );
+        $( '#ccUserEdit' ).append( typePlantilla );
+      });
+
+    }
+    else
+    {
+      imprimir( 'Ups..', 'Error al obtener la información del servidor', 'error' );
+    }
+  });
+}
+
 function editUser( id ) 
 {
   localStorage.setItem( 'user', id );
@@ -144,6 +179,7 @@ function editUser( id )
       $( '#eNombre' ).val( response.data.nombre );
       $( '#eApellidos' ).val( response.data.apellidos );
       $( '#eEmail' ).val( response.data.email );
+      $('#ccUserEdit').val(response.data.id_cc)
 
       $( '#editUserModal' ).modal( 'show' );
     }
@@ -206,6 +242,8 @@ function sendEmail( id )
 $( document ).ready( ( ) => 
 {
 
+    getCCs();
+
     getUserTableData( );
 
     $( '#registro' ).submit( event => 
@@ -218,6 +256,7 @@ $( document ).ready( ( ) =>
           apellidos: $( '#apellidos' ).val( ),
           email: $( '#email' ).val( ),
           password: $( '#password' ).val( ),
+          cc: $('#ccUserNew').val(),
           sendMail: $('#emailCheck').is(":checked"),
       };
 
@@ -262,6 +301,7 @@ $( document ).ready( ( ) =>
           nombre: $( '#eNombre' ).val( ),
           apellidos: $( '#eApellidos' ).val( ),
           email: $( '#eEmail' ).val( ),
+          cc: $('#ccUserEdit').val(),
       };
 
       $.ajax(

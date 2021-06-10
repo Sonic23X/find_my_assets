@@ -89,9 +89,9 @@ $routes->post('/activos/new', 'Activo::NewActivo');
 $routes->post('/activos/updateInfo', 'Activo::UpdateInfoActivo');
 $routes->post('/activos/dinamicForm', 'Activo::UpdateSucursal');
 $routes->post('/activos/setGeo', 'Activo::SetCoordenadas');
-$routes->get('/activos/getImageFront/(:alphanum)', 'Activo::GetImageFront/$1');
-$routes->get('/activos/getImageLeft/(:alphanum)', 'Activo::GetImageLeft/$1');
-$routes->get('/activos/getImageRight/(:alphanum)', 'Activo::GetImageRight/$1');
+$routes->get('/activos/getImageFront/(:any)', 'Activo::GetImageFront/$1');
+$routes->get('/activos/getImageLeft/(:any)', 'Activo::GetImageLeft/$1');
+$routes->get('/activos/getImageRight/(:any)', 'Activo::GetImageRight/$1');
 $routes->post('/activos/setImage', 'Activo::SetImage');
 $routes->post('/activos/deleteImage', 'Activo::DeleteImage');
 $routes->post('/activos/updateActivo', 'Activo::UpdateActivoFromDraft');
@@ -131,12 +131,14 @@ $routes->post('/bajas/down', 'Down::activosDelete');
 
 /**  Usuarios **/
 $routes->get('/usuarios', 'User::Users');
+$routes->get('/usuarios/ccs', 'User::GetCCs');
 $routes->get('/usuarios/data', 'User::getUserData');
 $routes->post('/usuarios/generateurl', 'User::GenerateUrl');
 $routes->post('/usuarios/sendEmail', 'User::SendEmail');
 $routes->post('/usuarios/usuario', 'User::GetOneUser');
 $routes->post('/usuarios/actualizar', 'User::Update');
 $routes->post('/usuarios/delete', 'User::Delete');
+$routes->post('/usuarios/getcc', 'User::GetMyCC');
 
 $routes->get('/usuarios/carga', 'User::InitialExcel');
 $routes->get('/usuarios/ejemplo', 'User::DownloadExcelExample');

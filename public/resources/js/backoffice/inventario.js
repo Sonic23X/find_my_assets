@@ -8,10 +8,6 @@ var inventarioTable = null;
 var InvActualView = '.inv-news-home';
 var InvPreviewView = '';
 
-var newActiveMap = null;
-var processActiveMap = null;
-var infoActiveMap = null;
-
 let spanish =
 {
   sProcessing: 'Procesando...',
@@ -1131,6 +1127,7 @@ function multipleInvDelete( )
 
 }
 
+//Este
 function getDraftInfoNew( id )
 {
   $.ajax({
@@ -1145,6 +1142,7 @@ function getDraftInfoNew( id )
       $( '.new-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
       $( '.new-image-right' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
       $( '.new-image-left' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
+      $('#newMap').html('');
 
       let activo = response.activo;
 
@@ -1167,32 +1165,26 @@ function getDraftInfoNew( id )
 
       $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
-      if( newActiveMap != null )
-      {
-        newActiveMap.off( );
-        newActiveMap.remove( );
-      }
-
       if (activo.GPS != null) 
       {
         let gps = activo.GPS.split(',');
-  
-        newActiveMap = L.map( 'newActiveMap' ).setView( [ gps[0], gps[1] ], 16 );
-  
-        newActiveMap.addControl(new L.Control.Fullscreen());
-  
-        L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-        {
-            attribution: '',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
-        }).addTo( newActiveMap );
-  
-        L.marker( [ gps[0], gps[1] ] ).addTo( newActiveMap )
-        .openPopup( );  
+        
+        let enlace =
+        `
+          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}" target="_blank">Ver mapa</a>
+        `;
+
+        $('#newMap').append(enlace);
+
+      }
+      else
+      {
+        let enlace =
+        `
+          <span>Sin ubicación</span>
+        `;
+
+        $('#newMap').append(enlace);
       }
 
       $.ajax({
@@ -1420,6 +1412,7 @@ function getProcessItems( )
   });
 }
 
+//Este
 function viewProcessInfo( id, details = 1 )
 {
   $.ajax({
@@ -1435,6 +1428,7 @@ function viewProcessInfo( id, details = 1 )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $('#iMapProcess').html('');
       $( '#iNoActivo' ).val( activo.ID_Activo );
       $( '#iTipoActivo' ).val( activo.ID_Tipo );
       $( '#iName' ).val( activo.Nom_Activo );
@@ -1459,24 +1453,24 @@ function viewProcessInfo( id, details = 1 )
       if (activo.GPS != null) 
       {
         let gps = activo.GPS.split(',');
-  
-        processActiveMap = L.map( 'iActiveMap' ).setView( [ gps[0], gps[1] ], 16 );
-  
-        processActiveMap.addControl(new L.Control.Fullscreen());
-    
-        L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-          {
-              attribution: '',
-              maxZoom: 18,
-              id: 'mapbox/streets-v11',
-              tileSize: 512,
-              zoomOffset: -1,
-              accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
-          }).addTo( processActiveMap );
-    
-        L.marker( [ gps[0], gps[1] ] ).addTo( processActiveMap )
-          .openPopup( ); 
-      } 
+        
+        let enlace =
+        `
+          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}" target="_blank">Ver mapa</a>
+        `;
+
+        $('#iMapProcess').append(enlace);
+
+      }
+      else
+      {
+        let enlace =
+        `
+          <span>Sin ubicación</span>
+        `;
+
+        $('#iMapProcess').append(enlace);
+      }
 
       if ( details == 1 )
         $( '.modalProcessButton' ).removeClass( 'd-none' );
@@ -1667,6 +1661,7 @@ function getInventaryItems( )
   });
 }
 
+//Este
 function viewInvInfo( id )
 {
   $( '.info-image-front' ).html( '<i class="fas fa-spinner fa-spin"></i>' );
@@ -1688,6 +1683,7 @@ function viewInvInfo( id )
 
       localStorage.setItem( 'process-inventary', activo.ID_Activo );
 
+      $('#invMap').html('');
       $( '#infoNoActivo' ).val( activo.ID_Activo );
       $( '#infoTipoActivo' ).val( activo.ID_Tipo );
       $( '#infoName' ).val( activo.Nom_Activo );
@@ -1708,32 +1704,26 @@ function viewInvInfo( id )
 
       $( '#infoButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
-      if( infoActiveMap != null )
-      {
-        infoActiveMap.off( );
-        infoActiveMap.remove( );
-      }
-
       if (activo.GPS != null) 
       {
         let gps = activo.GPS.split(',');
-  
-        infoActiveMap = L.map( 'infoActiveMap' ).setView( [ gps[0], gps[1] ], 16 );
-  
-        infoActiveMap.addControl(new L.Control.Fullscreen());
-  
-        L.tileLayer( 'https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}',
-        {
-            attribution: '',
-            maxZoom: 18,
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1,
-            accessToken: 'pk.eyJ1IjoiZmluZG15YXNzZXRzIiwiYSI6ImNrZGx5bmU3dTEzbnQycWxqc2wyNjg3MngifQ.P59j7JfBxCpS72-rAyWg0A'
-        }).addTo( infoActiveMap );
-  
-        L.marker( [ gps[0], gps[1] ] ).addTo( infoActiveMap )
-        .openPopup( );       
+        
+        let enlace =
+        `
+          <a href="https://www.google.com/maps/search/?api=1&query=${gps[0]},${gps[1]}" target="_blank">Ver mapa</a>
+        `;
+
+        $('#invMap').append(enlace);
+
+      }
+      else
+      {
+        let enlace =
+        `
+          <span>Sin ubicación</span>
+        `;
+
+        $('#invMap').append(enlace);
       }
 
       $.ajax({

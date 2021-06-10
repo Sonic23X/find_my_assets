@@ -174,8 +174,8 @@ class Auth extends BaseController
       }
       catch (\Exception $e)
       {
-        //echo json_encode( array( 'status' => 400, 'msg' => 'Error critico, intente más tarde' ) );
-        echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+        echo json_encode( array( 'status' => 400, 'msg' => 'Error, intente más tarde' ) );
+        //echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
       }
     }
     else

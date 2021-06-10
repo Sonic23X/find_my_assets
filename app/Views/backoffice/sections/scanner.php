@@ -148,7 +148,7 @@
                   <div class="form-group row">
                     <label for="cCosto" class="col-sm-2 col-form-label">Centro de costo</label>
                     <div class="col-sm-10">
-                      <select class="custom-select" name="cCosto" id="cCosto">
+                      <select class="custom-select" name="cCosto" id="cCosto" disabled>
                       </select>
                     </div>
                   </div>

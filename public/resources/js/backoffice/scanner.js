@@ -1586,4 +1586,23 @@ $(document).ready(function( )
     });
   });
 
+  $('#asignacion').change( event => 
+  {
+    let id = $('#asignacion').val();
+
+    $.ajax({
+      url: url + `/usuarios/getcc`,
+      type: 'POST',
+      dataType: 'json',
+      data: { id: id },
+    })
+    .done( response =>
+    {
+      if (response.status == 200) 
+      {
+        $('#cCosto').val(response.data.id_cc);
+      }
+    });
+  });
+
 });

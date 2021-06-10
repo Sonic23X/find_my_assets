@@ -15,16 +15,20 @@ class User extends BaseController
     protected $session;
     protected $userModel;
     protected $email;
+    protected $activoModel;
     protected $draftModel;
     protected $empresaModel;
+    protected $ccModel;
     protected $db;
 
     function __construct()
     {
         $this->session = \Config\Services::session( );
         $this->userModel = model( 'App\Models\UserModel' );
+        $this->activoModel = model( 'App\Models\ActivoModel' );
         $this->draftModel = model( 'App\Models\DraftModel' );
         $this->empresaModel = model( 'App\Models\EmpresaModel' );
+        $this->ccModel = model( 'App\Models\CCModel' );
         $this->db = \Config\Database::connect( );
         $this->email = new PHPMailerLib( );
     }
@@ -94,6 +98,44 @@ class User extends BaseController
     	}
     }
 
+    public function GetCCs()
+    {
+        if ( $this->request->isAJAX( ) )
+        {
+            try
+            {
+                $cc = $this->ccModel->where( 'id_empresa', $this->session->empresa )->findAll( );
+
+                echo json_encode( array( 'status' => 200, 'data' => $cc ) );
+            }
+            catch (\Exception $e)
+            {
+                echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+            }
+        }
+        else
+            return view( 'errors/cli/error_404' );
+    }
+
+    public function GetMyCC()
+    {
+        if ( $this->request->isAJAX( ) )
+        {
+            try
+            {
+                $cc = $this->userModel->where( 'id_usuario', $this->request->getVar('id') )->first( );
+
+                echo json_encode( array( 'status' => 200, 'data' => $cc ) );
+            }
+            catch (\Exception $e)
+            {
+                echo json_encode( array( 'status' => 400, 'msg' => $e->getMessage( ) ) );
+            }
+        }
+        else
+            return view( 'errors/cli/error_404' );
+    }
+
     public function getUserData(  )
     {
         if ( $this->request->isAJAX( ) )
@@ -105,7 +147,34 @@ class User extends BaseController
                                             ->where( 'perfil !=', 'superadmin' )
                                             ->findAll( );
 
-                echo json_encode( array( 'status' => 200, 'data' => $usuarios ) );
+                $data = [];
+                foreach($usuarios as $usuario)
+                {
+                    $cc = null;
+                    if (!empty($usuario['id_cc'])) 
+                    {
+                        $ccP = $this->ccModel->where('id', $usuario['id_cc'])->first();
+                        $cc = $ccP['Subcuenta'] . ' - ' . $ccP['Desc'];
+                    }
+                    else
+                    {
+                        $cc = 'N/A';
+                    }
+                    
+                    $json =
+                    [
+                        'id_usuario' => $usuario['id_usuario'],
+                        'nombre' => $usuario['nombre'],
+                        'apellidos' => $usuario['apellidos'],
+                        'email' => $usuario['email'],
+                        'envios' => $usuario['envios'],
+                        'cc' => $cc,
+                    ];  
+
+                    array_push($data, $json);
+                }
+
+                echo json_encode( array( 'status' => 200, 'data' => $data ) );
             }
             catch (\Exception $e)
             {
@@ -169,6 +238,7 @@ class User extends BaseController
                     'email_encriptado' => $emailEncrypt,
                     'patrocinador' => 'N/A',
                     'envios' => 1,
+                    'id_cc' => $this->request->getVar( 'cc' ),
                     'id_empresa' => $this->session->empresa,
                 ];
 
@@ -213,6 +283,7 @@ class User extends BaseController
                     'email_encriptado' => $emailEncrypt,
                     'patrocinador' => 'N/A',
                     'envios' => 0,
+                    'id_cc' => $this->request->getVar( 'cc' ),
                     'id_empresa' => $this->session->empresa,
                 ];
 
@@ -238,10 +309,38 @@ class User extends BaseController
                     'nombre' => $this->request->getVar( 'nombre' ),
                     'apellidos' => $this->request->getVar( 'apellidos' ),
                     'email' => $this->request->getVar( 'email' ),
+                    'id_cc' => $this->request->getVar( 'cc' ),
                 ];
 
                 if ( $this->userModel->update( $this->request->getVar( 'id' ), $update ) )
+                {
+                    //Change CC of activos
+                    $activos = $this->activoModel->where('User_Inventario', $this->request->getVar( 'id' ))->findAll();
+                    
+                    foreach($activos as $activo)
+                    {
+                        $data = 
+                        [
+                            'ID_CC' => $this->request->getVar( 'cc' )
+                        ];
+
+                        $this->activoModel->update( $activo['Id'], $data );
+                    }
+
+                    $drafts = $this->draftModel->where('User_Inventario', $this->request->getVar( 'id' ))->findAll();
+
+                    foreach($drafts as $draft)
+                    {
+                        $data = 
+                        [
+                            'ID_CC' => $this->request->getVar( 'cc' )
+                        ];
+
+                        $this->draftModel->update( $draft['Id'], $data );
+                    }
+
                     echo json_encode( array( 'status' => 200, 'msg' => 'Actualización completada' ) );
+                }
                 else
                     echo json_encode( array( 'status' => 400, 'msg' => 'No se pudo actualizar al usuario' ) );
             }
@@ -264,7 +363,7 @@ class User extends BaseController
             [
                 'urlUsuario' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ],
                 'nombre' => $user[ 'nombre' ],
-                'activos' =>  $this->draftModel->select( 'ID_Activo, Nom_Activo' )->where( 'User_Inventario', $this->request->getVar( 'id' ) )->findAll( ),
+                'activos' => $this->draftModel->select( 'ID_Activo, Nom_Activo' )->where( 'User_Inventario', $this->request->getVar( 'id' ) )->where('ID_Company', $this->session->empresa)->findAll( ),
                 'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
             ];
 
@@ -358,12 +457,31 @@ class User extends BaseController
 		$cargaSheet->getColumnDimension('B')->setWidth(50);
 		$cargaSheet->getColumnDimension('C')->setWidth(50);
 		$cargaSheet->getColumnDimension('D')->setWidth(50);
+        $cargaSheet->getColumnDimension('E')->setWidth(50);
 
 		//iniciamos tabla 
 		$cargaSheet->setCellValue( 'A1', 'Nombre' );
 		$cargaSheet->setCellValue( 'B1', 'Apellidos' );
 		$cargaSheet->setCellValue( 'C1', 'Correo electrónico' );
 		$cargaSheet->setCellValue( 'D1', 'Contraseña' );
+        $cargaSheet->setCellValue( 'E1', 'Centro de costo' );
+
+        $ccSheet = new Worksheet($spreadsheet, 'Centro de costos');
+		$spreadsheet->addSheet($ccSheet, 2);
+
+		$ccSheet->getColumnDimension('A')->setWidth(50);
+		$ccSheet->setCellValue( 'A1', 'Centro de costo' );
+		$ccSheet->setCellValue( 'B1', 'Numero' );
+
+		$ccs = $this->ccModel->where('id_empresa', $this->session->empresa)->where('Subcuenta !=', null)->findAll();
+		$contador = 2;
+		
+		foreach ($ccs as $cc) 
+		{
+			$ccSheet->setCellValue( 'A' . $contador, $cc['Desc'] );
+			$ccSheet->setCellValue( 'B' . $contador, $cc['Subcuenta'] );
+			$contador++;
+		}
 
 		$styleHeadArray = 
 		[
@@ -386,8 +504,8 @@ class User extends BaseController
 			],
 		];
 			
-		$cargaSheet->getStyle('A1:D1')->applyFromArray($styleHeadArray);
-		
+		$cargaSheet->getStyle('A1:E1')->applyFromArray($styleHeadArray);
+		$ccSheet->getStyle('A1:B1')->applyFromArray($styleHeadArray);
 
 		$spreadsheet->setActiveSheetIndex(0);
 		$writer = new Xls($spreadsheet);
@@ -441,6 +559,7 @@ class User extends BaseController
 			$linea = 1;
 			$usuarios_subidos = [];
             $user = null;
+            $cc = null;
 			foreach ( $rows as $usuario ) 
 			{
 				//Validación de usuarios
@@ -474,14 +593,30 @@ class User extends BaseController
                 }
                 if ($usuario[3] == null) 
                 {
-                    array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'La linea no contiene la contraseña del usuario' ]);
+                    array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'La linea no contiene la contraseña del usuario.' ]);
                     $error = true;
+                }
+                if ($usuario[4] == null) 
+                {
+                    array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'La linea no contiene el código del centro de costos.' ]);
+                    $error = true;
+                }
+                else
+                {
+                    $cc = $this->ccModel->where('Subcuenta', $usuario[4])->where('id_empresa', $this->session->empresa)->first();
+
+                    if($cc == null)
+                    {
+                        array_push($errores, [ 'usuario' => 'Linea ' . $linea, 'problema' => 'El código del centro de costos no existe.' ]);
+                        $error = true;
+                    }
                 }
 				
                 if (!$error) 
                 {
                     $password = crypt( $usuario[3], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$' );
 			        $emailEncrypt = md5( $usuario[2] );
+                    $cc = $this->ccModel->where('Subcuenta', $usuario[4])->where('id_empresa', $this->session->empresa)->first();
 
                     if ($this->request->getVar( 'sendEmail' ) == 'true') 
                     {
@@ -528,6 +663,7 @@ class User extends BaseController
                                 'patrocinador' => 'N/A',
                                 'envios' => 0,
                                 'id_empresa' => $this->session->empresa,
+                                'id_cc' => $cc['id'],
                             ];
 
                             if ( $this->userModel->insert( $insert ) )
@@ -572,21 +708,27 @@ class User extends BaseController
                                 'patrocinador' => 'N/A',
                                 'envios' => 0,
                                 'id_empresa' => $this->session->empresa,
+                                'id_cc' => $cc['id'],
                             ];
 
                             $this->userModel->insert( $insert );
-                        }
-                        
-                        if ($user['deleted_at'] != '' || $user['deleted_at'] != null)
-                        {
-                            $SQL = "UPDATE usuarios SET deleted_at=NULL WHERE id_usuario = ". $user['id_usuario'];
-                            $this->db->query( $SQL );  
-                        }
 
-                        $user = $this->userModel->where( 'email', $usuario[2] )->first( );
-                        $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
-                        $builder = $this->db->query( $SQL );
-                        
+                            $user = $this->userModel->where( 'email', $usuario[2] )->first( );
+                            $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
+                            $builder = $this->db->query( $SQL );
+                        }
+                        else
+                        {
+                            if ($user['deleted_at'] != '' || $user['deleted_at'] != null)
+                            {
+                                $SQL = "UPDATE usuarios SET deleted_at=NULL WHERE id_usuario = ". $user['id_usuario'];
+                                $this->db->query( $SQL );  
+                            }
+
+                            $user = $this->userModel->where( 'email', $usuario[2] )->first( );
+                            $SQL = "INSERT INTO user_empresa(id_usuario, id_empresa) VALUES ( ". $user[ 'id_usuario'] .", ". $this->session->empresa ." )";
+                            $builder = $this->db->query( $SQL );
+                        }                        
                     }
 
                     $subidos++;
