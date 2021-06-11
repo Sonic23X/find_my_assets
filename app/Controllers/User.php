@@ -363,7 +363,11 @@ class User extends BaseController
             [
                 'urlUsuario' => base_url( '/carga' ) . '/' . $user[ 'email_encriptado' ],
                 'nombre' => $user[ 'nombre' ],
-                'activos' => $this->draftModel->select( 'ID_Activo, Nom_Activo' )->where( 'User_Inventario', $this->request->getVar( 'id' ) )->where('ID_Company', $this->session->empresa)->findAll( ),
+                'activos' => $this->draftModel->select( 'ID_Activo, Nom_Activo' )
+                                              ->where( 'User_Inventario', $this->request->getVar( 'id' ) )
+                                              ->where('ID_Company', $this->session->empresa)
+                                              ->where('TS_Delete', NULL)
+                                              ->findAll( ),
                 'empresa' => $this->empresaModel->find($this->session->empresa)['nombre'],
             ];
 
