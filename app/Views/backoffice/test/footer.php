@@ -46,6 +46,9 @@
     <!-- Switch bootstrap4 -->
     <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
 
+    <!-- Select2 -->
+    <script src="<?= base_url( ) ?>/resources/plugins/select2/select2.min.js"></script>
+
     <!-- Custom JS -->
     <script src="<?= base_url( ) ?>/resources/js/backoffice/<?= $js ?>.js"></script>
 
