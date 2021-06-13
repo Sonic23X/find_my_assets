@@ -129,19 +129,8 @@ class Activo extends BaseController
 					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', 'User_Delete',
 				];
 
-				$SQL = "SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id;
-
-				$SQLResult = $this->db->query( $SQL, [ $campos, $this->request->getVar( 'codigo' ) ] )->getResult( );
-
-				$empresas = [ ];
-				
-				foreach( $SQLResult as $empresa )
-				{
-					array_push( $empresas, $empresa->id_empresa );
-				}
-
 				$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-										   ->whereIn( 'ID_Company', $empresas )
+										   ->where( 'ID_Company', $this->session->empresa )
 											->select( $campos )
 											->first( );
 
