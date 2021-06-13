@@ -37,7 +37,6 @@
     <!-- Select2 -->
     <link href="<?= base_url( ) ?>/resources/plugins/select2/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="<?= base_url( ) ?>/resources/plugins/select2/select2-bootstrap4.min.css">
-    <script src="<?= base_url( ) ?>/resources/plugins/select2/select2.min.js" async></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="<?= base_url( ) ?>/resources/css/backoffice/<?= $css ?>.css">
