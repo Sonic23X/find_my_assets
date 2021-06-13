@@ -61,7 +61,7 @@
                           </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row d-none">
                           <label for="asignacion" class="col-sm-2 col-form-label">Empresa</label>
                           <div class="col-sm-10">
                             <select class="custom-select iEmpresa" id="downEmpresa" name="asignacion" onchange="downFiltros( )">
@@ -224,7 +224,7 @@
                           </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group row d-none">
                           <label for="asignacion" class="col-sm-4 col-form-label">Empresa</label>
                           <div class="col-sm-8">
                             <select class="form-control-plaintext iEmpresa" name="asignacion" id="downEmpresa" disabled>
