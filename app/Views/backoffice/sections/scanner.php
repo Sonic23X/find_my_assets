@@ -236,7 +236,7 @@
                   </div>
                 </div>
 
-                <div class="row mt-3 text-center">
+                <div class="row mt-3 text-center d-none">
                   <div class="col-1 col-sm-1"></div>
                   <div class="col-10 col-sm-10">
                     <div class="form-group row">

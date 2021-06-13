@@ -1259,7 +1259,7 @@ class Activo extends BaseController
 		$cargaSheet->setCellValue( 'A1', 'Número de activo' );
 		$cargaSheet->setCellValue( 'B1', 'Tipo de activo' );
 		$cargaSheet->setCellValue( 'C1', 'Nombre' );
-		$cargaSheet->setCellValue( 'D1', 'CC' );
+		$cargaSheet->setCellValue( 'D1', 'Codigo de Centro de costo' );
 		$cargaSheet->setCellValue( 'E1', 'Email del usuario' );
 		$cargaSheet->setCellValue( 'F1', 'Sucursal' );
 		$cargaSheet->setCellValue( 'G1', 'Área' );

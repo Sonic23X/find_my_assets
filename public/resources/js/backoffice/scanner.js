@@ -143,14 +143,8 @@ function getScannerFormData( )
 
       usuarios.forEach( ( usuario , i ) =>
       {
-
-        let typePlantilla =
-        `
-          <option value="${ usuario.id_usuario }">${ usuario.nombre + ' ' + usuario.apellidos }</option>
-        `;
-
-        $( '#asignacion' ).append( typePlantilla );
-
+        let option = new Option(usuario.nombre + ' ' + usuario.apellidos, usuario.id_usuario, false, false);
+        $( '#asignacion' ).append( option ).trigger('change');
       });
 
       let empresas = response.empresas;
@@ -916,10 +910,10 @@ function updateCoordenadas( )
 $(document).ready(function( )
 {
 
+  $('#asignacion').select2({ theme: 'bootstrap4', });
+
   //formularios
   getScannerFormData( );
-
-  $('#asignacion').select2({ theme: 'bootstrap4', });
 
   $( '#numActivoS2' ).keydown( e =>
     {
