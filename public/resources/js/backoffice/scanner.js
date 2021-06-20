@@ -609,14 +609,16 @@ function setInsMessage( view, update = false )
       $( '.photo-label' ).css('color', '#6c757d');
       if ( update )
       {
-        message = 'Indica el avance en la vida útil del activo';
-        $( '#instructions2' ).html( 'Nueva ubicación geográfica del activo' );
+        //message = 'Indica el avance en la vida útil del activo';
+        message = 'Nueva ubicación geográfica del activo';
+        //$( '#instructions2' ).html( 'Nueva ubicación geográfica del activo' );
         $( '#instructions3' ).html( 'Indica el área donde se encuentra el activo' );
       }
       else
       {
-        message = 'Indica el avance en la vida útil del activo';
-        $( '#instructions2' ).html( 'Ubicación geográfica del activo' );
+        //message = 'Indica el avance en la vida útil del activo';
+        message = 'Ubicación geográfica del activo';
+        //$( '#instructions2' ).html( 'Ubicación geográfica del activo' );
         $( '#instructions3' ).html( 'Indica el área donde se encontrará el activo' );
       }
       break;
@@ -1509,14 +1511,16 @@ $(document).ready(function( )
         $( '.photo-label' ).css('color', '#6c757d');
         if ( isNew )
         {
-          message = 'Indica el avance en la vida útil del activo';
-          $( '#instructions2' ).html( 'Nueva ubicación geográfica del activo' );
+          //message = 'Indica el avance en la vida útil del activo';
+          message = 'Ubicación geográfica del activo';
+          //$( '#instructions2' ).html( 'Nueva ubicación geográfica del activo' );
           $( '#instructions3' ).html( 'Indica el área donde se encuentra el activo' );
         }
         else
         {
-          message = 'Indica el avance en la vida útil del activo';
-          $( '#instructions2' ).html( 'Ubicación geográfica del activo' );
+          //message = 'Indica el avance en la vida útil del activo';
+          message = 'Ubicación geográfica del activo';
+          //$( '#instructions2' ).html( 'Ubicación geográfica del activo' );
           $( '#instructions3' ).html( 'Indica el área donde se encontrará el activo' );
         }
 
@@ -1597,6 +1601,26 @@ $(document).ready(function( )
         $('#cCosto').val(response.data.id_cc);
       }
     });
+  });
+
+  $('#copy-url').click( event => {
+    
+    let url = window.location.href;
+
+    var aux = document.createElement('input');
+    aux.setAttribute('value', url);
+    document.body.appendChild(aux);
+    aux.select();
+    if (document.execCommand('copy'))
+    {
+      document.body.removeChild(aux);
+      imprimir( '', 'URL copiada al portapales', 'success' );
+    }
+    else
+    {
+      document.body.removeChild(aux);
+      imprimir('Ups...', 'Ah ocurrido un problema al copiar la url', 'error' );
+    }  
   });
 
 });

@@ -96,6 +96,14 @@
                   </div>
                 </div>
 
+                <div class="row">
+                  <div class="col-12 col-sm-12 col-md-12 mt-3 title-scanner">
+                    <span>Copiar url</span>
+                    <br>
+                    <button type="button" class="btn btn-info mt-1" id="copy-url">Copiar</button>
+                  </div>
+                </div>
+
                 <div class="container-fluid mt-4"> <br> </div>
               </div>
 
@@ -190,7 +198,7 @@
 
               <div class="scanner-geolocation mt-3 d-none">
 
-                <div class="row mt-2">
+                <div class="row mt-2 d-none">
                   <div class="col-1 col-sm-1"></div>
                   <div class="col-10 col-sm-10">
                     <div class="form-group row">
@@ -210,7 +218,7 @@
                   <div class="col-1 col-sm-1"></div>
                 </div>
 
-                <div class="row mt-2 p-2 instructions text-center">
+                <div class="row mt-2 p-2 instructions text-center d-none">
                   <div class="col-12 col-sm-12 text-center">
                     <span id="instructions2">Ubicación geográfica del activo</span>
                   </div>
