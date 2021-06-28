@@ -172,6 +172,8 @@ $routes->post('/dashboard/filter', 'Dashboard::getDataFilter');
 //details
 $routes->get('/macal/inv', 'Inventary::MacalInvDetails');
 
+$routes->get('/dep', 'Activo::Depreciacion');
+
 /**
  * --------------------------------------------------------------------
  * Additional Routing

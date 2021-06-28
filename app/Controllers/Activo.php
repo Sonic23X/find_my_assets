@@ -1422,4 +1422,27 @@ class Activo extends BaseController
 		}
 	}
 
+	public function Depreciacion()
+	{
+		if ( $this->session->has( 'isLoggin' ) && $this->session->has( 'tipo' ) && ( $this->session->tipo == 'admin' || $this->session->tipo == 'superadmin'))
+		{
+			//CSS, METAS y titulo
+			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
+			echo view( 'backoffice/common/head', $head );
+
+			
+
+			//content - scanner
+			echo view( 'backoffice/test/depre' );
+
+			//Scripts y librerias
+			$footer = array( 'js' => 'depre',  );
+			echo view( 'backoffice/common/footer2', $footer );
+		}
+		else
+		{
+			$data = array( 'url' => base_url( '/ingreso' ) );
+			return view( 'functions/redirect', $data );
+		}
+	}
 }
