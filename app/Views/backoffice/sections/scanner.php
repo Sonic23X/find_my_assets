@@ -198,7 +198,7 @@
 
               <div class="scanner-geolocation mt-3 d-none">
 
-                <div class="row mt-2 d-none">
+                <div class="row mt-2">
                   <div class="col-1 col-sm-1"></div>
                   <div class="col-10 col-sm-10">
                     <div class="form-group row">
