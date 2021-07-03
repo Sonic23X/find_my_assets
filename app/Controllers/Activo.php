@@ -1447,7 +1447,7 @@ class Activo extends BaseController
 
 	public function MoveToInvManual()
 	{
-		$drafts = $this->draftModel->where( 'ID_Company', 4 )->where('status !=', 'activado')->findAll();
+		$drafts = $this->draftModel->where( 'ID_Company', 4 )->findAll();
 
 		foreach ($drafts as $draft) 
 		{
@@ -1490,9 +1490,12 @@ class Activo extends BaseController
 				'TS_Delete' => $draft[ 'TS_Delete' ],
 			];
 
-			$this->draftModel->where( 'ID_Activo', $draft[ 'ID_Activo' ] )->where('ID_Company', 4 )->set( [ 'status' => 'activado' ] )->update( );
-
-        	$this->activoModel->insert( $activoData );
+        	if ( $this->activoModel->insert( $activoData )) 
+			{
+				echo "insertado \n";
+			}
+			else
+				echo "nope\n";
 		}
 	}
 }
