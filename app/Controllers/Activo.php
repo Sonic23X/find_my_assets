@@ -1447,7 +1447,7 @@ class Activo extends BaseController
 
 	public function MoveToInvManual()
 	{
-		$drafts = $this->draftModel->where( 'ID_Company', 4 )->where('status !=', 'activado')->get();
+		$drafts = $this->draftModel->where( 'ID_Company', 4 )->where('status !=', 'activado')->findAll();
 
 		foreach ($drafts as $draft) 
 		{
