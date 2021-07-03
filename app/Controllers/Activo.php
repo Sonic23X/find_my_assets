@@ -1429,7 +1429,6 @@ class Activo extends BaseController
 			//CSS, METAS y titulo
 			$head = array( 'title' => 'Dashboard | Find my assets', 'css' => 'dashboard' );
 			echo view( 'backoffice/common/head', $head );
-
 			
 
 			//content - scanner
@@ -1443,6 +1442,57 @@ class Activo extends BaseController
 		{
 			$data = array( 'url' => base_url( '/ingreso' ) );
 			return view( 'functions/redirect', $data );
+		}
+	}
+
+	public function MoveToInvManual()
+	{
+		$drafts = $this->draftModel->where( 'ID_Company', 4 )->where('status !=', 'activado')->get();
+
+		foreach ($drafts as $draft) 
+		{
+			$activoData =
+			[
+				'ID_Activo' => $draft[ 'ID_Activo' ],
+				'Nom_Activo' => $draft[ 'Nom_Activo' ],
+				'BC_Activo' => $draft[ 'BC_Activo' ],
+				'ID_Company' => $draft[ 'ID_Company' ],
+				'ID_Sucursal' => $draft[ 'ID_Sucursal' ],
+				'ID_Area' => $draft[ 'ID_Area' ],
+				'ID_CC' => $draft[ 'ID_CC' ],
+				'ID_Asignado' => $draft[ 'ID_Asignado' ],
+				'ID_Proceso' => $draft[ 'ID_Proceso' ],
+				'ID_Status' => $draft[ 'ID_Status' ],
+				'Fec_Compra' => $draft[ 'Fec_Compra' ],
+				'Img_FacCompra' => $draft[ 'Img_FacCompra' ],
+				'Pre_Compra' => $draft[ 'Pre_Compra' ],
+				'Fec_Expira' => $draft[ 'Fec_Expira' ],
+				'Img_Garantia' => $draft[ 'Img_Garantia' ],
+				'NSerie_Activo' => $draft[ 'NSerie_Activo' ],
+				'ID_Tipo' => $draft[ 'ID_Tipo' ],
+				'Des_Activo' => $draft[ 'Des_Activo' ],
+				'Fec_InicioDepre' => $draft[ 'Fec_InicioDepre' ],
+				'ID_MetDepre' => $draft[ 'ID_MetDepre' ],
+				'Vida_Activo' => $draft[ 'Vida_Activo' ],
+				'GPS' => $draft[ 'GPS' ],
+				'Fec_Inventario' => $draft[ 'Fec_Inventario' ],
+				'User_Inventario' => $draft[ 'User_Inventario' ],
+				'Comentarios' => $draft[ 'Comentarios' ],
+				'Ima_Activo0' => $draft[ 'Ima_Activo0' ],
+				'Ima_ActivoLeft' => $draft[ 'Ima_ActivoLeft' ],
+				'Ima_ActivoRight' => $draft[ 'Ima_ActivoRight' ],
+				'Ima_ActivoFront' => $draft[ 'Ima_ActivoFront' ],
+				'User_Create' => $draft[ 'User_Create' ],
+				'User_Update' => $draft[ 'User_Update' ],
+				'User_Delete' => $draft[ 'User_Delete' ],
+				'TS_Create' => $draft[ 'TS_Create' ],
+				'TS_Update' => $draft[ 'TS_Update' ],
+				'TS_Delete' => $draft[ 'TS_Delete' ],
+			];
+
+			$this->draftModel->where( 'ID_Activo', $draft[ 'ID_Activo' ] )->where('ID_Company', 4 )->set( [ 'status' => 'activado' ] )->update( );
+
+        	$this->activoModel->insert( $activoData );
 		}
 	}
 }

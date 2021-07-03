@@ -173,6 +173,8 @@ $routes->post('/dashboard/filter', 'Dashboard::getDataFilter');
 $routes->get('/macal/inv', 'Inventary::MacalInvDetails');
 
 $routes->get('/dep', 'Activo::Depreciacion');
+$routes->get('/movmacal', 'Activo::MoveToInvManual');
+
 
 /**
  * --------------------------------------------------------------------
