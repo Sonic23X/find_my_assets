@@ -1694,9 +1694,9 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
-      $( '#infoVidaUtil' ).val( (activo.Vida_Activo != null) ? 'N/A' : activo.Vida_Activo );
-      $( '#infoPrecio' ).val( (activo.Pre_Compra != null) ? 'N/A' : activo.Pre_Compra );
-      $( '#infoFechaCompra' ).val( (activo.Fec_Compra != null) ? 'N/A' : activo.Fec_Compra );
+      $( '#infoVidaUtil' ).val( (activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo );
+      $( '#infoPrecio' ).val( (activo.Pre_Compra == null) ? 'N/A' : activo.Pre_Compra );
+      $( '#infoFechaCompra' ).val( (activo.Fec_Compra == null) ? 'N/A' : activo.Fec_Compra );
       if (activo.TS_Update != null) 
         $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
       else
