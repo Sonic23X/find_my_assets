@@ -1132,8 +1132,7 @@ $(document).ready(function( )
         $( '#name' ).val( response.activo.Nom_Activo );
         $( '#cCosto' ).val( response.activo.ID_CC );
         $( '#serie' ).val( response.activo.NSerie_Activo );
-        //$( '#asignacion' ).val( response.activo.User_Inventario );
-        $('#asignacion').select2().select2('val', response.activo.User_Inventario)
+        $('#asignacion').select2({ theme: 'bootstrap4', }).select2('val', response.activo.User_Inventario)
         $( '#desc' ).val( response.activo.Des_Activo );
 
         wizzardPreviewView = wizzardActualView;
