@@ -267,7 +267,7 @@ class Activo extends BaseController
 				$update =
 				[
 					'Vida_Activo' => $this->request->getVar( 'vida' ),
-					'ID_Company' => $this->request->getVar( 'empresa' ),
+					'ID_Company' => $this->session->empresa,
 					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
 					'ID_Area' => $this->request->getVar( 'area' ),
 				];

@@ -1330,7 +1330,7 @@ $(document).ready(function( )
     {
       codigo: localStorage.getItem( 'codigo' ),
       vida: $( '#vidaUtil' ).val( ),
-      empresa: $( '#empresas' ).val( ),
+      //empresa: $( '#empresas' ).val( ),
       sucursal: $( '#sucursal' ).val( ),
       area: $( '#area' ).val( ),
     };
