@@ -1694,9 +1694,19 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
-      $( '#infoVidaUtil' ).val( (activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo );
-      $( '#infoPrecio' ).val( (activo.Pre_Compra == null) ? 'N/A' : activo.Pre_Compra );
+      $( '#infoVidaUtil' ).val( (activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo + ' meses' );
+      $( '#infoPrecio' ).val( (activo.Pre_Compra == null) ? 'N/A' : new Intl.NumberFormat('en-US').format(activo.Pre_Compra) );
       $( '#infoFechaCompra' ).val( (activo.Fec_Compra == null) ? 'N/A' : activo.Fec_Compra );
+
+      console.log(activo.Pre_Compra);
+      if ((activo.Vida_Activo != null) && (activo.Pre_Compra != null) )
+      {
+        let depre = ( activo.Pre_Compra ) / activo.Vida_Activo;
+        $( '#infoDepresacion' ).val( new Intl.NumberFormat('en-US').format(depre.toFixed(2)) );
+      }
+      else
+        $( '#infoDepresacion' ).val( 'Sin información suficiente' );
+
       if (activo.TS_Update != null) 
         $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
       else
