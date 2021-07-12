@@ -144,7 +144,7 @@ function getScannerFormData( )
       usuarios.forEach( ( usuario , i ) =>
       {
         let option = new Option(usuario.nombre + ' ' + usuario.apellidos, usuario.id_usuario, false, false);
-        $( '#asignacion' ).append( option ).trigger('change');
+        $( '#asignacion' ).append( option );
       });
 
       let empresas = response.empresas;
