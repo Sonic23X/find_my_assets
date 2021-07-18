@@ -912,8 +912,6 @@ function updateCoordenadas( )
 $(document).ready(function( )
 {
 
-  $('#asignacion').select2({ theme: 'bootstrap4', });
-
   //formularios
   getScannerFormData( );
 
