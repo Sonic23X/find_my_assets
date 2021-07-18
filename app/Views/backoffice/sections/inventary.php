@@ -1185,6 +1185,13 @@
                                 </div>
                               </div>
 
+                              <div class="form-group row">
+                                <label for="iValor" class="col-sm-4 col-form-label">Valor libro</label>
+                                <div class="col-sm-8">
+                                  <input type="text" class="form-control-plaintext" id="iValor" disabled>
+                                </div>
+                              </div>
+
                               <div class="row">
                                 <div class="col-12 text-center">
                                   <span><b>Ubicación</b></span>
