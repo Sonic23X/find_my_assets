@@ -205,7 +205,6 @@ class Inventary extends BaseController
         [
           'ID_Sucursal' => $activo[ 'ID_Sucursal' ],
           'ID_Area' => $activo[ 'ID_Area' ],
-          'ID_CC' => $activo[ 'ID_CC' ],
           'NSerie_Activo' => $activo[ 'NSerie_Activo' ],
           'ID_Tipo' => $activo[ 'ID_Tipo' ],
           'User_Inventario' => $activo[ 'User_Inventario' ],
