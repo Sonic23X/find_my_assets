@@ -1611,7 +1611,7 @@ function getInventaryItems( )
               ${ activo.imagenes } de 3
             </td>
             <td class="align-middle">
-              ${ activo.fecha }
+              ${ activo.fecha.split(' ')[0] }
             </td>
             <td>
         `;
@@ -1833,9 +1833,12 @@ function inventaryFiltros( )
   `
     <thead>
       <tr>
+        <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Imagenes</th>
+        <th scope="col">Ultima Act.</th>
+        <th scope="col">Inv.</th>
       </tr>
     </thead>
     <tbody class="table-inventary-actives">
@@ -1875,6 +1878,9 @@ function inventaryFiltros( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
               <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
@@ -1885,11 +1891,33 @@ function inventaryFiltros( )
             <td class="align-middle">
               ${ activo.usuario }
             </td>
-            <td class="align-middle">
-              ${ activo.fecha }
+            <td>
+              ${ activo.imagenes } de 3
             </td>
-          </tr>
+            <td class="align-middle">
+              ${ activo.fecha.split(' ')[0] }
+            </td>
+            <td>
         `;
+
+        if (activo.inventario)
+        {
+          typePlantilla += 
+          `
+                <span class="badge badge-success">OK</span>
+              </td>
+            </tr>
+          `;
+        }
+        else
+        {
+          typePlantilla += 
+          `
+                <span class="badge badge-warning text-light">PEND</span>
+              </td>
+            </tr>
+          `;
+        }
 
         $( '.table-inventary-actives' ).append( typePlantilla );
       });
