@@ -504,7 +504,7 @@ function IsConcilar( )
         `
           <tr>
             <td>
-              <a class="text-dark text-decoration-none" onClick="infoItemConcilar( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:infoItemConcilar( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1004,7 +1004,7 @@ function getNewItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="getDraftInfoNew( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:getDraftInfoNew( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1163,7 +1163,7 @@ function getDraftInfoNew( id )
       else
         $( '#newFechaUpdate' ).val( 'Sin actualización' );
 
-      $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
+      $( '.newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
       if (activo.GPS != null) 
       {
@@ -1320,7 +1320,7 @@ function getProcessItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:viewProcessInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1369,7 +1369,7 @@ function getProcessItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id }, 0 )">
+              <a class="text-dark text-decoration-none" href="javascript:viewProcessInfo( ${ activo.id }, 0 )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1443,12 +1443,6 @@ function viewProcessInfo( id, details = 1 )
         $( '#iFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
       else
         $( '#iFechaUpdate' ).val( 'Sin actualización' );
-
-      if( processActiveMap != null )
-      {
-        processActiveMap.off( );
-        processActiveMap.remove( );
-      }
 
       if (activo.GPS != null) 
       {
@@ -1598,7 +1592,7 @@ function getInventaryItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1882,7 +1876,7 @@ function inventaryFiltros( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }

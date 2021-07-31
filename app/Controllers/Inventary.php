@@ -968,7 +968,7 @@ class Inventary extends BaseController
               $fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
               $fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
               
-              if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+              if(($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix) && $imagenes > 0)
                 $inventario = true;
             }
 
@@ -1074,7 +1074,7 @@ class Inventary extends BaseController
             $fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
             $fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
             
-            if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+            if(($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix) && $imagenes > 0)
               $inventario = true;
           }
 

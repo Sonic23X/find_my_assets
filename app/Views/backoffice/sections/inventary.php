@@ -389,9 +389,9 @@
                               <div class="form-group row">
                                 <label for="serie" class="col-sm-4 col-form-label">
                                   No. de serie
-                                  <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
+                                  <button type="button" class="btn btn-primary newButtonSerie" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
-                                          title="Campo actualizado, valor anterior: MXN56231" id="newButtonSerie">
+                                          title="Campo actualizado, valor anterior: MXN56231">
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
@@ -860,9 +860,9 @@
                               <div class="form-group row">
                                 <label for="serie" class="col-sm-4 col-form-label">
                                   No. de serie
-                                  <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="right"
+                                  <button type="button" class="btn btn-primary newButtonSerie" data-toggle="tooltip" data-placement="right"
                                           style="border-radius: 25px; font-size: 9px !important;"
-                                          title="Sin cambios" id="newButtonSerie">
+                                          title="Sin cambios">
                                     <i class="fas fa-info"></i>
                                   </button>
                                 </label>
