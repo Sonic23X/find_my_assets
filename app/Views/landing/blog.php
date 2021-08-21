@@ -7,6 +7,12 @@
           </div>
         </div>
         <div class="row mt-5">
+          <div class="col">
+            <h4 class="text-center">Sin entradas</h4>
+          </div>
+        </div>
+        <!--
+        <div class="row mt-5">
           <div class="col-sm-4 mb-3">
             <div class="card">
               <img src="images/landing/blog/blog1.jpg" alt="image-blog-1" class="img-fluid image-blog">
@@ -38,5 +44,6 @@
             </div>
           </div>
         </div>
+        -->
       </div>
     </div>

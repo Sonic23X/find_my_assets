@@ -154,5 +154,17 @@ $(document).ready(() =>
 
   });
 
+  /* --- Blog --- */
+
+  /*$.ajax({
+    url: 'https://admin.findmy-asstes.com/landing/blogs',
+    type: 'GET',
+    dataType: 'json',
+  })
+  .done( response =>
+  {
+    console.log(response);
+  });*/
+
 
 });
