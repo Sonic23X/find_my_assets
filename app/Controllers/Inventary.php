@@ -1117,7 +1117,7 @@ class Inventary extends BaseController
           'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
           'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
           'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
-          'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
+          'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre', 'depreActual',
           'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
           'User_Create', 'User_Update', '	User_Delete',
           'TS_Create', 'TS_Update', 'TS_Delete'

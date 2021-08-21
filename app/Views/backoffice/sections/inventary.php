@@ -1179,7 +1179,7 @@
                               </div>
 
                               <div class="form-group row">
-                                <label for="iFechaCompra" class="col-sm-4 col-form-label">Depresación mensual</label>
+                                <label for="infoDepresacion" class="col-sm-4 col-form-label">Depresación</label>
                                 <div class="col-sm-8">
                                   <input type="text" class="form-control-plaintext" id="infoDepresacion" disabled>
                                 </div>
