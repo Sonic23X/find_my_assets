@@ -124,7 +124,7 @@ class Activo extends BaseController
 				[
 					'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
 					'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
-					'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
+					'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo', 'status',
 					'Des_Activo', 'ID_MetDepre', 'Vida_Activo', 'GPS', 'Fec_Inventario',
 					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', 'User_Delete',
 				];
@@ -263,17 +263,27 @@ class Activo extends BaseController
 		{
 			try
 			{
-
 				$update =
 				[
 					'Vida_Activo' => $this->request->getVar( 'vida' ),
-					'ID_Company' => $this->session->empresa,
 					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
 					'ID_Area' => $this->request->getVar( 'area' ),
 				];
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+				{
+					$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+										   	->where( 'ID_Company', $this->session->empresa )
+											->select( [ 'ID_Activo', 'status' ] )
+											->first( );
+					if ($activo['status'] == 'activado') 
+						$this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+											->where('ID_Company', $this->session->empresa)
+											->set([ 'depreActual' => $this->request->getVar('vidaActual') ])
+											->update();
+					
 					echo json_encode( array( 'status' => 200 ) );
+				}
 				else
 					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
 
