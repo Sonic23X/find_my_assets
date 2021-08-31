@@ -1333,7 +1333,7 @@ function getProcessItems( )
               ${ activo.fecha }
             </td>
             <td class="align-middle">
-              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate( ${ activo.id_activo } )">
+              <button type="button" class="btn btn-primary btn-sm" name="button" onclick="ConfirmUpdate( '${ activo.id_activo }' )">
                 <i class="fas fa-angle-right"></i>
               </button>
             </td>
