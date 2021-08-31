@@ -156,15 +156,44 @@ $(document).ready(() =>
 
   /* --- Blog --- */
 
-  /*$.ajax({
-    url: 'https://admin.findmy-asstes.com/landing/blogs',
+  $.ajax({
+    //url: 'https://admin.findmy-asstes.com/blogs',
+    url: 'http://localhost:8000/api/blogs',
     type: 'GET',
     dataType: 'json',
   })
   .done( response =>
   {
-    console.log(response);
-  });*/
+    let blogs = response.blogs;
 
+    if (Object.keys(blogs).length > 0) {
+      blogs.forEach(element => {
+        let plantilla = 
+        `
+          <div class="col-sm-4 mb-3">
+            <div class="card">
+              <img src="${element.image}" alt="image-blog-1" class="img-fluid image-blog">
+              <div class="card-body">
+                <h5 class="card-title">${element.title}</h5>
+                <a href="/blog/${element.id}" class="btn btn-primary">Ver más</a>
+              </div>
+            </div>
+          </div>
+        `;
+  
+        $('#blogs_row').append(plantilla);  
+      });
+    }
+    else
+    {
+      let plantilla =
+      `
+        <div class="col">
+          <h4 class="text-center">Sin entradas</h4>
+        </div>
+      `;
+      $('#blogs_row').append(plantilla); 
+    }
+  });
 
 });

@@ -187,4 +187,13 @@ class Home extends BaseController
 		}
 	}
 
+	public function Blog($id)
+	{
+		$data = [
+			'id' => $id,
+		];
+		
+		echo view( 'landing/blogs', $data );
+	}
+
 }

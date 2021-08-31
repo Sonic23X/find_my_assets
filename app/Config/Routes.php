@@ -34,6 +34,7 @@ $routes->setAutoRoute(true);
 /** Landing **/
 $routes->get('/', 'Home::Index');
 $routes->post('/contacto', 'Home::Contact');
+$routes->get('/blog/(:any)', 'Home::Blog/$1');
 
 /** Auth **/
 $routes->get('/ingreso', 'Auth::Login');
