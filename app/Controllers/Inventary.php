@@ -205,7 +205,6 @@ class Inventary extends BaseController
         [
           'ID_Sucursal' => $activo[ 'ID_Sucursal' ],
           'ID_Area' => $activo[ 'ID_Area' ],
-          'ID_CC' => $activo[ 'ID_CC' ],
           'NSerie_Activo' => $activo[ 'NSerie_Activo' ],
           'ID_Tipo' => $activo[ 'ID_Tipo' ],
           'User_Inventario' => $activo[ 'User_Inventario' ],
@@ -725,24 +724,24 @@ class Inventary extends BaseController
       {
         $usuarios = $this->userModel->where( 'id_empresa', $this->session->empresa )->findAll( );
         $depreciaciones = $this->depreciacionModel->findAll( );
-
+        
         $SQL = "SELECT empresas.id_empresa, empresas.nombre FROM empresas, user_empresa WHERE user_empresa.id_empresa = empresas.id_empresa AND user_empresa.id_usuario = " . $this->session->id;
         $builder = $this->db->query( $SQL );
         $empresas = $builder->getResult( );
 
-        $SQL = "SELECT * FROM sucursales WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $SQL = "SELECT * FROM sucursales WHERE ID_Empresa = " . $this->session->empresa;
         $builder = $this->db->query( $SQL );
         $sucursales = $builder->getResult( );
 
-        $SQL = "SELECT * FROM areas WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $SQL = "SELECT * FROM areas WHERE id_empresa = " . $this->session->empresa;
         $builder = $this->db->query( $SQL );
         $areas = $builder->getResult( );
 
-        $SQL = "SELECT * FROM cc WHERE id_empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $SQL = "SELECT * FROM cc WHERE id_empresa = " . $this->session->empresa;
         $builder = $this->db->query( $SQL );
         $cc = $builder->getResult( );
 
-        $SQL = "SELECT * FROM tipos WHERE ID_Empresa IN ( SELECT id_empresa FROM user_empresa WHERE id_usuario = ". $this->session->id .")";
+        $SQL = "SELECT * FROM tipos WHERE ID_Empresa = " . $this->session->empresa;
         $builder = $this->db->query( $SQL );
         $tipos = $builder->getResult( );
         
@@ -969,7 +968,7 @@ class Inventary extends BaseController
               $fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
               $fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
               
-              if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+              if(($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix) && $imagenes > 0)
                 $inventario = true;
             }
 
@@ -979,7 +978,7 @@ class Inventary extends BaseController
               'tipo' => $row->Desc,
               'nombre' => $row->Nom_Activo,
               'usuario' => $row->nombre . ' ' . $row->apellidos,
-              'fecha' => $fecha[ 0 ],
+              'fecha' => ($row->TS_Update != null) ? $row->TS_Update : '',
               'id_activo' => $row->ID_Activo,
               'inventario' => $inventario,
               'imagenes' => $imagenes
@@ -1009,7 +1008,7 @@ class Inventary extends BaseController
       try
       {
         $builder = $this->db->table( 'activos' );
-        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
+        $builder->select( 'activos.Id, activos.Nom_Activo, activos.ID_Activo, activos.TS_Create, activos.TS_Update, tipos.Desc, usuarios.nombre, usuarios.apellidos' );
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.TS_Delete', null );
@@ -1052,7 +1051,6 @@ class Inventary extends BaseController
 
         foreach ( $activos->getResult( ) as $row )
         {
-          $fecha = explode( ' ', $row->TS_Update );
           $activo_imagenes = $this->draftModel->where('ID_Activo', $row->ID_Activo)->select('Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')->first();
           $imagenes = 0;
           
@@ -1076,7 +1074,7 @@ class Inventary extends BaseController
             $fechaInicioUnix = strtotime($fechaInicio[2]."-".$fechaInicio[1]."-".$fechaInicio[0]." 00:00:00");
             $fechaFinUnix = strtotime($fechaFin[2]."-".$fechaFin[1]."-".$fechaFin[0]." 00:00:00");
             
-            if($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix)
+            if(($fecha1Unix >= $fechaInicioUnix && $fecha1Unix <= $fechaFinUnix) && $imagenes > 0)
               $inventario = true;
           }
 
@@ -1086,7 +1084,7 @@ class Inventary extends BaseController
             'tipo' => $row->Desc,
             'nombre' => $row->Nom_Activo,
             'usuario' => $row->nombre . ' ' . $row->apellidos,
-            'fecha' => $fecha[ 0 ],
+            'fecha' => ($row->TS_Update != null) ? $row->TS_Update : '',
             'id_activo' => $row->ID_Activo,
             'inventario' => $inventario,
             'imagenes' => $imagenes
@@ -1119,7 +1117,7 @@ class Inventary extends BaseController
           'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
           'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
           'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
-          'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre',
+          'Des_Activo', 'Fec_InicioDepre', 'ID_MetDepre', 'depreActual',
           'Vida_Activo', 'GPS', 'Fec_Inventario', 'User_Inventario', 'Comentarios',
           'User_Create', 'User_Update', '	User_Delete',
           'TS_Create', 'TS_Update', 'TS_Delete'

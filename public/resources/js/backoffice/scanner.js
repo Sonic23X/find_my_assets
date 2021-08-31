@@ -144,7 +144,7 @@ function getScannerFormData( )
       usuarios.forEach( ( usuario , i ) =>
       {
         let option = new Option(usuario.nombre + ' ' + usuario.apellidos, usuario.id_usuario, false, false);
-        $( '#asignacion' ).append( option ).trigger('change');
+        $( '#asignacion' ).append( option );
       });
 
       let empresas = response.empresas;
@@ -912,8 +912,6 @@ function updateCoordenadas( )
 $(document).ready(function( )
 {
 
-  $('#asignacion').select2({ theme: 'bootstrap4', });
-
   //formularios
   getScannerFormData( );
 
@@ -1006,24 +1004,31 @@ $(document).ready(function( )
         isNew = false;
         actualStepScanner = 2;
         localStorage.setItem( 'codigo', $( '#numActivoS1' ).val( ) );
-
         if ( response.activo.ID_MetDepre != null )
         {
           switch ( response.activo.ID_MetDepre )
           {
             case '0':
+              $('#form-u-km').addClass('d-none');
               $( '#scanner-vida-util' ).html( '( hr / km / un )' );
               break;
             case '1':
+              $('#form-u-km').addClass('d-none');
               $( '#scanner-vida-util' ).html( '( meses )' );
               break;
             case '2':
+              $('#form-u-km').removeClass('d-none');
+              $('#scanner-vida-util-mov').html('Unidades que han pasado');
               $( '#scanner-vida-util' ).html( '( unidades )' );
               break;
             case '3':
+              $('#form-u-km').removeClass('d-none');
+              $('#scanner-vida-util-mov').html('Kilometros que han pasado');
               $( '#scanner-vida-util' ).html( '( kilometros )' );
               break;
             case '4':
+              $('#form-u-km').removeClass('d-none');
+              $('#scanner-vida-util-mov').html('Horas que han pasado');
               $( '#scanner-vida-util' ).html( '( horas )' );
               break;
           }
@@ -1330,7 +1335,7 @@ $(document).ready(function( )
     {
       codigo: localStorage.getItem( 'codigo' ),
       vida: $( '#vidaUtil' ).val( ),
-      //empresa: $( '#empresas' ).val( ),
+      vidaActual: $( '#vidaUtilActual' ).val( ),
       sucursal: $( '#sucursal' ).val( ),
       area: $( '#area' ).val( ),
     };

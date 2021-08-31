@@ -504,7 +504,7 @@ function IsConcilar( )
         `
           <tr>
             <td>
-              <a class="text-dark text-decoration-none" onClick="infoItemConcilar( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:infoItemConcilar( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1004,7 +1004,7 @@ function getNewItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="getDraftInfoNew( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:getDraftInfoNew( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1163,7 +1163,7 @@ function getDraftInfoNew( id )
       else
         $( '#newFechaUpdate' ).val( 'Sin actualización' );
 
-      $( '#newButtonSerie' ).attr( 'data-original-title', response.tooltip );
+      $( '.newButtonSerie' ).attr( 'data-original-title', response.tooltip );
 
       if (activo.GPS != null) 
       {
@@ -1320,7 +1320,7 @@ function getProcessItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:viewProcessInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1369,7 +1369,7 @@ function getProcessItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewProcessInfo( ${ activo.id }, 0 )">
+              <a class="text-dark text-decoration-none" href="javascript:viewProcessInfo( ${ activo.id }, 0 )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1443,12 +1443,6 @@ function viewProcessInfo( id, details = 1 )
         $( '#iFechaUpdate' ).val( activo.TS_Update.split(' ')[0] );
       else
         $( '#iFechaUpdate' ).val( 'Sin actualización' );
-
-      if( processActiveMap != null )
-      {
-        processActiveMap.off( );
-        processActiveMap.remove( );
-      }
 
       if (activo.GPS != null) 
       {
@@ -1598,7 +1592,7 @@ function getInventaryItems( )
               ${ activo.id_activo }
             </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1611,7 +1605,7 @@ function getInventaryItems( )
               ${ activo.imagenes } de 3
             </td>
             <td class="align-middle">
-              ${ activo.fecha }
+              ${ activo.fecha.split(' ')[0] }
             </td>
             <td>
         `;
@@ -1694,9 +1688,53 @@ function viewInvInfo( id )
       $( '#infoSucursal' ).val( activo.ID_Sucursal );
       $( '#infoArea' ).val( activo.ID_Area );
       $( '#infoDesc' ).val( `${ activo.Des_Activo }` );
-      $( '#infoVidaUtil' ).val( (activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo );
-      $( '#infoPrecio' ).val( (activo.Pre_Compra == null) ? 'N/A' : activo.Pre_Compra );
+      $( '#infoPrecio' ).val( (activo.Pre_Compra == null) ? 'N/A' : new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(activo.Pre_Compra) );
       $( '#infoFechaCompra' ).val( (activo.Fec_Compra == null) ? 'N/A' : activo.Fec_Compra );
+
+      if ((activo.Vida_Activo != null) && (activo.Pre_Compra != null) && activo.Fec_Compra != null )
+      {
+        if (activo.ID_MetDepre == 1) {
+          $('#infoVidaUtil').val((activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo + ' meses');
+          let depre = ( activo.Pre_Compra ) / activo.Vida_Activo;
+          let valor = 0;
+          $('#infoDepresacion').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(depre.toFixed(2)));
+  
+          let today = moment();
+          let dif = moment(activo.Fec_Compra);
+  
+          let mounths_pass = Math.abs(dif.diff(today, 'months'));
+  
+          if (mounths_pass <= Number(activo.Vida_Activo))
+            valor = Number(activo.Pre_Compra) - (depre * Math.abs(mounths_pass));
+          
+          else
+            valor = Number(activo.Pre_Compra) - (depre * activo.Vida_Activo);
+  
+          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valor.toFixed(2)));
+        } 
+        else if (activo.ID_MetDepre == 2) {
+          $('#infoVidaUtil').val((activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo + ' unidades');
+          let depre = ( activo.Pre_Compra ) / activo.Vida_Activo; //depreciasión por unidad
+          $('#infoDepresacion').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(depre.toFixed(2)));
+
+          valor = activo.Pre_Compra - (depre * activo.depreActual);
+          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valor.toFixed(2))); 
+        } 
+        else if (activo.ID_MetDepre == 3) {
+          $('#infoVidaUtil').val((activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo + ' kilometros');
+          let depre = ( activo.Pre_Compra ) / activo.Vida_Activo; //depreciasión por km
+          $('#infoDepresacion').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(depre.toFixed(2)));
+          console.log(activo);
+          valor = activo.Pre_Compra - (depre * activo.depreActual);
+          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valor.toFixed(2)));
+        }
+      }
+      else
+      {
+        $( '#infoDepresacion' ).val( 'Sin información suficiente' );
+        $( '#iValor' ).val( 'Sin información suficiente' );
+      }
+        
       if (activo.TS_Update != null) 
         $( '#infoFechaUpdate' ).val( `${ activo.TS_Update.split(' ')[0] }` );
       else
@@ -1807,9 +1845,12 @@ function inventaryFiltros( )
   `
     <thead>
       <tr>
+        <th scope="col">Num.</th>
         <th scope="col">Activo</th>
         <th scope="col">Asignación</th>
-        <th scope="col">Cargado</th>
+        <th scope="col">Imagenes</th>
+        <th scope="col">Ultima Act.</th>
+        <th scope="col">Inv.</th>
       </tr>
     </thead>
     <tbody class="table-inventary-actives">
@@ -1849,8 +1890,11 @@ function inventaryFiltros( )
         let typePlantilla =
         `
           <tr>
+            <td class="align-middle">
+              ${ activo.id_activo }
+            </td>
             <td>
-              <a class="text-dark text-decoration-none" onClick="viewInvInfo( ${ activo.id } )">
+              <a class="text-dark text-decoration-none" href="javascript:viewInvInfo( ${ activo.id } )">
                 ${ activo.tipo }
                 <br>
                 ${ activo.nombre }
@@ -1859,11 +1903,33 @@ function inventaryFiltros( )
             <td class="align-middle">
               ${ activo.usuario }
             </td>
-            <td class="align-middle">
-              ${ activo.fecha }
+            <td>
+              ${ activo.imagenes } de 3
             </td>
-          </tr>
+            <td class="align-middle">
+              ${ activo.fecha.split(' ')[0] }
+            </td>
+            <td>
         `;
+
+        if (activo.inventario)
+        {
+          typePlantilla += 
+          `
+                <span class="badge badge-success">OK</span>
+              </td>
+            </tr>
+          `;
+        }
+        else
+        {
+          typePlantilla += 
+          `
+                <span class="badge badge-warning text-light">PEND</span>
+              </td>
+            </tr>
+          `;
+        }
 
         $( '.table-inventary-actives' ).append( typePlantilla );
       });

@@ -12,7 +12,7 @@ function calcular()
     switch (tipo) 
     {
         case '1':
-            depre = ( precio - residual ) / vida;
+            depre = ( precio - residual ) / vida * 12;
             if (tiempo == '1') 
                 $('#result').html(`El La depreciación mensual es de ${depre}`)
             else if (tiempo == '2') 

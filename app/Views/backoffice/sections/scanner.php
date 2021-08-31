@@ -214,6 +214,14 @@
                         <input type="number" id="vidaUtil" class="form-control">
                       </div>
                     </div>
+                    <div class="form-group row d-none" id="form-u-km">
+                      <label for="alternativa" class="col-sm-4 col-form-label-2">
+                        <span id="scanner-vida-util-mov"> </span>
+                      </label>
+                      <div class="col-sm-6">
+                        <input type="number" id="vidaUtilActual" class="form-control">
+                      </div>
+                    </div>
                   </div>
                   <div class="col-1 col-sm-1"></div>
                 </div>

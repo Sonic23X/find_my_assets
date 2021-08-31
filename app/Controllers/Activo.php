@@ -124,7 +124,7 @@ class Activo extends BaseController
 				[
 					'ID_Activo', 'Nom_Activo', 'BC_Activo', 'ID_Company', 'ID_Sucursal',
 					'ID_Area', 'ID_CC', 'ID_Asignado', 'ID_Proceso', 'ID_Status', 'Fec_Compra',
-					'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo',
+					'Pre_Compra', 'Fec_Expira', 'NSerie_Activo', 'ID_Tipo', 'status',
 					'Des_Activo', 'ID_MetDepre', 'Vida_Activo', 'GPS', 'Fec_Inventario',
 					'User_Inventario', 'Comentarios', 'User_Create', 'User_Update', 'User_Delete',
 				];
@@ -263,17 +263,27 @@ class Activo extends BaseController
 		{
 			try
 			{
-
 				$update =
 				[
 					'Vida_Activo' => $this->request->getVar( 'vida' ),
-					'ID_Company' => $this->session->empresa,
 					'ID_Sucursal' => $this->request->getVar( 'sucursal' ),
 					'ID_Area' => $this->request->getVar( 'area' ),
 				];
 
 				if ( $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )->set( $update )->update( ) )
+				{
+					$activo = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+										   	->where( 'ID_Company', $this->session->empresa )
+											->select( [ 'ID_Activo', 'status' ] )
+											->first( );
+					if ($activo['status'] == 'activado') 
+						$this->activoModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
+											->where('ID_Company', $this->session->empresa)
+											->set([ 'depreActual' => $this->request->getVar('vidaActual') ])
+											->update();
+					
 					echo json_encode( array( 'status' => 200 ) );
+				}
 				else
 					echo json_encode( array( 'status' => 400, 'msg' => 'Error al actualizar el activo. Intente más tarde' ) );
 
@@ -1075,6 +1085,8 @@ class Activo extends BaseController
 				$sucursal = null;
 				$area = null;
 				$error = false;
+				$toInv1 = false;
+				$toInv2 = false;
 
 				if ($activo[0] == null) 
 				{
@@ -1165,42 +1177,80 @@ class Activo extends BaseController
 							}
 						}
 
+						if ($activo[8] != null) 
+						{
+							$toInv1 = true;
+						}
+
+						if ($activo[9] != null) 
+						{
+							$toInv2 = true;
+						}
+						
+
 						if (!$error) 
 						{
-							$draft =
-							[
-								'ID_Activo' => $activo[0],
-								'Nom_Activo' => $activo[2],
-								'ID_Company' => $this->session->empresa,
-								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-								'Des_Activo' => ($activo[7] != null) ? $activo[7] : '-',
-								'NSerie_Activo' => '-',
-								'GPS' => $this->request->getVar('gps'),
-								'ID_CC' => ($cc == null) ? 0 : $cc['id'],
-								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
-								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
-								'ID_Area' => ($area == null) ? 0 : $area['id'],
-								'TS_Create' => date( 'Y/n/j H:i:s' ),
-								'status' => 'nuevo'
-							];
+							if ($toInv1 && $toInv2) 
+							{
+								$draft =
+								[
+									'ID_Activo' => $activo[0],
+									'Nom_Activo' => $activo[2],
+									'ID_Company' => $this->session->empresa,
+									'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+									'Des_Activo' => ($activo[7] != null) ? $activo[7] : '-',
+									'NSerie_Activo' => '-',
+									'GPS' => $this->request->getVar('gps'),
+									'ID_CC' => ($cc == null) ? 0 : $cc['id'],
+									'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+									'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+									'ID_Area' => ($area == null) ? 0 : $area['id'],
+									'TS_Create' => date( 'Y/n/j H:i:s' ),
+									'status' => 'activado'
+								];
 
-							/*$nuevo_activo =
-							[
-								'ID_Activo' => $activo[0],
-								'Nom_Activo' => $activo[2],
-								'ID_Company' => $this->session->empresa,
-								'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
-								'Des_Activo' => '-',
-								'NSerie_Activo' => '-',
-								'ID_CC' => ($cc == null) ? 0 : $cc['id'],
-								'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
-								'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
-								'ID_Area' => ($area == null) ? 0 : $area['id'],
-								'TS_Create' => date( 'Y/n/j H:i:s' ),
-							];*/
+								$load_activo = $this->draftModel->insert($draft);
 
-							$load_activo = $this->draftModel->insert($draft);
-							//$load_activo = $this->activoModel->insert($nuevo_activo);
+								$nuevo_activo =
+								[
+									'ID_Activo' => $activo[0],
+									'Nom_Activo' => $activo[2],
+									'ID_Company' => $this->session->empresa,
+									'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+									'Des_Activo' => '-',
+									'NSerie_Activo' => '-',
+									'ID_CC' => ($cc == null) ? 0 : $cc['id'],
+									'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+									'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+									'ID_Area' => ($area == null) ? 0 : $area['id'],
+									'Pre_Compra' => $activo[8],
+									'Fec_Compra' => $activo[9],
+									'TS_Create' => date( 'Y/n/j H:i:s' ),
+								];
+
+								$load_activo = $this->activoModel->insert($nuevo_activo);
+							}
+							else
+							{
+								$draft =
+								[
+									'ID_Activo' => $activo[0],
+									'Nom_Activo' => $activo[2],
+									'ID_Company' => $this->session->empresa,
+									'ID_Tipo' => ($tipo == null) ? 0 : $tipo['id'],
+									'Des_Activo' => ($activo[7] != null) ? $activo[7] : '-',
+									'NSerie_Activo' => '-',
+									'GPS' => $this->request->getVar('gps'),
+									'ID_CC' => ($cc == null) ? 0 : $cc['id'],
+									'User_Inventario' => ($user == null) ? 88 : $user['id_usuario'],
+									'ID_Sucursal' => ($sucursal == null) ? 0 : $sucursal['id'],
+									'ID_Area' => ($area == null) ? 0 : $area['id'],
+									'TS_Create' => date( 'Y/n/j H:i:s' ),
+									'status' => 'nuevo'
+								];
+
+								$load_activo = $this->draftModel->insert($draft);
+							}
 
 							$subidos++;
 
@@ -1243,16 +1293,20 @@ class Activo extends BaseController
 		$cargaSheet->getColumnDimension('F')->setWidth(30);
 		$cargaSheet->getColumnDimension('G')->setWidth(30);
 		$cargaSheet->getColumnDimension('H')->setWidth(30);
+		$cargaSheet->getColumnDimension('I')->setWidth(30);
+		$cargaSheet->getColumnDimension('J')->setWidth(30);
 
 		//iniciamos tabla 
 		$cargaSheet->setCellValue( 'A1', 'Número de activo' );
 		$cargaSheet->setCellValue( 'B1', 'Tipo de activo' );
 		$cargaSheet->setCellValue( 'C1', 'Nombre' );
-		$cargaSheet->setCellValue( 'D1', 'Codigo de Centro de costo' );
+		$cargaSheet->setCellValue( 'D1', 'Codigo de centro de costo' );
 		$cargaSheet->setCellValue( 'E1', 'Email del usuario' );
 		$cargaSheet->setCellValue( 'F1', 'Sucursal' );
 		$cargaSheet->setCellValue( 'G1', 'Área' );
 		$cargaSheet->setCellValue( 'H1', 'Descripción' );
+		$cargaSheet->setCellValue( 'I1', 'Precio de compra' );
+		$cargaSheet->setCellValue( 'J1', 'Fecha de compra' );
 
 		$tiposSheet = new Worksheet($spreadsheet, 'Tipos');
 		$spreadsheet->addSheet($tiposSheet, 1);

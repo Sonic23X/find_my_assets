@@ -69,6 +69,9 @@
     <!-- Select2 -->
     <script src="<?= base_url( ) ?>/resources/plugins/select2/select2.min.js"></script>
 
+    <!-- Moment -->
+    <script src="<?= base_url( ) ?>/resources/plugins/moment/moment.js"></script>
+
     <!-- Custom JS -->
     <script src="<?= base_url( ) ?>/resources/js/backoffice/<?= $js ?>.js"></script>
 
