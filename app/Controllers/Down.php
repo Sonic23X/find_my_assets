@@ -118,6 +118,7 @@ class Down extends BaseController
         $builder->join( 'tipos', 'tipos.id = activos.ID_Tipo' );
         $builder->join( 'usuarios', 'usuarios.id_usuario = activos.User_Inventario' );
         $builder->where( 'activos.TS_Delete', null );
+        $builder->where( 'activos.ID_Company', $this->session->empresa );
 
         if ( $this->request->getVar( 'tipo' ) != null )
         {
@@ -126,10 +127,6 @@ class Down extends BaseController
         if ( $this->request->getVar( 'cc' ) != null )
         {
           $builder->where( 'activos.ID_CC', $this->request->getVar( 'cc' ) );
-        }
-        if ( $this->request->getVar( 'empresa' ) != null )
-        {
-          $builder->where( 'activos.ID_Company', $this->request->getVar( 'empresa' ) );
         }
         if ( $this->request->getVar( 'sucursal' ) != null )
         {
