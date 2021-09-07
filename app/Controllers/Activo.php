@@ -171,6 +171,7 @@ class Activo extends BaseController
 		{
 			$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
 										->where('ID_Company', $this->session->empresa)
+										->where('TS_Delete', NULL)
 										->first( );
 
 			if ( $already )
