@@ -170,7 +170,8 @@ class Activo extends BaseController
 		if ( $this->request->isAJAX( ) )
 		{
 			$already = $this->draftModel->where( 'ID_Activo', $this->request->getVar( 'codigo' ) )
-																	->first( );
+										->where('ID_Company', $this->session->empresa)
+										->first( );
 
 			if ( $already )
 				echo json_encode( array( 'status' => 400, 'msg' => 'Ya existe un activo con este ID' ) );
