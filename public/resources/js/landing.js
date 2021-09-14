@@ -157,8 +157,8 @@ $(document).ready(() =>
   /* --- Blog --- */
 
   $.ajax({
-    //url: 'https://admin.findmy-asstes.com/blogs',
-    url: 'http://localhost:8000/api/blogs',
+    url: 'https://admin.findmy-assets.com/api/blogs',
+    //url: 'http://localhost:8000/api/blogs',
     type: 'GET',
     dataType: 'json',
   })
