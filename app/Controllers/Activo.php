@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use DateTime;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Reader\Xls as ReadXls;
@@ -606,7 +607,7 @@ class Activo extends BaseController
 	{
 		$activos = $this->activoModel->where( 'ID_Company', $this->session->empresa )
 									->where( 'TS_Delete', null )
-									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, Fec_Inventario, ID_CC, ID_Tipo, TS_Create, TS_Update, Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update, Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront, Vida_Activo, Pre_Compra, Fec_Compra, ID_MetDepre, depreActual, Fec_Inventario')
 									->findAll();
 
 		$SQL = "SELECT * FROM empresa_periodo WHERE id_empresa = " . $this->session->empresa . " AND status = 1";
@@ -633,6 +634,8 @@ class Activo extends BaseController
 		$sheet->getColumnDimension('N')->setWidth(50);
 		$sheet->getColumnDimension('O')->setWidth(50);
 		$sheet->getColumnDimension('P')->setWidth(50);
+		$sheet->getColumnDimension('Q')->setWidth(50);
+		$sheet->getColumnDimension('R')->setWidth(50);
 
 		//iniciamos tabla 
 		$sheet->setCellValue( 'A1', 'Número de activo' );
@@ -651,6 +654,8 @@ class Activo extends BaseController
 		$sheet->setCellValue( 'N1', 'Foto Frontal' );
 		$sheet->setCellValue( 'O1', 'Foto Lat. Derecha' );
 		$sheet->setCellValue( 'P1', 'Foto Lat. Izquierda' );
+		$sheet->setCellValue( 'Q1', 'Valor depreciación' );
+		$sheet->setCellValue( 'R1', 'Valor libro' );
 
 		$styleHeadArray = 
 		[
@@ -673,7 +678,7 @@ class Activo extends BaseController
 			],
 		];
 			
-		$sheet->getStyle('A1:P1')->applyFromArray($styleHeadArray);
+		$sheet->getStyle('A1:R1')->applyFromArray($styleHeadArray);
 
 		$fila = 2;
 		$empresa = $this->empresaModel->find($this->session->empresa);
@@ -739,6 +744,41 @@ class Activo extends BaseController
 			else
 				$sheet->setCellValue( 'P' . $fila, 'Sin imagen' );
 
+			// Depreciación
+			if ($activo['Vida_Activo'] != null && $activo['Pre_Compra'] != null && $activo['Fec_Compra'] != null) {
+				$valor_libro = 0;
+				$depre = $activo['Pre_Compra']/$activo['Vida_Activo'];
+				$sheet->setCellValue('Q' . $fila, '$' . $depre);
+				
+				if ($activo['ID_MetDepre'] == 1) {
+					$today = new DateTime();
+					$buyDate = new DateTime($activo['Fec_Compra']);
+					$diff = $today->diff($buyDate);
+
+					if ($diff->m <= $activo['Vida_Activo']) 
+						$valor_libro = $activo['Pre_Compra'] - ($depre * $diff->m);
+					else 
+						$valor_libro = $activo['Pre_Compra'] - ($depre * $activo['Vida_Activo']);
+					$sheet->setCellValue('R' . $fila, '$' . $valor_libro);
+				}
+				else if ($activo['ID_MetDepre'] == 2) {
+					$valor_libro = $activo['Pre_Compra'] - ($depre * $activo['depreActual']);
+					$sheet->setCellValue('R' . $fila, '$' . $valor_libro);
+				}
+				else if ($activo['ID_MetDepre'] == 3) {
+					$valor_libro = $activo['Pre_Compra'] - ($depre * $activo['depreActual']);
+					$sheet->setCellValue('R' . $fila, '$' . $valor_libro);
+				}
+				else {
+					$sheet->setCellValue('Q' . $fila, 'El activo no tiene depreciación');
+					$sheet->setCellValue('R' . $fila, 'El activo no tiene depreciación');
+				}
+			}
+			else {
+				$sheet->setCellValue('Q' . $fila, 'El activo no tiene depreciación');
+				$sheet->setCellValue('R' . $fila, 'El activo no tiene depreciación');
+			}
+
 			$fila++;
 		}
 
@@ -779,7 +819,7 @@ class Activo extends BaseController
 									->where( 'status !=', 'conciliado' )
 									->where( 'status !=', 'eliminado' )
 									->where( 'TS_Delete', null )
-									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update, Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront')
+									->select('Id, ID_Activo, Nom_Activo, User_Inventario, ID_Area, ID_Sucursal, ID_CC, ID_Tipo, TS_Create, TS_Update, Ima_ActivoLeft, Ima_ActivoRight, Ima_ActivoFront, Vida_Activo, Pre_Compra, Fec_Compra')
 									->findAll();
 
 		$spreadsheet = new Spreadsheet( );
