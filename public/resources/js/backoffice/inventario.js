@@ -1693,40 +1693,38 @@ function viewInvInfo( id )
 
       if ((activo.Vida_Activo != null) && (activo.Pre_Compra != null) && activo.Fec_Compra != null )
       {
+        let valorLibro = 0;
         if (activo.ID_MetDepre == 1) {
           $('#infoVidaUtil').val((activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo + ' meses');
           let depre = ( activo.Pre_Compra ) / activo.Vida_Activo;
-          let valor = 0;
           $('#infoDepresacion').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(depre.toFixed(2)));
   
           let today = moment();
           let dif = moment(activo.Fec_Compra);
-  
           let mounths_pass = Math.abs(dif.diff(today, 'months'));
   
           if (mounths_pass <= Number(activo.Vida_Activo))
-            valor = Number(activo.Pre_Compra) - (depre * Math.abs(mounths_pass));
-          
+            valorLibro = Number(activo.Pre_Compra) - (depre * Math.abs(mounths_pass));
           else
-            valor = Number(activo.Pre_Compra) - (depre * activo.Vida_Activo);
-  
-          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valor.toFixed(2)));
+            valorLibro = Number(activo.Pre_Compra) - (depre * activo.Vida_Activo);
+          
+          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valorLibro.toFixed(2)));
         } 
         else if (activo.ID_MetDepre == 2) {
           $('#infoVidaUtil').val((activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo + ' unidades');
           let depre = ( activo.Pre_Compra ) / activo.Vida_Activo; //depreciasión por unidad
           $('#infoDepresacion').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(depre.toFixed(2)));
 
-          valor = activo.Pre_Compra - (depre * activo.depreActual);
-          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valor.toFixed(2))); 
+          valorLibro = activo.Pre_Compra - (depre * activo.depreActual);
+          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valorLibro.toFixed(2))); 
         } 
         else if (activo.ID_MetDepre == 3) {
           $('#infoVidaUtil').val((activo.Vida_Activo == null) ? 'N/A' : activo.Vida_Activo + ' kilometros');
           let depre = ( activo.Pre_Compra ) / activo.Vida_Activo; //depreciasión por km
           $('#infoDepresacion').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(depre.toFixed(2)));
-          console.log(activo);
-          valor = activo.Pre_Compra - (depre * activo.depreActual);
-          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valor.toFixed(2)));
+          
+          valorLibro = activo.Pre_Compra - (depre * activo.depreActual);
+          $('#iValor').val(new Intl.NumberFormat('es-AR', {currency: 'ARS', style: 'currency'}).format(valorLibro.toFixed(2)));
         }
       }
       else
